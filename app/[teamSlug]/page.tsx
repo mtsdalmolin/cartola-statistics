@@ -33,6 +33,16 @@ interface RoundData {
   capitao_id: number
 }
 
+function isCaptain(athleteId: number, captainId: number) {
+  return athleteId === captainId
+}
+
+function calculatePoints(athlete: Athlete, captainId: number) {
+  return isCaptain(athlete.atleta_id, captainId)
+    ? athlete.pontos_num * 1.5
+    : athlete.pontos_num
+}
+
 async function getPlayersTeamData(endpoint: string) {
   const roundsData: RoundData[] = await Promise.all(
     ROUNDS.map(round =>
@@ -49,7 +59,7 @@ async function getPlayersTeamData(endpoint: string) {
     athletes.forEach(athlete => {
       if (playersStatistics[athlete.atleta_id]) {
         playersStatistics[athlete.atleta_id].castTimes++
-        playersStatistics[athlete.atleta_id].sumOfPoints += athlete.pontos_num
+        playersStatistics[athlete.atleta_id].sumOfPoints += calculatePoints(athlete, captainId)
       } else {
         playersStatistics[athlete.atleta_id] = {
           atleta_id: athlete.atleta_id,
@@ -58,11 +68,11 @@ async function getPlayersTeamData(endpoint: string) {
           foto: athlete.foto.replace('FORMATO', PHOTO_SIZE_FORMAT),
           media_num: athlete.media_num,
           captainTimes: 0,
-          sumOfPoints: athlete.pontos_num
+          sumOfPoints: calculatePoints(athlete, captainId)
         }
       }
 
-      if (playersStatistics[athlete.atleta_id].atleta_id === captainId) {
+      if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
       }
     })
