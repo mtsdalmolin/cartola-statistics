@@ -12,16 +12,19 @@ import { POSITIONS, PositionsIds } from "@/app/constants/positions"
 const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
 const CAPTAIN_TIMES_OPTION = { value: 'captainTimes', label: 'Vezes capitão' }
 const POINTS_AVERAGE_OPTION = { value: 'pointsAverage', label: 'Média' }
+const OVERALL_AVERAGE_OPTION = { value: 'media_num', label: 'Média Geral' }
 
 const options = [
   CAST_TIMES_OPTION,
   CAPTAIN_TIMES_OPTION,
-  POINTS_AVERAGE_OPTION
+  POINTS_AVERAGE_OPTION,
+  OVERALL_AVERAGE_OPTION
 ]
 
 const benchOptions = [
   CAST_TIMES_OPTION,
-  POINTS_AVERAGE_OPTION
+  POINTS_AVERAGE_OPTION,
+  OVERALL_AVERAGE_OPTION
 ]
 
 function getFootballTeamBadgeLink(footballTeamId: FootballTeamsIds) {
@@ -63,7 +66,7 @@ export function AthleteCard({
   return (
     <div className={`flex flex-col items-center ${isBench ? 'text-ember-200' : 'text-emerald-100'} fut-card ${isBench ? 'fut-bench-card' : 'fut-player-card'}`}>
       <div className="absolute left-4 top-8">
-        <div className="text-xl">{athlete.media_num.toFixed(1)}</div>
+        <div className="text-xl" title="Média Geral">{athlete.media_num.toFixed(1)}</div>
         <div className="flex flex-col justify-center items-center gap-1">
           <div className="uppercase text-xs" title={getPositionName(athlete.posicao_id)}>
             {getPositionAbbreviation(athlete.posicao_id)}
