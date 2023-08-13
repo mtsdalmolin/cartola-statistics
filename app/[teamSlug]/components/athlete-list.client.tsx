@@ -6,6 +6,7 @@ import orderBy from 'lodash/orderBy'
 import mapValues from 'lodash/mapValues'
 import Image from "next/image";
 import Select from 'react-select'
+import { FOOTBALL_TEAMS, type FootballTeamsIds } from '@/app/constants/teams'
 
 const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
 const CAPTAIN_TIMES_OPTION = { value: 'captainTimes', label: 'Vezes capitão' }
@@ -21,6 +22,14 @@ const benchOptions = [
   CAST_TIMES_OPTION,
   POINTS_AVERAGE_OPTION
 ]
+
+function getFootballTeamBadgeLink(footballTeamId: FootballTeamsIds) {
+  return FOOTBALL_TEAMS[footballTeamId].escudos['30x30']
+}
+
+function getFootballTeamName(footballTeamId: FootballTeamsIds) {
+  return FOOTBALL_TEAMS[footballTeamId].nome
+}
 
 export function AthleteCard({
   athlete,
@@ -44,11 +53,23 @@ export function AthleteCard({
 
   return (
     <div className={`flex flex-col items-center ${isBench ? 'text-ember-200' : 'text-emerald-100'} fut-card ${isBench ? 'fut-bench-card' : 'fut-player-card'}`}>
-        {/* <div className="player-club">
-          <img src="https://selimdoyranli.com/cdn/fut-player-card/img/barcelona.svg" alt="Barcelona" draggable="false"/>
-        </div> */}
-        <div className="w-24 mt-6">
-          <Image alt={athlete.apelido} src={athlete.foto} width={220} height={220} />
+        <div className="absolute left-4 top-16">
+          <Image
+            alt={getFootballTeamName(athlete.clube_id)}
+            src={getFootballTeamBadgeLink(athlete.clube_id)}
+            width={30}
+            height={30}
+            draggable="false"
+          />
+        </div>
+        <div className="w-24 mt-6 ml-4">
+          <Image
+            alt={athlete.apelido}
+            src={athlete.foto}
+            width={220}
+            height={220}
+            draggable="false"
+          />
         </div>
         {/* <div className="player-extra">
           <span>4*SM</span>

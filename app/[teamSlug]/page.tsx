@@ -1,5 +1,6 @@
 import isNil from 'lodash/isNil'
 import { TEAMS } from '../page'
+import { type FootballTeamsIds } from '../constants/teams'
 import type { Metadata } from 'next'
 
 import './styles.css'
@@ -22,6 +23,7 @@ interface Athlete {
   foto: string
   media_num: number
   pontos_num: number
+  clube_id: FootballTeamsIds
 }
 
 export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
@@ -57,7 +59,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number) {
     media_num: athlete.media_num,
     captainTimes: 0,
     sumOfPoints: calculatePoints(athlete, captainId),
-    pointsAverage: 0
+    pointsAverage: 0,
+    clube_id: athlete.clube_id
   }
 }
 
