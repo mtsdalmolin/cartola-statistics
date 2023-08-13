@@ -1,8 +1,14 @@
 import isNil from 'lodash/isNil'
 import { TEAMS } from '../page'
+import type { Metadata } from 'next'
 
 import './styles.css'
 import AthleteList from './components/athlete-list.client'
+
+export const metadata: Metadata = {
+  title: 'Cartola Statistics',
+  description: 'Site para analisar estatísticas que o cartola não utiliza.',
+}
 
 const CARTOLA_API = 'https://api.cartola.globo.com/'
 
@@ -55,13 +61,9 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number) {
   }
 }
 
-function getTeamRounds(teamId: number) {
-  return TEAMS.find(team => team.id === teamId)?.rounds ?? []
-}
-
-async function getPlayersTeamData(endpoint: string, teamId: number ) {
+async function getPlayersTeamData(endpoint: string, rounds: number[]) {
   const roundsData: RoundData[] = await Promise.all(
-    getTeamRounds(teamId).map(round =>
+    rounds.map(round =>
       fetch(`${CARTOLA_API}${endpoint.replace(':round', round.toString())}`)
         .then(res => res.json())
     )
@@ -120,7 +122,12 @@ export default async function Team({ params }: { params: { teamSlug: string } })
     return 'no data'
   }
 
-  const [athletes, bench] = await getPlayersTeamData(TEAM_ROUND_ENDPOINT(teamData.id.toString()), teamData.id)
+  metadata.title = teamData.name
+
+  const [athletes, bench] = await getPlayersTeamData(
+    TEAM_ROUND_ENDPOINT(teamData.id.toString()),
+    teamData.rounds
+  )
 
   return (
     <main className="min-h-screen items-center p-24">
