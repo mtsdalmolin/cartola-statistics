@@ -21,7 +21,7 @@ interface Athlete {
   pontos_num: number
 }
 
-interface RenderedAthlete extends Athlete {
+interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   castTimes: number
   captainTimes: number
   sumOfPoints: number
@@ -41,7 +41,7 @@ async function getPlayersTeamData(endpoint: string) {
     )
   )
 
-  const playersStatistics: Record<string, Omit<RenderedAthlete, 'pontos_num'>> = {};
+  const playersStatistics: Record<string, RenderedAthlete> = {};
 
   roundsData.forEach(round => {
     const { atletas: athletes } = round
