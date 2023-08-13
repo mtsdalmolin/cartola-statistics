@@ -194,7 +194,7 @@ export function AthleteCard({
             </div>
             <div className="flex justify-between">
               <span title="Minutos para marcar gol">MPG</span>
-              <span>{athlete.minutesToGoal}</span>
+              <span>{athlete.minutesToGoal.toFixed(1)}</span>
             </div>
             <div className="flex justify-between">
               <span title="Média de pontos como mandante por rodada">MPM/R</span>

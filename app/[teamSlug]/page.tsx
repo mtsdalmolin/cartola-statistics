@@ -117,10 +117,9 @@ function handleRoundValuation(roundsValuation: number[]) {
     valuationRounds.zero++
   })
 
-
   return {
-    values: roundsValuation,
-    ...valuationRounds
+    ...valuationRounds,
+    values: roundsValuation
   }
 }
 
@@ -149,7 +148,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     foto: athlete.foto.replace('FORMATO', PHOTO_SIZE_FORMAT),
     media_num: athlete.media_num,
     jogos_num: athlete.jogos_num,
-    sumOfOverallAverage: 0,
+    sumOfOverallAverage: athlete.media_num,
     overallAverage: 0,
     captainTimes: 0,
     sumOfPoints: calculatePoints(athlete, captainId),
@@ -163,7 +162,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
       media_pontos_visitante: athlete.gato_mestre.media_pontos_visitante
     },
     scout: handleGameActions(athlete),
-    sumOfPlayedMinutes: 0,
+    sumOfPlayedMinutes: athlete.gato_mestre.minutos_jogados,
     averageMinutesPerRound: 0,
     home: {
       sumOfPoints: 0,
@@ -183,6 +182,30 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
         zero: 0
       }
     }
+  }
+}
+
+function handlePlayersStatistics(athlete: RenderedAthlete) {
+  return {
+    ...athlete,
+    pointsAverage: athlete.sumOfPoints / athlete.castTimes,
+    averageMinutesPerRound: athlete.sumOfPlayedMinutes / athlete.castTimes,
+    home: {
+      ...athlete.home,
+      average: athlete.home.sumOfPoints / athlete.castTimes
+    },
+    away: {
+      ...athlete.away,
+      average: athlete.away.sumOfPoints / athlete.castTimes
+    },
+    overallAverage: athlete.sumOfOverallAverage / athlete.jogos_num,
+    valuation: {
+      rounds: {
+        ...athlete.valuation.rounds,
+        ...handleRoundValuation(athlete.valuation.rounds.values)
+      }
+    },
+    minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals
   }
 }
 
@@ -253,51 +276,11 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
   })
 
   Object.entries(playersStatistics).forEach(([athleteId, athlete]) => {
-    playersStatistics[athleteId] = {
-      ...athlete,
-      pointsAverage: athlete.sumOfPoints / athlete.castTimes,
-      averageMinutesPerRound: athlete.sumOfPlayedMinutes / athlete.castTimes,
-      home: {
-        ...athlete.home,
-        average: athlete.home.sumOfPoints / athlete.castTimes
-      },
-      away: {
-        ...athlete.away,
-        average: athlete.away.sumOfPoints / athlete.castTimes
-      },
-      overallAverage: athlete.sumOfOverallAverage / athlete.castTimes,
-      valuation: {
-        rounds: {
-          ...athlete.valuation.rounds,
-          ...handleRoundValuation(athlete.valuation.rounds.values)
-        }
-      },
-      minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals
-    }
+    playersStatistics[athleteId] = handlePlayersStatistics(athlete)
   })
   
   Object.entries(benchStatistics).forEach(([athleteId, athlete]) => {
-    benchStatistics[athleteId] = {
-      ...athlete,
-      pointsAverage: athlete.sumOfPoints / athlete.castTimes,
-      averageMinutesPerRound: athlete.sumOfPlayedMinutes / athlete.castTimes,
-      home: {
-        ...athlete.home,
-        average: athlete.home.sumOfPoints / athlete.castTimes
-      },
-      away: {
-        ...athlete.away,
-        average: athlete.away.sumOfPoints / athlete.castTimes
-      },
-      overallAverage: athlete.sumOfOverallAverage / athlete.jogos_num,
-      valuation: {
-        rounds: {
-          ...athlete.valuation.rounds,
-          ...handleRoundValuation(athlete.valuation.rounds.values)
-        }
-      },
-      minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals
-    }
+    benchStatistics[athleteId] = handlePlayersStatistics(athlete)
   })
 
   return [playersStatistics, benchStatistics]
