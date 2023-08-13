@@ -89,7 +89,7 @@ export default function AthleteList({ athletes }: { athletes: Record<string, Ren
         />
       </div>
       <div className="flex flex-wrap">
-        {orderBy(athletes, Object.values(mapValues(orderFilters, 'value')), 'desc').map(athlete => (
+        {orderBy(athletes, Object.values(mapValues(orderFilters, 'value')), orderFilters.map(() => 'desc')).map(athlete => (
           <div key={athlete.atleta_id}>
             <AthleteCard
               athlete={athlete}
