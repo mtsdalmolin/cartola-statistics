@@ -25,11 +25,14 @@ interface Athlete {
   foto: string
   media_num: number
   pontos_num: number
+  jogos_num: number
   clube_id: FootballTeamsIds
   posicao_id: PositionsIds
   variacao_num: number
   scout: {
     A?: number
+    CA?: number
+    CV?: number
     DE?: number
     DS?: number
     FC?: number
@@ -51,6 +54,8 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   castTimes: number
   captainTimes: number
   sumOfPoints: number
+  overallAverage: number
+  sumOfOverallAverage: number
   pointsAverage: number
   sumOfPlayedMinutes: number
   averageMinutesPerRound: number
@@ -120,7 +125,9 @@ function handleRoundValuation(roundsValuation: number[]) {
 }
 
 function handleGameActions(athlete: Athlete) {
-  const actions: Record<string, number> = {}
+  const actions: Record<string, number> = {
+    ...athlete.scout
+  }
 
   Object.keys(athlete.scout).forEach((key: string) => {
     if (actions[key]) {
@@ -141,6 +148,9 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     castTimes: 1,
     foto: athlete.foto.replace('FORMATO', PHOTO_SIZE_FORMAT),
     media_num: athlete.media_num,
+    jogos_num: athlete.jogos_num,
+    sumOfOverallAverage: 0,
+    overallAverage: 0,
     captainTimes: 0,
     sumOfPoints: calculatePoints(athlete, captainId),
     pointsAverage: 0,
@@ -204,8 +214,13 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
         playersStatistics[athlete.atleta_id].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
         playersStatistics[athlete.atleta_id].home.sumOfPoints += athlete.gato_mestre.media_pontos_mandante
         playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre.media_pontos_visitante
-        playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre.media_pontos_visitante
+        playersStatistics[athlete.atleta_id].sumOfOverallAverage += athlete.media_num
+        playersStatistics[athlete.atleta_id].jogos_num = athlete.jogos_num
         playersStatistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
+        playersStatistics[athlete.atleta_id].scout = {
+          ...playersStatistics[athlete.atleta_id].scout,
+          ...handleGameActions(athlete)
+        }
         playersStatistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
       } else {
         playersStatistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
@@ -223,7 +238,13 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
         benchStatistics[benchAthlete.atleta_id].sumOfPlayedMinutes += benchAthlete.gato_mestre.minutos_jogados
         benchStatistics[benchAthlete.atleta_id].home.sumOfPoints += benchAthlete.gato_mestre.media_pontos_mandante
         benchStatistics[benchAthlete.atleta_id].away.sumOfPoints += benchAthlete.gato_mestre.media_pontos_visitante
+        benchStatistics[benchAthlete.atleta_id].sumOfOverallAverage += benchAthlete.media_num
+        benchStatistics[benchAthlete.atleta_id].jogos_num = benchAthlete.jogos_num
         benchStatistics[benchAthlete.atleta_id].valuation.rounds.values.push(benchAthlete.variacao_num)
+        benchStatistics[benchAthlete.atleta_id].scout = {
+          ...benchStatistics[benchAthlete.atleta_id].scout,
+          ...handleGameActions(benchAthlete)
+        }
         benchStatistics[benchAthlete.atleta_id].goals += handleGameActions(benchAthlete)?.G ?? 0
       } else {
         benchStatistics[benchAthlete.atleta_id] = renderedAthleteFactory(benchAthlete, captainId)
@@ -244,6 +265,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
         ...athlete.away,
         average: athlete.away.sumOfPoints / athlete.castTimes
       },
+      overallAverage: athlete.sumOfOverallAverage / athlete.castTimes,
       valuation: {
         rounds: {
           ...athlete.valuation.rounds,
@@ -266,6 +288,13 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
       away: {
         ...athlete.away,
         average: athlete.away.sumOfPoints / athlete.castTimes
+      },
+      overallAverage: athlete.sumOfOverallAverage / athlete.jogos_num,
+      valuation: {
+        rounds: {
+          ...athlete.valuation.rounds,
+          ...handleRoundValuation(athlete.valuation.rounds.values)
+        }
       },
       minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals
     }

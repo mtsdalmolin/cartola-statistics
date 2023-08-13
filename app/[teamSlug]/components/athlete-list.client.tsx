@@ -122,7 +122,7 @@ export function AthleteCard({
               title="Média Geral"
               onClick={() => handleStatisticClick(OVERALL_AVERAGE_OPTION)}
             >
-              {athlete.media_num.toFixed(1)}
+              {athlete.overallAverage.toFixed(1)}
             </div>
             <div className="flex flex-col justify-center items-center gap-1">
               <div
@@ -176,7 +176,7 @@ export function AthleteCard({
           </div>
         </div>
         <div className={`absolute card-back flex justify-center`}>
-          <div className="flex flex-col gap-0.5 w-3/4 text-xs mt-6 mb-10 mx-6">
+          <div className="flex flex-col gap-0.5 w-3/4 text-xs overflow-auto mt-6 mb-10 mx-6">
             <div className="text-center font-bold text-lg truncate">
               <span title={athlete.apelido}>{athlete.apelido}</span>
             </div>
