@@ -6,8 +6,6 @@ import AthleteList from './components/athlete-list.client'
 
 const CARTOLA_API = 'https://api.cartola.globo.com/'
 
-const ROUNDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-
 const PHOTO_SIZE_FORMAT = '220x220'
 
 const TEAM_ROUND_ENDPOINT = (teamId: string) => `time/id/${teamId}/:round`
@@ -57,9 +55,13 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number) {
   }
 }
 
-async function getPlayersTeamData(endpoint: string) {
+function getTeamRounds(teamId: number) {
+  return TEAMS.find(team => team.id === teamId)?.rounds ?? []
+}
+
+async function getPlayersTeamData(endpoint: string, teamId: number ) {
   const roundsData: RoundData[] = await Promise.all(
-    ROUNDS.map(round =>
+    getTeamRounds(teamId).map(round =>
       fetch(`${CARTOLA_API}${endpoint.replace(':round', round.toString())}`)
         .then(res => res.json())
     )
@@ -85,7 +87,6 @@ async function getPlayersTeamData(endpoint: string) {
     })
 
     bench.forEach(benchAthlete => {
-      benchAthlete.apelido === 'Lucas Evangelista' && console.log(benchAthlete)
       if (benchStatistics[benchAthlete.atleta_id]) {
         benchStatistics[benchAthlete.atleta_id].castTimes++
         benchStatistics[benchAthlete.atleta_id].sumOfPoints += calculatePoints(benchAthlete, captainId)
@@ -119,7 +120,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
     return 'no data'
   }
 
-  const [athletes, bench] = await getPlayersTeamData(TEAM_ROUND_ENDPOINT(teamData.id.toString()))
+  const [athletes, bench] = await getPlayersTeamData(TEAM_ROUND_ENDPOINT(teamData.id.toString()), teamData.id)
 
   return (
     <main className="min-h-screen items-center p-24">
