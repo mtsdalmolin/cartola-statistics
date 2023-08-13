@@ -6,7 +6,7 @@ import AthleteList from './components/athlete-list.client'
 
 const CARTOLA_API = 'https://api.cartola.globo.com/'
 
-const ROUNDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+const ROUNDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 
 const PHOTO_SIZE_FORMAT = '220x220'
 
