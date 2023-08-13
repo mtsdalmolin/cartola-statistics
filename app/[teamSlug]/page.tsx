@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 import './styles.css'
 import AthleteList from './components/athlete-list.client'
 import { PositionsIds } from '../constants/positions'
+import { forEach } from 'lodash'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
@@ -27,6 +28,18 @@ interface Athlete {
   clube_id: FootballTeamsIds
   posicao_id: PositionsIds
   variacao_num: number
+  scout: {
+    A?: number
+    DE?: number
+    DS?: number
+    FC?: number
+    FD?: number
+    FF?: number
+    FS?: number
+    G?: number
+    I?: number
+    SG?: number
+  }
   gato_mestre: {
     minutos_jogados: number
     media_pontos_mandante: number
@@ -57,6 +70,8 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
     sumOfPoints: number
     average: number
   }
+  goals: number
+  minutesToGoal: number
 }
 
 interface RoundData {
@@ -104,6 +119,21 @@ function handleRoundValuation(roundsValuation: number[]) {
   }
 }
 
+function handleGameActions(athlete: Athlete) {
+  const actions: Record<string, number> = {}
+
+  Object.keys(athlete.scout).forEach((key: string) => {
+    if (actions[key]) {
+      actions[key]++
+      return
+    }
+
+    actions[key] = athlete.scout[key as keyof typeof athlete.scout] ?? 0
+  })
+
+  return actions
+}
+
 function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
   return {
     atleta_id: athlete.atleta_id,
@@ -122,6 +152,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
       media_pontos_mandante: athlete.gato_mestre.media_pontos_mandante,
       media_pontos_visitante: athlete.gato_mestre.media_pontos_visitante
     },
+    scout: handleGameActions(athlete),
     sumOfPlayedMinutes: 0,
     averageMinutesPerRound: 0,
     home: {
@@ -132,6 +163,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
       sumOfPoints: 0,
       average: 0,
     },
+    goals: 0,
+    minutesToGoal: 0,
     valuation: {
       rounds: {
         values: [athlete.variacao_num],
@@ -173,6 +206,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
         playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre.media_pontos_visitante
         playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre.media_pontos_visitante
         playersStatistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
+        playersStatistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
       } else {
         playersStatistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
       }
@@ -190,6 +224,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
         benchStatistics[benchAthlete.atleta_id].home.sumOfPoints += benchAthlete.gato_mestre.media_pontos_mandante
         benchStatistics[benchAthlete.atleta_id].away.sumOfPoints += benchAthlete.gato_mestre.media_pontos_visitante
         benchStatistics[benchAthlete.atleta_id].valuation.rounds.values.push(benchAthlete.variacao_num)
+        benchStatistics[benchAthlete.atleta_id].goals += handleGameActions(benchAthlete)?.G ?? 0
       } else {
         benchStatistics[benchAthlete.atleta_id] = renderedAthleteFactory(benchAthlete, captainId)
       }
@@ -214,9 +249,9 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
           ...athlete.valuation.rounds,
           ...handleRoundValuation(athlete.valuation.rounds.values)
         }
-      }
+      },
+      minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals
     }
-    athlete.apelido === 'Luis Suárez' && console.log(playersStatistics[athleteId])
   })
   
   Object.entries(benchStatistics).forEach(([athleteId, athlete]) => {
@@ -231,7 +266,8 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
       away: {
         ...athlete.away,
         average: athlete.away.sumOfPoints / athlete.castTimes
-      }
+      },
+      minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals
     }
   })
 

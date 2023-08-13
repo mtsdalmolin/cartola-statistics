@@ -189,6 +189,14 @@ export function AthleteCard({
               <span>{athlete.averageMinutesPerRound.toFixed(1)}</span>
             </div>
             <div className="flex justify-between">
+              <span title="Gols">Gols</span>
+              <span>{athlete.goals}</span>
+            </div>
+            <div className="flex justify-between">
+              <span title="Minutos para marcar gol">MPG</span>
+              <span>{athlete.minutesToGoal}</span>
+            </div>
+            <div className="flex justify-between">
               <span title="Média de pontos como mandante por rodada">MPM/R</span>
               <span>{athlete.home.average.toFixed(1)}</span>
             </div>
