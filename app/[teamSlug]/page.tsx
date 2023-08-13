@@ -185,7 +185,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
 }
 
 function handlePlayersStatistics(athlete: RenderedAthlete) {
-  const overallAverage = athlete.sumOfOverallAverage / athlete.jogos_num
+  const overallAverage = athlete.sumOfOverallAverage / athlete.castTimes
 
   return {
     ...athlete,
@@ -253,7 +253,6 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
       }
-
     })
 
     bench.forEach(benchAthlete => {
