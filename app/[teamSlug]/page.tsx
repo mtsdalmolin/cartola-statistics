@@ -4,6 +4,7 @@ import { TEAMS } from '../page'
 import Image from 'next/image'
 
 import './styles.css'
+import AthleteList from './components/athlete-list.client'
 
 const CARTOLA_API = 'https://api.cartola.globo.com/'
 
@@ -21,10 +22,11 @@ interface Athlete {
   pontos_num: number
 }
 
-interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
+export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   castTimes: number
   captainTimes: number
   sumOfPoints: number
+  pointsAverage: number
 }
 
 interface RoundData {
@@ -68,7 +70,8 @@ async function getPlayersTeamData(endpoint: string) {
           foto: athlete.foto.replace('FORMATO', PHOTO_SIZE_FORMAT),
           media_num: athlete.media_num,
           captainTimes: 0,
-          sumOfPoints: calculatePoints(athlete, captainId)
+          sumOfPoints: calculatePoints(athlete, captainId),
+          pointsAverage: 0
         }
       }
 
@@ -78,42 +81,14 @@ async function getPlayersTeamData(endpoint: string) {
     })
   })
 
-  return orderBy(playersStatistics, 'castTimes', 'desc')
-}
+  Object.entries(playersStatistics).forEach(([athleteId, athlete]) => {
+    playersStatistics[athleteId] = {
+      ...athlete,
+      pointsAverage: athlete.sumOfPoints / athlete.castTimes
+    }
+  })
 
-function AthleteCard({ athlete }: { athlete: RenderedAthlete }) {
-  return (
-    <div className="flex flex-col items-center fut-player-card text-emerald-100">
-        {/* <div className="player-club">
-          <img src="https://selimdoyranli.com/cdn/fut-player-card/img/barcelona.svg" alt="Barcelona" draggable="false"/>
-        </div> */}
-        <div className="w-24 mt-6">
-          <Image alt={athlete.apelido} src={athlete.foto} width={220} height={220} />
-        </div>
-        {/* <div className="player-extra">
-          <span>4*SM</span>
-          <span>4*WF</span>
-        </div> */}
-      <div className="w-3/4 text-center font-bold truncate text-emerald-950">
-        <span title={athlete.apelido}>{athlete.apelido}</span>
-      </div>
-      
-      <div className="flex flex-col gap-0.5 w-3/4 text-xs">
-        <div className="flex justify-between">
-          <span>Escalações</span>
-          <span>{athlete.castTimes}</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Vezes Capitão</span>
-          <span>{athlete.captainTimes}</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Média</span>
-          <span>{(athlete.sumOfPoints / athlete.castTimes).toFixed(2)}</span>
-        </div>
-      </div>
-    </div>
-  )
+  return playersStatistics
 }
 
 export default async function Team({ params }: { params: { teamSlug: string } }) {
@@ -128,13 +103,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
   return (
     <main className="min-h-screen items-center p-24">
       <h1 className="text-xl">{teamData.name}</h1>
-      <section className="flex flex-wrap">
-        {Object.entries(data).map(([athleteId, athlete]) => (
-          <div key={athleteId}>
-            <AthleteCard athlete={athlete} />
-          </div>
-        ))}
-      </section>
+      <AthleteList athletes={data} />
     </main>
   )
 }
