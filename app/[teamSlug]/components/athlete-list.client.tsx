@@ -53,10 +53,6 @@ function getPositionName(positionId: PositionsIds) {
   return POSITIONS[positionId].nome
 }
 
-function getPositionById(positionId: PositionsIds) {
-  return POSITIONS[positionId]
-}
-
 function getPositionOptionByValue(positionValue: string): PositionOption {
   return positionsOptions.find(position => position.value === positionValue)!
 }
