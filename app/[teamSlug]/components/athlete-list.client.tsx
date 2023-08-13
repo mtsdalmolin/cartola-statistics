@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { type RenderedAthlete } from "../page"
 import orderBy from 'lodash/orderBy'
 import mapValues from 'lodash/mapValues'
@@ -17,7 +17,24 @@ const options = [
   POINTS_AVERAGE_OPTION
 ]
 
-export function AthleteCard({ athlete, onStatisticsClick }: { athlete: RenderedAthlete, onStatisticsClick: (statisticName: string) => void }) {
+export function AthleteCard({
+  athlete,
+  selectRef
+}: {
+  athlete: RenderedAthlete,
+  selectRef: any
+}) {
+  const handleStatisticClick = (selectedOption: any) => {
+    const currentValue = selectRef.current.getValue()
+
+    if (currentValue.some((option: any) => option.value === selectedOption.value)) {
+      selectRef.current.onChange(currentValue.filter((option: any) => option.value !== selectedOption.value), {})
+      return
+    }
+
+    selectRef.current.onChange([...currentValue, selectedOption], {})
+  }
+
   return (
     <div className="flex flex-col items-center fut-player-card text-emerald-100">
         {/* <div className="player-club">
@@ -35,15 +52,15 @@ export function AthleteCard({ athlete, onStatisticsClick }: { athlete: RenderedA
       </div>
       
       <div className="flex flex-col gap-0.5 w-3/4 text-xs">
-        <div className="flex justify-between cursor-pointer" onClick={() => onStatisticsClick('castTimes')}>
+        <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(CAST_TIMES_OPTION)}>
           <span>Escalações</span>
           <span>{athlete.castTimes}</span>
         </div>
-        <div className="flex justify-between cursor-pointer" onClick={() => onStatisticsClick('captainTimes')}>
+        <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(CAPTAIN_TIMES_OPTION)}>
           <span>Vezes capitão</span>
           <span>{athlete.captainTimes}</span>
         </div>
-        <div className="flex justify-between cursor-pointer">
+        <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(POINTS_AVERAGE_OPTION)}>
           <span>Média</span>
           <span>{athlete.pointsAverage.toFixed(2)}</span>
         </div>
@@ -54,6 +71,7 @@ export function AthleteCard({ athlete, onStatisticsClick }: { athlete: RenderedA
 
 export default function AthleteList({ athletes }: { athletes: Record<string, RenderedAthlete> }) {
   const [orderFilters, setOrderFilters] = useState([CAST_TIMES_OPTION]);
+  const selectRef = useRef(null);
 
   const handleOnStatisticsClick = (selectedOption: any) => setOrderFilters(selectedOption)
 
@@ -61,6 +79,7 @@ export default function AthleteList({ athletes }: { athletes: Record<string, Ren
     <section>
       <div className="flex justify-end items-center m-4 text-emerald-950">
         <Select
+          ref={selectRef}
           className="w-64"
           options={options}
           placeholder="Ordenar por"
@@ -74,7 +93,7 @@ export default function AthleteList({ athletes }: { athletes: Record<string, Ren
           <div key={athlete.atleta_id}>
             <AthleteCard
               athlete={athlete}
-              onStatisticsClick={handleOnStatisticsClick}
+              selectRef={selectRef}
             />
           </div>
         ))}
