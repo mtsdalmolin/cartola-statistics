@@ -1,4 +1,15 @@
 export const FOOTBALL_TEAMS = {
+  1: {
+    escudos: {
+      '60x60': '',
+      '45x45': '',
+      '30x30': ''
+    },
+    nome: 'Sem clube',
+    abreviacao: 'SEM',
+    slug: 'sem-clube',
+    apelido: 'Desempregado'
+  },
   262: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2018/04/09/Flamengo-65.png',
