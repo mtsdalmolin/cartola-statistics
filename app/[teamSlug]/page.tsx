@@ -1,7 +1,5 @@
-import orderBy from 'lodash/orderBy'
 import isNil from 'lodash/isNil'
 import { TEAMS } from '../page'
-import Image from 'next/image'
 
 import './styles.css'
 import AthleteList from './components/athlete-list.client'
