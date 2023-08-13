@@ -177,7 +177,7 @@ export function AthleteCard({
           </div>
         </div>
         <div className={`absolute card-back flex justify-center`}>
-          <div className="flex flex-col gap-0.5 w-3/4 text-xs overflow-auto mt-6 mb-10 mx-6">
+          <div className="flex flex-col gap-0.5 justify-center w-3/4 text-xs overflow-auto mt-[1rem] mb-10 mx-6 divide-y">
             <div className="text-center font-bold text-lg truncate">
               <span title={athlete.apelido}>{athlete.apelido}</span>
             </div>
@@ -215,9 +215,11 @@ export function AthleteCard({
               <span title="Rodadas que valorizou">RV</span>
               <span>{athlete.valuation.rounds.aboveZero}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between border-b-[3px]">
               <span title="Rodadas que desvalorizou">RD</span>
               <span>{athlete.valuation.rounds.belowZero}</span>
+            </div>
+            <div>
             </div>
           </div>
         </div>
