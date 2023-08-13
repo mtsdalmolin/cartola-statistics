@@ -84,8 +84,8 @@ function AthleteCard({ athlete }: { athlete: RenderedAthlete }) {
           <span>4*SM</span>
           <span>4*WF</span>
         </div> */}
-      <div className="font-bold text-emerald-950">
-        <span>{athlete.apelido}</span>
+      <div className="w-3/4 text-center font-bold truncate text-emerald-950">
+        <span title={athlete.apelido}>{athlete.apelido}</span>
       </div>
       
       <div className="flex flex-col gap-0.5 w-3/4 text-xs">
