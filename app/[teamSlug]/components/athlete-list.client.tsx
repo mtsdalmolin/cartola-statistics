@@ -5,6 +5,7 @@ import { type RenderedAthlete } from "../page"
 import orderBy from 'lodash/orderBy'
 import mapValues from 'lodash/mapValues'
 import isEmpty from 'lodash/isEmpty'
+import isFinite from 'lodash/isFinite'
 import Image from "next/image";
 import Select from 'react-select'
 import { FOOTBALL_TEAMS, type FootballTeamsIds } from '@/app/constants/teams'
@@ -192,10 +193,16 @@ export function AthleteCard({
               <span title="Gols">Gols</span>
               <span>{athlete.goals}</span>
             </div>
-            <div className="flex justify-between">
-              <span title="Minutos para marcar gol">MPG</span>
-              <span>{athlete.minutesToGoal.toFixed(1)}</span>
-            </div>
+            {
+              isFinite(athlete.minutesToGoal)
+                ? (
+                  <div className="flex justify-between">
+                    <span title="Minutos para marcar gol">MPG</span>
+                    <span>{athlete.minutesToGoal.toFixed(1)}</span>
+                  </div>
+                )
+                : null
+            }
             <div className="flex justify-between">
               <span title="Média de pontos como mandante por rodada">MPM/R</span>
               <span>{athlete.home.average.toFixed(1)}</span>
