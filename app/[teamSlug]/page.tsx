@@ -1,5 +1,4 @@
 import isNil from 'lodash/isNil'
-import isNan from 'lodash/isNaN'
 import { TEAMS } from '../page'
 import { type FootballTeamsIds } from '../constants/teams'
 import type { Metadata } from 'next'
@@ -7,7 +6,6 @@ import type { Metadata } from 'next'
 import './styles.css'
 import AthleteList from './components/athlete-list.client'
 import { PositionsIds } from '../constants/positions'
-import { forEach } from 'lodash'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
