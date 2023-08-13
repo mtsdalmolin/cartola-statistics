@@ -29,6 +29,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
 
 interface RoundData {
   atletas: Athlete[]
+  reservas: Athlete[]
   rodada_atual: number
   capitao_id: number
 }
@@ -43,6 +44,19 @@ function calculatePoints(athlete: Athlete, captainId: number) {
     : athlete.pontos_num
 }
 
+function renderedAthleteFactory(athlete: Athlete, captainId: number) {
+  return {
+    atleta_id: athlete.atleta_id,
+    apelido: athlete.apelido,
+    castTimes: 1,
+    foto: athlete.foto.replace('FORMATO', PHOTO_SIZE_FORMAT),
+    media_num: athlete.media_num,
+    captainTimes: 0,
+    sumOfPoints: calculatePoints(athlete, captainId),
+    pointsAverage: 0
+  }
+}
+
 async function getPlayersTeamData(endpoint: string) {
   const roundsData: RoundData[] = await Promise.all(
     ROUNDS.map(round =>
@@ -52,29 +66,31 @@ async function getPlayersTeamData(endpoint: string) {
   )
 
   const playersStatistics: Record<string, RenderedAthlete> = {};
+  const benchStatistics: Record<string, RenderedAthlete> = {};
 
   roundsData.forEach(round => {
-    const { atletas: athletes } = round
+    const { atletas: athletes, reservas: bench } = round
     const captainId = round.capitao_id
     athletes.forEach(athlete => {
       if (playersStatistics[athlete.atleta_id]) {
         playersStatistics[athlete.atleta_id].castTimes++
         playersStatistics[athlete.atleta_id].sumOfPoints += calculatePoints(athlete, captainId)
       } else {
-        playersStatistics[athlete.atleta_id] = {
-          atleta_id: athlete.atleta_id,
-          apelido: athlete.apelido,
-          castTimes: 1,
-          foto: athlete.foto.replace('FORMATO', PHOTO_SIZE_FORMAT),
-          media_num: athlete.media_num,
-          captainTimes: 0,
-          sumOfPoints: calculatePoints(athlete, captainId),
-          pointsAverage: 0
-        }
+        playersStatistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
       }
 
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
+      }
+    })
+
+    bench.forEach(benchAthlete => {
+      benchAthlete.apelido === 'Lucas Evangelista' && console.log(benchAthlete)
+      if (benchStatistics[benchAthlete.atleta_id]) {
+        benchStatistics[benchAthlete.atleta_id].castTimes++
+        benchStatistics[benchAthlete.atleta_id].sumOfPoints += calculatePoints(benchAthlete, captainId)
+      } else {
+        benchStatistics[benchAthlete.atleta_id] = renderedAthleteFactory(benchAthlete, captainId)
       }
     })
   })
@@ -85,8 +101,15 @@ async function getPlayersTeamData(endpoint: string) {
       pointsAverage: athlete.sumOfPoints / athlete.castTimes
     }
   })
+  
+  Object.entries(benchStatistics).forEach(([athleteId, athlete]) => {
+    benchStatistics[athleteId] = {
+      ...athlete,
+      pointsAverage: athlete.sumOfPoints / athlete.castTimes
+    }
+  })
 
-  return playersStatistics
+  return [playersStatistics, benchStatistics]
 }
 
 export default async function Team({ params }: { params: { teamSlug: string } }) {
@@ -96,12 +119,20 @@ export default async function Team({ params }: { params: { teamSlug: string } })
     return 'no data'
   }
 
-  const data = await getPlayersTeamData(TEAM_ROUND_ENDPOINT(teamData.id.toString()))
+  const [athletes, bench] = await getPlayersTeamData(TEAM_ROUND_ENDPOINT(teamData.id.toString()))
 
   return (
     <main className="min-h-screen items-center p-24">
-      <h1 className="text-xl">{teamData.name}</h1>
-      <AthleteList athletes={data} />
+      <h1 className="text-2xl">{teamData.name}</h1>
+      <AthleteList
+        title="Titulares"
+        athletes={athletes}
+      />
+      <AthleteList
+        title="Reservas"
+        isBench
+        athletes={bench}
+      />
     </main>
   )
 }

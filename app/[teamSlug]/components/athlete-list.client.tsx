@@ -17,11 +17,18 @@ const options = [
   POINTS_AVERAGE_OPTION
 ]
 
+const benchOptions = [
+  CAST_TIMES_OPTION,
+  POINTS_AVERAGE_OPTION
+]
+
 export function AthleteCard({
   athlete,
+  isBench,
   selectRef
 }: {
   athlete: RenderedAthlete,
+  isBench: boolean,
   selectRef: any
 }) {
   const handleStatisticClick = (selectedOption: any) => {
@@ -36,7 +43,7 @@ export function AthleteCard({
   }
 
   return (
-    <div className="flex flex-col items-center fut-player-card text-emerald-100">
+    <div className={`flex flex-col items-center ${isBench ? 'text-ember-200' : 'text-emerald-100'} fut-card ${isBench ? 'fut-bench-card' : 'fut-player-card'}`}>
         {/* <div className="player-club">
           <img src="https://selimdoyranli.com/cdn/fut-player-card/img/barcelona.svg" alt="Barcelona" draggable="false"/>
         </div> */}
@@ -47,7 +54,7 @@ export function AthleteCard({
           <span>4*SM</span>
           <span>4*WF</span>
         </div> */}
-      <div className="w-3/4 text-center font-bold truncate text-emerald-950">
+      <div className={`w-3/4 text-center font-bold truncate ${isBench ? 'text-amber-950' : 'text-emerald-950'}`}>
         <span title={athlete.apelido}>{athlete.apelido}</span>
       </div>
       
@@ -56,10 +63,15 @@ export function AthleteCard({
           <span>Escalações</span>
           <span>{athlete.castTimes}</span>
         </div>
-        <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(CAPTAIN_TIMES_OPTION)}>
-          <span>Vezes capitão</span>
-          <span>{athlete.captainTimes}</span>
-        </div>
+        {isBench
+          ? <></>
+          : (
+            <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(CAPTAIN_TIMES_OPTION)}>
+              <span>Vezes capitão</span>
+              <span>{athlete.captainTimes}</span>
+            </div>
+          )
+        }
         <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(POINTS_AVERAGE_OPTION)}>
           <span>Média</span>
           <span>{athlete.pointsAverage.toFixed(2)}</span>
@@ -69,7 +81,7 @@ export function AthleteCard({
   )
 }
 
-export default function AthleteList({ athletes }: { athletes: Record<string, RenderedAthlete> }) {
+export default function AthleteList({ athletes, isBench = false, title }: { athletes: Record<string, RenderedAthlete>, isBench?: boolean, title: string }) {
   const [orderFilters, setOrderFilters] = useState([CAST_TIMES_OPTION]);
   const selectRef = useRef(null);
 
@@ -77,22 +89,24 @@ export default function AthleteList({ athletes }: { athletes: Record<string, Ren
 
   return (
     <section>
-      <div className="flex justify-end items-center m-4 text-emerald-950">
+      <header className="flex justify-between items-center m-4 text-emerald-950">
+        <h2 className="text-white text-xl">{title}</h2>
         <Select
           ref={selectRef}
           className="w-64"
-          options={options}
+          options={isBench ? benchOptions : options}
           placeholder="Ordenar por"
           value={orderFilters}
           onChange={handleOnStatisticsClick}
           isMulti
         />
-      </div>
+      </header>
       <div className="flex flex-wrap">
         {orderBy(athletes, Object.values(mapValues(orderFilters, 'value')), orderFilters.map(() => 'desc')).map(athlete => (
           <div key={athlete.atleta_id}>
             <AthleteCard
               athlete={athlete}
+              isBench={isBench}
               selectRef={selectRef}
             />
           </div>

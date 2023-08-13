@@ -1,5 +1,4 @@
-
-.fut-player-card {
+.fut-card {
 	position: relative;
 	width: 150px;
 	height: 242px;
@@ -9,5 +8,13 @@
 	background-repeat: no-repeat;
 	-webkit-transition: 200ms ease-in;
 	-o-transition: 200ms ease-in;
-	transition: 200ms ease-in;
+	transition: 200ms ease-in;	
+}
+
+.fut-player-card {
+	background-image: url(./card-bg-emerald.png);
+}
+
+.fut-bench-card {
+	background-image: url(./card-bg-bench.png);
 }
