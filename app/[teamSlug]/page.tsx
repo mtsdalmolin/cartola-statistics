@@ -1,4 +1,5 @@
 import isNil from 'lodash/isNil'
+import isNan from 'lodash/isNaN'
 import { TEAMS } from '../page'
 import { type FootballTeamsIds } from '../constants/teams'
 import type { Metadata } from 'next'
@@ -45,8 +46,8 @@ interface Athlete {
   }
   gato_mestre: {
     minutos_jogados: number
-    media_pontos_mandante: number
-    media_pontos_visitante: number
+    media_pontos_mandante?: number
+    media_pontos_visitante?: number
   }
 }
 
@@ -158,8 +159,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     variacao_num: athlete.variacao_num,
     gato_mestre: {
       minutos_jogados: athlete.gato_mestre.minutos_jogados,
-      media_pontos_mandante: athlete.gato_mestre.media_pontos_mandante,
-      media_pontos_visitante: athlete.gato_mestre.media_pontos_visitante
+      media_pontos_mandante: athlete.gato_mestre?.media_pontos_mandante ?? 0,
+      media_pontos_visitante: athlete.gato_mestre?.media_pontos_visitante ?? 0
     },
     scout: handleGameActions(athlete),
     sumOfPlayedMinutes: athlete.gato_mestre.minutos_jogados,
@@ -186,10 +187,13 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
 }
 
 function handlePlayersStatistics(athlete: RenderedAthlete) {
+  const overallAverage = athlete.sumOfOverallAverage / athlete.jogos_num
+
   return {
     ...athlete,
     pointsAverage: athlete.sumOfPoints / athlete.castTimes,
     averageMinutesPerRound: athlete.sumOfPlayedMinutes / athlete.castTimes,
+    overallAverage: isNaN(overallAverage) ? 0 : overallAverage,
     home: {
       ...athlete.home,
       average: athlete.home.sumOfPoints / athlete.castTimes
@@ -198,7 +202,6 @@ function handlePlayersStatistics(athlete: RenderedAthlete) {
       ...athlete.away,
       average: athlete.away.sumOfPoints / athlete.castTimes
     },
-    overallAverage: athlete.sumOfOverallAverage / athlete.jogos_num,
     valuation: {
       rounds: {
         ...athlete.valuation.rounds,
@@ -235,8 +238,8 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
         playersStatistics[athlete.atleta_id].castTimes++
         playersStatistics[athlete.atleta_id].sumOfPoints += calculatePoints(athlete, captainId)
         playersStatistics[athlete.atleta_id].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
-        playersStatistics[athlete.atleta_id].home.sumOfPoints += athlete.gato_mestre.media_pontos_mandante
-        playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre.media_pontos_visitante
+        playersStatistics[athlete.atleta_id].home.sumOfPoints += athlete.gato_mestre?.media_pontos_mandante ?? 0
+        playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre?.media_pontos_visitante ?? 0
         playersStatistics[athlete.atleta_id].sumOfOverallAverage += athlete.media_num
         playersStatistics[athlete.atleta_id].jogos_num = athlete.jogos_num
         playersStatistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
@@ -252,6 +255,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
       }
+
     })
 
     bench.forEach(benchAthlete => {
@@ -259,8 +263,8 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
         benchStatistics[benchAthlete.atleta_id].castTimes++
         benchStatistics[benchAthlete.atleta_id].sumOfPoints += calculatePoints(benchAthlete, captainId)
         benchStatistics[benchAthlete.atleta_id].sumOfPlayedMinutes += benchAthlete.gato_mestre.minutos_jogados
-        benchStatistics[benchAthlete.atleta_id].home.sumOfPoints += benchAthlete.gato_mestre.media_pontos_mandante
-        benchStatistics[benchAthlete.atleta_id].away.sumOfPoints += benchAthlete.gato_mestre.media_pontos_visitante
+        benchStatistics[benchAthlete.atleta_id].home.sumOfPoints += benchAthlete.gato_mestre?.media_pontos_mandante ?? 0
+        benchStatistics[benchAthlete.atleta_id].away.sumOfPoints += benchAthlete.gato_mestre?.media_pontos_visitante ?? 0
         benchStatistics[benchAthlete.atleta_id].sumOfOverallAverage += benchAthlete.media_num
         benchStatistics[benchAthlete.atleta_id].jogos_num = benchAthlete.jogos_num
         benchStatistics[benchAthlete.atleta_id].valuation.rounds.values.push(benchAthlete.variacao_num)
