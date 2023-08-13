@@ -26,6 +26,12 @@ interface Athlete {
   pontos_num: number
   clube_id: FootballTeamsIds
   posicao_id: PositionsIds
+  variacao_num: number
+  gato_mestre: {
+    minutos_jogados: number
+    media_pontos_mandante: number
+    media_pontos_visitante: number
+  }
 }
 
 export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
@@ -33,6 +39,24 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   captainTimes: number
   sumOfPoints: number
   pointsAverage: number
+  sumOfPlayedMinutes: number
+  averageMinutesPerRound: number
+  valuation: {
+    rounds: {
+      values: number[]
+      aboveZero: number
+      belowZero: number
+      zero: number
+    }
+  }
+  home: {
+    sumOfPoints: number
+    average: number
+  }
+  away: {
+    sumOfPoints: number
+    average: number
+  }
 }
 
 interface RoundData {
@@ -52,7 +76,35 @@ function calculatePoints(athlete: Athlete, captainId: number) {
     : athlete.pontos_num
 }
 
-function renderedAthleteFactory(athlete: Athlete, captainId: number) {
+function handleRoundValuation(roundsValuation: number[]) {
+  const valuationRounds = {
+    aboveZero: 0,
+    belowZero: 0,
+    zero: 0
+  }
+
+  roundsValuation.forEach(valuation => {
+    if (valuation > 0) {
+      valuationRounds.aboveZero++
+      return
+    }
+  
+    if (valuation < 0) {
+      valuationRounds.belowZero++
+      return
+    }
+
+    valuationRounds.zero++
+  })
+
+
+  return {
+    values: roundsValuation,
+    ...valuationRounds
+  }
+}
+
+function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
   return {
     atleta_id: athlete.atleta_id,
     apelido: athlete.apelido,
@@ -63,7 +115,31 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number) {
     sumOfPoints: calculatePoints(athlete, captainId),
     pointsAverage: 0,
     clube_id: athlete.clube_id,
-    posicao_id: athlete.posicao_id
+    posicao_id: athlete.posicao_id,
+    variacao_num: athlete.variacao_num,
+    gato_mestre: {
+      minutos_jogados: athlete.gato_mestre.minutos_jogados,
+      media_pontos_mandante: athlete.gato_mestre.media_pontos_mandante,
+      media_pontos_visitante: athlete.gato_mestre.media_pontos_visitante
+    },
+    sumOfPlayedMinutes: 0,
+    averageMinutesPerRound: 0,
+    home: {
+      sumOfPoints: 0,
+      average: 0
+    },
+    away: {
+      sumOfPoints: 0,
+      average: 0,
+    },
+    valuation: {
+      rounds: {
+        values: [athlete.variacao_num],
+        aboveZero: 0,
+        belowZero: 0,
+        zero: 0
+      }
+    }
   }
 }
 
@@ -92,6 +168,11 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
       if (playersStatistics[athlete.atleta_id]) {
         playersStatistics[athlete.atleta_id].castTimes++
         playersStatistics[athlete.atleta_id].sumOfPoints += calculatePoints(athlete, captainId)
+        playersStatistics[athlete.atleta_id].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
+        playersStatistics[athlete.atleta_id].home.sumOfPoints += athlete.gato_mestre.media_pontos_mandante
+        playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre.media_pontos_visitante
+        playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre.media_pontos_visitante
+        playersStatistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
       } else {
         playersStatistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
       }
@@ -105,6 +186,10 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
       if (benchStatistics[benchAthlete.atleta_id]) {
         benchStatistics[benchAthlete.atleta_id].castTimes++
         benchStatistics[benchAthlete.atleta_id].sumOfPoints += calculatePoints(benchAthlete, captainId)
+        benchStatistics[benchAthlete.atleta_id].sumOfPlayedMinutes += benchAthlete.gato_mestre.minutos_jogados
+        benchStatistics[benchAthlete.atleta_id].home.sumOfPoints += benchAthlete.gato_mestre.media_pontos_mandante
+        benchStatistics[benchAthlete.atleta_id].away.sumOfPoints += benchAthlete.gato_mestre.media_pontos_visitante
+        benchStatistics[benchAthlete.atleta_id].valuation.rounds.values.push(benchAthlete.variacao_num)
       } else {
         benchStatistics[benchAthlete.atleta_id] = renderedAthleteFactory(benchAthlete, captainId)
       }
@@ -114,14 +199,39 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
   Object.entries(playersStatistics).forEach(([athleteId, athlete]) => {
     playersStatistics[athleteId] = {
       ...athlete,
-      pointsAverage: athlete.sumOfPoints / athlete.castTimes
+      pointsAverage: athlete.sumOfPoints / athlete.castTimes,
+      averageMinutesPerRound: athlete.sumOfPlayedMinutes / athlete.castTimes,
+      home: {
+        ...athlete.home,
+        average: athlete.home.sumOfPoints / athlete.castTimes
+      },
+      away: {
+        ...athlete.away,
+        average: athlete.away.sumOfPoints / athlete.castTimes
+      },
+      valuation: {
+        rounds: {
+          ...athlete.valuation.rounds,
+          ...handleRoundValuation(athlete.valuation.rounds.values)
+        }
+      }
     }
+    athlete.apelido === 'Luis Suárez' && console.log(playersStatistics[athleteId])
   })
   
   Object.entries(benchStatistics).forEach(([athleteId, athlete]) => {
     benchStatistics[athleteId] = {
       ...athlete,
-      pointsAverage: athlete.sumOfPoints / athlete.castTimes
+      pointsAverage: athlete.sumOfPoints / athlete.castTimes,
+      averageMinutesPerRound: athlete.sumOfPlayedMinutes / athlete.castTimes,
+      home: {
+        ...athlete.home,
+        average: athlete.home.sumOfPoints / athlete.castTimes
+      },
+      away: {
+        ...athlete.away,
+        average: athlete.away.sumOfPoints / athlete.castTimes
+      }
     }
   })
 
