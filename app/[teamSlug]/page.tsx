@@ -18,11 +18,13 @@ interface Athlete {
   apelido: string
   foto: string
   media_num: number
+  pontos_num: number
 }
 
-interface RenderedAthlete extends Athlete{
+interface RenderedAthlete extends Athlete {
   castTimes: number
-  captainTimes: number 
+  captainTimes: number
+  sumOfPoints: number
 }
 
 interface RoundData {
@@ -39,7 +41,7 @@ async function getPlayersTeamData(endpoint: string) {
     )
   )
 
-  const playersStatistics: Record<string, RenderedAthlete> = {};
+  const playersStatistics: Record<string, Omit<RenderedAthlete, 'pontos_num'>> = {};
 
   roundsData.forEach(round => {
     const { atletas: athletes } = round
@@ -47,6 +49,7 @@ async function getPlayersTeamData(endpoint: string) {
     athletes.forEach(athlete => {
       if (playersStatistics[athlete.atleta_id]) {
         playersStatistics[athlete.atleta_id].castTimes++
+        playersStatistics[athlete.atleta_id].sumOfPoints += athlete.pontos_num
       } else {
         playersStatistics[athlete.atleta_id] = {
           atleta_id: athlete.atleta_id,
@@ -54,7 +57,8 @@ async function getPlayersTeamData(endpoint: string) {
           castTimes: 1,
           foto: athlete.foto.replace('FORMATO', PHOTO_SIZE_FORMAT),
           media_num: athlete.media_num,
-          captainTimes: 0
+          captainTimes: 0,
+          sumOfPoints: athlete.pontos_num
         }
       }
 
@@ -95,7 +99,7 @@ function AthleteCard({ athlete }: { athlete: RenderedAthlete }) {
         </div>
         <div className="flex justify-between">
           <span>Média</span>
-          <span>{athlete.media_num}</span>
+          <span>{(athlete.sumOfPoints / athlete.castTimes).toFixed(2)}</span>
         </div>
       </div>
     </div>
