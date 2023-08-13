@@ -20,9 +20,15 @@ interface Athlete {
   media_num: number
 }
 
+interface RenderedAthlete extends Athlete{
+  castTimes: number
+  captainTimes: number 
+}
+
 interface RoundData {
   atletas: Athlete[]
   rodada_atual: number
+  capitao_id: number
 }
 
 async function getPlayersTeamData(endpoint: string) {
@@ -33,10 +39,11 @@ async function getPlayersTeamData(endpoint: string) {
     )
   )
 
-  const playersStatistics: Record<string, Athlete & { castTimes: number }> = {};
+  const playersStatistics: Record<string, RenderedAthlete> = {};
 
   roundsData.forEach(round => {
     const { atletas: athletes } = round
+    const captainId = round.capitao_id
     athletes.forEach(athlete => {
       if (playersStatistics[athlete.atleta_id]) {
         playersStatistics[athlete.atleta_id].castTimes++
@@ -46,8 +53,13 @@ async function getPlayersTeamData(endpoint: string) {
           apelido: athlete.apelido,
           castTimes: 1,
           foto: athlete.foto.replace('FORMATO', PHOTO_SIZE_FORMAT),
-          media_num: athlete.media_num
+          media_num: athlete.media_num,
+          captainTimes: 0
         }
+      }
+
+      if (playersStatistics[athlete.atleta_id].atleta_id === captainId) {
+        playersStatistics[athlete.atleta_id].captainTimes++
       }
     })
   })
@@ -55,7 +67,7 @@ async function getPlayersTeamData(endpoint: string) {
   return orderBy(playersStatistics, 'castTimes', 'desc')
 }
 
-function AthleteCard({ athlete }: { athlete: Athlete & { castTimes: number } }) {
+function AthleteCard({ athlete }: { athlete: RenderedAthlete }) {
   return (
     <div className="flex flex-col items-center fut-player-card text-yellow-200">
         {/* <div className="player-club">
@@ -79,7 +91,7 @@ function AthleteCard({ athlete }: { athlete: Athlete & { castTimes: number } }) 
         </div>
         <div className="flex justify-between">
           <span>Vezes Capitão</span>
-          <span>{athlete.castTimes}</span>
+          <span>{athlete.captainTimes}</span>
         </div>
         <div className="flex justify-between">
           <span>Média</span>
