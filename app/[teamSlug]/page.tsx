@@ -69,7 +69,7 @@ async function getPlayersTeamData(endpoint: string) {
 
 function AthleteCard({ athlete }: { athlete: RenderedAthlete }) {
   return (
-    <div className="flex flex-col items-center fut-player-card text-yellow-200">
+    <div className="flex flex-col items-center fut-player-card text-emerald-100">
         {/* <div className="player-club">
           <img src="https://selimdoyranli.com/cdn/fut-player-card/img/barcelona.svg" alt="Barcelona" draggable="false"/>
         </div> */}
@@ -80,7 +80,7 @@ function AthleteCard({ athlete }: { athlete: RenderedAthlete }) {
           <span>4*SM</span>
           <span>4*WF</span>
         </div> */}
-      <div className="font-bold text-yellow-950">
+      <div className="font-bold text-emerald-950">
         <span>{athlete.apelido}</span>
       </div>
       

@@ -3,11 +3,10 @@
 	position: relative;
 	width: 150px;
 	height: 242px;
-	background-image: url(./card-bg.png);
+	background-image: url(./card-bg-emerald.png);
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
-	/* padding: 3.8rem 0; */
 	z-index: 2;
 	-webkit-transition: 200ms ease-in;
 	-o-transition: 200ms ease-in;
