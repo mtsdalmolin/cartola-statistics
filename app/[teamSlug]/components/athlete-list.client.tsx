@@ -4,10 +4,11 @@ import { useRef, useState } from "react"
 import { type RenderedAthlete } from "../page"
 import orderBy from 'lodash/orderBy'
 import mapValues from 'lodash/mapValues'
+import isEmpty from 'lodash/isEmpty'
 import Image from "next/image";
 import Select from 'react-select'
 import { FOOTBALL_TEAMS, type FootballTeamsIds } from '@/app/constants/teams'
-import { POSITIONS, PositionsIds } from "@/app/constants/positions"
+import { POSITIONS, type PositionsIds } from "@/app/constants/positions"
 
 const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
 const CAPTAIN_TIMES_OPTION = { value: 'captainTimes', label: 'Vezes capitão' }
@@ -27,6 +28,15 @@ const benchOptions = [
   OVERALL_AVERAGE_OPTION
 ]
 
+const positionsOptions = Object.entries(POSITIONS).map(([positionId, position]) => ({
+  value: positionId.toString(),
+  label: position.nome
+}))
+
+const benchPositionsOptions = positionsOptions.filter(position => position.value !== '6')
+
+type PositionOption = typeof positionsOptions[0]
+
 function getFootballTeamBadgeLink(footballTeamId: FootballTeamsIds) {
   return FOOTBALL_TEAMS[footballTeamId].escudos['30x30']
 }
@@ -43,32 +53,70 @@ function getPositionName(positionId: PositionsIds) {
   return POSITIONS[positionId].nome
 }
 
+function getPositionById(positionId: PositionsIds) {
+  return POSITIONS[positionId]
+}
+
+function getPositionOptionByValue(positionValue: string): PositionOption {
+  return positionsOptions.find(position => position.value === positionValue)!
+}
+
 export function AthleteCard({
   athlete,
   isBench,
-  selectRef
+  sortSelectRef,
+  positionSelectRef
 }: {
   athlete: RenderedAthlete,
   isBench: boolean,
-  selectRef: any
+  sortSelectRef: any,
+  positionSelectRef: any
 }) {
   const handleStatisticClick = (selectedOption: any) => {
-    const currentValue = selectRef.current.getValue()
+    const currentValue = sortSelectRef.current.getValue()
 
     if (currentValue.some((option: any) => option.value === selectedOption.value)) {
-      selectRef.current.onChange(currentValue.filter((option: any) => option.value !== selectedOption.value), {})
+      sortSelectRef.current.onChange(currentValue.filter((option: any) => option.value !== selectedOption.value), {})
       return
     }
 
-    selectRef.current.onChange([...currentValue, selectedOption], {})
+    sortSelectRef.current.onChange([...currentValue, selectedOption], {})
+  }
+
+  const handlePositionAbbreviationClick = (selectedPosition: PositionOption) => {
+    const currentValue = positionSelectRef.current.getValue()
+
+    if (currentValue.some((option: any) => option.value === selectedPosition.value)) {
+      positionSelectRef.current.onChange(currentValue.filter((option: any) => option.value !== selectedPosition.value), {})
+      return
+    }
+
+    positionSelectRef.current.onChange([...currentValue, selectedPosition], {})
+  }
+
+  if (
+    !isEmpty(positionSelectRef.current?.getValue()) &&
+    !positionSelectRef.current?.getValue().find((position: PositionOption) => position.value === athlete.posicao_id.toString())
+  ) {
+    return null
   }
 
   return (
     <div className={`flex flex-col items-center ${isBench ? 'text-ember-200' : 'text-emerald-100'} fut-card ${isBench ? 'fut-bench-card' : 'fut-player-card'}`}>
       <div className="absolute left-4 top-8">
-        <div className="text-xl" title="Média Geral">{athlete.media_num.toFixed(1)}</div>
+        <div
+          className="text-xl cursor-pointer"
+          title="Média Geral"
+          onClick={() => handleStatisticClick(OVERALL_AVERAGE_OPTION)}
+        >
+          {athlete.media_num.toFixed(1)}
+        </div>
         <div className="flex flex-col justify-center items-center gap-1">
-          <div className="uppercase text-xs" title={getPositionName(athlete.posicao_id)}>
+          <div
+            className="uppercase text-xs cursor-pointer"
+            title={getPositionName(athlete.posicao_id)}
+            onClick={() => handlePositionAbbreviationClick(getPositionOptionByValue(athlete.posicao_id.toString()))}
+          >
             {getPositionAbbreviation(athlete.posicao_id)}
           </div>
           <Image
@@ -118,24 +166,38 @@ export function AthleteCard({
 }
 
 export default function AthleteList({ athletes, isBench = false, title }: { athletes: Record<string, RenderedAthlete>, isBench?: boolean, title: string }) {
+  const [positionFilters, setPositionFilters] = useState<typeof positionsOptions>([]);
   const [orderFilters, setOrderFilters] = useState([CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION]);
-  const selectRef = useRef(null);
+  const sortSelectRef = useRef(null);
+  const positionSelectRef = useRef(null);
 
   const handleOnStatisticsClick = (selectedOption: any) => setOrderFilters(selectedOption)
+  const handleOnPositionSelection = (selectedPositionFilters: any) => setPositionFilters(selectedPositionFilters)
 
   return (
     <section>
       <header className="flex justify-between items-center m-4 text-emerald-950">
         <h2 className="text-white text-xl">{title}</h2>
-        <Select
-          ref={selectRef}
-          className="w-64"
-          options={isBench ? benchOptions : options}
-          placeholder="Ordenar por"
-          value={orderFilters}
-          onChange={handleOnStatisticsClick}
-          isMulti
-        />
+        <div className="flex gap-4">
+          <Select
+            ref={positionSelectRef}
+            className="w-64"
+            options={isBench ? benchPositionsOptions : positionsOptions}
+            placeholder="Filtrar por posição"
+            value={positionFilters}
+            onChange={handleOnPositionSelection}
+            isMulti
+          />
+          <Select
+            ref={sortSelectRef}
+            className="w-64"
+            options={isBench ? benchOptions : options}
+            placeholder="Ordenar por"
+            value={orderFilters}
+            onChange={handleOnStatisticsClick}
+            isMulti
+          />
+        </div>
       </header>
       <div className="flex flex-wrap">
         {orderBy(athletes, Object.values(mapValues(orderFilters, 'value')), orderFilters.map(() => 'desc')).map(athlete => (
@@ -143,7 +205,8 @@ export default function AthleteList({ athletes, isBench = false, title }: { athl
             <AthleteCard
               athlete={athlete}
               isBench={isBench}
-              selectRef={selectRef}
+              sortSelectRef={sortSelectRef}
+              positionSelectRef={positionSelectRef}
             />
           </div>
         ))}
