@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 
 import './styles.css'
 import AthleteList from './components/athlete-list.client'
+import { PositionsIds } from '../constants/positions'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
@@ -24,6 +25,7 @@ interface Athlete {
   media_num: number
   pontos_num: number
   clube_id: FootballTeamsIds
+  posicao_id: PositionsIds
 }
 
 export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
@@ -60,7 +62,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number) {
     captainTimes: 0,
     sumOfPoints: calculatePoints(athlete, captainId),
     pointsAverage: 0,
-    clube_id: athlete.clube_id
+    clube_id: athlete.clube_id,
+    posicao_id: athlete.posicao_id
   }
 }
 

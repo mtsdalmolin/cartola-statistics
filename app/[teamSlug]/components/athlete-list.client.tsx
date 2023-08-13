@@ -7,6 +7,7 @@ import mapValues from 'lodash/mapValues'
 import Image from "next/image";
 import Select from 'react-select'
 import { FOOTBALL_TEAMS, type FootballTeamsIds } from '@/app/constants/teams'
+import { POSITIONS, PositionsIds } from "@/app/constants/positions"
 
 const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
 const CAPTAIN_TIMES_OPTION = { value: 'captainTimes', label: 'Vezes capitão' }
@@ -31,6 +32,14 @@ function getFootballTeamName(footballTeamId: FootballTeamsIds) {
   return FOOTBALL_TEAMS[footballTeamId].nome
 }
 
+function getPositionAbbreviation(positionId: PositionsIds) {
+  return POSITIONS[positionId].abreviacao
+}
+
+function getPositionName(positionId: PositionsIds) {
+  return POSITIONS[positionId].nome
+}
+
 export function AthleteCard({
   athlete,
   isBench,
@@ -53,28 +62,31 @@ export function AthleteCard({
 
   return (
     <div className={`flex flex-col items-center ${isBench ? 'text-ember-200' : 'text-emerald-100'} fut-card ${isBench ? 'fut-bench-card' : 'fut-player-card'}`}>
-        <div className="absolute left-4 top-16">
+      <div className="absolute left-4 top-8">
+        <div className="text-xl">{athlete.media_num.toFixed(1)}</div>
+        <div className="flex flex-col justify-center items-center gap-1">
+          <div className="uppercase text-xs" title={getPositionName(athlete.posicao_id)}>
+            {getPositionAbbreviation(athlete.posicao_id)}
+          </div>
           <Image
             alt={getFootballTeamName(athlete.clube_id)}
             src={getFootballTeamBadgeLink(athlete.clube_id)}
-            width={30}
-            height={30}
+            width={28}
+            height={28}
             draggable="false"
+            title={getFootballTeamName(athlete.clube_id)}
           />
         </div>
-        <div className="w-24 mt-6 ml-4">
-          <Image
-            alt={athlete.apelido}
-            src={athlete.foto}
-            width={220}
-            height={220}
-            draggable="false"
-          />
-        </div>
-        {/* <div className="player-extra">
-          <span>4*SM</span>
-          <span>4*WF</span>
-        </div> */}
+      </div>
+      <div className="w-24 mt-6 ml-4">
+        <Image
+          alt={athlete.apelido}
+          src={athlete.foto}
+          width={220}
+          height={220}
+          draggable="false"
+        />
+      </div>
       <div className={`w-3/4 text-center font-bold truncate ${isBench ? 'text-amber-950' : 'text-emerald-950'}`}>
         <span title={athlete.apelido}>{athlete.apelido}</span>
       </div>
