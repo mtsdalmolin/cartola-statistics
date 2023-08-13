@@ -68,7 +68,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number) {
 }
 
 async function getPlayersTeamData(endpoint: string, rounds: number[]) {
-  const roundsData: RoundData[] = await Promise.all(
+  const results = await Promise.allSettled<RoundData>(
     rounds.map(round =>
       fetch(`${CARTOLA_API}${endpoint.replace(':round', round.toString())}`)
         .then(res => res.json())
@@ -78,9 +78,16 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
   const playersStatistics: Record<string, RenderedAthlete> = {};
   const benchStatistics: Record<string, RenderedAthlete> = {};
 
-  roundsData.forEach(round => {
-    const { atletas: athletes, reservas: bench } = round
-    const captainId = round.capitao_id
+  results.forEach(result => {
+    if (result.status === 'rejected')
+      return
+
+    const {
+      atletas: athletes,
+      reservas: bench,
+      capitao_id: captainId
+    } = result.value
+    
     athletes.forEach(athlete => {
       if (playersStatistics[athlete.atleta_id]) {
         playersStatistics[athlete.atleta_id].castTimes++
