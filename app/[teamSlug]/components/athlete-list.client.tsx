@@ -82,7 +82,7 @@ export function AthleteCard({
 }
 
 export default function AthleteList({ athletes, isBench = false, title }: { athletes: Record<string, RenderedAthlete>, isBench?: boolean, title: string }) {
-  const [orderFilters, setOrderFilters] = useState([CAST_TIMES_OPTION]);
+  const [orderFilters, setOrderFilters] = useState([CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION]);
   const selectRef = useRef(null);
 
   const handleOnStatisticsClick = (selectedOption: any) => setOrderFilters(selectedOption)
