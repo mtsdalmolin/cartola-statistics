@@ -7,7 +7,6 @@
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
-	z-index: 2;
 	-webkit-transition: 200ms ease-in;
 	-o-transition: 200ms ease-in;
 	transition: 200ms ease-in;
