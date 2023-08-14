@@ -83,7 +83,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   defenses: number
   goalsAgainst: number
   defensesToSufferGoal: number
-  minutesToGoal: number
+  minutesToScore: number
   highestPoint: number
 }
 
@@ -199,7 +199,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     defenses: athlete.scout?.DE ?? 0,
     goalsAgainst: athlete.scout?.GS ?? 0,
     defensesToSufferGoal: 0,
-    minutesToGoal: 0,
+    minutesToScore: 0,
     valuation: {
       rounds: {
         values: [athlete.variacao_num],
@@ -234,7 +234,7 @@ function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
       }
     },
     finishesToScore: athlete.finishes / athlete.goals,
-    minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals,
+    minutesToScore: athlete.sumOfPlayedMinutes / athlete.goals,
     defensesToSufferGoal: athlete.defenses / athlete.goalsAgainst
   }
 }

@@ -230,11 +230,11 @@ export function AthleteCard({
                   : null
               }
               {
-                isFinite(athlete.minutesToGoal)
+                isFinite(athlete.minutesToScore)
                   ? (
                     <div className="flex justify-between">
                       <span title="Minutos para marcar gol">MPG</span>
-                      <span>{athlete.minutesToGoal.toFixed(1)}</span>
+                      <span>{athlete.minutesToScore.toFixed(1)}</span>
                     </div>
                   )
                   : null
