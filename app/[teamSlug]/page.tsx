@@ -30,18 +30,20 @@ interface Athlete {
   posicao_id: PositionsIds
   variacao_num: number
   scout: {
-    A?: number
-    CA?: number
-    CV?: number
-    DE?: number
-    DS?: number
-    FC?: number
-    FD?: number
-    FF?: number
-    FS?: number
-    G?: number
-    I?: number
-    SG?: number
+    A?: number  // Assistências
+    CA?: number // Cartões amarelos
+    CV?: number // Cartões vermelhos
+    DE?: number // Defesas
+    DS?: number // Desarmes
+    FC?: number // Faltas cometidas
+    FD?: number // Finalizações defendidas
+    FF?: number // Finalizações pra fora
+    FS?: number // Faltas sofridas
+    G?: number  // Gols
+    GS?: number // Gols sofridos
+    I?: number  // Impedimentos
+    SG?: number // Sem sofrer gols
+    V?: number  // Vitória
   }
   gato_mestre: {
     minutos_jogados: number
