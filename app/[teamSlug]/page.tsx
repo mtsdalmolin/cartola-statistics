@@ -78,6 +78,9 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
     average: number
   }
   goals: number
+  defenses: number
+  goalsAgainst: number
+  defensesToSufferGoal: number
   minutesToGoal: number
   highestPoint: number
 }
@@ -179,6 +182,9 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     },
     highestPoint: athlete.pontos_num,
     goals: 0,
+    defenses: athlete.scout?.DE ?? 0,
+    goalsAgainst: athlete.scout?.GS ?? 0,
+    defensesToSufferGoal: 0,
     minutesToGoal: 0,
     valuation: {
       rounds: {
@@ -191,7 +197,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
   }
 }
 
-function handlePlayersStatistics(athlete: RenderedAthlete) {
+function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
   const overallAverage = athlete.sumOfOverallAverage / athlete.castTimes
 
   return {
@@ -213,7 +219,8 @@ function handlePlayersStatistics(athlete: RenderedAthlete) {
         ...handleRoundValuation(athlete.valuation.rounds.values)
       }
     },
-    minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals
+    minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals,
+    defensesToSufferGoal: athlete.defenses / athlete.goalsAgainst
   }
 }
 
@@ -233,6 +240,8 @@ function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete:
       ...handleGameActions(athlete)
     }
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
+    statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
+    statistics[athlete.atleta_id].goalsAgainst += handleGameActions(athlete)?.GS ?? 0
   } else {
     statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
   }
@@ -275,11 +284,11 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
   })
 
   Object.entries(playersStatistics).forEach(([athleteId, athlete]) => {
-    playersStatistics[athleteId] = handlePlayersStatistics(athlete)
+    playersStatistics[athleteId] = handlePlayersDerivedStatistics(athlete)
   })
   
   Object.entries(benchStatistics).forEach(([athleteId, athlete]) => {
-    benchStatistics[athleteId] = handlePlayersStatistics(athlete)
+    benchStatistics[athleteId] = handlePlayersDerivedStatistics(athlete)
   })
 
   return [playersStatistics, benchStatistics]

@@ -1,4 +1,4 @@
-export const POSITIONS = {	
+export const POSITIONS: Record<number, { nome: string, abreviacao: string }> = {
   1: {
     nome: "Goleiro",
     abreviacao: "gol"

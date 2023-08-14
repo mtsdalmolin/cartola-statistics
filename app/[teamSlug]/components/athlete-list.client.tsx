@@ -58,6 +58,15 @@ function getPositionOptionByValue(positionValue: string): PositionOption {
   return positionsOptions.find(position => position.value === positionValue)!
 }
 
+function isGoalkeeper(positionId: number) {
+  const gkPositionId = Object.keys(POSITIONS)
+    .find((positionId: string) => 
+      POSITIONS[Number(positionId)].abreviacao.toLowerCase() === 'gol'
+    )
+
+  return Number(gkPositionId) === positionId
+}
+
 export function AthleteCard({
   athlete,
   isBench,
@@ -194,10 +203,16 @@ export function AthleteCard({
                 <span title="Média de minutos jogados por rodada">MMJ/R</span>
                 <span>{athlete.averageMinutesPerRound.toFixed(1)}</span>
               </div>
-              <div className="flex justify-between">
-                <span title="Gols">Gols</span>
-                <span>{athlete.goals}</span>
-              </div>
+              {
+                !isGoalkeeper(athlete.posicao_id)
+                  ? (
+                    <div className="flex justify-between">
+                      <span title="Gols">Gols</span>
+                      <span>{athlete.goals}</span>
+                    </div>
+                  )
+                  : null
+              }
               {
                 isFinite(athlete.minutesToGoal)
                   ? (
@@ -205,6 +220,32 @@ export function AthleteCard({
                       <span title="Minutos para marcar gol">MPG</span>
                       <span>{athlete.minutesToGoal.toFixed(1)}</span>
                     </div>
+                  )
+                  : null
+              }
+              {
+                isGoalkeeper(athlete.posicao_id)
+                  ? (
+                    <>
+                      <div className="flex justify-between">
+                        <span title="Defesas">Defesas</span>
+                        <span>{athlete.defenses.toFixed(1)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span title="Gols sofridos">Gols sofridos</span>
+                        <span>{athlete.goalsAgainst.toFixed(1)}</span>
+                      </div>
+                      {
+                        isFinite(athlete.minutesToGoal)
+                        ? (
+                        <div className="flex justify-between">
+                          <span title="Defesas para sofrer gols">DSG</span>
+                          <span>{athlete.defensesToSufferGoal.toFixed(1)}</span>
+                        </div>
+                        )
+                        : null
+                      }
+                    </>
                   )
                   : null
               }
