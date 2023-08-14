@@ -67,6 +67,15 @@ function isGoalkeeper(positionId: number) {
   return Number(gkPositionId) === positionId
 }
 
+function isCoach(positionId: number) {
+  const coachPositionId = Object.keys(POSITIONS)
+    .find((positionId: string) => 
+      POSITIONS[Number(positionId)].abreviacao.toLowerCase() === 'tec'
+    )
+
+  return Number(coachPositionId) === positionId
+}
+
 export function AthleteCard({
   athlete,
   isBench,
@@ -170,14 +179,25 @@ export function AthleteCard({
               <span>Escalações</span>
               <span>{athlete.castTimes}</span>
             </div>
-            {isBench
-              ? <></>
+            {
+              isBench || isCoach(athlete.posicao_id)
+              ? null
               : (
                 <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(CAPTAIN_TIMES_OPTION)}>
                   <span>Vezes capitão</span>
                   <span>{athlete.captainTimes}</span>
                 </div>
               )
+            }
+            {
+              isCoach(athlete.posicao_id)
+                ? (
+                  <div className="flex justify-between">
+                    <span title="Vitórias">Vitórias</span>
+                    <span>{athlete.scout?.V ?? 0}</span>
+                  </div>
+                )
+                : null
             }
             <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(POINTS_AVERAGE_OPTION)}>
               <span>Média</span>
@@ -195,16 +215,37 @@ export function AthleteCard({
                 <span title="Maior pontuação">Maior pont.</span>
                 <span>{athlete.highestPoint.toFixed(1)}</span>
               </div>
-              <div className="flex justify-between">
-                <span>Min. jogados</span>
-                <span>{athlete.sumOfPlayedMinutes}</span>
-              </div>
-              <div className="flex justify-between">
-                <span title="Média de minutos jogados por rodada">MMJ/R</span>
-                <span>{athlete.averageMinutesPerRound.toFixed(1)}</span>
-              </div>
               {
-                !isGoalkeeper(athlete.posicao_id)
+                !isCoach(athlete.posicao_id)
+                  ? (
+                    <>
+                      <div className="flex justify-between">
+                        <span title="Média de minutos jogados por rodada">MMJ/R</span>
+                        <span>{athlete.averageMinutesPerRound.toFixed(1)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Min. jogados</span>
+                        <span>{athlete.sumOfPlayedMinutes}</span>
+                      </div>
+                    </>
+                  )
+                  : null
+              }
+              {
+                isCoach(athlete.posicao_id)
+                  ? (
+                    <>
+                      <div className="flex justify-between">
+                        <span title="Percentual de vitórias">Vitórias %</span>
+                        <span>{(athlete.victoriesAverage * 100).toFixed(1)}</span>
+                      </div>
+                    </>
+                  )
+                  : null
+              }
+              {
+                !isGoalkeeper(athlete.posicao_id) &&
+                !isCoach(athlete.posicao_id)
                   ? (
                     <>
                       <div className="flex justify-between">
@@ -265,14 +306,22 @@ export function AthleteCard({
                   )
                   : null
               }
-              <div className="flex justify-between">
-                <span title="Média de pontos como mandante por rodada">MPM/R</span>
-                <span>{athlete.home.average.toFixed(1)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span title="Média de pontos como visitante por rodada">MPV/R</span>
-                <span>{athlete.away.average.toFixed(1)}</span>
-              </div>
+              {
+                !isCoach(athlete.posicao_id)
+                  ? (
+                    <>
+                      <div className="flex justify-between">
+                        <span title="Média de pontos como mandante por rodada">MPM/R</span>
+                        <span>{athlete.home.average.toFixed(1)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span title="Média de pontos como visitante por rodada">MPV/R</span>
+                        <span>{athlete.away.average.toFixed(1)}</span>
+                      </div>
+                    </>
+                  )
+                  : null
+              }
               <div className="flex justify-between">
                 <span title="Rodadas que valorizou">RV</span>
                 <span>{athlete.valuation.rounds.aboveZero}</span>

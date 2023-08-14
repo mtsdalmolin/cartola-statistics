@@ -85,6 +85,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   defensesToSufferGoal: number
   minutesToScore: number
   highestPoint: number
+  victoriesAverage: number
 }
 
 interface RoundData {
@@ -133,14 +134,14 @@ function handleRoundValuation(roundsValuation: number[]) {
   }
 }
 
-function handleGameActions(athlete: Athlete) {
+function handleGameActions(athlete: Athlete, cachedStats: typeof athlete.scout = {}) {
   const actions: Record<string, number> = {
-    ...athlete.scout
+    ...cachedStats
   }
 
   Object.keys(athlete.scout).forEach((key: string) => {
     if (actions[key]) {
-      actions[key]++
+      actions[key] += athlete.scout[key as keyof typeof athlete.scout] ?? 0
       return
     }
 
@@ -200,6 +201,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     goalsAgainst: athlete.scout?.GS ?? 0,
     defensesToSufferGoal: 0,
     minutesToScore: 0,
+    victoriesAverage: 0,
     valuation: {
       rounds: {
         values: [athlete.variacao_num],
@@ -235,7 +237,8 @@ function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
     },
     finishesToScore: athlete.finishes / athlete.goals,
     minutesToScore: athlete.sumOfPlayedMinutes / athlete.goals,
-    defensesToSufferGoal: athlete.defenses / athlete.goalsAgainst
+    defensesToSufferGoal: athlete.defenses / athlete.goalsAgainst,
+    victoriesAverage: (athlete.scout?.V ?? 0) / athlete.castTimes
   }
 }
 
@@ -250,10 +253,7 @@ function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete:
     statistics[athlete.atleta_id].highestPoint = max([athlete.pontos_num, statistics[athlete.atleta_id].highestPoint]) ?? 0
     statistics[athlete.atleta_id].jogos_num = athlete.jogos_num
     statistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
-    statistics[athlete.atleta_id].scout = {
-      ...statistics[athlete.atleta_id].scout,
-      ...handleGameActions(athlete)
-    }
+    statistics[athlete.atleta_id].scout = handleGameActions(athlete, statistics[athlete.atleta_id].scout)
     statistics[athlete.atleta_id].finishes += getFinishesNumbers(athlete)
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
     statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
@@ -287,7 +287,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
     } = result.value
     
     athletes.forEach(athlete => {
-      playersStatistics = playerStatisticsIncrementalFactory(benchStatistics, athlete, captainId)
+      playersStatistics = playerStatisticsIncrementalFactory(playersStatistics, athlete, captainId)
       
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
