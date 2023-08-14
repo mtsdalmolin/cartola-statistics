@@ -156,7 +156,7 @@ function getFinishesNumbers(athlete: Athlete) {
     FF: outOfTargetFinishes,
     G: goals
   } = handleGameActions(athlete)
-  athlete.apelido === 'Luis Suárez' && console.log({ blockedFinishes, outOfTargetFinishes, goals })
+
   return (blockedFinishes ?? 0) + (outOfTargetFinishes ?? 0) + (goals ?? 0)
 }
 
