@@ -206,10 +206,26 @@ export function AthleteCard({
               {
                 !isGoalkeeper(athlete.posicao_id)
                   ? (
-                    <div className="flex justify-between">
-                      <span title="Gols">Gols</span>
-                      <span>{athlete.goals}</span>
-                    </div>
+                    <>
+                      <div className="flex justify-between">
+                        <span title="Gols">Gols</span>
+                        <span>{athlete.goals}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span title="Finalizações">Finalizações</span>
+                        <span>{athlete.finishes}</span>
+                      </div>
+                      {
+                        isFinite(athlete.finishesToScore)
+                          ? (
+                            <div className="flex justify-between">
+                              <span title="Finalizações para marcar gols">FPG</span>
+                              <span>{athlete.finishesToScore.toFixed(1)}</span>
+                            </div>
+                          )
+                          : null
+                      }
+                    </>
                   )
                   : null
               }

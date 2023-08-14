@@ -77,6 +77,8 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
     sumOfPoints: number
     average: number
   }
+  finishes: number
+  finishesToScore: number
   goals: number
   defenses: number
   goalsAgainst: number
@@ -148,6 +150,16 @@ function handleGameActions(athlete: Athlete) {
   return actions
 }
 
+function getFinishesNumbers(athlete: Athlete) {
+  const {
+    FD: blockedFinishes,
+    FF: outOfTargetFinishes,
+    G: goals
+  } = handleGameActions(athlete)
+  athlete.apelido === 'Luis Suárez' && console.log({ blockedFinishes, outOfTargetFinishes, goals })
+  return (blockedFinishes ?? 0) + (outOfTargetFinishes ?? 0) + (goals ?? 0)
+}
+
 function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
   return {
     atleta_id: athlete.atleta_id,
@@ -181,6 +193,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
       average: 0,
     },
     highestPoint: athlete.pontos_num,
+    finishes: getFinishesNumbers(athlete),
+    finishesToScore: 0,
     goals: 0,
     defenses: athlete.scout?.DE ?? 0,
     goalsAgainst: athlete.scout?.GS ?? 0,
@@ -219,6 +233,7 @@ function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
         ...handleRoundValuation(athlete.valuation.rounds.values)
       }
     },
+    finishesToScore: athlete.finishes / athlete.goals,
     minutesToGoal: athlete.sumOfPlayedMinutes / athlete.goals,
     defensesToSufferGoal: athlete.defenses / athlete.goalsAgainst
   }
@@ -239,6 +254,7 @@ function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete:
       ...statistics[athlete.atleta_id].scout,
       ...handleGameActions(athlete)
     }
+    statistics[athlete.atleta_id].finishes += getFinishesNumbers(athlete)
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
     statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
     statistics[athlete.atleta_id].goalsAgainst += handleGameActions(athlete)?.GS ?? 0
