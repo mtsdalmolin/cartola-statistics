@@ -87,6 +87,8 @@ interface RoundData {
   capitao_id: number
 }
 
+type CrewStatistics = Record<string, RenderedAthlete>
+
 function isCaptain(athleteId: number, captainId: number) {
   return athleteId === captainId
 }
@@ -213,6 +215,29 @@ function handlePlayersStatistics(athlete: RenderedAthlete) {
   }
 }
 
+function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete: Athlete, captainId: number) {
+  if (statistics[athlete.atleta_id]) {
+    statistics[athlete.atleta_id].castTimes++
+    statistics[athlete.atleta_id].sumOfPoints += calculatePoints(athlete, captainId)
+    statistics[athlete.atleta_id].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
+    statistics[athlete.atleta_id].home.sumOfPoints += athlete.gato_mestre?.media_pontos_mandante ?? 0
+    statistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre?.media_pontos_visitante ?? 0
+    statistics[athlete.atleta_id].sumOfOverallAverage += athlete.media_num
+    statistics[athlete.atleta_id].highestPoint = max([athlete.pontos_num, statistics[athlete.atleta_id].highestPoint]) ?? 0
+    statistics[athlete.atleta_id].jogos_num = athlete.jogos_num
+    statistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
+    statistics[athlete.atleta_id].scout = {
+      ...statistics[athlete.atleta_id].scout,
+      ...handleGameActions(athlete)
+    }
+    statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
+  } else {
+    statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
+  }
+
+  return statistics
+}
+
 async function getPlayersTeamData(endpoint: string, rounds: number[]) {
   const results = await Promise.allSettled<RoundData>(
     rounds.map(round =>
@@ -221,8 +246,8 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
     )
   )
 
-  const playersStatistics: Record<string, RenderedAthlete> = {};
-  const benchStatistics: Record<string, RenderedAthlete> = {};
+  let playersStatistics: CrewStatistics = {};
+  let benchStatistics: CrewStatistics = {};
 
   results.forEach(result => {
     if (result.status === 'rejected')
@@ -235,49 +260,15 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
     } = result.value
     
     athletes.forEach(athlete => {
-      if (playersStatistics[athlete.atleta_id]) {
-        playersStatistics[athlete.atleta_id].castTimes++
-        playersStatistics[athlete.atleta_id].sumOfPoints += calculatePoints(athlete, captainId)
-        playersStatistics[athlete.atleta_id].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
-        playersStatistics[athlete.atleta_id].home.sumOfPoints += athlete.gato_mestre?.media_pontos_mandante ?? 0
-        playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre?.media_pontos_visitante ?? 0
-        playersStatistics[athlete.atleta_id].sumOfOverallAverage += athlete.media_num
-        playersStatistics[athlete.atleta_id].highestPoint = max([athlete.pontos_num, playersStatistics[athlete.atleta_id].highestPoint]) ?? 0
-        playersStatistics[athlete.atleta_id].jogos_num = athlete.jogos_num
-        playersStatistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
-        playersStatistics[athlete.atleta_id].scout = {
-          ...playersStatistics[athlete.atleta_id].scout,
-          ...handleGameActions(athlete)
-        }
-        playersStatistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
-      } else {
-        playersStatistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
-      }
-
+      playersStatistics = playerStatisticsIncrementalFactory(benchStatistics, athlete, captainId)
+      
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
       }
     })
 
     bench.forEach(benchAthlete => {
-      if (benchStatistics[benchAthlete.atleta_id]) {
-        benchStatistics[benchAthlete.atleta_id].castTimes++
-        benchStatistics[benchAthlete.atleta_id].sumOfPoints += calculatePoints(benchAthlete, captainId)
-        benchStatistics[benchAthlete.atleta_id].sumOfPlayedMinutes += benchAthlete.gato_mestre.minutos_jogados
-        benchStatistics[benchAthlete.atleta_id].home.sumOfPoints += benchAthlete.gato_mestre?.media_pontos_mandante ?? 0
-        benchStatistics[benchAthlete.atleta_id].away.sumOfPoints += benchAthlete.gato_mestre?.media_pontos_visitante ?? 0
-        benchStatistics[benchAthlete.atleta_id].sumOfOverallAverage += benchAthlete.media_num
-        benchStatistics[benchAthlete.atleta_id].highestPoint = max([benchAthlete.pontos_num, benchStatistics[benchAthlete.atleta_id].highestPoint]) ?? 0
-        benchStatistics[benchAthlete.atleta_id].jogos_num = benchAthlete.jogos_num
-        benchStatistics[benchAthlete.atleta_id].valuation.rounds.values.push(benchAthlete.variacao_num)
-        benchStatistics[benchAthlete.atleta_id].scout = {
-          ...benchStatistics[benchAthlete.atleta_id].scout,
-          ...handleGameActions(benchAthlete)
-        }
-        benchStatistics[benchAthlete.atleta_id].goals += handleGameActions(benchAthlete)?.G ?? 0
-      } else {
-        benchStatistics[benchAthlete.atleta_id] = renderedAthleteFactory(benchAthlete, captainId)
-      }
+      benchStatistics = playerStatisticsIncrementalFactory(benchStatistics, benchAthlete, captainId)
     })
   })
 
