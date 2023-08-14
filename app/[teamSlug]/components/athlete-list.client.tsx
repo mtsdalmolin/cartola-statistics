@@ -6,7 +6,7 @@ import orderBy from 'lodash/orderBy'
 import mapValues from 'lodash/mapValues'
 import isEmpty from 'lodash/isEmpty'
 import isFinite from 'lodash/isFinite'
-import Image from "next/image";
+import Image from "next/image"
 import Select from 'react-select'
 import { FOOTBALL_TEAMS, type FootballTeamsIds } from '@/app/constants/teams'
 import { POSITIONS, type PositionsIds } from "@/app/constants/positions"
@@ -177,49 +177,53 @@ export function AthleteCard({
           </div>
         </div>
         <div className={`absolute card-back flex justify-center`}>
-          <div className="flex flex-col gap-0.5 justify-center w-3/4 text-xs overflow-auto mt-[1rem] mb-10 mx-6 divide-y">
+          <div className="flex flex-col justify-center w-3/4 text-xs mt-[1rem] mb-10 mx-6">
             <div className="text-center font-bold text-lg truncate">
               <span title={athlete.apelido}>{athlete.apelido}</span>
             </div>
-            <div className="flex justify-between">
-              <span>Min. jogados</span>
-              <span>{athlete.sumOfPlayedMinutes}</span>
-            </div>
-            <div className="flex justify-between">
-              <span title="Média de minutos jogados por rodada">MMJ/R</span>
-              <span>{athlete.averageMinutesPerRound.toFixed(1)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span title="Gols">Gols</span>
-              <span>{athlete.goals}</span>
-            </div>
-            {
-              isFinite(athlete.minutesToGoal)
-                ? (
-                  <div className="flex justify-between">
-                    <span title="Minutos para marcar gol">MPG</span>
-                    <span>{athlete.minutesToGoal.toFixed(1)}</span>
-                  </div>
-                )
-                : null
-            }
-            <div className="flex justify-between">
-              <span title="Média de pontos como mandante por rodada">MPM/R</span>
-              <span>{athlete.home.average.toFixed(1)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span title="Média de pontos como visitante por rodada">MPV/R</span>
-              <span>{athlete.away.average.toFixed(1)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span title="Rodadas que valorizou">RV</span>
-              <span>{athlete.valuation.rounds.aboveZero}</span>
-            </div>
-            <div className="flex justify-between border-b-[3px]">
-              <span title="Rodadas que desvalorizou">RD</span>
-              <span>{athlete.valuation.rounds.belowZero}</span>
-            </div>
-            <div>
+            <div className="flex flex-col gap-0.5 h-[70%] divide-y overflow-auto hover:overscroll-contain hide-scroll">
+              <div className="flex justify-between">
+                <span title="Maior pontuação">Maior pont.</span>
+                <span>{athlete.highestPoint.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Min. jogados</span>
+                <span>{athlete.sumOfPlayedMinutes}</span>
+              </div>
+              <div className="flex justify-between">
+                <span title="Média de minutos jogados por rodada">MMJ/R</span>
+                <span>{athlete.averageMinutesPerRound.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span title="Gols">Gols</span>
+                <span>{athlete.goals}</span>
+              </div>
+              {
+                isFinite(athlete.minutesToGoal)
+                  ? (
+                    <div className="flex justify-between">
+                      <span title="Minutos para marcar gol">MPG</span>
+                      <span>{athlete.minutesToGoal.toFixed(1)}</span>
+                    </div>
+                  )
+                  : null
+              }
+              <div className="flex justify-between">
+                <span title="Média de pontos como mandante por rodada">MPM/R</span>
+                <span>{athlete.home.average.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span title="Média de pontos como visitante por rodada">MPV/R</span>
+                <span>{athlete.away.average.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span title="Rodadas que valorizou">RV</span>
+                <span>{athlete.valuation.rounds.aboveZero}</span>
+              </div>
+              <div className="flex justify-between">
+                <span title="Rodadas que desvalorizou">RD</span>
+                <span>{athlete.valuation.rounds.belowZero}</span>
+              </div>
             </div>
           </div>
         </div>

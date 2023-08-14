@@ -1,4 +1,5 @@
 import isNil from 'lodash/isNil'
+import max from 'lodash/max'
 import { TEAMS } from '../page'
 import { type FootballTeamsIds } from '../constants/teams'
 import type { Metadata } from 'next'
@@ -76,6 +77,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   }
   goals: number
   minutesToGoal: number
+  highestPoint: number
 }
 
 interface RoundData {
@@ -171,6 +173,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
       sumOfPoints: 0,
       average: 0,
     },
+    highestPoint: athlete.pontos_num,
     goals: 0,
     minutesToGoal: 0,
     valuation: {
@@ -239,6 +242,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
         playersStatistics[athlete.atleta_id].home.sumOfPoints += athlete.gato_mestre?.media_pontos_mandante ?? 0
         playersStatistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre?.media_pontos_visitante ?? 0
         playersStatistics[athlete.atleta_id].sumOfOverallAverage += athlete.media_num
+        playersStatistics[athlete.atleta_id].highestPoint = max([athlete.pontos_num, playersStatistics[athlete.atleta_id].highestPoint]) ?? 0
         playersStatistics[athlete.atleta_id].jogos_num = athlete.jogos_num
         playersStatistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
         playersStatistics[athlete.atleta_id].scout = {
@@ -263,6 +267,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
         benchStatistics[benchAthlete.atleta_id].home.sumOfPoints += benchAthlete.gato_mestre?.media_pontos_mandante ?? 0
         benchStatistics[benchAthlete.atleta_id].away.sumOfPoints += benchAthlete.gato_mestre?.media_pontos_visitante ?? 0
         benchStatistics[benchAthlete.atleta_id].sumOfOverallAverage += benchAthlete.media_num
+        benchStatistics[benchAthlete.atleta_id].highestPoint = max([benchAthlete.pontos_num, benchStatistics[benchAthlete.atleta_id].highestPoint]) ?? 0
         benchStatistics[benchAthlete.atleta_id].jogos_num = benchAthlete.jogos_num
         benchStatistics[benchAthlete.atleta_id].valuation.rounds.values.push(benchAthlete.variacao_num)
         benchStatistics[benchAthlete.atleta_id].scout = {
