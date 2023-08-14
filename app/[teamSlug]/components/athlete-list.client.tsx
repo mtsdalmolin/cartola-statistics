@@ -236,12 +236,12 @@ export function AthleteCard({
                         <span>{athlete.goalsAgainst.toFixed(1)}</span>
                       </div>
                       {
-                        isFinite(athlete.minutesToGoal)
+                        isFinite(athlete.defensesToSufferGoal)
                         ? (
-                        <div className="flex justify-between">
-                          <span title="Defesas para sofrer gols">DSG</span>
-                          <span>{athlete.defensesToSufferGoal.toFixed(1)}</span>
-                        </div>
+                          <div className="flex justify-between">
+                            <span title="Defesas para sofrer gols">DSG</span>
+                            <span>{athlete.defensesToSufferGoal.toFixed(1)}</span>
+                          </div>
                         )
                         : null
                       }
