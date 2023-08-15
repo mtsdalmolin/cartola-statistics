@@ -7,9 +7,10 @@ import mapValues from 'lodash/mapValues'
 import isEmpty from 'lodash/isEmpty'
 import Image from "next/image"
 import Select from 'react-select'
-import { FOOTBALL_TEAMS, type FootballTeamsIds } from '@/app/constants/teams'
 import { POSITIONS } from "@/app/constants/positions"
-import { getAthleteStatisticsByPositionId, getPositionAbbreviation, getPositionName, getPositionOptionByValue, isCoach } from "@/app/helpers/positions"
+import { getPositionAbbreviation, getPositionName, getPositionOptionByValue, isCoach } from "@/app/helpers/positions"
+import { AthleteStatistics } from "./athlete-statistics"
+import { getFootballTeamBadgeLink, getFootballTeamName } from "@/app/helpers/teams"
 
 const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
 const CAPTAIN_TIMES_OPTION = { value: 'captainTimes', label: 'Vezes capitão' }
@@ -37,40 +38,6 @@ const positionsOptions = Object.entries(POSITIONS).map(([positionId, position]) 
 const benchPositionsOptions = positionsOptions.filter(position => position.value !== '6')
 
 export type PositionOption = typeof positionsOptions[0]
-
-function getFootballTeamBadgeLink(footballTeamId: FootballTeamsIds) {
-  return FOOTBALL_TEAMS[footballTeamId].escudos['30x30']
-}
-
-function getFootballTeamName(footballTeamId: FootballTeamsIds) {
-  return FOOTBALL_TEAMS[footballTeamId].nome
-}
-
-type StatisticValue = number | string
-
-function StatisticItem({ canRender, label, title, value }: { canRender: () => boolean, label: string, title: string, value: StatisticValue }) {
-  return canRender()
-    ? (
-      <div className="flex justify-between">
-        <span title={title}>{label}</span>
-        <span>{value}</span>
-      </div>
-    )
-    : null
-}
-
-function AthleteStatistics({ athlete }: { athlete: RenderedAthlete }) {
-  const statistics = getAthleteStatisticsByPositionId(athlete)
-  return (
-    <div className="flex flex-col gap-0.5 h-[70%] divide-y overflow-auto hover:overscroll-contain hide-scroll">
-      {
-        statistics.map(statistic => (
-          <StatisticItem key={statistic.label} {...statistic} />
-        ))
-      }
-    </div>
-  )
-}
 
 export function AthleteCard({
   athlete,
