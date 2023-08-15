@@ -64,12 +64,6 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
         filterVariant: 'range-slider',
       },
       {
-        id: 'highestPoint',
-        accessorKey: 'highestPoint',
-        header: 'MP',
-        filterVariant: 'range-slider',
-      },
-      {
         id: 'sumOfPlayedMinutes',
         accessorKey: 'sumOfPlayedMinutes',
         header: 'Min. jogados',
@@ -192,7 +186,16 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
         defensesToSufferGoal: false,
         minutesToScore: false,
         captainTimes: false
-      }
+      },
+      columnPinning: {
+        left: ['name']
+      },
+      columnOrder: [
+        'name',
+        'highestPoint',
+        'pointsAverage',
+        'castTimes',
+      ]
     },
   });
 
