@@ -20,17 +20,17 @@
 }
 
 .player-card .card-front {
-	background-image: url(./card-bg-emerald.png);
+	background-image: url(assets/card-bg-emerald.png);
 }
 .player-card .card-back {
-	background-image: url(card-back-bg-emerald.png);
+	background-image: url(assets/card-back-bg-emerald.png);
 }
 
 .bench-card .card-front {
-	background-image: url(./card-bg-bench.png);
+	background-image: url(assets/card-bg-bench.png);
 }
 .bench-card .card-back {
-	background-image: url(./card-back-bg-bench.png);
+	background-image: url(assets/card-back-bg-bench.png);
 }
 
 .card-front,
