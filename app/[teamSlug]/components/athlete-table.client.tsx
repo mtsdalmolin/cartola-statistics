@@ -1,14 +1,74 @@
 "use client"
 
-import { useMemo } from 'react';
+import { useMemo } from 'react'
 import {
   MantineReactTable,
   useMantineReactTable,
   type MRT_ColumnDef,
-} from 'mantine-react-table';
-import { Box, Button, MantineProvider, Menu, Text, Title } from '@mantine/core';
-import { AthleteTableData } from '../page';
-import Image from 'next/image';
+  MRT_TableInstance,
+} from 'mantine-react-table'
+import { Box, Button, Flex, MantineProvider } from '@mantine/core'
+import { AthleteTableData } from '../page'
+import Image from 'next/image'
+import isNil from 'lodash/isNil'
+import isArray from 'lodash/isArray'
+
+import { POSITIONS } from '@/app/constants/positions'
+
+function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<AthleteTableData> }) {
+  const handleFilterChange = (position: typeof POSITIONS[0]) => {
+    tableObject.setColumnFilters(prev => {
+      const positionFilter = prev.find(filter => filter.id === 'position')
+
+      if (!isNil(positionFilter) && isArray(positionFilter.value)) {
+        if (positionFilter.value.includes(position.nome)) {
+          return [
+            {
+              id: 'position',
+              value: positionFilter.value.filter(positionValue => positionValue !== position.nome)
+            }
+          ]
+        }
+
+        return [
+          {
+            id: 'position',
+            value: [
+              ...positionFilter.value,
+              position.nome
+            ]
+          }
+        ]
+      }
+
+      return [
+        {
+          id: 'position',
+          value: [position.nome]
+        }
+      ]
+    })
+  }
+
+  const handleClearFilters = () => tableObject.resetColumnFilters()
+
+  return (
+    <Flex gap="md">
+      {
+        Object.values(POSITIONS).map(position => (
+          <Button
+            key={position.abreviacao}
+            onClick={() => handleFilterChange(position)}>
+            {position.nome}
+          </Button>
+        ))
+      }
+      <Button onClick={handleClearFilters}>
+        Limpar filtros
+      </Button>
+    </Flex>
+  )
+}
 
 export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
   const columns = useMemo<MRT_ColumnDef<AthleteTableData>[]>(
@@ -61,7 +121,7 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
         id: 'position',
         accessorKey: 'position',
         header: 'Posição',
-        filterVariant: 'range-slider',
+        filterVariant: 'multi-select',
       },
       {
         id: 'sumOfPlayedMinutes',
@@ -197,12 +257,12 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
         'highestPoint',
         'pointsAverage',
         'castTimes',
+        'position',
         'pointsAverageHome',
         'pointsAverageAway',
         'goals',
         'defenses',
         'victoriesAverage',
-        'position',
         'sumOfPlayedMinutes',
         'averageMinutesPerRound',
         'finishes',
@@ -223,6 +283,7 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
         },
       ],
     },
+    renderTopToolbarCustomActions: ({ table }) => <ToolbarPositionFilter tableObject={table} />
   });
 
   return (
