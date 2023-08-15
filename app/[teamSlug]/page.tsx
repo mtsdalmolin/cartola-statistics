@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 
 import './styles.css'
 import AthleteList from './components/athlete-list.client'
-import { PositionsIds } from '../constants/positions'
+import { type PositionsIds } from '../constants/positions'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',

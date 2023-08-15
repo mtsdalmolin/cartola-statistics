@@ -5,11 +5,11 @@ import { type RenderedAthlete } from "../page"
 import orderBy from 'lodash/orderBy'
 import mapValues from 'lodash/mapValues'
 import isEmpty from 'lodash/isEmpty'
-import isFinite from 'lodash/isFinite'
 import Image from "next/image"
 import Select from 'react-select'
 import { FOOTBALL_TEAMS, type FootballTeamsIds } from '@/app/constants/teams'
-import { POSITIONS, type PositionsIds } from "@/app/constants/positions"
+import { POSITIONS } from "@/app/constants/positions"
+import { getAthleteStatisticsByPositionId, getPositionAbbreviation, getPositionName, getPositionOptionByValue, isCoach } from "@/app/helpers/positions"
 
 const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
 const CAPTAIN_TIMES_OPTION = { value: 'captainTimes', label: 'Vezes capitão' }
@@ -36,7 +36,7 @@ const positionsOptions = Object.entries(POSITIONS).map(([positionId, position]) 
 
 const benchPositionsOptions = positionsOptions.filter(position => position.value !== '6')
 
-type PositionOption = typeof positionsOptions[0]
+export type PositionOption = typeof positionsOptions[0]
 
 function getFootballTeamBadgeLink(footballTeamId: FootballTeamsIds) {
   return FOOTBALL_TEAMS[footballTeamId].escudos['30x30']
@@ -46,182 +46,28 @@ function getFootballTeamName(footballTeamId: FootballTeamsIds) {
   return FOOTBALL_TEAMS[footballTeamId].nome
 }
 
-function getPositionAbbreviation(positionId: PositionsIds) {
-  return POSITIONS[positionId].abreviacao
-}
-
-function getPositionName(positionId: PositionsIds) {
-  return POSITIONS[positionId].nome
-}
-
-function getPositionOptionByValue(positionValue: string): PositionOption {
-  return positionsOptions.find(position => position.value === positionValue)!
-}
-
-function isGoalkeeper(positionId: number) {
-  const gkPositionId = Object.keys(POSITIONS)
-    .find((positionId: string) => 
-      POSITIONS[Number(positionId)].abreviacao.toLowerCase() === 'gol'
-    )
-
-  return Number(gkPositionId) === positionId
-}
-
-function isCoach(positionId: number) {
-  const coachPositionId = Object.keys(POSITIONS)
-    .find((positionId: string) => 
-      POSITIONS[Number(positionId)].abreviacao.toLowerCase() === 'tec'
-    )
-
-  return Number(coachPositionId) === positionId
-}
-
 type StatisticValue = number | string
 
-function StatisticItem({ label, title, value }: { label: string, title: string, value: StatisticValue }) {
-  return (
-    <div className="flex justify-between">
-      <span title={title}>{label}</span>
-      <span>{value}</span>
-    </div>
-  )
+function StatisticItem({ canRender, label, title, value }: { canRender: () => boolean, label: string, title: string, value: StatisticValue }) {
+  return canRender()
+    ? (
+      <div className="flex justify-between">
+        <span title={title}>{label}</span>
+        <span>{value}</span>
+      </div>
+    )
+    : null
 }
 
 function AthleteStatistics({ athlete }: { athlete: RenderedAthlete }) {
+  const statistics = getAthleteStatisticsByPositionId(athlete)
   return (
     <div className="flex flex-col gap-0.5 h-[70%] divide-y overflow-auto hover:overscroll-contain hide-scroll">
-      <StatisticItem
-        label="Maior pont."
-        title="Maior pontuação"
-        value={athlete.averageMinutesPerRound.toFixed(1)}
-      />
       {
-        !isCoach(athlete.posicao_id)
-          ? (
-            <>
-              <StatisticItem
-                label="MMJ/R"
-                title="Média de minutos jogados por rodada"
-                value={athlete.averageMinutesPerRound.toFixed(1)}
-              />
-              <StatisticItem
-                label="Min. jogados"
-                title="Minutos jogados"
-                value={athlete.sumOfPlayedMinutes}
-              />
-            </>
-          )
-          : null
+        statistics.map(statistic => (
+          <StatisticItem key={statistic.label} {...statistic} />
+        ))
       }
-      {
-        isCoach(athlete.posicao_id)
-          ? (
-            <StatisticItem
-              label="Vitórias %"
-              title="Percentual de vitórias"
-              value={(athlete.victoriesAverage * 100).toFixed(1)}
-            />
-          )
-          : null
-      }
-      {
-        !isGoalkeeper(athlete.posicao_id) &&
-        !isCoach(athlete.posicao_id)
-          ? (
-            <>
-              <StatisticItem
-                label="Gols"
-                title="Gols"
-                value={athlete.goals}
-              />
-              <StatisticItem
-                label="Finalizações"
-                title="Finalizações"
-                value={athlete.finishes}
-              />
-              {
-                isFinite(athlete.finishesToScore)
-                  ? (
-                    <StatisticItem
-                      label="Finalizações para marcar gols"
-                      title="FPG"
-                      value={athlete.finishesToScore.toFixed(1)}
-                    />
-                  )
-                  : null
-              }
-            </>
-          )
-          : null
-      }
-      {
-        isFinite(athlete.minutesToScore)
-          ? (
-            <StatisticItem
-              label="Minutos para marcar gol"
-              title="MPG"
-              value={athlete.minutesToScore.toFixed(1)}
-            />
-          )
-          : null
-      }
-      {
-        isGoalkeeper(athlete.posicao_id)
-          ? (
-            <>
-              <StatisticItem
-                label="Defesas"
-                title="Defesas"
-                value={athlete.defenses.toFixed(1)}
-              />
-              <StatisticItem
-                label="Gols sofridos"
-                title="Gols sofridos"
-                value={athlete.goalsAgainst.toFixed(1)}
-              />
-              {
-                isFinite(athlete.defensesToSufferGoal)
-                ? (
-                  <StatisticItem
-                    label="Defesas para sofrer gols"
-                    title="Defesas para sofrer gols"
-                    value={athlete.defensesToSufferGoal.toFixed(1)}
-                  />
-                )
-                : null
-              }
-            </>
-          )
-          : null
-      }
-      {
-        !isCoach(athlete.posicao_id)
-          ? (
-            <>
-              <StatisticItem
-                label="Média de pontos como mandante por rodada"
-                title="MPM/R"
-                value={athlete.home.average.toFixed(1)}
-              />
-              <StatisticItem
-                label="Média de pontos como visitante por rodada"
-                title="MPV/R"
-                value={athlete.away.average.toFixed(1)}
-              />
-            </>
-          )
-          : null
-      }
-      <StatisticItem
-        label="Rodadas que valorizou"
-        title="RV"
-        value={athlete.valuation.rounds.aboveZero}
-      />
-      <StatisticItem
-        label="Rodadas que desvalorizou"
-        title="RD"
-        value={athlete.valuation.rounds.belowZero}
-      />
     </div>
   )
 }
@@ -297,7 +143,7 @@ export function AthleteCard({
               <div
                 className="uppercase text-xs cursor-pointer"
                 title={getPositionName(athlete.posicao_id)}
-                onClick={() => handlePositionAbbreviationClick(getPositionOptionByValue(athlete.posicao_id.toString()))}
+                onClick={() => handlePositionAbbreviationClick(getPositionOptionByValue(positionsOptions, athlete.posicao_id.toString()))}
               >
                 {getPositionAbbreviation(athlete.posicao_id)}
               </div>
