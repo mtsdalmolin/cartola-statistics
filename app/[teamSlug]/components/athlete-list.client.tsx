@@ -76,6 +76,156 @@ function isCoach(positionId: number) {
   return Number(coachPositionId) === positionId
 }
 
+type StatisticValue = number | string
+
+function StatisticItem({ label, title, value }: { label: string, title: string, value: StatisticValue }) {
+  return (
+    <div className="flex justify-between">
+      <span title={title}>{label}</span>
+      <span>{value}</span>
+    </div>
+  )
+}
+
+function AthleteStatistics({ athlete }: { athlete: RenderedAthlete }) {
+  return (
+    <div className="flex flex-col gap-0.5 h-[70%] divide-y overflow-auto hover:overscroll-contain hide-scroll">
+      <StatisticItem
+        label="Maior pont."
+        title="Maior pontuação"
+        value={athlete.averageMinutesPerRound.toFixed(1)}
+      />
+      {
+        !isCoach(athlete.posicao_id)
+          ? (
+            <>
+              <StatisticItem
+                label="MMJ/R"
+                title="Média de minutos jogados por rodada"
+                value={athlete.averageMinutesPerRound.toFixed(1)}
+              />
+              <StatisticItem
+                label="Min. jogados"
+                title="Minutos jogados"
+                value={athlete.sumOfPlayedMinutes}
+              />
+            </>
+          )
+          : null
+      }
+      {
+        isCoach(athlete.posicao_id)
+          ? (
+            <StatisticItem
+              label="Vitórias %"
+              title="Percentual de vitórias"
+              value={(athlete.victoriesAverage * 100).toFixed(1)}
+            />
+          )
+          : null
+      }
+      {
+        !isGoalkeeper(athlete.posicao_id) &&
+        !isCoach(athlete.posicao_id)
+          ? (
+            <>
+              <StatisticItem
+                label="Gols"
+                title="Gols"
+                value={athlete.goals}
+              />
+              <StatisticItem
+                label="Finalizações"
+                title="Finalizações"
+                value={athlete.finishes}
+              />
+              {
+                isFinite(athlete.finishesToScore)
+                  ? (
+                    <StatisticItem
+                      label="Finalizações para marcar gols"
+                      title="FPG"
+                      value={athlete.finishesToScore.toFixed(1)}
+                    />
+                  )
+                  : null
+              }
+            </>
+          )
+          : null
+      }
+      {
+        isFinite(athlete.minutesToScore)
+          ? (
+            <StatisticItem
+              label="Minutos para marcar gol"
+              title="MPG"
+              value={athlete.minutesToScore.toFixed(1)}
+            />
+          )
+          : null
+      }
+      {
+        isGoalkeeper(athlete.posicao_id)
+          ? (
+            <>
+              <StatisticItem
+                label="Defesas"
+                title="Defesas"
+                value={athlete.defenses.toFixed(1)}
+              />
+              <StatisticItem
+                label="Gols sofridos"
+                title="Gols sofridos"
+                value={athlete.goalsAgainst.toFixed(1)}
+              />
+              {
+                isFinite(athlete.defensesToSufferGoal)
+                ? (
+                  <StatisticItem
+                    label="Defesas para sofrer gols"
+                    title="Defesas para sofrer gols"
+                    value={athlete.defensesToSufferGoal.toFixed(1)}
+                  />
+                )
+                : null
+              }
+            </>
+          )
+          : null
+      }
+      {
+        !isCoach(athlete.posicao_id)
+          ? (
+            <>
+              <StatisticItem
+                label="Média de pontos como mandante por rodada"
+                title="MPM/R"
+                value={athlete.home.average.toFixed(1)}
+              />
+              <StatisticItem
+                label="Média de pontos como visitante por rodada"
+                title="MPV/R"
+                value={athlete.away.average.toFixed(1)}
+              />
+            </>
+          )
+          : null
+      }
+      <StatisticItem
+        label="Rodadas que valorizou"
+        title="RV"
+        value={athlete.valuation.rounds.aboveZero}
+      />
+      <StatisticItem
+        label="Rodadas que desvalorizou"
+        title="RD"
+        value={athlete.valuation.rounds.belowZero}
+      />
+    </div>
+  )
+}
+
 export function AthleteCard({
   athlete,
   isBench,
@@ -210,127 +360,7 @@ export function AthleteCard({
             <div className="text-center font-bold text-lg truncate">
               <span title={athlete.apelido}>{athlete.apelido}</span>
             </div>
-            <div className="flex flex-col gap-0.5 h-[70%] divide-y overflow-auto hover:overscroll-contain hide-scroll">
-              <div className="flex justify-between">
-                <span title="Maior pontuação">Maior pont.</span>
-                <span>{athlete.highestPoint.toFixed(1)}</span>
-              </div>
-              {
-                !isCoach(athlete.posicao_id)
-                  ? (
-                    <>
-                      <div className="flex justify-between">
-                        <span title="Média de minutos jogados por rodada">MMJ/R</span>
-                        <span>{athlete.averageMinutesPerRound.toFixed(1)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Min. jogados</span>
-                        <span>{athlete.sumOfPlayedMinutes}</span>
-                      </div>
-                    </>
-                  )
-                  : null
-              }
-              {
-                isCoach(athlete.posicao_id)
-                  ? (
-                    <>
-                      <div className="flex justify-between">
-                        <span title="Percentual de vitórias">Vitórias %</span>
-                        <span>{(athlete.victoriesAverage * 100).toFixed(1)}</span>
-                      </div>
-                    </>
-                  )
-                  : null
-              }
-              {
-                !isGoalkeeper(athlete.posicao_id) &&
-                !isCoach(athlete.posicao_id)
-                  ? (
-                    <>
-                      <div className="flex justify-between">
-                        <span title="Gols">Gols</span>
-                        <span>{athlete.goals}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span title="Finalizações">Finalizações</span>
-                        <span>{athlete.finishes}</span>
-                      </div>
-                      {
-                        isFinite(athlete.finishesToScore)
-                          ? (
-                            <div className="flex justify-between">
-                              <span title="Finalizações para marcar gols">FPG</span>
-                              <span>{athlete.finishesToScore.toFixed(1)}</span>
-                            </div>
-                          )
-                          : null
-                      }
-                    </>
-                  )
-                  : null
-              }
-              {
-                isFinite(athlete.minutesToScore)
-                  ? (
-                    <div className="flex justify-between">
-                      <span title="Minutos para marcar gol">MPG</span>
-                      <span>{athlete.minutesToScore.toFixed(1)}</span>
-                    </div>
-                  )
-                  : null
-              }
-              {
-                isGoalkeeper(athlete.posicao_id)
-                  ? (
-                    <>
-                      <div className="flex justify-between">
-                        <span title="Defesas">Defesas</span>
-                        <span>{athlete.defenses.toFixed(1)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span title="Gols sofridos">Gols sofridos</span>
-                        <span>{athlete.goalsAgainst.toFixed(1)}</span>
-                      </div>
-                      {
-                        isFinite(athlete.defensesToSufferGoal)
-                        ? (
-                          <div className="flex justify-between">
-                            <span title="Defesas para sofrer gols">DSG</span>
-                            <span>{athlete.defensesToSufferGoal.toFixed(1)}</span>
-                          </div>
-                        )
-                        : null
-                      }
-                    </>
-                  )
-                  : null
-              }
-              {
-                !isCoach(athlete.posicao_id)
-                  ? (
-                    <>
-                      <div className="flex justify-between">
-                        <span title="Média de pontos como mandante por rodada">MPM/R</span>
-                        <span>{athlete.home.average.toFixed(1)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span title="Média de pontos como visitante por rodada">MPV/R</span>
-                        <span>{athlete.away.average.toFixed(1)}</span>
-                      </div>
-                    </>
-                  )
-                  : null
-              }
-              <div className="flex justify-between">
-                <span title="Rodadas que valorizou">RV</span>
-                <span>{athlete.valuation.rounds.aboveZero}</span>
-              </div>
-              <div className="flex justify-between">
-                <span title="Rodadas que desvalorizou">RD</span>
-                <span>{athlete.valuation.rounds.belowZero}</span>
-              </div>
-            </div>
+            <AthleteStatistics athlete={athlete} />
           </div>
         </div>
       </div>
