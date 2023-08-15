@@ -174,6 +174,7 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
     enableFacetedValues: true,
     enableGrouping: true,
     enablePinning: true,
+    positionGlobalFilter: 'left',
     initialState: {
       showGlobalFilter: true,
       columnVisibility: {
