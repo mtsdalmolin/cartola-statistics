@@ -17,7 +17,7 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
         id: 'name',
         accessorKey: 'name',
         header: 'Nome',
-        size: 150,
+        size: 200,
         filterVariant: 'autocomplete',
         Cell: ({ renderedCellValue, row }) => (
           <Box
@@ -34,8 +34,8 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
             >
               <Image
                 alt={row.original.name}
-                width={45}
-                height={45}
+                width={50}
+                height={50}
                 src={row.original.photoUrl}
                 style={{ borderRadius: '50%' }}
               />
@@ -57,6 +57,117 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
         header: 'MP',
         filterVariant: 'range-slider',
       },
+      {
+        id: 'position',
+        accessorKey: 'position',
+        header: 'Posição',
+        filterVariant: 'range-slider',
+      },
+      {
+        id: 'highestPoint',
+        accessorKey: 'highestPoint',
+        header: 'MP',
+        filterVariant: 'range-slider',
+      },
+      {
+        id: 'sumOfPlayedMinutes',
+        accessorKey: 'sumOfPlayedMinutes',
+        header: 'Min. jogados',
+        filterVariant: 'range-slider',
+      },
+      {
+        id: 'averageMinutesPerRound',
+        accessorKey: 'averageMinutesPerRound',
+        header: 'MPM/R',
+        filterVariant: 'range-slider',
+        Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+      },
+      {
+        id: 'pointsAverage',
+        accessorKey: 'pointsAverage',
+        header: 'Média',
+        filterVariant: 'range-slider',
+        Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+      },
+      {
+        id: 'pointsAverageHome',
+        accessorKey: 'pointsAverageHome',
+        header: 'MPM/R',
+        filterVariant: 'range-slider',
+        Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+      },
+      {
+        id: 'pointsAverageAway',
+        accessorKey: 'pointsAverageAway',
+        header: 'MPV/R',
+        filterVariant: 'range-slider',
+        Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+      },
+      {
+        id: 'finishes',
+        accessorKey: 'finishes',
+        header: 'Finalizações',
+        filterVariant: 'range-slider',
+        Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+      },
+      {
+        id: 'finishesToScore',
+        accessorKey: 'finishesToScore',
+        header: 'FPG',
+        filterVariant: 'range-slider',
+        Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+      },
+      {
+        id: 'goals',
+        accessorKey: 'goals',
+        header: 'Gols',
+        filterVariant: 'range-slider',
+      },
+      {
+        id: 'defenses',
+        accessorKey: 'defenses',
+        header: 'Defesas',
+        filterVariant: 'range-slider',
+      },
+      {
+        id: 'goalsAgainst',
+        accessorKey: 'goalsAgainst',
+        header: 'Gols sofridos',
+        filterVariant: 'range-slider',
+      },
+      {
+        id: 'defensesToSufferGoal',
+        accessorKey: 'defensesToSufferGoal',
+        header: 'DPG',
+        filterVariant: 'range-slider',
+        Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+      },
+      {
+        id: 'minutesToScore',
+        accessorKey: 'minutesToScore',
+        header: 'MPG',
+        filterVariant: 'range-slider',
+        Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+      },
+      {
+        id: 'victoriesAverage',
+        accessorKey: 'victoriesAverage',
+        header: 'Vitórias %',
+        filterVariant: 'range-slider',
+        Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+      },
+      {
+        id: 'castTimes',
+        accessorKey: 'castTimes',
+        header: 'Escalações',
+        filterVariant: 'range-slider',
+      },
+      {
+        id: 'captainTimes',
+        accessorKey: 'captainTimes',
+        header: 'Vezes Cap.',
+        filterVariant: 'range-slider',
+      },
     ],
     [],
   );
@@ -70,6 +181,18 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
     enableGrouping: true,
     enablePinning: true,
     initialState: {
+      showGlobalFilter: true,
+      columnVisibility: {
+        position: false,
+        sumOfPlayedMinutes: false,
+        averageMinutesPerRound: false,
+        finishes: false,
+        finishesToScore: false,
+        goalsAgainst: false,
+        defensesToSufferGoal: false,
+        minutesToScore: false,
+        captainTimes: false
+      }
     },
   });
 
