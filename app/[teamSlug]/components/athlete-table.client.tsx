@@ -185,7 +185,8 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
         goalsAgainst: false,
         defensesToSufferGoal: false,
         minutesToScore: false,
-        captainTimes: false
+        captainTimes: false,
+        highestPoint: false,
       },
       columnPinning: {
         left: ['name']
@@ -195,7 +196,31 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
         'highestPoint',
         'pointsAverage',
         'castTimes',
-      ]
+        'pointsAverageHome',
+        'pointsAverageAway',
+        'goals',
+        'defenses',
+        'victoriesAverage',
+        'position',
+        'sumOfPlayedMinutes',
+        'averageMinutesPerRound',
+        'finishes',
+        'finishesToScore',
+        'goalsAgainst',
+        'defensesToSufferGoal',
+        'minutesToScore',
+        'captainTimes',
+      ],
+      sorting: [
+        {
+          id: 'castTimes',
+          desc: true,
+        },
+        {
+          id: 'pointsAverage',
+          desc: true,
+        },
+      ],
     },
   });
 
