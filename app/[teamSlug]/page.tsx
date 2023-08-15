@@ -5,12 +5,10 @@ import { type FootballTeamsIds } from '../constants/teams'
 import type { Metadata } from 'next'
 
 import './styles.css'
-import { Switch } from '@mantine/core';
 import { type PositionsIds } from '../constants/positions'
-import { AthleteTable } from './components/athlete-table.client'
 import { getPositionName } from '../helpers/positions'
 import { getFootballTeamBadgeLink, getFootballTeamName } from '../helpers/teams'
-import { IconCards, IconTable } from '@tabler/icons-react'
+import { CrewContent } from './components/crew-conent.client'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
@@ -99,7 +97,7 @@ interface RoundData {
   capitao_id: number
 }
 
-type CrewStatistics = Record<string, RenderedAthlete>
+export type CrewStatistics = Record<string, RenderedAthlete>
 
 function isCaptain(athleteId: number, captainId: number) {
   return athleteId === captainId
@@ -339,53 +337,6 @@ export interface AthleteTableData {
   captainTimes: number
 }
 
-function handleTableNumberValues(numberValue: number) {
-  if (isNil(numberValue))
-    return 0
-
-  if (isFinite(numberValue))
-    return numberValue
-
-  return 0
-}
-
-function athleteTableDataFactory(athlete: RenderedAthlete): AthleteTableData {
-  return {
-    id: athlete.atleta_id,
-    photoUrl: athlete.foto,
-    name: athlete.apelido,
-    club: getFootballTeamName(athlete.clube_id),
-    clubBadgeUrl: getFootballTeamBadgeLink(athlete.clube_id),
-    position: getPositionName(athlete.posicao_id),
-    highestPoint: athlete.highestPoint,
-    sumOfPlayedMinutes: handleTableNumberValues(athlete.sumOfPlayedMinutes),
-    averageMinutesPerRound: athlete.averageMinutesPerRound,
-    pointsAverage: athlete.pointsAverage,
-    pointsAverageHome: athlete.home.average,
-    pointsAverageAway: athlete.away.average,
-    finishes: handleTableNumberValues(athlete.finishes),
-    finishesToScore: handleTableNumberValues(athlete.finishesToScore),
-    goals: handleTableNumberValues(athlete.goals),
-    defenses: handleTableNumberValues(athlete.defenses),
-    goalsAgainst: handleTableNumberValues(athlete.goalsAgainst),
-    defensesToSufferGoal: handleTableNumberValues(athlete.defensesToSufferGoal),
-    minutesToScore: handleTableNumberValues(athlete.minutesToScore),
-    victoriesAverage: handleTableNumberValues(athlete.victoriesAverage * 100),
-    castTimes: athlete.castTimes,
-    captainTimes: athlete.captainTimes
-  }
-}
-
-function makeAthleteData(crew: CrewStatistics) {
-  const athleteData: AthleteTableData[] = []
-
-  Object.values(crew).forEach(athlete =>
-    athleteData.push(athleteTableDataFactory(athlete))
-  )
-
-  return athleteData
-}
-
 export default async function Team({ params }: { params: { teamSlug: string } }) {
   const teamData = TEAMS.find(team => team.slug === params.teamSlug)
 
@@ -403,21 +354,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
   return (
     <main className="min-h-screen items-center p-24">
       <h1 className="text-2xl">{teamData.name}</h1>
-      {/* <Switch
-        size="md"
-        onLabel={<IconCards size="1rem" stroke={2.5} />}
-        offLabel={<IconTable size="1rem" stroke={2.5} />}
-      /> */}
-      {/* <AthleteList
-        title="Titulares"
-        athletes={athletes}
-      />
-      <AthleteList
-        title="Reservas"
-        isBench
-        athletes={bench}
-      /> */}
-      <AthleteTable athletes={makeAthleteData(athletes)} />
+      <CrewContent athletes={athletes} bench={bench} />
     </main>
   )
 }
