@@ -245,9 +245,9 @@ const athleteColumns: AthleteTableColumn[] = [
 
 const athleteColumnsOrders = [
   'name',
+  'castTimes',
   'highestPoint',
   'pointsAverage',
-  'castTimes',
   'position',
   'pointsAverageHome',
   'pointsAverageAway',
