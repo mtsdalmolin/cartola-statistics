@@ -1,29 +1,22 @@
 import isNil from 'lodash/isNil'
 import max from 'lodash/max'
-import { TEAMS } from '../page'
+import { TEAMS } from '../../page'
 import type { Metadata } from 'next'
 
 import './styles.css'
-import { Athlete, CrewStatistics, RenderedAthlete } from '../common/types/athlete'
-import { CrewContent } from '../common/components/crew-content.client'
+import { Athlete, CrewStatistics, RenderedAthlete } from '../../common/types/athlete'
+import { CrewContent } from '../../common/components/crew-content.client'
+import { request } from '../../services/cartola-api'
+import { RoundData } from '../../services/types'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
   description: 'Site para analisar estatísticas que o cartola não utiliza.',
 }
 
-const CARTOLA_API = 'https://api.cartola.globo.com/'
-
 const PHOTO_SIZE_FORMAT = '220x220'
 
 const TEAM_ROUND_ENDPOINT = (teamId: string) => `time/id/${teamId}/:round`
-
-interface RoundData {
-  atletas: Athlete[]
-  reservas: Athlete[]
-  rodada_atual: number
-  capitao_id: number
-}
 
 function isCaptain(athleteId: number, captainId: number) {
   return athleteId === captainId
@@ -197,7 +190,7 @@ function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete:
 async function getPlayersTeamData(endpoint: string, rounds: number[]) {
   const results = await Promise.allSettled<RoundData>(
     rounds.map(round =>
-      fetch(`${CARTOLA_API}${endpoint.replace(':round', round.toString())}`)
+      request(endpoint.replace(':round', round.toString()))
         .then(res => res.json())
     )
   )
