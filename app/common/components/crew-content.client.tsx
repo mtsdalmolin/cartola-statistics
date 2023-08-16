@@ -72,7 +72,7 @@ export function CrewContent({ athletes, bench }: { athletes: CrewStatistics, ben
       {
         showTable
           ? (
-            <AthleteTable athletes={makeAthleteData(athletes)} type="athlete" />
+            <AthleteTable athletes={makeAthleteData(athletes)} benchAthletes={makeAthleteData(bench)} type="athlete" />
           )
           : (
             <>

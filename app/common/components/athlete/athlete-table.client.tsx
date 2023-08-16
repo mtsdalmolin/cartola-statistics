@@ -6,7 +6,7 @@ import {
   type MRT_ColumnDef,
   type MRT_TableInstance,
 } from 'mantine-react-table'
-import { Box, Button, Flex, MantineProvider } from '@mantine/core'
+import { Box, Button, Flex, MantineProvider, Switch } from '@mantine/core'
 
 import Image from 'next/image'
 import isNil from 'lodash/isNil'
@@ -15,6 +15,8 @@ import isArray from 'lodash/isArray'
 import { POSITIONS } from '@/app/constants/positions'
 import { AthleteTableData } from './types'
 import { MarketAthleteTableData } from '@/app/mercado/page'
+import { useState } from 'react'
+import { IconArmchair, IconSoccerField } from '@tabler/icons-react'
 
 function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<TableData> }) {
   const handleFilterChange = (position: typeof POSITIONS[0]) => {
@@ -362,15 +364,26 @@ const TABLE_TYPE_SORTING = {
   ],
 }
 
-interface AthleteTableProps<T> {
+type AthleteTableProps<T> = T extends AthleteTableData ? {
   athletes: T[]
+  benchAthletes: AthleteTableData[]
+  type: keyof typeof TABLE_TYPE_COLUMNS
+} : {
+  athletes: T[]
+  benchAthletes?: never
   type: keyof typeof TABLE_TYPE_COLUMNS
 }
 
-export function AthleteTable<T extends TableData>({ athletes, type }: AthleteTableProps<T>) {
+export function AthleteTable<T extends TableData>({ athletes, benchAthletes = [], type }: AthleteTableProps<T>) {
+  const [showBench, setShowBench] = useState(false)
+
+  const handleViewChange = () => {
+    setShowBench(prevState => !prevState)
+  }
+
   const table = useMantineReactTable({
     columns: TABLE_TYPE_COLUMNS[type],
-    data: athletes,
+    data: showBench ? benchAthletes : athletes,
     enableColumnFilterModes: true,
     enableColumnOrdering: true,
     enableFacetedValues: true,
@@ -386,7 +399,17 @@ export function AthleteTable<T extends TableData>({ athletes, type }: AthleteTab
       columnOrder: TABLE_TYPE_COLUMNS_ORDERS[type],
       sorting: TABLE_TYPE_SORTING[type],
     },
-    renderTopToolbarCustomActions: ({ table }) => <ToolbarPositionFilter tableObject={table} />
+    renderTopToolbarCustomActions: ({ table }) => (
+      <>
+        <Switch
+          size="md"
+          onLabel={<IconArmchair size={16} stroke={2.5} />}
+          offLabel={<IconSoccerField size={16} stroke={2.5} />}
+          onChange={handleViewChange}
+        />
+        <ToolbarPositionFilter tableObject={table} />
+      </>
+    )
   });
 
   return (
