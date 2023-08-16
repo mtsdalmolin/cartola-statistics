@@ -64,8 +64,8 @@ export function CrewContent({ athletes, bench }: { athletes: CrewStatistics, ben
     <>
     <Switch
       size="md"
-      onLabel={<IconTable size="1rem" stroke={2.5} />}
-      offLabel={<IconCards size="1rem" stroke={2.5} />}
+      onLabel={<IconTable size={16} stroke={2.5} />}
+      offLabel={<IconCards size={16} stroke={2.5} />}
       onChange={() => setShowTable(prevState => !prevState)}
     />
     {
