@@ -39,9 +39,12 @@ interface Athlete {
     FD?: number // Finalizações defendidas
     FF?: number // Finalizações pra fora
     FS?: number // Faltas sofridas
+    FT?: number // Finalizações na trave
     G?: number  // Gols
     GS?: number // Gols sofridos
     I?: number  // Impedimentos
+    PP?: number // Pênalti perdido
+    PS?: number // Pênalti sofrido
     SG?: number // Sem sofrer gols
     V?: number  // Vitória
   }
@@ -155,10 +158,11 @@ function getFinishesNumbers(athlete: Athlete) {
   const {
     FD: blockedFinishes,
     FF: outOfTargetFinishes,
+    FT: finishesOnPost,
     G: goals
   } = handleGameActions(athlete)
 
-  return (blockedFinishes ?? 0) + (outOfTargetFinishes ?? 0) + (goals ?? 0)
+  return (blockedFinishes ?? 0) + (outOfTargetFinishes ?? 0) + (finishesOnPost ?? 0) + (goals ?? 0)
 }
 
 function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
