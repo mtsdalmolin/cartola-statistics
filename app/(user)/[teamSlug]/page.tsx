@@ -83,7 +83,7 @@ function getFinishesNumbers(athlete: Athlete) {
   return (blockedFinishes ?? 0) + (outOfTargetFinishes ?? 0) + (finishesOnPost ?? 0) + (goals ?? 0)
 }
 
-export function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
+function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
   return {
     atleta_id: athlete.atleta_id,
     apelido: athlete.apelido,
