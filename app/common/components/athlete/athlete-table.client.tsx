@@ -105,7 +105,7 @@ function AthleteNameTableCell({ name, photoUrl, clubName, clubBadgeUrl }: { name
   )
 }
 
-type TableData = (AthleteTableData | MarketAthleteTableData)
+type TableData = AthleteTableData | MarketAthleteTableData
 type AthleteTableColumn = MRT_ColumnDef<TableData>
 
 const NAME_ROW: AthleteTableColumn = {
