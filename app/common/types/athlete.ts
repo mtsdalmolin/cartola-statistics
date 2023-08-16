@@ -36,6 +36,7 @@ export interface Athlete {
   }
   gato_mestre: {
     minutos_jogados: number
+    media_minutos_jogados?: number
     media_pontos_mandante?: number
     media_pontos_visitante?: number
   }

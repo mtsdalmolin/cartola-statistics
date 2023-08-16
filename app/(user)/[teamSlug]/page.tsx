@@ -103,6 +103,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     minimo_para_valorizar: athlete.minimo_para_valorizar,
     gato_mestre: {
       minutos_jogados: athlete.gato_mestre.minutos_jogados,
+      media_minutos_jogados: athlete.gato_mestre?.minutos_jogados ?? 0,
       media_pontos_mandante: athlete.gato_mestre?.media_pontos_mandante ?? 0,
       media_pontos_visitante: athlete.gato_mestre?.media_pontos_visitante ?? 0
     },

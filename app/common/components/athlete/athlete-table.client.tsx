@@ -311,6 +311,27 @@ const marketColumns: AthleteTableColumn[] = [
     header: 'Preço',
     filterVariant: 'range-slider'
   },
+  {
+    id: 'pointsAverageHome',
+    accessorKey: 'pointsAverageHome',
+    header: 'MPM',
+    filterVariant: 'range-slider',
+    Cell: ({ cell }) => cell.getValue<number | undefined>()?.toFixed(2)
+  },
+  {
+    id: 'pointsAverageAway',
+    accessorKey: 'pointsAverageAway',
+    header: 'MPV',
+    filterVariant: 'range-slider',
+    Cell: ({ cell }) => cell.getValue<number | undefined>()?.toFixed(2)
+  },
+  {
+    id: 'minutesPlayedAverage',
+    accessorKey: 'minutesPlayedAverage',
+    header: 'MMJ',
+    filterVariant: 'range-slider',
+    Cell: ({ cell }) => cell.getValue<number | undefined>()?.toFixed(2)
+  },
 ]
 
 const marketAthleteColumnsOrders = [
@@ -319,6 +340,9 @@ const marketAthleteColumnsOrders = [
   'minToValuate',
   'performance',
   'pointsAverage',
+  'pointsAverageHome',
+  'pointsAverageAway',
+  'minutesPlayedAverage',
   'status',
   'points',
   'position',
@@ -327,6 +351,7 @@ const marketAthleteColumnsOrders = [
 const marketAthleteColumnVisibility = {
   position: false,
   status: false,
+  minutesPlayedAverage: false,
   points: false
 }
 

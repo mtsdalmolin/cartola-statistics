@@ -44,6 +44,9 @@ export interface MarketAthleteTableData {
   points: number
   pointsAverage: number
   price: number
+  pointsAverageHome: number
+  pointsAverageAway: number
+  minutesPlayedAverage: number
 }
 
 function marketAthleteTableDataFactory(athlete: Athlete): MarketAthleteTableData {
@@ -59,7 +62,10 @@ function marketAthleteTableDataFactory(athlete: Athlete): MarketAthleteTableData
     status: getStatusName(athlete?.status_id ?? NULL),
     points: athlete.pontos_num,
     pointsAverage: athlete.media_num,
-    price: athlete.preco_num
+    price: athlete.preco_num,
+    pointsAverageHome: athlete.gato_mestre?.media_pontos_mandante ?? 0,
+    pointsAverageAway: athlete.gato_mestre?.media_pontos_visitante ?? 0,
+    minutesPlayedAverage: athlete.gato_mestre?.media_minutos_jogados ?? 0
   }
 }
 
