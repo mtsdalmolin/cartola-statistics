@@ -126,7 +126,7 @@ export function AthleteCard({
           <div className="w-24 mt-6 ml-4">
             <Image
               alt={athlete.apelido}
-              src={athlete.foto}
+              src={athlete.foto ?? ''}
               width={220}
               height={220}
               draggable="false"
