@@ -62,31 +62,31 @@ export function CrewContent({ athletes, bench }: { athletes: CrewStatistics, ben
 
   return (
     <>
-    <Switch
-      size="md"
-      onLabel={<IconTable size={16} stroke={2.5} />}
-      offLabel={<IconCards size={16} stroke={2.5} />}
-      onChange={() => setShowTable(prevState => !prevState)}
-    />
-    {
-      showTable
-        ? (
-          <AthleteTable athletes={makeAthleteData(athletes)} />
-        )
-        : (
-          <>
-            <AthleteList
-              title="Titulares"
-              athletes={athletes}
-            />
-            <AthleteList
-              title="Reservas"
-              isBench
-              athletes={bench}
-            />
-          </>
-        )
-    }
+      <Switch
+        size="md"
+        onLabel={<IconTable size={16} stroke={2.5} />}
+        offLabel={<IconCards size={16} stroke={2.5} />}
+        onChange={() => setShowTable(prevState => !prevState)}
+      />
+      {
+        showTable
+          ? (
+            <AthleteTable athletes={makeAthleteData(athletes)} />
+          )
+          : (
+            <>
+              <AthleteList
+                title="Titulares"
+                athletes={athletes}
+              />
+              <AthleteList
+                title="Reservas"
+                isBench
+                athletes={bench}
+              />
+            </>
+          )
+      }
     </>
   )
 }
