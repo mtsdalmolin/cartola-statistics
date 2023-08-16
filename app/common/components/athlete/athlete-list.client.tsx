@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef, useState } from "react"
-import { type RenderedAthlete } from "../page"
 import orderBy from 'lodash/orderBy'
 import mapValues from 'lodash/mapValues'
 import isEmpty from 'lodash/isEmpty'
@@ -11,6 +10,8 @@ import { POSITIONS } from "@/app/constants/positions"
 import { getPositionAbbreviation, getPositionName, getPositionOptionByValue, isCoach } from "@/app/helpers/positions"
 import { AthleteStatistics } from "./athlete-statistics"
 import { getFootballTeamBadgeLink, getFootballTeamName } from "@/app/helpers/teams"
+import { RenderedAthlete } from "../../types/athlete"
+import { PositionOption } from "../../types/position"
 
 const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
 const CAPTAIN_TIMES_OPTION = { value: 'captainTimes', label: 'Vezes capitão' }
@@ -36,8 +37,6 @@ const positionsOptions = Object.entries(POSITIONS).map(([positionId, position]) 
 }))
 
 const benchPositionsOptions = positionsOptions.filter(position => position.value !== '6')
-
-export type PositionOption = typeof positionsOptions[0]
 
 export function AthleteCard({
   athlete,

@@ -1,7 +1,7 @@
 import { isFinite } from "lodash"
-import { RenderedAthlete } from "../[teamSlug]/page"
 import { POSITIONS, PositionsIds } from "../constants/positions"
-import { PositionOption } from "../[teamSlug]/components/athlete-list.client"
+import { RenderedAthlete } from "../common/types/athlete"
+import { PositionOption } from "../common/types/position"
 
 export function isGoalkeeper(positionId: number) {
   const gkPositionId = Object.keys(POSITIONS)
@@ -34,7 +34,7 @@ export function getPositionOptionByValue(positionsOptions: PositionOption[], pos
   return positionsOptions.find(position => position.value === positionValue)!
 }
 
-export function getAthleteStatisticsByPositionId(athlete: RenderedAthlete) {
+export function getAthleteStatistics(athlete: RenderedAthlete) {
   return [
     {
       label: 'Maior pont.',

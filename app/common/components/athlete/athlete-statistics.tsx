@@ -1,9 +1,9 @@
-import { getAthleteStatisticsByPositionId } from "@/app/helpers/positions"
-import { StatisticItem } from "./statistic-item"
-import { RenderedAthlete } from "../page"
+import { getAthleteStatistics } from "@/app/helpers/positions"
+import { RenderedAthlete } from "../../types/athlete"
+import { StatisticItem } from "../statistic-item"
 
 export function AthleteStatistics({ athlete }: { athlete: RenderedAthlete }) {
-  const statistics = getAthleteStatisticsByPositionId(athlete)
+  const statistics = getAthleteStatistics(athlete)
   return (
     <div className="flex flex-col gap-0.5 h-[70%] divide-y overflow-auto hover:overscroll-contain hide-scroll">
       {

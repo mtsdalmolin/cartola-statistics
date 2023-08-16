@@ -8,12 +8,13 @@ import {
   MRT_TableInstance,
 } from 'mantine-react-table'
 import { Box, Button, Flex, MantineProvider } from '@mantine/core'
-import { AthleteTableData } from '../page'
+
 import Image from 'next/image'
 import isNil from 'lodash/isNil'
 import isArray from 'lodash/isArray'
 
 import { POSITIONS } from '@/app/constants/positions'
+import { AthleteTableData } from './types'
 
 function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<AthleteTableData> }) {
   const handleFilterChange = (position: typeof POSITIONS[0]) => {

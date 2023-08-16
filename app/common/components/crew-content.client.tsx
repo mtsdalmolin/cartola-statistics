@@ -3,12 +3,13 @@
 import { useState } from "react"
 import { IconCards, IconTable } from "@tabler/icons-react"
 import { Switch } from "@mantine/core"
-import { type CrewStatistics, AthleteTableData, RenderedAthlete } from "../page"
-import AthleteList from "./athlete-list.client"
-import { AthleteTable } from "./athlete-table.client"
+import AthleteList from "./athlete/athlete-list.client"
 import { getFootballTeamBadgeLink, getFootballTeamName } from "@/app/helpers/teams"
 import { getPositionName } from "@/app/helpers/positions"
 import isNil from 'lodash/isNil'
+import { AthleteTable } from "./athlete/athlete-table.client"
+import { AthleteTableData } from "./athlete/types"
+import { CrewStatistics, RenderedAthlete } from "../types/athlete"
 
 function handleTableNumberValues(numberValue: number) {
   if (isNil(numberValue))
