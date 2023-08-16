@@ -401,12 +401,14 @@ export function AthleteTable<T extends TableData>({ athletes, benchAthletes = []
     },
     renderTopToolbarCustomActions: ({ table }) => (
       <>
-        <Switch
-          size="md"
-          onLabel={<IconArmchair size={16} stroke={2.5} />}
-          offLabel={<IconSoccerField size={16} stroke={2.5} />}
-          onChange={handleViewChange}
-        />
+        {type === 'athlete' ? (
+          <Switch
+            size="md"
+            onLabel={<IconArmchair size={16} stroke={2.5} />}
+            offLabel={<IconSoccerField size={16} stroke={2.5} />}
+            onChange={handleViewChange}
+          />
+        ) : null}
         <ToolbarPositionFilter tableObject={table} />
       </>
     )
