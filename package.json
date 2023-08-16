@@ -14,9 +14,6 @@
     "@mantine/dates": "^6.0.19",
     "@mantine/hooks": "^6.0.19",
     "@tabler/icons-react": "^2.30.0",
-    "@types/node": "20.4.10",
-    "@types/react": "18.2.20",
-    "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
     "dayjs": "^1.11.9",
     "eslint": "8.47.0",
@@ -32,6 +29,9 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.197"
+    "@types/lodash": "^4.14.197",
+    "@types/node": "20.4.10",
+    "@types/react": "18.2.20",
+    "@types/react-dom": "18.2.7"
   }
 }
