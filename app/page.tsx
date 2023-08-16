@@ -1,7 +1,7 @@
 import Link from "next/link"
 
-const ROUNDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-const MIOLLO_AND_THOMAS_ROUNDS = [18]
+const ROUNDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+const MIOLLO_AND_THOMAS_ROUNDS = [18, 19]
 
 export const TEAMS = [
   {
