@@ -1,16 +1,20 @@
 import { PositionsIds } from "@/app/constants/positions"
+import { StatusIds } from "@/app/constants/status"
 import { FootballTeamsIds } from "@/app/constants/teams"
 
 export interface Athlete {
   atleta_id: number
   apelido: string
-  foto: string
+  foto?: string
   media_num: number
   pontos_num: number
   jogos_num: number
   clube_id: FootballTeamsIds
   posicao_id: PositionsIds
   variacao_num: number
+  minimo_para_valorizar: number
+  preco_num: number
+  status_id?: StatusIds
   scout: {
     A?: number  // Assistências
     CA?: number // Cartões amarelos

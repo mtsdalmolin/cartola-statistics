@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-const ROUNDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+export const ROUNDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 const MIOLLO_AND_THOMAS_ROUNDS = [18, 19]
 
 export const TEAMS = [
@@ -57,6 +57,7 @@ export const TEAMS = [
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-12 gap-2">
+      <Link href="/mercado">Mercado</Link>
       {TEAMS.map(team => 
         <Link key={team.id} href={`/${team.slug}`}>{team.name}</Link>
       )}

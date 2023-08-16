@@ -83,12 +83,12 @@ function getFinishesNumbers(athlete: Athlete) {
   return (blockedFinishes ?? 0) + (outOfTargetFinishes ?? 0) + (finishesOnPost ?? 0) + (goals ?? 0)
 }
 
-function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
+export function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
   return {
     atleta_id: athlete.atleta_id,
     apelido: athlete.apelido,
     castTimes: 1,
-    foto: athlete.foto.replace('FORMATO', PHOTO_SIZE_FORMAT),
+    foto: athlete.foto?.replace('FORMATO', PHOTO_SIZE_FORMAT) ?? '',
     media_num: athlete.media_num,
     jogos_num: athlete.jogos_num,
     sumOfOverallAverage: athlete.media_num,
@@ -99,6 +99,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     clube_id: athlete.clube_id,
     posicao_id: athlete.posicao_id,
     variacao_num: athlete.variacao_num,
+    preco_num: athlete.preco_num,
+    minimo_para_valorizar: athlete.minimo_para_valorizar,
     gato_mestre: {
       minutos_jogados: athlete.gato_mestre.minutos_jogados,
       media_pontos_mandante: athlete.gato_mestre?.media_pontos_mandante ?? 0,

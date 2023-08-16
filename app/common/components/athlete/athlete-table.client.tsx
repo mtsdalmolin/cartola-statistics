@@ -1,11 +1,10 @@
 "use client"
 
-import { useMemo } from 'react'
 import {
   MantineReactTable,
   useMantineReactTable,
   type MRT_ColumnDef,
-  MRT_TableInstance,
+  type MRT_TableInstance,
 } from 'mantine-react-table'
 import { Box, Button, Flex, MantineProvider } from '@mantine/core'
 
@@ -15,8 +14,9 @@ import isArray from 'lodash/isArray'
 
 import { POSITIONS } from '@/app/constants/positions'
 import { AthleteTableData } from './types'
+import { MarketAthleteTableData } from '@/app/mercado/page'
 
-function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<AthleteTableData> }) {
+function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<TableData> }) {
   const handleFilterChange = (position: typeof POSITIONS[0]) => {
     tableObject.setColumnFilters(prev => {
       const positionFilter = prev.find(filter => filter.id === 'position')
@@ -71,57 +71,75 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
   )
 }
 
-const columns: MRT_ColumnDef<AthleteTableData>[] = [
-  {
-    id: 'name',
-    accessorKey: 'name',
-    header: 'Nome',
-    size: 200,
-    filterVariant: 'autocomplete',
-    Cell: ({ renderedCellValue, row }) => (
+function AthleteNameTableCell({ name, photoUrl, clubName, clubBadgeUrl }: { name: string, photoUrl: string, clubName: string, clubBadgeUrl: string }) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+      }}
+    >
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px',
+          position: 'relative'
         }}
       >
-        <Box
-          sx={{
-            position: 'relative'
-          }}
-        >
-          <Image
-            alt={row.original.name}
-            width={50}
-            height={50}
-            src={row.original.photoUrl}
-            style={{ borderRadius: '50%' }}
-          />
-          <Image
-            alt={row.original.club}
-            width={20}
-            height={20}
-            src={row.original.clubBadgeUrl}
-            style={{ position: 'absolute', bottom: 0, right: 0 }}
-          />
-        </Box>
-        <span>{renderedCellValue}</span>
+        <Image
+          alt={name}
+          width={50}
+          height={50}
+          src={photoUrl}
+          style={{ borderRadius: '50%' }}
+        />
+        <Image
+          alt={clubName}
+          width={20}
+          height={20}
+          src={clubBadgeUrl}
+          style={{ position: 'absolute', bottom: 0, right: 0 }}
+        />
       </Box>
-    ),
-  },
+      <span>{name}</span>
+    </Box>
+  )
+}
+
+type TableData = (AthleteTableData | MarketAthleteTableData)
+type AthleteTableColumn = MRT_ColumnDef<TableData>
+
+const NAME_ROW: AthleteTableColumn = {
+  id: 'name',
+  accessorKey: 'name',
+  header: 'Nome',
+  size: 200,
+  filterVariant: 'autocomplete',
+  Cell: ({ row }) => (
+    <AthleteNameTableCell
+      name={row.original.name}
+      photoUrl={row.original.photoUrl}
+      clubName={row.original.club}
+      clubBadgeUrl={row.original.clubBadgeUrl}
+    />
+  ),
+}
+
+const POSITION_ROW: AthleteTableColumn = {
+  id: 'position',
+  accessorKey: 'position',
+  header: 'Posição',
+  filterVariant: 'multi-select',
+}
+
+const athleteColumns: AthleteTableColumn[] = [
+  NAME_ROW,
   {
     id: 'highestPoint',
     accessorKey: 'highestPoint',
     header: 'MP',
     filterVariant: 'range-slider',
   },
-  {
-    id: 'position',
-    accessorKey: 'position',
-    header: 'Posição',
-    filterVariant: 'multi-select',
-  },
+  POSITION_ROW,
   {
     id: 'sumOfPlayedMinutes',
     accessorKey: 'sumOfPlayedMinutes',
@@ -223,9 +241,135 @@ const columns: MRT_ColumnDef<AthleteTableData>[] = [
   },
 ]
 
-export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
+const athleteColumnsOrders = [
+  'name',
+  'highestPoint',
+  'pointsAverage',
+  'castTimes',
+  'position',
+  'pointsAverageHome',
+  'pointsAverageAway',
+  'goals',
+  'defenses',
+  'victoriesAverage',
+  'sumOfPlayedMinutes',
+  'averageMinutesPerRound',
+  'finishes',
+  'finishesToScore',
+  'goalsAgainst',
+  'defensesToSufferGoal',
+  'minutesToScore',
+  'captainTimes'
+]
+
+const athleteColumnVisibility = {
+  position: false,
+  sumOfPlayedMinutes: false,
+  averageMinutesPerRound: false,
+  finishes: false,
+  finishesToScore: false,
+  goalsAgainst: false,
+  defensesToSufferGoal: false,
+  minutesToScore: false,
+  captainTimes: false,
+  highestPoint: false,
+}
+
+const marketColumns: AthleteTableColumn[] = [
+  NAME_ROW,
+  POSITION_ROW,
+  {
+    id: 'performance',
+    accessorKey: 'performance',
+    header: 'Variação',
+    filterVariant: 'range-slider'
+  },
+  {
+    id: 'minToValuate',
+    accessorKey: 'minToValuate',
+    header: 'Min. Valorizar',
+    filterVariant: 'range-slider',
+    Cell: ({ cell }) => cell.getValue<number | undefined>() ?? 'Indisponível'
+  },
+  {
+    id: 'status',
+    accessorKey: 'status',
+    header: 'Situação',
+    filterVariant: 'multi-select'
+  },
+  {
+    id: 'points',
+    accessorKey: 'points',
+    header: 'Pontos',
+    filterVariant: 'range-slider',
+  },
+  {
+    id: 'price',
+    accessorKey: 'price',
+    header: 'Preço',
+    filterVariant: 'range-slider'
+  },
+]
+
+const marketAthleteColumnsOrders = [
+  'name',
+  'price',
+  'minToValuate',
+  'performance',
+  'pointsAverage',
+  'status',
+  'points',
+  'position',
+]
+
+const marketAthleteColumnVisibility = {
+  position: false,
+  status: false,
+  points: false
+}
+
+const TABLE_TYPE_COLUMNS = {
+  athlete: athleteColumns,
+  market: marketColumns
+}
+
+const TABLE_TYPE_COLUMNS_ORDERS = {
+  athlete: athleteColumnsOrders,
+  market: marketAthleteColumnsOrders
+}
+
+const TABLE_TYPE_COLUMNS_VISIBILITY = {
+  athlete: athleteColumnVisibility,
+  market: marketAthleteColumnVisibility
+}
+
+const TABLE_TYPE_SORTING = {
+  athlete: [
+    {
+      id: 'castTimes',
+      desc: true,
+    },
+    {
+      id: 'pointsAverage',
+      desc: true,
+    },
+  ],
+  market: [
+    {
+      id: 'price',
+      desc: true,
+    },
+  ],
+}
+
+interface AthleteTableProps<T> {
+  athletes: T[]
+  type: keyof typeof TABLE_TYPE_COLUMNS
+}
+
+export function AthleteTable<T extends TableData>({ athletes, type }: AthleteTableProps<T>) {
   const table = useMantineReactTable({
-    columns,
+    columns: TABLE_TYPE_COLUMNS[type],
     data: athletes,
     enableColumnFilterModes: true,
     enableColumnOrdering: true,
@@ -235,51 +379,12 @@ export function AthleteTable({ athletes }: { athletes: AthleteTableData[] }) {
     positionGlobalFilter: 'left',
     initialState: {
       showGlobalFilter: true,
-      columnVisibility: {
-        position: false,
-        sumOfPlayedMinutes: false,
-        averageMinutesPerRound: false,
-        finishes: false,
-        finishesToScore: false,
-        goalsAgainst: false,
-        defensesToSufferGoal: false,
-        minutesToScore: false,
-        captainTimes: false,
-        highestPoint: false,
-      },
+      columnVisibility: TABLE_TYPE_COLUMNS_VISIBILITY[type],
       columnPinning: {
         left: ['name']
       },
-      columnOrder: [
-        'name',
-        'highestPoint',
-        'pointsAverage',
-        'castTimes',
-        'position',
-        'pointsAverageHome',
-        'pointsAverageAway',
-        'goals',
-        'defenses',
-        'victoriesAverage',
-        'sumOfPlayedMinutes',
-        'averageMinutesPerRound',
-        'finishes',
-        'finishesToScore',
-        'goalsAgainst',
-        'defensesToSufferGoal',
-        'minutesToScore',
-        'captainTimes',
-      ],
-      sorting: [
-        {
-          id: 'castTimes',
-          desc: true,
-        },
-        {
-          id: 'pointsAverage',
-          desc: true,
-        },
-      ],
+      columnOrder: TABLE_TYPE_COLUMNS_ORDERS[type],
+      sorting: TABLE_TYPE_SORTING[type],
     },
     renderTopToolbarCustomActions: ({ table }) => <ToolbarPositionFilter tableObject={table} />
   });

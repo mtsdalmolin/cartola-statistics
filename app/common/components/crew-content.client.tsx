@@ -24,7 +24,7 @@ function handleTableNumberValues(numberValue: number) {
 function athleteTableDataFactory(athlete: RenderedAthlete): AthleteTableData {
   return {
     id: athlete.atleta_id,
-    photoUrl: athlete.foto,
+    photoUrl: athlete?.foto ?? '',
     name: athlete.apelido,
     club: getFootballTeamName(athlete.clube_id),
     clubBadgeUrl: getFootballTeamBadgeLink(athlete.clube_id),
@@ -72,7 +72,7 @@ export function CrewContent({ athletes, bench }: { athletes: CrewStatistics, ben
       {
         showTable
           ? (
-            <AthleteTable athletes={makeAthleteData(athletes)} />
+            <AthleteTable athletes={makeAthleteData(athletes)} type="athlete" />
           )
           : (
             <>
