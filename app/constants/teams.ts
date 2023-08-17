@@ -1,5 +1,7 @@
+export const UNEMPLOYED = 1
+
 export const FOOTBALL_TEAMS = {
-  1: {
+  [UNEMPLOYED]: {
     escudos: {
       '60x60': '',
       '45x45': '',

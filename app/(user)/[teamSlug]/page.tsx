@@ -1,13 +1,15 @@
 import isNil from 'lodash/isNil'
 import max from 'lodash/max'
+import sortBy from 'lodash/sortBy'
 import { TEAMS } from '../../page'
 import type { Metadata } from 'next'
 
 import './styles.css'
-import { Athlete, CrewStatistics, RenderedAthlete } from '../../common/types/athlete'
+import { Athlete, ClubStatistics, CrewStatistics, RenderedAthlete } from '../../common/types/athlete'
 import { CrewContent } from '../../common/components/crew-content.client'
 import { request } from '../../services/cartola-api'
 import { RoundData } from '../../services/types'
+import { UNEMPLOYED } from '@/app/constants/teams'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
@@ -190,7 +192,7 @@ function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete:
   return statistics
 }
 
-async function getPlayersTeamData(endpoint: string, rounds: number[]) {
+async function getPlayersTeamData(endpoint: string, rounds: number[]): Promise<[CrewStatistics, CrewStatistics, ClubStatistics]> {
   const results = await Promise.allSettled<RoundData>(
     rounds.map(round =>
       request(endpoint.replace(':round', round.toString()))
@@ -198,17 +200,21 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
     )
   )
 
-  let playersStatistics: CrewStatistics = {};
-  let benchStatistics: CrewStatistics = {};
-
+  let playersStatistics: CrewStatistics = {}
+  let benchStatistics: CrewStatistics = {}
+  let clubsStatistics: ClubStatistics = {}
+  let seasonPoints = 0
+  
   results.forEach(result => {
     if (result.status === 'rejected')
       return
 
+    seasonPoints = result.value.pontos_campeonato
+
     const {
       atletas: athletes,
       reservas: bench,
-      capitao_id: captainId
+      capitao_id: captainId,
     } = result.value
     
     athletes.forEach(athlete => {
@@ -216,6 +222,18 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
       
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
+      }
+
+      if (clubsStatistics[athlete.clube_id]) {
+        clubsStatistics[athlete.clube_id].points += calculatePoints(athlete, captainId)
+      } else {
+        if (athlete.clube_id !== UNEMPLOYED) {
+          clubsStatistics[athlete.clube_id] = {
+            id: athlete.clube_id,
+            points: calculatePoints(athlete, captainId),
+            pointsPercentage: 0
+          }
+        }
       }
     })
 
@@ -232,7 +250,11 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]) {
     benchStatistics[athleteId] = handlePlayersDerivedStatistics(athlete)
   })
 
-  return [playersStatistics, benchStatistics]
+  Object.entries(clubsStatistics).forEach(([clubId, club]) => {
+    clubsStatistics[clubId].pointsPercentage = club.points / seasonPoints * 100
+  })
+
+  return [playersStatistics, benchStatistics, clubsStatistics]
 }
 
 export default async function Team({ params }: { params: { teamSlug: string } }) {
@@ -244,7 +266,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
 
   metadata.title = teamData.name
 
-  const [athletes, bench] = await getPlayersTeamData(
+  const [athletes, bench, clubs] = await getPlayersTeamData(
     TEAM_ROUND_ENDPOINT(teamData.id.toString()),
     teamData.rounds
   )
@@ -252,7 +274,11 @@ export default async function Team({ params }: { params: { teamSlug: string } })
   return (
     <main className="min-h-screen items-center p-24">
       <h1 className="text-2xl">{teamData.name}</h1>
-      <CrewContent athletes={athletes} bench={bench} />
+      <CrewContent
+        athletes={athletes}
+        bench={bench}
+        clubs={clubs}
+      />
     </main>
   )
 }

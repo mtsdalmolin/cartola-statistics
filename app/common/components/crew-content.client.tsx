@@ -2,14 +2,16 @@
 
 import { useState } from "react"
 import { IconCards, IconTable } from "@tabler/icons-react"
-import { Switch } from "@mantine/core"
+import { Flex, Switch } from "@mantine/core"
 import AthleteList from "./athlete/athlete-list.client"
 import { getFootballTeamBadgeLink, getFootballTeamName } from "@/app/helpers/teams"
 import { getPositionName } from "@/app/helpers/positions"
 import isNil from 'lodash/isNil'
+import orderBy from 'lodash/orderBy'
 import { AthleteTable } from "./athlete/athlete-table.client"
 import { AthleteTableData } from "./athlete/types"
-import { CrewStatistics, RenderedAthlete } from "../types/athlete"
+import { ClubStatistics, CrewStatistics, RenderedAthlete } from "../types/athlete"
+import Image from "next/image"
 
 function handleTableNumberValues(numberValue: number) {
   if (isNil(numberValue))
@@ -58,11 +60,34 @@ export function makeAthleteData(crew: CrewStatistics) {
   return athleteData
 }
 
-export function CrewContent({ athletes, bench }: { athletes: CrewStatistics, bench: CrewStatistics }) {
+export function CrewContent(
+  { athletes, bench, clubs }:
+  { athletes: CrewStatistics, bench: CrewStatistics, clubs: ClubStatistics }
+) {
   const [showTable, setShowTable] = useState(false)
 
   return (
     <>
+      <div className="rounded-md bg-zinc-900 py-4 px-6">
+        <div className="mt-[-0.175rem] mb-4">Percentual de pontos por clubes</div>
+        <div className="flex justify-between">
+          {
+            orderBy(Object.values(clubs), 'pointsPercentage', 'desc').map(
+              (club: ClubStatistics[0]) => (
+                <Flex key={club.id} gap="sm" direction="column" align="center">
+                  <Image
+                    alt={getFootballTeamName(club.id)}
+                    src={getFootballTeamBadgeLink(club.id)}
+                    width={30}
+                    height={30}
+                  />
+                  {club.pointsPercentage.toFixed(1)}%
+                </Flex>
+              )
+            )
+          }
+        </div>
+      </div>
       <Switch
         size="md"
         onLabel={<IconTable size={16} stroke={2.5} />}

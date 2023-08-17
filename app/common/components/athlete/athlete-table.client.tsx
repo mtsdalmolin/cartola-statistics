@@ -400,7 +400,7 @@ type AthleteTableProps<T> = T extends AthleteTableData ? {
   type: keyof typeof TABLE_TYPE_COLUMNS
 }
 
-export function AthleteTable<T extends TableData>({ athletes, benchAthletes = [], type }: AthleteTableProps<T>) {
+export function AthleteTable<T>({ athletes, benchAthletes = [], type }: AthleteTableProps<T>) {
   const [showBench, setShowBench] = useState(false)
 
   const handleViewChange = () => {

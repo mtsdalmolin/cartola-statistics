@@ -79,3 +79,4 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
 }
 
 export type CrewStatistics = Record<string, RenderedAthlete>
+export type ClubStatistics = Record<string, { id: FootballTeamsIds, points: number, pointsPercentage: number }>
