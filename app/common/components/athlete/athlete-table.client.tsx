@@ -17,6 +17,7 @@ import { AthleteTableData } from './types'
 import { MarketAthleteTableData } from '@/app/mercado/page'
 import { useState } from 'react'
 import { IconArmchair, IconSoccerField } from '@tabler/icons-react'
+import { PROSPECTIVE, STATUS } from '@/app/constants/status'
 
 function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<TableData> }) {
   const handleFilterChange = (position: typeof POSITIONS[0]) => {
@@ -411,8 +412,6 @@ export function AthleteTable<T extends TableData>({ athletes, benchAthletes = []
     data: showBench ? benchAthletes : athletes,
     enableColumnFilterModes: true,
     enableColumnOrdering: true,
-    enableFacetedValues: true,
-    enableGrouping: true,
     enablePinning: true,
     positionGlobalFilter: 'left',
     initialState: {
@@ -423,6 +422,9 @@ export function AthleteTable<T extends TableData>({ athletes, benchAthletes = []
       },
       columnOrder: TABLE_TYPE_COLUMNS_ORDERS[type],
       sorting: TABLE_TYPE_SORTING[type],
+      columnFilters: [
+        { id: 'status', value: [STATUS[PROSPECTIVE].nome] }
+      ]
     },
     renderTopToolbarCustomActions: ({ table }) => (
       <>
