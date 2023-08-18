@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, ReactElement } from "react"
 import { IconCards, IconTable } from "@tabler/icons-react"
-import { Flex, Switch } from "@mantine/core"
+import { Switch } from "@mantine/core"
 import AthleteList from "./athlete/athlete-list.client"
 import { getFootballTeamBadgeLink, getFootballTeamName } from "@/app/helpers/teams"
 import { getPositionName } from "@/app/helpers/positions"
@@ -12,6 +12,7 @@ import { AthleteTable } from "./athlete/athlete-table.client"
 import { AthleteTableData } from "./athlete/types"
 import { ClubStatistics, CrewStatistics, RenderedAthlete } from "../types/athlete"
 import Image from "next/image"
+import { PositionsStatistics } from "../types/position"
 
 function handleTableNumberValues(numberValue: number) {
   if (isNil(numberValue))
@@ -60,17 +61,141 @@ export function makeAthleteData(crew: CrewStatistics) {
   return athleteData
 }
 
+function StatisticsContainer({ children, title }: { children: ReactElement | ReactElement[], title: string }) {
+  return (
+    <div className="rounded-md bg-zinc-900 py-4 px-6">
+      <div className="mt-[-0.175rem] mb-4">{title}</div>
+      <Flex justify="between">
+        {children}
+      </Flex>
+    </div>
+  )
+}
+
+type GapValues = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+
+function setGap(gap?: GapValues) {
+  let size = ''
+
+  switch (gap) {
+    case 'xs':
+      size = '3'
+      break
+    case 'sm':
+      size = '4'
+      break
+    case 'md':
+      size = '6'
+      break
+    case 'lg':
+      size = '8'
+      break
+    case 'xl':
+      size = '10'
+      break
+    default:
+      size = '6'
+  }
+
+  return `gap-${size}`
+}
+
+type DirectionValues = 'column'
+
+function setDirection(direction?: DirectionValues) {
+  return direction === 'column' ? 'flex-col' : ''
+}
+
+type AlignOptions = 'start'
+  | 'end'
+  | 'center'
+  | 'baseline'
+  | 'stretch'
+
+function setAlignItems(align?: AlignOptions) {
+  const ALIGN_OPTIONS = [
+    'start',
+    'end',
+    'center',
+    'baseline',
+    'stretch',
+  ]
+
+  if (!isNil(align) && !ALIGN_OPTIONS.includes(align))
+    throw new Error('[Flex] align items should have a valid option')
+
+  return `items-${align || ALIGN_OPTIONS[0]}`
+}
+
+type JustifyValues = 'normal'
+  | 'start'
+  | 'end'
+  | 'center'
+  | 'between'
+  | 'around'
+  | 'evenly'
+  | 'stretch' 
+
+function setJustify(justify?: JustifyValues) {
+  const JUSTIFY_OPTIONS = [
+    'normal',
+    'start',
+    'end',
+    'center',
+    'between',
+    'around',
+    'evenly',
+    'stretch',
+  ]
+
+  if (!isNil(justify) && !JUSTIFY_OPTIONS.includes(justify))
+    throw new Error('[Flex] align items should have a valid option')
+  
+  return `justify-${justify || JUSTIFY_OPTIONS[0]}`
+}
+
+function Flex({
+  children,
+  align,
+  direction,
+  justify,
+  gap
+}: {
+  children: (ReactElement | string)[] | (ReactElement | string),
+  align?: AlignOptions,
+  direction?: DirectionValues,
+  justify?: JustifyValues
+  gap?: GapValues
+}) {
+  return (
+    <div className={`
+      flex
+      ${setAlignItems(align)}
+      ${setDirection(direction)}
+      ${setJustify(justify)}
+      ${setGap(gap)}
+      flex-wrap
+    `}>
+      {children}
+    </div>
+  )
+}
+
 export function CrewContent(
-  { athletes, bench, clubs }:
-  { athletes: CrewStatistics, bench: CrewStatistics, clubs: ClubStatistics }
+  { athletes, bench, clubs, positions }:
+  {
+    athletes: CrewStatistics,
+    bench: CrewStatistics,
+    clubs: ClubStatistics,
+    positions: PositionsStatistics
+  }
 ) {
   const [showTable, setShowTable] = useState(false)
 
   return (
     <>
-      <div className="rounded-md bg-zinc-900 py-4 px-6">
-        <div className="mt-[-0.175rem] mb-4">Percentual de pontos por clubes</div>
-        <div className="flex justify-between">
+      <Flex direction="column" gap="sm">
+        <StatisticsContainer title="Percentual de pontos por clubes">
           {
             orderBy(Object.values(clubs), 'pointsPercentage', 'desc').map(
               (club: ClubStatistics[0]) => (
@@ -86,8 +211,19 @@ export function CrewContent(
               )
             )
           }
-        </div>
-      </div>
+        </StatisticsContainer>
+        <StatisticsContainer title="Percentual de pontos por posição">
+          {
+            orderBy(Object.values(positions), 'pointsPercentage', 'desc').map(
+              (position: PositionsStatistics[0]) => (
+                <Flex key={position.id} gap="sm" align="center">
+                  {getPositionName(position.id)}: {position.pointsPercentage.toFixed(1)}%
+                </Flex>
+              )
+            )
+          }
+        </StatisticsContainer>
+      </Flex>
       <Switch
         size="md"
         onLabel={<IconTable size={16} stroke={2.5} />}

@@ -10,6 +10,7 @@ import { CrewContent } from '../../common/components/crew-content.client'
 import { request } from '../../services/cartola-api'
 import { RoundData } from '../../services/types'
 import { UNEMPLOYED } from '@/app/constants/teams'
+import { PositionsStatistics } from '@/app/common/types/position'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
@@ -192,7 +193,12 @@ function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete:
   return statistics
 }
 
-async function getPlayersTeamData(endpoint: string, rounds: number[]): Promise<[CrewStatistics, CrewStatistics, ClubStatistics]> {
+async function getPlayersTeamData(endpoint: string, rounds: number[]): Promise<[
+  CrewStatistics,
+  CrewStatistics,
+  ClubStatistics,
+  PositionsStatistics
+]> {
   const results = await Promise.allSettled<RoundData>(
     rounds.map(round =>
       request(endpoint.replace(':round', round.toString()))
@@ -203,6 +209,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]): Promise<[
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
+  let positionsStatistics: PositionsStatistics = {}
   let seasonPoints = 0
   
   results.forEach(result => {
@@ -224,15 +231,27 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]): Promise<[
         playersStatistics[athlete.atleta_id].captainTimes++
       }
 
+      const athletePoints = calculatePoints(athlete, captainId)
+
       if (clubsStatistics[athlete.clube_id]) {
-        clubsStatistics[athlete.clube_id].points += calculatePoints(athlete, captainId)
+        clubsStatistics[athlete.clube_id].points += athletePoints
       } else {
         if (athlete.clube_id !== UNEMPLOYED) {
           clubsStatistics[athlete.clube_id] = {
             id: athlete.clube_id,
-            points: calculatePoints(athlete, captainId),
+            points: athletePoints,
             pointsPercentage: 0
           }
+        }
+      }
+
+      if (positionsStatistics[athlete.posicao_id]) {
+        positionsStatistics[athlete.posicao_id].points += athletePoints
+      } else {
+        positionsStatistics[athlete.posicao_id] = {
+          id: athlete.posicao_id,
+          points: athletePoints,
+          pointsPercentage: 0
         }
       }
     })
@@ -253,8 +272,17 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]): Promise<[
   Object.entries(clubsStatistics).forEach(([clubId, club]) => {
     clubsStatistics[clubId].pointsPercentage = club.points / seasonPoints * 100
   })
+  
+  Object.entries(positionsStatistics).forEach(([positionId, position]) => {
+    positionsStatistics[positionId].pointsPercentage = position.points / seasonPoints * 100
+  })
 
-  return [playersStatistics, benchStatistics, clubsStatistics]
+  return [
+    playersStatistics,
+    benchStatistics,
+    clubsStatistics,
+    positionsStatistics
+  ]
 }
 
 export default async function Team({ params }: { params: { teamSlug: string } }) {
@@ -266,7 +294,12 @@ export default async function Team({ params }: { params: { teamSlug: string } })
 
   metadata.title = teamData.name
 
-  const [athletes, bench, clubs] = await getPlayersTeamData(
+  const [
+    athletes,
+    bench,
+    clubs,
+    positions
+  ] = await getPlayersTeamData(
     TEAM_ROUND_ENDPOINT(teamData.id.toString()),
     teamData.rounds
   )
@@ -278,6 +311,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
         athletes={athletes}
         bench={bench}
         clubs={clubs}
+        positions={positions}
       />
     </main>
   )
