@@ -97,7 +97,11 @@ export function CrewContent(
       {
         showTable
           ? (
-            <AthleteTable athletes={makeAthleteData(athletes)} benchAthletes={makeAthleteData(bench)} type="athlete" />
+            <AthleteTable
+              athletes={makeAthleteData(athletes)}
+              benchAthletes={makeAthleteData(bench)}
+              type="athlete"
+            />
           )
           : (
             <>
