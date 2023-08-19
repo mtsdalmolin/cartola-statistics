@@ -305,7 +305,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
   )
 
   return (
-    <main className="min-h-screen items-center p-24">
+    <main className="max-w-[80vw] m-auto min-h-screen items-center py-20 px-12">
       <h1 className="text-2xl">{teamData.name}</h1>
       <CrewContent
         athletes={athletes}
