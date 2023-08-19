@@ -13,6 +13,7 @@ import { AthleteTableData } from "./athlete/types"
 import { ClubStatistics, CrewStatistics, RenderedAthlete } from "../types/athlete"
 import Image from "next/image"
 import { PositionsStatistics } from "../types/position"
+import { Flex } from "./flex"
 
 function handleTableNumberValues(numberValue: number) {
   if (isNil(numberValue))
@@ -72,114 +73,6 @@ function StatisticsContainer({ children, title }: { children: ReactElement | Rea
   )
 }
 
-type GapValues = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-
-function setGap(gap?: GapValues) {
-  let size = ''
-
-  switch (gap) {
-    case 'xs':
-      size = '3'
-      break
-    case 'sm':
-      size = '4'
-      break
-    case 'md':
-      size = '6'
-      break
-    case 'lg':
-      size = '8'
-      break
-    case 'xl':
-      size = '10'
-      break
-    default:
-      size = '6'
-  }
-
-  return `gap-${size}`
-}
-
-type DirectionValues = 'column'
-
-function setDirection(direction?: DirectionValues) {
-  return direction === 'column' ? 'flex-col' : ''
-}
-
-type AlignOptions = 'start'
-  | 'end'
-  | 'center'
-  | 'baseline'
-  | 'stretch'
-
-function setAlignItems(align?: AlignOptions) {
-  const ALIGN_OPTIONS = [
-    'start',
-    'end',
-    'center',
-    'baseline',
-    'stretch',
-  ]
-
-  if (!isNil(align) && !ALIGN_OPTIONS.includes(align))
-    throw new Error('[Flex] align items should have a valid option')
-
-  return `items-${align || ALIGN_OPTIONS[0]}`
-}
-
-type JustifyValues = 'normal'
-  | 'start'
-  | 'end'
-  | 'center'
-  | 'between'
-  | 'around'
-  | 'evenly'
-  | 'stretch' 
-
-function setJustify(justify?: JustifyValues) {
-  const JUSTIFY_OPTIONS = [
-    'normal',
-    'start',
-    'end',
-    'center',
-    'between',
-    'around',
-    'evenly',
-    'stretch',
-  ]
-
-  if (!isNil(justify) && !JUSTIFY_OPTIONS.includes(justify))
-    throw new Error('[Flex] align items should have a valid option')
-  
-  return `justify-${justify || JUSTIFY_OPTIONS[0]}`
-}
-
-function Flex({
-  children,
-  align,
-  direction,
-  justify,
-  gap
-}: {
-  children: (ReactElement | string)[] | (ReactElement | string),
-  align?: AlignOptions,
-  direction?: DirectionValues,
-  justify?: JustifyValues
-  gap?: GapValues
-}) {
-  return (
-    <div className={`
-      flex
-      ${setAlignItems(align)}
-      ${setDirection(direction)}
-      ${setJustify(justify)}
-      ${setGap(gap)}
-      flex-wrap
-    `}>
-      {children}
-    </div>
-  )
-}
 
 export function CrewContent(
   { athletes, bench, clubs, positions }:
