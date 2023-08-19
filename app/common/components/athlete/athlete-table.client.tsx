@@ -6,7 +6,7 @@ import {
   type MRT_ColumnDef,
   type MRT_TableInstance,
 } from 'mantine-react-table'
-import { Box, Button, Flex, MantineProvider, Switch } from '@mantine/core'
+import { Box, Dialog, MantineProvider, Switch, Text } from '@mantine/core'
 
 import Image from 'next/image'
 import isNil from 'lodash/isNil'
@@ -15,9 +15,16 @@ import isArray from 'lodash/isArray'
 import { POSITIONS } from '@/app/constants/positions'
 import { AthleteTableData } from './types'
 import { MarketAthleteTableData } from '@/app/mercado/page'
-import { useState } from 'react'
+import { useMemo, useState, useSyncExternalStore } from 'react'
 import { IconArmchair, IconSoccerField } from '@tabler/icons-react'
 import { PROSPECTIVE, STATUS } from '@/app/constants/status'
+import {
+  LOCALSTORAGE_TABLE_COLUMN_STATE_ITEM_NAME,
+  MarketTableAsyncExternalStorage,
+  UpdateLocalStorage
+} from '@/app/storage/localstorage/market-table.external'
+import { Button } from '../button.client'
+import { Flex } from '../flex'
 
 function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<TableData> }) {
   const handleFilterChange = (position: typeof POSITIONS[0]) => {
@@ -61,12 +68,13 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
   const handleClearFilters = () => tableObject.resetColumnFilters()
 
   return (
-    <Flex gap="md">
+    <Flex justify="center">
       {
         Object.values(POSITIONS).map(position => (
           <Button
             key={position.abreviacao}
-            onClick={() => handleFilterChange(position)}>
+            onClick={() => handleFilterChange(position)}
+          >
             {position.nome}
           </Button>
         ))
@@ -398,14 +406,34 @@ type AthleteTableProps<T> = T extends AthleteTableData ? {
   athletes: T[]
   benchAthletes: AthleteTableData[]
   type: keyof typeof TABLE_TYPE_COLUMNS
+  isEditable?: never
 } : {
   athletes: T[]
   benchAthletes?: never
   type: keyof typeof TABLE_TYPE_COLUMNS
+  isEditable?: boolean
 }
 
-export function AthleteTable<T>({ athletes, benchAthletes = [], type }: AthleteTableProps<T>) {
+let customizedTableColumnConfig: UpdateLocalStorage = !isNil(localStorage)
+  ? JSON.parse(localStorage.getItem(LOCALSTORAGE_TABLE_COLUMN_STATE_ITEM_NAME) ?? '{}')
+  : {}
+
+function isMarketAndEditable(type: keyof typeof TABLE_TYPE_COLUMNS, isEditable: boolean) {
+  return isEditable && type === 'market'
+}
+
+export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable = false }: AthleteTableProps<T>) {
   const [showBench, setShowBench] = useState(false)
+  const [columnOrder, setColumnOrder] = useState(
+    isMarketAndEditable(type, isEditable)
+      ? customizedTableColumnConfig?.columnOrder ?? TABLE_TYPE_COLUMNS_ORDERS[type]
+      : TABLE_TYPE_COLUMNS_ORDERS[type]
+  )
+  const [columnVisibility, setColumnVisibility] = useState(
+    isMarketAndEditable(type, isEditable)
+      ? customizedTableColumnConfig?.columnVisibility ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
+      : TABLE_TYPE_COLUMNS_VISIBILITY[type]
+  )
 
   const handleViewChange = () => {
     setShowBench(prevState => !prevState)
@@ -418,18 +446,28 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type }: AthleteT
     enableColumnOrdering: true,
     enablePinning: true,
     positionGlobalFilter: 'left',
+    state: {
+      columnOrder,
+      columnVisibility,
+    },
     initialState: {
       showGlobalFilter: true,
-      columnVisibility: TABLE_TYPE_COLUMNS_VISIBILITY[type],
+      columnOrder: isMarketAndEditable(type, isEditable)
+        ? customizedTableColumnConfig?.columnOrder ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
+        : columnOrder,
+      columnVisibility: isMarketAndEditable(type, isEditable)
+        ? customizedTableColumnConfig?.columnVisibility ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
+        : columnVisibility,
       columnPinning: {
         left: ['name']
       },
-      columnOrder: TABLE_TYPE_COLUMNS_ORDERS[type],
       sorting: TABLE_TYPE_SORTING[type],
       columnFilters: [
         { id: 'status', value: [STATUS[PROSPECTIVE].nome] }
       ]
     },
+    onColumnOrderChange: setColumnOrder,
+    onColumnVisibilityChange: setColumnVisibility,
     renderTopToolbarCustomActions: ({ table }) => (
       <>
         {type === 'athlete' ? (
@@ -444,9 +482,49 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type }: AthleteT
       </>
     )
   });
+  
+  const initialTableState = useSyncExternalStore(
+    MarketTableAsyncExternalStorage.subscribe,
+    MarketTableAsyncExternalStorage.getSnapshot
+  )
+
+  const tableConfigDiffs = useMemo(() => {
+    const parsedInitialTableState = JSON.parse(initialTableState ?? '{}')
+    if (JSON.stringify(parsedInitialTableState.columnOrder) !== JSON.stringify(columnOrder)) {
+      return true
+    }
+
+    if (JSON.stringify(parsedInitialTableState.columnVisibility) !== JSON.stringify(columnVisibility)) {
+      return true
+    }
+
+    return false
+  }, [
+    initialTableState,
+    columnOrder,
+    columnVisibility
+  ])
+
+  const showSaveTableDialog = useMemo(() =>
+    isMarketAndEditable(type, isEditable) && tableConfigDiffs,
+    [type, isEditable, tableConfigDiffs]
+  )
 
   return (
     <MantineProvider theme={{ colorScheme: 'dark' }}>
+      <Dialog opened={showSaveTableDialog} size="md" radius="md">
+        <Text size="md" mb="xs" weight={500}>
+          Sua tabela sofreu alterações. Deseja salvar?
+        </Text>
+
+        <Flex justify="end">
+          <Button
+            onClick={() => MarketTableAsyncExternalStorage.updateLocalStorage({ columnOrder, columnVisibility })
+          }>
+            Salvar
+          </Button>
+        </Flex>
+      </Dialog>
       <MantineReactTable table={table} />
     </MantineProvider>
   )
