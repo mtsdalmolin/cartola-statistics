@@ -23,10 +23,12 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
   const handleFilterChange = (position: typeof POSITIONS[0]) => {
     tableObject.setColumnFilters(prev => {
       const positionFilter = prev.find(filter => filter.id === 'position')
+      const otherFilters = prev.filter(filter => filter.id !== 'position')
 
       if (!isNil(positionFilter) && isArray(positionFilter.value)) {
         if (positionFilter.value.includes(position.nome)) {
           return [
+            ...otherFilters,
             {
               id: 'position',
               value: positionFilter.value.filter(positionValue => positionValue !== position.nome)
@@ -35,6 +37,7 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
         }
 
         return [
+          ...otherFilters,
           {
             id: 'position',
             value: [
@@ -46,6 +49,7 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
       }
 
       return [
+        ...otherFilters,
         {
           id: 'position',
           value: [position.nome]
