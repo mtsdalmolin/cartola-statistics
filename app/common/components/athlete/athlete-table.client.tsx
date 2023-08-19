@@ -1,4 +1,4 @@
-"use client"
+"use client"!
 
 import {
   MantineReactTable,
@@ -6,7 +6,13 @@ import {
   type MRT_ColumnDef,
   type MRT_TableInstance,
 } from 'mantine-react-table'
-import { Box, Dialog, MantineProvider, Switch, Text } from '@mantine/core'
+import {
+  Box,
+  Dialog,
+  MantineProvider,
+  Switch,
+  Text
+} from '@mantine/core'
 
 import Image from 'next/image'
 import isNil from 'lodash/isNil'
@@ -18,11 +24,7 @@ import { MarketAthleteTableData } from '@/app/mercado/page'
 import { useMemo, useState, useSyncExternalStore } from 'react'
 import { IconArmchair, IconSoccerField } from '@tabler/icons-react'
 import { PROSPECTIVE, STATUS } from '@/app/constants/status'
-import {
-  LOCALSTORAGE_TABLE_COLUMN_STATE_ITEM_NAME,
-  MarketTableAsyncExternalStorage,
-  UpdateLocalStorage
-} from '@/app/storage/localstorage/market-table.external'
+import { MarketTableAsyncExternalStorage } from '@/app/storage/localstorage/market-table.external'
 import { Button } from '../button.client'
 import { Flex } from '../flex'
 
@@ -414,10 +416,6 @@ type AthleteTableProps<T> = T extends AthleteTableData ? {
   isEditable?: boolean
 }
 
-let customizedTableColumnConfig: UpdateLocalStorage = !isNil(localStorage)
-  ? JSON.parse(localStorage.getItem(LOCALSTORAGE_TABLE_COLUMN_STATE_ITEM_NAME) ?? '{}')
-  : {}
-
 function isMarketAndEditable(type: keyof typeof TABLE_TYPE_COLUMNS, isEditable: boolean) {
   return isEditable && type === 'market'
 }
@@ -426,12 +424,12 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
   const [showBench, setShowBench] = useState(false)
   const [columnOrder, setColumnOrder] = useState(
     isMarketAndEditable(type, isEditable)
-      ? customizedTableColumnConfig?.columnOrder ?? TABLE_TYPE_COLUMNS_ORDERS[type]
+      ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnOrder ?? TABLE_TYPE_COLUMNS_ORDERS[type]
       : TABLE_TYPE_COLUMNS_ORDERS[type]
   )
   const [columnVisibility, setColumnVisibility] = useState(
     isMarketAndEditable(type, isEditable)
-      ? customizedTableColumnConfig?.columnVisibility ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
+      ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnVisibility ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
       : TABLE_TYPE_COLUMNS_VISIBILITY[type]
   )
 
@@ -453,10 +451,10 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
     initialState: {
       showGlobalFilter: true,
       columnOrder: isMarketAndEditable(type, isEditable)
-        ? customizedTableColumnConfig?.columnOrder ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
+        ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnOrder ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
         : columnOrder,
       columnVisibility: isMarketAndEditable(type, isEditable)
-        ? customizedTableColumnConfig?.columnVisibility ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
+        ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnVisibility ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
         : columnVisibility,
       columnPinning: {
         left: ['name']
