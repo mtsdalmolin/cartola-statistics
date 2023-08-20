@@ -17,6 +17,7 @@ import {
   Text,
   Tooltip
 } from '@mantine/core'
+import { IconPlayFootball } from '@tabler/icons-react'
 
 import Image from 'next/image'
 import isNil from 'lodash/isNil'
@@ -78,6 +79,11 @@ function handleTableFilterChange<T>({
 }
 
 function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<TableData> }) {
+  const selectedPositions = tableObject
+    .getState()
+    .columnFilters
+    .find(filter => filter.id === 'position')?.value as string[] ?? []
+
   const handleFilterChange = (position: typeof POSITIONS[0]) => {
     tableObject.setColumnFilters(prev => {
       return handleTableFilterChange({
@@ -88,24 +94,41 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
     })
   }
 
-  const handleClearFilters = () => tableObject.resetColumnFilters()
-
   return (
-    <Flex justify="center">
-      {
-        Object.values(POSITIONS).map(position => (
-          <Button
-            key={position.abreviacao}
-            onClick={() => handleFilterChange(position)}
-          >
-            {position.nome}
-          </Button>
-        ))
-      }
-      <Button onClick={handleClearFilters}>
-        Limpar filtros
-      </Button>
-    </Flex>
+    <Menu shadow="md" width={175}>
+      <Menu.Target>
+        <Tooltip label="Filtrar por posição">
+          <ActionIcon>
+            <IconPlayFootball />
+          </ActionIcon>
+        </Tooltip>
+      </Menu.Target>
+
+      <Menu.Dropdown>
+        <Menu.Label>Filtrar por posição</Menu.Label>
+        <Flex>
+          {Object.values(POSITIONS).map(position => (
+            <Menu.Item
+              className="relative w-auto"
+              key={position.nome}
+              onClick={() => handleFilterChange(position)}
+            >
+              <Tooltip label={position.nome}>
+                <div>
+                  <Text>{position.abreviacao.toUpperCase()}</Text>
+                  {selectedPositions.find(selectedPositionName => selectedPositionName === position.nome) ? (
+                    <IconCircleCheckFilled
+                      className="absolute bottom-2 right-2 text-green-600"
+                      size={12}
+                    />
+                  ) : null}
+                </div>
+              </Tooltip>
+            </Menu.Item>
+          ))}
+        </Flex>
+      </Menu.Dropdown>
+    </Menu>
   )
 }
 
@@ -129,7 +152,7 @@ function ToolbarClubFilter({ tableObject }: { tableObject: MRT_TableInstance<Tab
     <Menu shadow="md" width={250}>
       <Menu.Target>
         <Tooltip label="Filtrar por clube">
-          <ActionIcon className="m-[3px]">
+          <ActionIcon>
             <IconShirtSport />
           </ActionIcon>
         </Tooltip>
@@ -576,17 +599,16 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
     renderTopToolbarCustomActions: ({ table }) => (
-      <Flex justify="end">
-        <ToolbarPositionFilter tableObject={table} />
+      <Flex className="px-1 pt-[3px]" align="center" justify="end">
         {type === 'athlete' ? (
           <Switch
-            className="mt-[6px]"
             size="md"
             onLabel={<IconArmchair size={16} stroke={2.5} />}
             offLabel={<IconSoccerField size={16} stroke={2.5} />}
             onChange={handleViewChange}
           />
         ) : null}
+        <ToolbarPositionFilter tableObject={table} />
         <ToolbarClubFilter tableObject={table} />
       </Flex>
     )
