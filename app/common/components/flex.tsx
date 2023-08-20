@@ -18,11 +18,11 @@ const flexContainer = tv({
       stretch: 'justify-stretch'
     },
     align: {
-      start: 'align-start',
-      end: 'align-end',
-      center: 'align-center',
-      baseline: 'align-baseline',
-      stretch: 'align-stretch',
+      start: 'items-start',
+      end: 'items-end',
+      center: 'items-center',
+      baseline: 'items-baseline',
+      stretch: 'items-stretch',
     },
     direction: {
       row: '',
