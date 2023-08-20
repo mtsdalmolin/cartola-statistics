@@ -64,7 +64,7 @@ export function makeAthleteData(crew: CrewStatistics) {
 
 function StatisticsContainer({ children, title }: { children: ReactElement | ReactElement[], title: string }) {
   return (
-    <div className="rounded-md bg-zinc-900 py-4 px-6">
+    <div className="w-full rounded-md bg-zinc-900 py-4 px-6">
       <div className="mt-[-0.175rem] mb-4">{title}</div>
       <Flex justify="between">
         {children}
@@ -92,7 +92,7 @@ export function CrewContent(
           {
             orderBy(Object.values(clubs), 'pointsPercentage', 'desc').map(
               (club: ClubStatistics[0]) => (
-                <Flex key={club.id} gap="sm" direction="column" align="center">
+                <Flex key={club.id} align="center" gap="sm" direction="column">
                   <Image
                     alt={getFootballTeamName(club.id)}
                     src={getFootballTeamBadgeLink(club.id)}
