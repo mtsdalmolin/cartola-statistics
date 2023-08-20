@@ -5,13 +5,17 @@ import {
   useMantineReactTable,
   type MRT_ColumnDef,
   type MRT_TableInstance,
+  MRT_ColumnFiltersState,
 } from 'mantine-react-table'
 import {
+  ActionIcon,
   Box,
   Dialog,
   MantineProvider,
+  Menu,
   Switch,
-  Text
+  Text,
+  Tooltip
 } from '@mantine/core'
 
 import Image from 'next/image'
@@ -22,48 +26,65 @@ import { POSITIONS } from '@/app/constants/positions'
 import { AthleteTableData } from './types'
 import { MarketAthleteTableData } from '@/app/mercado/page'
 import { useMemo, useState, useSyncExternalStore } from 'react'
-import { IconArmchair, IconSoccerField } from '@tabler/icons-react'
+import { IconArmchair, IconCircleCheckFilled, IconShirtSport, IconSoccerField } from '@tabler/icons-react'
 import { PROSPECTIVE, STATUS } from '@/app/constants/status'
 import { MarketTableAsyncExternalStorage } from '@/app/storage/localstorage/market-table.external'
+import { FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED } from '@/app/constants/teams'
 import { Button } from '../button.client'
 import { Flex } from '../flex'
+
+function handleTableFilterChange<T>({
+  currentValue,
+  filterId,
+  currentFilters
+}: {
+  currentValue: T
+  filterId: string
+  currentFilters: MRT_ColumnFiltersState
+}) {
+  const currentFilter = currentFilters.find(filter => filter.id === filterId)
+  const otherFilters = currentFilters.filter(filter => filter.id !== filterId)
+
+  if (!isNil(currentFilter) && isArray(currentFilter.value)) {
+    if (currentFilter.value.includes(currentValue)) {
+      return [
+        ...otherFilters,
+        {
+          id: filterId,
+          value: currentFilter.value.filter(currentFilterValue => currentFilterValue !== currentValue)
+        }
+      ]
+    }
+
+    return [
+      ...otherFilters,
+      {
+        id: filterId,
+        value: [
+          ...currentFilter.value,
+          currentValue
+        ]
+      }
+    ]
+  }
+
+  return [
+    ...otherFilters,
+    {
+      id: filterId,
+      value: [currentValue]
+    }
+  ]
+}
 
 function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<TableData> }) {
   const handleFilterChange = (position: typeof POSITIONS[0]) => {
     tableObject.setColumnFilters(prev => {
-      const positionFilter = prev.find(filter => filter.id === 'position')
-      const otherFilters = prev.filter(filter => filter.id !== 'position')
-
-      if (!isNil(positionFilter) && isArray(positionFilter.value)) {
-        if (positionFilter.value.includes(position.nome)) {
-          return [
-            ...otherFilters,
-            {
-              id: 'position',
-              value: positionFilter.value.filter(positionValue => positionValue !== position.nome)
-            }
-          ]
-        }
-
-        return [
-          ...otherFilters,
-          {
-            id: 'position',
-            value: [
-              ...positionFilter.value,
-              position.nome
-            ]
-          }
-        ]
-      }
-
-      return [
-        ...otherFilters,
-        {
-          id: 'position',
-          value: [position.nome]
-        }
-      ]
+      return handleTableFilterChange({
+        filterId: 'position',
+        currentValue: position.nome,
+        currentFilters: prev
+      })
     })
   }
 
@@ -85,6 +106,65 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
         Limpar filtros
       </Button>
     </Flex>
+  )
+}
+
+function ToolbarClubFilter({ tableObject }: { tableObject: MRT_TableInstance<TableData> }) {
+  const selectedClubs = tableObject
+    .getState()
+    .columnFilters
+    .find(filter => filter.id === 'club')?.value as string[] ?? []
+
+  const handleFilterChange = (clubName: string) => {
+    tableObject.setColumnFilters(prev => {
+      return handleTableFilterChange({
+        filterId: 'club',
+        currentValue: clubName,
+        currentFilters: prev
+      })
+    })
+  }
+
+  return (
+    <Menu shadow="md" width={250}>
+      <Menu.Target>
+        <Tooltip label="Filtrar por clube">
+          <ActionIcon className="m-[3px]">
+            <IconShirtSport />
+          </ActionIcon>
+        </Tooltip>
+      </Menu.Target>
+
+      <Menu.Dropdown>
+        <Menu.Label>Filtrar por clube</Menu.Label>
+        <Flex>
+          {Object.entries(FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED).map(([clubId, club]) => (
+            <Menu.Item
+              className="relative w-auto"
+              key={clubId}
+              onClick={() => handleFilterChange(club.nome)}
+            >
+              <Tooltip label={club.nome}>
+                <div>
+                  <Image
+                    alt={club.nome}
+                    src={club.escudos['30x30']}
+                    width={30}
+                    height={30}
+                  />
+                  {selectedClubs.find(selectedClubName => selectedClubName === club.nome) ? (
+                    <IconCircleCheckFilled
+                      className="absolute bottom-2 right-2 text-green-600"
+                      size={12}
+                    />
+                  ) : null}
+                </div>
+              </Tooltip>
+            </Menu.Item>
+          ))}
+        </Flex>
+      </Menu.Dropdown>
+    </Menu>
   )
 }
 
@@ -139,6 +219,23 @@ const NAME_ROW: AthleteTableColumn = {
       clubBadgeUrl={row.original.clubBadgeUrl}
     />
   ),
+}
+
+const CLUB_ROW: AthleteTableColumn = {
+  id: 'club',
+  accessorKey: 'club',
+  Cell: (cell) => (
+    <Tooltip label={cell.row.original.club}>
+      <Image
+        alt={cell.row.original.club}
+        src={cell.row.original.clubBadgeUrl}
+        width={30}
+        height={30}
+      />
+    </Tooltip>
+  ),
+  header: 'Clube',
+  filterVariant: 'multi-select',
 }
 
 const POSITION_ROW: AthleteTableColumn = {
@@ -256,6 +353,7 @@ const athleteColumns: AthleteTableColumn[] = [
     header: 'Vezes Cap.',
     filterVariant: 'range-slider',
   },
+  CLUB_ROW
 ]
 
 const athleteColumnsOrders = [
@@ -276,7 +374,8 @@ const athleteColumnsOrders = [
   'goalsAgainst',
   'defensesToSufferGoal',
   'minutesToScore',
-  'captainTimes'
+  'captainTimes',
+  'club'
 ]
 
 const athleteColumnVisibility = {
@@ -290,6 +389,7 @@ const athleteColumnVisibility = {
   minutesToScore: false,
   captainTimes: false,
   highestPoint: false,
+  club: false
 }
 
 const marketColumns: AthleteTableColumn[] = [
@@ -347,6 +447,7 @@ const marketColumns: AthleteTableColumn[] = [
     filterVariant: 'range-slider',
     Cell: ({ cell }) => cell.getValue<number | undefined>()?.toFixed(2)
   },
+  CLUB_ROW
 ]
 
 const marketAthleteColumnsOrders = [
@@ -361,13 +462,15 @@ const marketAthleteColumnsOrders = [
   'status',
   'points',
   'position',
+  'club'
 ]
 
 const marketAthleteColumnVisibility = {
   position: false,
   status: false,
   minutesPlayedAverage: false,
-  points: false
+  points: false,
+  club: false
 }
 
 const TABLE_TYPE_COLUMNS = {
@@ -473,17 +576,19 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
     renderTopToolbarCustomActions: ({ table }) => (
-      <>
+      <Flex justify="end">
+        <ToolbarPositionFilter tableObject={table} />
         {type === 'athlete' ? (
           <Switch
+            className="mt-[6px]"
             size="md"
             onLabel={<IconArmchair size={16} stroke={2.5} />}
             offLabel={<IconSoccerField size={16} stroke={2.5} />}
             onChange={handleViewChange}
           />
         ) : null}
-        <ToolbarPositionFilter tableObject={table} />
-      </>
+        <ToolbarClubFilter tableObject={table} />
+      </Flex>
     )
   });
   
