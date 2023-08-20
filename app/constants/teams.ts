@@ -1,17 +1,6 @@
-export const UNEMPLOYED = 1
+import merge from 'lodash/merge'
 
-export const FOOTBALL_TEAMS = {
-  [UNEMPLOYED]: {
-    escudos: {
-      '60x60': '',
-      '45x45': '',
-      '30x30': ''
-    },
-    nome: 'Sem clube',
-    abreviacao: 'SEM',
-    slug: 'sem-clube',
-    apelido: 'Desempregado'
-  },
+export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
   262: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2018/04/09/Flamengo-65.png',
@@ -233,5 +222,21 @@ export const FOOTBALL_TEAMS = {
     apelido: 'Dourado'
   }
 }
+
+export const UNEMPLOYED = 1
+
+export const FOOTBALL_TEAMS = merge({
+  [UNEMPLOYED]: {
+    escudos: {
+      '60x60': '',
+      '45x45': '',
+      '30x30': ''
+    },
+    nome: 'Sem clube',
+    abreviacao: 'SEM',
+    slug: 'sem-clube',
+    apelido: 'Desempregado'
+  }
+}, FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED)
 
 export type FootballTeamsIds = keyof typeof FOOTBALL_TEAMS
