@@ -64,7 +64,7 @@ export function makeAthleteData(crew: CrewStatistics) {
 
 function StatisticsContainer({ children, title }: { children: ReactElement | ReactElement[], title: string }) {
   return (
-    <div className="w-full rounded-md bg-zinc-900 py-4 px-6">
+    <div className="w-full rounded-md text-white bg-zinc-900 py-4 px-6">
       <div className="mt-[-0.175rem] mb-4">{title}</div>
       <Flex justify="between">
         {children}
