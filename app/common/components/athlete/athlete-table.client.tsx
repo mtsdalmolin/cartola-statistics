@@ -432,10 +432,12 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
       ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnVisibility ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
       : TABLE_TYPE_COLUMNS_VISIBILITY[type]
   )
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 30
+  })
 
-  const handleViewChange = () => {
-    setShowBench(prevState => !prevState)
-  }
+  const handleViewChange = () => setShowBench(prevState => !prevState)
 
   const table = useMantineReactTable({
     columns: TABLE_TYPE_COLUMNS[type],
@@ -443,10 +445,13 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
     enableColumnFilterModes: true,
     enableColumnOrdering: true,
     enablePinning: true,
+    enableStickyHeader: true,
+    enableDensityToggle: false,
     positionGlobalFilter: 'left',
     state: {
       columnOrder,
       columnVisibility,
+      pagination
     },
     initialState: {
       showGlobalFilter: true,
@@ -466,6 +471,7 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
     },
     onColumnOrderChange: setColumnOrder,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     renderTopToolbarCustomActions: ({ table }) => (
       <>
         {type === 'athlete' ? (

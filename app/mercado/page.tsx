@@ -88,8 +88,7 @@ export default async function Market() {
   }
 
   return (
-    <main className="min-h-screen items-center p-24">
-      <h1 className="text-2xl">Mercado</h1>
+    <main className="max-w-[80vw] h-screen m-auto items-center">
       <MarketContent athletes={marketStatistics} />
     </main>
   )
