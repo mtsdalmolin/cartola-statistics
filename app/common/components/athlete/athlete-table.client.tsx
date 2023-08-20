@@ -17,17 +17,24 @@ import {
   Text,
   Tooltip
 } from '@mantine/core'
-import { IconPlayFootball } from '@tabler/icons-react'
 
 import Image from 'next/image'
 import isNil from 'lodash/isNil'
 import isArray from 'lodash/isArray'
+import isEmpty from 'lodash/isEmpty'
 
 import { POSITIONS } from '@/app/constants/positions'
 import { AthleteTableData } from './types'
 import { MarketAthleteTableData } from '@/app/mercado/page'
 import { useMemo, useState, useSyncExternalStore } from 'react'
-import { IconArmchair, IconCircleCheckFilled, IconShirtSport, IconSoccerField } from '@tabler/icons-react'
+import {
+  IconArmchair,
+  IconCircleCheckFilled,
+  IconShirtSport,
+  IconSoccerField,
+  IconPlayFootball,
+  IconAlertCircleFilled
+} from '@tabler/icons-react'
 import { PROSPECTIVE, STATUS } from '@/app/constants/status'
 import { MarketTableAsyncExternalStorage } from '@/app/storage/localstorage/market-table.external'
 import { FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED } from '@/app/constants/teams'
@@ -99,6 +106,15 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
       <Menu.Target>
         <Tooltip label="Filtrar por posição">
           <ActionIcon>
+            {
+              !isEmpty(selectedPositions) ? (
+                <IconAlertCircleFilled
+                  className="absolute top-0 right-0 text-amber-400"
+                  size={12}
+                />
+              )
+              : null
+            }
             <IconPlayFootball />
           </ActionIcon>
         </Tooltip>
@@ -153,6 +169,15 @@ function ToolbarClubFilter({ tableObject }: { tableObject: MRT_TableInstance<Tab
       <Menu.Target>
         <Tooltip label="Filtrar por clube">
           <ActionIcon>
+            {
+              !isEmpty(selectedClubs) ? (
+                <IconAlertCircleFilled
+                  className="absolute top-0 right-0 text-amber-400 z-50"
+                  size={12}
+                />
+              )
+              : null
+            }
             <IconShirtSport />
           </ActionIcon>
         </Tooltip>
@@ -268,6 +293,32 @@ const POSITION_ROW: AthleteTableColumn = {
   filterVariant: 'multi-select',
 }
 
+const POINTS_AVERAGE_HOME: AthleteTableColumn = {
+  id: 'pointsAverageHome',
+  accessorKey: 'pointsAverageHome',
+  header: 'MPM',
+  filterVariant: 'range-slider',
+  Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
+  Header: ({ column }) => (
+    <Tooltip label="Média de pontos como mandante">
+      <Text>{column.columnDef.header}</Text>
+    </Tooltip>
+  )
+}
+
+const POINTS_AVERAGE_AWAY: AthleteTableColumn = {
+  id: 'pointsAverageAway',
+  accessorKey: 'pointsAverageAway',
+  header: 'MPV',
+  filterVariant: 'range-slider',
+  Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
+  Header: ({ column }) => (
+    <Tooltip label="Média de pontos como visitante">
+      <Text>{column.columnDef.header}</Text>
+    </Tooltip>
+  )
+}
+
 const athleteColumns: AthleteTableColumn[] = [
   NAME_ROW,
   {
@@ -275,6 +326,11 @@ const athleteColumns: AthleteTableColumn[] = [
     accessorKey: 'highestPoint',
     header: 'MP',
     filterVariant: 'range-slider',
+    Header: ({ column }) => (
+      <Tooltip label="Maior pontuação">
+        <Text>{column.columnDef.header}</Text>
+      </Tooltip>
+    )
   },
   POSITION_ROW,
   {
@@ -282,35 +338,33 @@ const athleteColumns: AthleteTableColumn[] = [
     accessorKey: 'sumOfPlayedMinutes',
     header: 'Min. jogados',
     filterVariant: 'range-slider',
+    Header: ({ column }) => (
+      <Tooltip label="Minutos jogados">
+        <Text>{column.columnDef.header}</Text>
+      </Tooltip>
+    )
   },
   {
     id: 'averageMinutesPerRound',
     accessorKey: 'averageMinutesPerRound',
-    header: 'MPM/R',
+    header: 'MMJ',
     filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+    Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
+    Header: ({ column }) => (
+      <Tooltip label="Média de minutos jogados">
+        <Text>{column.columnDef.header}</Text>
+      </Tooltip>
+    )
   },
   {
     id: 'pointsAverage',
     accessorKey: 'pointsAverage',
     header: 'Média',
     filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+    Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
   },
-  {
-    id: 'pointsAverageHome',
-    accessorKey: 'pointsAverageHome',
-    header: 'MPM/R',
-    filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
-  },
-  {
-    id: 'pointsAverageAway',
-    accessorKey: 'pointsAverageAway',
-    header: 'MPV/R',
-    filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
-  },
+  POINTS_AVERAGE_HOME,
+  POINTS_AVERAGE_AWAY,
   {
     id: 'finishes',
     accessorKey: 'finishes',
@@ -323,7 +377,12 @@ const athleteColumns: AthleteTableColumn[] = [
     accessorKey: 'finishesToScore',
     header: 'FPG',
     filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+    Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
+    Header: ({ column }) => (
+      <Tooltip label="Finalizações para gol">
+        <Text>{column.columnDef.header}</Text>
+      </Tooltip>
+    )
   },
   {
     id: 'goals',
@@ -348,14 +407,24 @@ const athleteColumns: AthleteTableColumn[] = [
     accessorKey: 'defensesToSufferGoal',
     header: 'DPG',
     filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+    Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
+    Header: ({ column }) => (
+      <Tooltip label="Defesas para sofrer gol">
+        <Text>{column.columnDef.header}</Text>
+      </Tooltip>
+    )
   },
   {
     id: 'minutesToScore',
     accessorKey: 'minutesToScore',
     header: 'MPG',
     filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
+    Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
+    Header: ({ column }) => (
+      <Tooltip label="Minutos para gol">
+        <Text>{column.columnDef.header}</Text>
+      </Tooltip>
+    )
   },
   {
     id: 'victoriesAverage',
@@ -449,20 +518,8 @@ const marketColumns: AthleteTableColumn[] = [
     header: 'Preço',
     filterVariant: 'range-slider'
   },
-  {
-    id: 'pointsAverageHome',
-    accessorKey: 'pointsAverageHome',
-    header: 'MPM',
-    filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number | undefined>()?.toFixed(2)
-  },
-  {
-    id: 'pointsAverageAway',
-    accessorKey: 'pointsAverageAway',
-    header: 'MPV',
-    filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number | undefined>()?.toFixed(2)
-  },
+  POINTS_AVERAGE_HOME,
+  POINTS_AVERAGE_AWAY,
   {
     id: 'minutesPlayedAverage',
     accessorKey: 'minutesPlayedAverage',
@@ -573,6 +630,7 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
     enablePinning: true,
     enableStickyHeader: true,
     enableDensityToggle: false,
+    enableFacetedValues: true,
     positionGlobalFilter: 'left',
     state: {
       columnOrder,
