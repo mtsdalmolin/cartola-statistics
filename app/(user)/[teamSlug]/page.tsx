@@ -1,13 +1,11 @@
 import isNil from 'lodash/isNil'
 import max from 'lodash/max'
-import sortBy from 'lodash/sortBy'
 import { TEAMS } from '../../page'
 import type { Metadata } from 'next'
 
 import './styles.css'
 import { Athlete, ClubStatistics, CrewStatistics, RenderedAthlete } from '../../common/types/athlete'
 import { CrewContent } from '../../common/components/crew-content.client'
-import { request } from '../../services/cartola-api'
 import { RoundData } from '../../services/types'
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { PositionsStatistics } from '@/app/common/types/position'
@@ -18,8 +16,6 @@ export const metadata: Metadata = {
 }
 
 const PHOTO_SIZE_FORMAT = '220x220'
-
-const TEAM_ROUND_ENDPOINT = (teamId: string) => `time/id/${teamId}/:round`
 
 function isCaptain(athleteId: number, captainId: number) {
   return athleteId === captainId
@@ -193,7 +189,7 @@ function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete:
   return statistics
 }
 
-async function getPlayersTeamData(endpoint: string, rounds: number[]): Promise<[
+async function getPlayersTeamData(teamSlug: string, rounds: number[]): Promise<[
   CrewStatistics,
   CrewStatistics,
   ClubStatistics,
@@ -201,7 +197,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]): Promise<[
 ]> {
   const results = await Promise.allSettled<RoundData>(
     rounds.map(round =>
-      request(endpoint.replace(':round', round.toString()))
+      fetch(`${process.env.NEXT_API_BASE_URL}/api/get-players-data/${teamSlug}?round=${round}`)
         .then(res => res.json())
     )
   )
@@ -211,7 +207,7 @@ async function getPlayersTeamData(endpoint: string, rounds: number[]): Promise<[
   let clubsStatistics: ClubStatistics = {}
   let positionsStatistics: PositionsStatistics = {}
   let seasonPoints = 0
-  
+
   results.forEach(result => {
     if (result.status === 'rejected')
       return
@@ -300,7 +296,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
     clubs,
     positions
   ] = await getPlayersTeamData(
-    TEAM_ROUND_ENDPOINT(teamData.id.toString()),
+    teamData.slug,
     teamData.rounds
   )
 
