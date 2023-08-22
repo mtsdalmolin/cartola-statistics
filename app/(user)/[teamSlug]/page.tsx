@@ -1,6 +1,6 @@
 import isNil from 'lodash/isNil'
 import max from 'lodash/max'
-import { TEAMS } from '../../page'
+import { TEAMS } from '@/app/constants/data'
 import type { Metadata } from 'next'
 
 import './styles.css'
