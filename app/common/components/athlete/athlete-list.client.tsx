@@ -214,7 +214,7 @@ export default function AthleteList({ athletes, isBench = false, title }: { athl
           />
         </div>
       </header>
-      <div className="flex flex-wrap justify-between">
+      <div className="flex flex-wrap gap-x-2">
         {orderBy(athletes, Object.values(mapValues(orderFilters, 'value')), orderFilters.map(() => 'desc')).map(athlete => (
           <div key={athlete.atleta_id}>
             <AthleteCard

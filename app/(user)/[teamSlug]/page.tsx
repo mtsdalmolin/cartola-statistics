@@ -252,7 +252,7 @@ async function getPlayersTeamData(teamSlug: string, rounds: number[]): Promise<[
       }
     })
 
-    bench.forEach(benchAthlete => {
+    bench?.forEach(benchAthlete => {
       benchStatistics = playerStatisticsIncrementalFactory(benchStatistics, benchAthlete, captainId)
     })
   })
@@ -301,14 +301,14 @@ export default async function Team({ params }: { params: { teamSlug: string } })
   )
 
   return (
-    <main className="max-w-[80vw] m-auto min-h-screen items-center py-20 px-12">
-      <h1 className="text-2xl">{teamData.name}</h1>
+    <>
+      <h1 className="text-2xl mb-4">{teamData.name}</h1>
       <CrewContent
         athletes={athletes}
         bench={bench}
         clubs={clubs}
         positions={positions}
       />
-    </main>
+    </>
   )
 }

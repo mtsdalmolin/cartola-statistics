@@ -72,6 +72,7 @@ function marketAthleteTableDataFactory(athlete: Athlete): MarketAthleteTableData
 export type MarketStatistics = MarketAthleteTableData[]
 
 async function getMarketData() {
+  
   const { atletas: athletes }: MarketData = await request(MARKET_ENDPOINT).then(res => res.json())
 
   const marketStatistics: MarketStatistics = []
@@ -88,8 +89,9 @@ export default async function Market() {
   }
 
   return (
-    <main className="max-w-[80vw] h-screen m-auto items-center">
+    <>
+      <h1 className="text-2xl mb-4">Mercado</h1>
       <MarketContent athletes={marketStatistics} />
-    </main>
+    </>
   )
 }
