@@ -9,7 +9,7 @@ import { getPositionName } from "@/app/helpers/positions"
 import isNil from 'lodash/isNil'
 import orderBy from 'lodash/orderBy'
 import { AthleteTable } from "./athlete/athlete-table.client"
-import { AthleteTableData } from "./athlete/types"
+import { AthleteTableData, AthleteTableDataWithoutMatchKey } from "./athlete/types"
 import { ClubStatistics, CrewStatistics, RenderedAthlete } from "../types/athlete"
 import Image from "next/image"
 import { PositionsStatistics } from "../types/position"
@@ -25,7 +25,7 @@ function handleTableNumberValues(numberValue: number) {
   return 0
 }
 
-function athleteTableDataFactory(athlete: RenderedAthlete): AthleteTableData {
+function athleteTableDataFactory(athlete: RenderedAthlete): AthleteTableDataWithoutMatchKey {
   return {
     id: athlete.atleta_id,
     photoUrl: athlete?.foto ?? '',
@@ -53,13 +53,13 @@ function athleteTableDataFactory(athlete: RenderedAthlete): AthleteTableData {
 }
 
 export function makeAthleteData(crew: CrewStatistics) {
-  const athleteData: AthleteTableData[] = []
+  const athleteData: AthleteTableDataWithoutMatchKey[] = []
 
   Object.values(crew).forEach(athlete =>
     athleteData.push(athleteTableDataFactory(athlete))
   )
 
-  return athleteData
+  return athleteData as AthleteTableData[]
 }
 
 function StatisticsContainer({ children, title }: { children: ReactElement | ReactElement[], title: string }) {

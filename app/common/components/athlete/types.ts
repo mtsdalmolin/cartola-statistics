@@ -23,3 +23,5 @@ export interface AthleteTableData {
   captainTimes: number
   match: never
 }
+
+export type AthleteTableDataWithoutMatchKey = Omit<AthleteTableData, 'match'>
