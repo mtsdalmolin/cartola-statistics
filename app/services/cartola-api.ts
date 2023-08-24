@@ -7,5 +7,5 @@ export function request(endpoint: string) {
     next: {
       revalidate: REVALIDATION_TIME_IN_SECONDS
     }
-  })
+  }).then(res => res.json())
 }

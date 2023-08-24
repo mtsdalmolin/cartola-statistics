@@ -54,7 +54,7 @@ export async function GET(request: Request, context: GetContext) {
   }
 
   if (needsToFetchFromCartola) {
-    result = await makeRequest(cartolaEndpoint).then(res => res.json())
+    result = await makeRequest(cartolaEndpoint)
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 

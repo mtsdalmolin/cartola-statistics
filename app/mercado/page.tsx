@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { request } from '../services/cartola-api'
-import { FOOTBALL_TEAMS } from '../constants/teams'
+import { FOOTBALL_TEAMS, FootballTeamsIds } from '../constants/teams'
 import { Athlete } from '../common/types/athlete'
 import { MarketContent } from '../common/components/market-content.client'
 import { PHOTO_SIZE_FORMAT } from '../constants/format'
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 
 // const ATHLETE_POINTS_ENDPOINT = (round: string) => `/atletas/pontuados/${round}`
 const MARKET_ENDPOINT = '/atletas/mercado'
+const MATCHES_ENDPOINT = '/partidas'
 
 interface MarketData {
   atletas: Athlete[]
@@ -25,11 +26,26 @@ interface MarketData {
   status: unknown[]
 }
 
-// interface AthletePointsData {
-//   atletas: Athlete[]
-//   clubes: typeof FOOTBALL_TEAMS[]
-//   posicoes: unknown[]
-// }
+interface MatchFroMApi {
+  clube_visitante_id: number
+  clube_casa_id: number
+  partida_data: Date
+}
+
+interface Match {
+  home: {
+    clubBadgeUrl: string
+    name: string
+  }
+  away: {
+    clubBadgeUrl: string
+    name: string
+  }
+}
+
+interface MatchesData {
+  partidas: MatchFroMApi[]
+}
 
 export interface MarketAthleteTableData {
   id: number
@@ -47,9 +63,10 @@ export interface MarketAthleteTableData {
   pointsAverageHome: number
   pointsAverageAway: number
   minutesPlayedAverage: number
+  match: Match
 }
 
-function marketAthleteTableDataFactory(athlete: Athlete): MarketAthleteTableData {
+function marketAthleteTableDataFactory(athlete: Athlete, roundMatches: { [key: string]: Match }): MarketAthleteTableData {
   return {
     id: athlete.atleta_id,
     name: athlete.apelido,
@@ -65,18 +82,43 @@ function marketAthleteTableDataFactory(athlete: Athlete): MarketAthleteTableData
     price: athlete.preco_num,
     pointsAverageHome: athlete.gato_mestre?.media_pontos_mandante ?? 0,
     pointsAverageAway: athlete.gato_mestre?.media_pontos_visitante ?? 0,
-    minutesPlayedAverage: athlete.gato_mestre?.media_minutos_jogados ?? 0
+    minutesPlayedAverage: athlete.gato_mestre?.media_minutos_jogados ?? 0,
+    match: roundMatches[athlete.clube_id]
   }
 }
 
 export type MarketStatistics = MarketAthleteTableData[]
 
+async function getMatchesData() {
+  const { partidas: matches }: MatchesData = await request(MATCHES_ENDPOINT)
+
+  const roundMatches: { [key: string]: Match } = {}
+
+  matches.forEach(match => {
+    const matchAssets = {
+      home: {
+        clubBadgeUrl: getFootballTeamBadgeLink(match.clube_casa_id as FootballTeamsIds),
+        name: getFootballTeamName(match.clube_casa_id as FootballTeamsIds)
+      },
+      away: {
+        clubBadgeUrl: getFootballTeamBadgeLink(match.clube_visitante_id as FootballTeamsIds),
+        name: getFootballTeamName(match.clube_visitante_id as FootballTeamsIds)
+      }
+    }
+
+    roundMatches[match.clube_casa_id] = matchAssets
+    roundMatches[match.clube_visitante_id] = matchAssets
+  })
+
+  return roundMatches
+}
+
 async function getMarketData() {
-  
-  const { atletas: athletes }: MarketData = await request(MARKET_ENDPOINT).then(res => res.json())
+  const { atletas: athletes }: MarketData = await request(MARKET_ENDPOINT)
+  const roundMatches = await getMatchesData()
 
   const marketStatistics: MarketStatistics = []
-  athletes.forEach(athlete => marketStatistics.push(marketAthleteTableDataFactory(athlete)))
+  athletes.forEach(athlete => marketStatistics.push(marketAthleteTableDataFactory(athlete, roundMatches)))
 
   return { marketStatistics }
 }

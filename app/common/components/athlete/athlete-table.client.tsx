@@ -527,7 +527,33 @@ const marketColumns: AthleteTableColumn[] = [
     filterVariant: 'range-slider',
     Cell: ({ cell }) => cell.getValue<number | undefined>()?.toFixed(2)
   },
-  CLUB_ROW
+  CLUB_ROW,
+  {
+    id: 'match',
+    accessorKey: 'match',
+    header: 'Confronto',
+    Cell: (cell) => (
+      <Flex align="center">
+        <Tooltip label={cell.row.original.match.home.name}>
+          <Image
+            alt={cell.row.original.match.home.name}
+            src={cell.row.original.match.home.clubBadgeUrl}
+            width={30}
+            height={30}
+          />
+        </Tooltip>
+        X
+        <Tooltip label={cell.row.original.match.away.name}>
+          <Image
+            alt={cell.row.original.match.away.name}
+            src={cell.row.original.match.away.clubBadgeUrl}
+            width={30}
+            height={30}
+          />
+        </Tooltip>
+      </Flex>
+    ),
+  },
 ]
 
 const marketAthleteColumnsOrders = [
@@ -542,7 +568,8 @@ const marketAthleteColumnsOrders = [
   'status',
   'points',
   'position',
-  'club'
+  'club',
+  'match'
 ]
 
 const marketAthleteColumnVisibility = {

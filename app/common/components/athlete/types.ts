@@ -21,4 +21,5 @@ export interface AthleteTableData {
   victoriesAverage: number
   castTimes: number
   captainTimes: number
+  match: never
 }
