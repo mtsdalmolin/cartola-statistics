@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server'
 import isNil from 'lodash/isNil'
 import isEmpty from 'lodash/isEmpty'
 import { request } from '@/app/services/cartola-api'
@@ -133,16 +134,20 @@ export async function GET() {
       }
     })
   
+    const telegramMessage = clusterAthletesPerClub(changedAthletes)
+
     const response: {
       ok: boolean,
       description?: string
-    } = await sendMessageToTelegramGroup(clusterAthletesPerClub(changedAthletes))
+    } = await sendMessageToTelegramGroup(telegramMessage)
   
     if (response.ok) {
       saveSuccess(marketData)
     } else {
       throw new Error(response.description ?? 'Couldn\'t send message to Telegram')
     }
+    
+    return NextResponse.json({ ok: true, message: telegramMessage })
   } catch (err: any) {
     saveError({
       payload: {
@@ -151,5 +156,7 @@ export async function GET() {
       },
       status: 'error'
     })
+
+    return NextResponse.json({ ok: false, error: err })
   }
 }
