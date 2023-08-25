@@ -7,3 +7,7 @@ export function getFootballTeamBadgeLink(footballTeamId: FootballTeamsIds) {
 export function getFootballTeamName(footballTeamId: FootballTeamsIds) {
   return FOOTBALL_TEAMS[footballTeamId].nome
 }
+
+export function getFootballTeamAbbreviation(footballTeamId: FootballTeamsIds) {
+  return FOOTBALL_TEAMS[footballTeamId].abreviacao
+}
