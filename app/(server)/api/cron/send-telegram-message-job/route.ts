@@ -5,7 +5,11 @@ import { request } from '@/app/services/cartola-api'
 import { supabaseClient } from '@/app/services/supabase'
 import { getStatusName } from '@/app/helpers/status'
 import { Athlete } from '@/app/common/types/athlete'
-import { DOUBT, StatusIds } from '@/app/constants/status'
+import {
+  StatusIds,
+  PROSPECTIVE,
+  NULL,
+} from '@/app/constants/status'
 import { getFootballTeamName } from '@/app/helpers/teams'
 import { FOOTBALL_TEAMS, FootballTeamsIds } from '@/app/constants/teams'
 import { getPositionAbbreviation } from '@/app/helpers/positions'
@@ -103,10 +107,24 @@ function athleteMessageEntityFactory(athlete: Athlete, oldAthlete: Athlete): Ath
     athleteId: athlete.atleta_id,
     clubId: athlete.clube_id,
     positionId: athlete.posicao_id,
-    oldStatusId: oldAthlete.status_id ?? DOUBT,
-    newStatusId: athlete.status_id ?? DOUBT,
+    oldStatusId: oldAthlete.status_id ?? NULL,
+    newStatusId: athlete.status_id ?? NULL,
     nickname: athlete.apelido
   }
+}
+
+function isInProspectiveStatus(athlete: Athlete) {
+  return PROSPECTIVE === athlete.status_id
+}
+
+function isInProspectiveStatusAndDifference(oldAthlete: Athlete, athlete: Athlete) {
+  return (
+    (
+      isInProspectiveStatus(oldAthlete) ||
+      isInProspectiveStatus(athlete)
+    ) &&
+    oldAthlete.status_id !== athlete.status_id
+  )
 }
 
 export async function GET() {
@@ -130,7 +148,7 @@ export async function GET() {
     marketData.forEach(athlete => {
       const oldAthlete: Athlete = supabaseMarketData[0].payload.find((oldAthlete: Athlete) => oldAthlete.atleta_id === athlete.atleta_id)
   
-      if (!isNil(oldAthlete) && oldAthlete.status_id !== athlete.status_id) {
+      if (!isNil(oldAthlete) && isInProspectiveStatusAndDifference(oldAthlete, athlete)) {
         changedAthletes.push(athleteMessageEntityFactory(athlete, oldAthlete))
       }
     })
