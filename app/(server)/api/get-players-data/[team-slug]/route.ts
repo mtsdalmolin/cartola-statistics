@@ -11,7 +11,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey, { auth: { persistSession: false } })
 
-const TEAM_ROUND_ENDPOINT = (teamId: string, round: string) => `time/id/${teamId}/${round}`
+const TEAM_ROUND_ENDPOINT = (teamId: string, round: string) => `/time/id/${teamId}/${round}`
 
 type GetContext = {
   params: {
