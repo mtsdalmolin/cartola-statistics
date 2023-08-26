@@ -119,6 +119,7 @@ export async function GET() {
     const { data: supabaseMarketData } = await supabaseClient
       .from('market-status-requests')
       .select('payload')
+      .eq('status', 'success')
       .order('created_at', { ascending: false })
   
     if (!supabaseMarketData?.[0].payload)
@@ -136,6 +137,9 @@ export async function GET() {
   
     const telegramMessage = clusterAthletesPerClub(changedAthletes)
 
+    if (isEmpty(telegramMessage))
+      return NextResponse.json({ ok: true, message: 'No differences' })
+
     const response: {
       ok: boolean,
       description?: string
@@ -152,7 +156,7 @@ export async function GET() {
     saveError({
       payload: {
         message: err?.response?.description ?? err?.response?.message ?? err.message,
-        data: err?.response.data
+        data: err?.response?.data ?? err
       },
       status: 'error'
     })
