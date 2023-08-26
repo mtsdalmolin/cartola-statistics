@@ -30,6 +30,8 @@ const ENDPOINTS = {
   MATCHES: '/partidas',
 }
 
+const MARKET_STATUS_REQUESTS_TABLE_NAME = 'market-status-requests'
+
 const token = process.env.NEXT_API_TELEGRAM_TOKEN
 const chatId = process.env.NEXT_API_TELEGRAM_CHAT_ID
 
@@ -56,7 +58,7 @@ async function sendMessageToTelegramGroup(message: string) {
 
 async function saveMarketDataToSupabase({ payload, status }: { payload: any, status: string }) {
   return await supabaseClient
-    .from('market-status-requests')
+    .from(MARKET_STATUS_REQUESTS_TABLE_NAME)
     .insert([{ payload, status }])
     .select()
 }
@@ -93,15 +95,15 @@ function clusterAthletesPerClub(changedAthletes: AthleteMessageEntity[]) {
   return message
 }
 
-function saveSuccess<T>(marketData: T) {
-  saveMarketDataToSupabase({
+async function saveSuccess<T>(marketData: T) {
+  return await saveMarketDataToSupabase({
     payload: marketData,
     status: 'success'
   })
 }
 
-function saveError<T>(error: T) {
-  saveMarketDataToSupabase({
+async function saveError<T>(error: T) {
+  return await saveMarketDataToSupabase({
     payload: error,
     status: 'error'
   })
@@ -140,7 +142,7 @@ export async function GET() {
       throw new Error('Couldn\'t load data from cartola api')
   
     const { data: supabaseMarketData } = await supabaseClient
-      .from('market-status-requests')
+      .from(MARKET_STATUS_REQUESTS_TABLE_NAME)
       .select('payload')
       .eq('status', 'success')
       .order('created_at', { ascending: false })
@@ -169,7 +171,7 @@ export async function GET() {
     } = await sendMessageToTelegramGroup(telegramMessage)
   
     if (response.ok) {
-      saveSuccess(marketData)
+      await saveSuccess(marketData)
     } else {
       throw new Error(response.description ?? 'Couldn\'t send message to Telegram')
     }
