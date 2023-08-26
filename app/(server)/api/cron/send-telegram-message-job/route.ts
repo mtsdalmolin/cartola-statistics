@@ -23,6 +23,8 @@ interface AthleteMessageEntity {
   nickname: string
 }
 
+export const dynamic = 'force-dynamic'
+
 const ENDPOINTS = {
   MARKET: '/atletas/mercado',
   MATCHES: '/partidas',
@@ -130,7 +132,7 @@ function isInProspectiveStatusAndDifference(oldAthlete: Athlete, athlete: Athlet
   )
 }
 
-export async function POST() {
+export async function GET() {
   try {
     const marketData = await getMarketDataFromCartolaApi()
   
