@@ -61,7 +61,7 @@ async function saveMarketDataToSupabase({ payload, status }: { payload: any, sta
 }
 
 async function getMarketDataFromCartolaApi() {
-  const response = await request(ENDPOINTS.MARKET)
+  const response = await request(ENDPOINTS.MARKET, { cache: 'no-cache' })
 
   return response.atletas as Athlete[]
 }
