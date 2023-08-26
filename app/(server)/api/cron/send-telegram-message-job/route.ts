@@ -38,7 +38,6 @@ async function sendMessageToTelegramGroup(message: string) {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload'
       },
       body: JSON.stringify({
         chat_id: chatId,
@@ -61,7 +60,7 @@ async function saveMarketDataToSupabase({ payload, status }: { payload: any, sta
 }
 
 async function getMarketDataFromCartolaApi() {
-  const response = await request(ENDPOINTS.MARKET, { cache: 'no-cache' })
+  const response = await request(ENDPOINTS.MARKET, { cache: 'no-store' })
 
   return response.atletas as Athlete[]
 }
