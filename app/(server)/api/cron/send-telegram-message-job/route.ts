@@ -130,7 +130,7 @@ function isInProspectiveStatusAndDifference(oldAthlete: Athlete, athlete: Athlet
   )
 }
 
-export async function GET() {
+export async function POST() {
   try {
     const marketData = await getMarketDataFromCartolaApi()
   
