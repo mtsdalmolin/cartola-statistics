@@ -66,6 +66,10 @@ async function getMarketDataFromCartolaApi() {
   return response.atletas as Athlete[]
 }
 
+function escapeMarkdownSpecialCharacters(word: string) {
+  return word.replace(/(\-|\.)/g, match => `\\${match}`)
+}
+
 function clusterAthletesPerClub(changedAthletes: AthleteMessageEntity[]) {
   let message = ''
   let athleteIndex = 1
@@ -74,10 +78,10 @@ function clusterAthletesPerClub(changedAthletes: AthleteMessageEntity[]) {
     const teamChangedAthletes = changedAthletes.filter(athlete => athlete.clubId.toString() === teamId)
     
     if (!isEmpty(teamChangedAthletes)) {
-      message += `*${getFootballTeamName(teamId as unknown as FootballTeamsIds)}*\n`
+      message += `*${escapeMarkdownSpecialCharacters(getFootballTeamName(teamId as unknown as FootballTeamsIds))}*\n`
 
       teamChangedAthletes.forEach(athlete => {
-        message += `  ${athleteIndex.toString()}\\. _${athlete.nickname}_ \\(${getPositionAbbreviation(athlete.positionId).toUpperCase()}\\) mudou de *${getStatusName(athlete.oldStatusId as StatusIds)}* para *${getStatusName(athlete.newStatusId as StatusIds)}*\n`
+        message += `  ${athleteIndex.toString()}\\. _${escapeMarkdownSpecialCharacters(athlete.nickname)}_ \\(${getPositionAbbreviation(athlete.positionId).toUpperCase()}\\) mudou de *${getStatusName(athlete.oldStatusId as StatusIds)}* para *${getStatusName(athlete.newStatusId as StatusIds)}*\n`
         athleteIndex++
       })
     }
