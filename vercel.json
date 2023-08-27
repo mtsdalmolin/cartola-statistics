@@ -1,6 +1,6 @@
 {
   "crons": [{
     "path": "/api/cron/send-telegram-message-job",
-    "schedule": "* * * * *"
+    "schedule": "* * * * 1-6"
   }]
 }
