@@ -16,7 +16,7 @@ import { PositionOption } from "../../types/position"
 const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
 const CAPTAIN_TIMES_OPTION = { value: 'captainTimes', label: 'Vezes capitão' }
 const POINTS_AVERAGE_OPTION = { value: 'pointsAverage', label: 'Média' }
-const OVERALL_AVERAGE_OPTION = { value: 'media_num', label: 'Média Geral' }
+const OVERALL_AVERAGE_OPTION = { value: 'overallAverage', label: 'Média Geral' }
 
 const options = [
   CAST_TIMES_OPTION,
