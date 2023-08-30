@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash'
 import { POSITIONS, PositionsIds } from '../constants/positions'
 import { PositionOption } from '../common/types/position'
 
@@ -30,4 +31,11 @@ export function getPositionName(positionId: PositionsIds) {
 
 export function getPositionOptionByValue(positionsOptions: PositionOption[], positionValue: string): PositionOption {
   return positionsOptions.find(position => position.value === positionValue)!
+}
+
+export function isPositionSelectedOrIsFilterEmpty<FilterCollection extends any[]>(positionFilters: FilterCollection, positionId: string) {
+  return (
+    isEmpty(positionFilters) ||
+    !!positionFilters.find((position: PositionOption) => position.value === positionId)
+  )
 }

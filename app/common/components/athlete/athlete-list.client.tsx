@@ -3,11 +3,16 @@
 import { useRef, useState } from 'react'
 import orderBy from 'lodash/orderBy'
 import mapValues from 'lodash/mapValues'
-import isEmpty from 'lodash/isEmpty'
 import Image from 'next/image'
-import Select from 'react-select'
+import Select, { SelectInstance } from 'react-select'
 import { POSITIONS } from '@/app/constants/positions'
-import { getPositionAbbreviation, getPositionName, getPositionOptionByValue, isCoach } from '@/app/helpers/positions'
+import {
+  getPositionAbbreviation,
+  getPositionName,
+  getPositionOptionByValue,
+  isCoach,
+  isPositionSelectedOrIsFilterEmpty
+} from '@/app/helpers/positions'
 import { AthleteStatistics } from './athlete-statistics'
 import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
 import { RenderedAthlete } from '../../types/athlete'
@@ -109,13 +114,6 @@ export function AthleteCard({
     cardRef.current?.classList.add('card-flip')
   }
 
-  if (
-    !isEmpty(positionSelectRef.current?.getValue()) &&
-    !positionSelectRef.current?.getValue().find((position: PositionOption) => position.value === athlete.posicao_id.toString())
-  ) {
-    return null
-  }
-
   return (
     <div
       ref={cardRef}
@@ -210,8 +208,8 @@ export function AthleteCard({
 export default function AthleteList({ athletes, isBench = false, title }: { athletes: Record<string, RenderedAthlete>, isBench?: boolean, title: string }) {
   const [positionFilters, setPositionFilters] = useState<typeof positionsOptions>([])
   const { orderFilters, handleOnStatisticSelect } = useFilterContext()
-  const sortSelectRef = useRef(null)
-  const positionSelectRef = useRef(null)
+  const sortSelectRef = useRef<SelectInstance<StatisticOption, true>>(null)
+  const positionSelectRef = useRef<SelectInstance<typeof positionsOptions[0], true>>(null)
 
   const handleOnPositionSelection = (selectedPositionFilters: any) => setPositionFilters(selectedPositionFilters)
 
@@ -229,7 +227,7 @@ export default function AthleteList({ athletes, isBench = false, title }: { athl
             onChange={handleOnPositionSelection}
             isMulti
           />
-          <Select<StatisticOption, true>
+          <Select
             ref={sortSelectRef}
             className="w-64"
             options={isBench ? benchOptions : options}
@@ -242,14 +240,16 @@ export default function AthleteList({ athletes, isBench = false, title }: { athl
       </header>
       <div className="flex flex-wrap gap-x-2">
         {orderBy(athletes, Object.values(mapValues(orderFilters, 'value')), orderFilters.map(() => 'desc')).map(athlete => (
-          <div key={athlete.atleta_id}>
-            <AthleteCard
-              athlete={athlete}
-              isBench={isBench}
-              sortSelectRef={sortSelectRef}
-              positionSelectRef={positionSelectRef}
-            />
-          </div>
+          isPositionSelectedOrIsFilterEmpty(positionFilters, athlete.posicao_id.toString()) ? (
+            <div key={athlete.atleta_id}>
+              <AthleteCard
+                athlete={athlete}
+                isBench={isBench}
+                sortSelectRef={sortSelectRef}
+                positionSelectRef={positionSelectRef}
+              />
+            </div>
+          ) : null
         ))}
       </div>
     </section>
