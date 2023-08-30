@@ -4,6 +4,7 @@ export const CARTOLA_API = 'https://api.cartola.globo.com'
 
 export const ENDPOINTS = {
   MARKET: '/atletas/mercado',
+  MARKET_STATUS: '/mercado/status',
   MATCHES: '/partidas',
 }
 

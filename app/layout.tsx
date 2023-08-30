@@ -3,6 +3,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import { TEAMS } from './constants/data'
+import { ENDPOINTS, request } from './services/cartola-api'
+import { formatDistance } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,31 +14,55 @@ export const metadata: Metadata = {
   description: 'Site para analisar estatísticas que o cartola não utiliza.',
 }
 
-export default function RootLayout({
+interface RoundInfo {
+  nome_rodada: string
+  fechamento: {
+    dia: number
+    mes: number
+    ano: number
+    hora: number
+    minuto: number
+  }
+}
+
+export default async function RootLayout({
   children
 }: {
   children: React.ReactNode
 }) {
+  const marketStatus: RoundInfo = await request(ENDPOINTS.MARKET_STATUS)
+
+  const dateStr = `${marketStatus.fechamento.mes}/${marketStatus.fechamento.dia}/${marketStatus.fechamento.ano} ${marketStatus.fechamento.hora}:${marketStatus.fechamento.minuto}`
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <aside className="fixed top-0 bottom-0 lg:left-0 border-r-[1px] border-r-white px-4 py-8 max-w-[250px]">
-          <nav className="flex flex-col">
-            <Link className="my-2 hover:underline" href="/mercado">Mercado</Link>
-            {TEAMS.map(team => 
-              <Link
-                key={team.id}
-                className="my-2 truncate hover:underline"
-                href={`/${team.slug}`}
-              >
-                {team.name}
-              </Link>
-            )}
-          </nav>
-        </aside>
-        <main className="min-h-screen items-center py-8 px-12 ml-[250px]">
-          {children}
-        </main>
+        <header className="p-4 border-b-[1px]">
+          <div className="text-center">
+            {marketStatus.nome_rodada} começa {formatDistance(new Date(dateStr), new Date(), { addSuffix: true, locale: ptBR })}
+          </div>
+        </header>
+        <div className="flex min-h-screen">
+          <aside className="border-r-[1px] border-r-white p-4 max-w-[250px]">
+            <div className="sticky top-0 bottom-0 left-0">
+              <nav className="flex flex-col">
+                <Link className="my-2 hover:underline" href="/mercado">Mercado</Link>
+                {TEAMS.map(team => 
+                  <Link
+                    key={team.id}
+                    className="my-2 truncate hover:underline"
+                    href={`/${team.slug}`}
+                  >
+                    {team.name}
+                  </Link>
+                )}
+              </nav>
+            </div>
+          </aside>
+          <main className="items-center py-8 px-12">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   )
