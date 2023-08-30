@@ -14,7 +14,7 @@ import { ClubStatistics, CrewStatistics, RenderedAthlete } from '../types/athlet
 import Image from 'next/image'
 import { PositionsStatistics } from '../types/position'
 import { Flex } from './flex'
-import { FilterContextProvider } from '../contexts/filter-context.client'
+import { OrderContextProvider } from '../contexts/order-context.client'
 import { CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION } from '@/app/constants/statistics'
 
 function handleTableNumberValues(numberValue: number) {
@@ -135,7 +135,7 @@ export function CrewContent(
             />
           )
           : (
-            <FilterContextProvider initialStateValue={[CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION]}>
+            <OrderContextProvider initialStateValue={[CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION]}>
               <AthleteList
                 title="Titulares"
                 athletes={athletes}
@@ -145,7 +145,7 @@ export function CrewContent(
                 isBench
                 athletes={bench}
               />
-            </FilterContextProvider>
+            </OrderContextProvider>
           )
       }
     </>

@@ -6,7 +6,7 @@ import { StatisticOption } from '@/app/constants/statistics'
 
 type OrderFilters = MultiValue<StatisticOption>
 
-const FilterContext = createContext<{
+const OrderContext = createContext<{
   orderFilters: OrderFilters
   handleOnStatisticsClick: (selectedOption: StatisticOption, selectRef: RefObject<SelectInstance<StatisticOption, true>>) => void,
   handleOnStatisticSelect: (selectedOptions: OrderFilters) => void,
@@ -16,7 +16,7 @@ const FilterContext = createContext<{
   handleOnStatisticSelect: () => {}
 })
 
-export function FilterContextProvider({ children, initialStateValue }: { children: ReactNode, initialStateValue: StatisticOption[] }) {
+export function OrderContextProvider({ children, initialStateValue }: { children: ReactNode, initialStateValue: StatisticOption[] }) {
   const [orderFilters, setOrderFilters] = useState<OrderFilters>(initialStateValue);
 
   const handleOnStatisticsClick = (selectedOption: StatisticOption, selectRef: RefObject<SelectInstance<StatisticOption, true>>) => {
@@ -38,12 +38,12 @@ export function FilterContextProvider({ children, initialStateValue }: { childre
   const handleOnStatisticSelect = (selectedOptions: OrderFilters) => setOrderFilters(selectedOptions)
 
   return (
-    <FilterContext.Provider value={{ orderFilters, handleOnStatisticsClick, handleOnStatisticSelect }}>
+    <OrderContext.Provider value={{ orderFilters, handleOnStatisticsClick, handleOnStatisticSelect }}>
       {children}
-    </FilterContext.Provider>
+    </OrderContext.Provider>
   )
 }
 
-export function useFilterContext() {
-  return useContext(FilterContext)
+export function useOrderContext() {
+  return useContext(OrderContext)
 }

@@ -17,7 +17,7 @@ import { AthleteStatistics } from './athlete-statistics'
 import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
 import { RenderedAthlete } from '../../types/athlete'
 import { PositionOption } from '../../types/position'
-import { useFilterContext } from '../../contexts/filter-context.client'
+import { useOrderContext } from '../../contexts/order-context.client'
 import {
   CAPTAIN_TIMES_OPTION,
   CAST_TIMES_OPTION,
@@ -207,7 +207,7 @@ export function AthleteCard({
 
 export default function AthleteList({ athletes, isBench = false, title }: { athletes: Record<string, RenderedAthlete>, isBench?: boolean, title: string }) {
   const [positionFilters, setPositionFilters] = useState<typeof positionsOptions>([])
-  const { orderFilters, handleOnStatisticSelect } = useFilterContext()
+  const { orderFilters, handleOnStatisticSelect } = useOrderContext()
   const sortSelectRef = useRef<SelectInstance<StatisticOption, true>>(null)
   const positionSelectRef = useRef<SelectInstance<typeof positionsOptions[0], true>>(null)
 
