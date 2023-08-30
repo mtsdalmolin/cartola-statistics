@@ -1,6 +1,6 @@
-import { PositionsIds } from "@/app/constants/positions"
-import { StatusIds } from "@/app/constants/status"
-import { FootballTeamsIds } from "@/app/constants/teams"
+import { PositionsIds } from '@/app/constants/positions'
+import { StatusIds } from '@/app/constants/status'
+import { FootballTeamsIds } from '@/app/constants/teams'
 
 export interface Athlete {
   atleta_id: number

@@ -1,4 +1,4 @@
-import { PositionsIds } from "@/app/constants/positions"
+import { PositionsIds } from '@/app/constants/positions'
 
 export type PositionOption = {
   value: string

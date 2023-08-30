@@ -7,28 +7,28 @@ export const TECNICO = 6
 
 export const POSITIONS: Record<number, { nome: string, abreviacao: string }> = {
   [GOLEIRO]: {
-    nome: "Goleiro",
-    abreviacao: "gol"
+    nome: 'Goleiro',
+    abreviacao: 'gol'
   },
   [LATERAL]: {
-    nome: "Lateral",
-    abreviacao: "lat"
+    nome: 'Lateral',
+    abreviacao: 'lat'
   },
   [ZAGUEIRO]: {
-    nome: "Zagueiro",
-    abreviacao: "zag"
+    nome: 'Zagueiro',
+    abreviacao: 'zag'
   },
   [MEIA]: {
-    nome: "Meia",
-    abreviacao: "mei"
+    nome: 'Meia',
+    abreviacao: 'mei'
   },
   [ATACANTE]: {
-    nome: "Atacante",
-    abreviacao: "ata"
+    nome: 'Atacante',
+    abreviacao: 'ata'
   },
   [TECNICO]: {
-    nome: "Técnico",
-    abreviacao: "tec"
+    nome: 'Técnico',
+    abreviacao: 'tec'
   }
 }
 

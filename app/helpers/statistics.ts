@@ -1,6 +1,6 @@
-import { RenderedAthlete } from "../common/types/athlete";
-import { STATISTICS_IDS } from "../constants/statistics";
-import { isCoach, isGoalkeeper } from "./positions";
+import { RenderedAthlete } from '../common/types/athlete';
+import { STATISTICS_IDS } from '../constants/statistics';
+import { isCoach, isGoalkeeper } from './positions';
 
 export function getAthleteStatistics(athlete: RenderedAthlete) {
   return [

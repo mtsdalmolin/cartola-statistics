@@ -6,24 +6,24 @@ export const PROSPECTIVE = 7
 
 export const STATUS = {
   [DOUBT]: {
-      "nome": "Dúvida",
-      "id": 2
+      nome: 'Dúvida',
+      id: 2
   },
   [SUSPENDED]: {
-      "nome": "Suspenso",
-      "id": 3
+      nome: 'Suspenso',
+      id: 3
   },
   [INJURED]: {
-      "nome": "Contundido",
-      "id": 5
+      nome: 'Contundido',
+      id: 5
   },
   [NULL]: {
-      "nome": "Nulo",
-      "id": 6
+      nome: 'Nulo',
+      id: 6
   },
   [PROSPECTIVE]: {
-      "nome": "Provável",
-      "id": 7
+      nome: 'Provável',
+      id: 7
   }
 }
 
