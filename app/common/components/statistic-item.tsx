@@ -2,15 +2,16 @@ type StatisticValue = number | string
 
 interface StatisticItemProps {
   canRender: () => boolean
+  handleStatisticClick: () => void
   label: string
   title: string
   value: StatisticValue
 }
 
-export function StatisticItem({ canRender, label, title, value }: StatisticItemProps) {
+export function StatisticItem({ canRender, label, title, value, handleStatisticClick }: StatisticItemProps) {
   return canRender()
     ? (
-      <div className="flex justify-between">
+      <div className="flex justify-between cursor-pointer hover:opacity-[0.9]" onClick={handleStatisticClick}>
         <span title={title}>{label}</span>
         <span>{value}</span>
       </div>

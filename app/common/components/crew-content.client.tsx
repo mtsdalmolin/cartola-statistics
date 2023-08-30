@@ -1,19 +1,21 @@
-"use client"
+'use client'
 
-import { useState, ReactElement } from "react"
-import { IconCards, IconTable } from "@tabler/icons-react"
-import { Switch } from "@mantine/core"
-import AthleteList from "./athlete/athlete-list.client"
-import { getFootballTeamBadgeLink, getFootballTeamName } from "@/app/helpers/teams"
-import { getPositionName } from "@/app/helpers/positions"
+import { useState, ReactElement } from 'react'
+import { IconCards, IconTable } from '@tabler/icons-react'
+import { Switch } from '@mantine/core'
+import AthleteList from './athlete/athlete-list.client'
+import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
+import { getPositionName } from '@/app/helpers/positions'
 import isNil from 'lodash/isNil'
 import orderBy from 'lodash/orderBy'
-import { AthleteTable } from "./athlete/athlete-table.client"
-import { AthleteTableData, AthleteTableDataWithoutMatchKey } from "./athlete/types"
-import { ClubStatistics, CrewStatistics, RenderedAthlete } from "../types/athlete"
-import Image from "next/image"
-import { PositionsStatistics } from "../types/position"
-import { Flex } from "./flex"
+import { AthleteTable } from './athlete/athlete-table.client'
+import { AthleteTableData, AthleteTableDataWithoutMatchKey } from './athlete/types'
+import { ClubStatistics, CrewStatistics, RenderedAthlete } from '../types/athlete'
+import Image from 'next/image'
+import { PositionsStatistics } from '../types/position'
+import { Flex } from './flex'
+import { FilterContextProvider } from '../contexts/filter-context.client'
+import { CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION } from '@/app/constants/statistics'
 
 function handleTableNumberValues(numberValue: number) {
   if (isNil(numberValue))
@@ -133,7 +135,7 @@ export function CrewContent(
             />
           )
           : (
-            <>
+            <FilterContextProvider initialStateValue={[CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION]}>
               <AthleteList
                 title="Titulares"
                 athletes={athletes}
@@ -143,7 +145,7 @@ export function CrewContent(
                 isBench
                 athletes={bench}
               />
-            </>
+            </FilterContextProvider>
           )
       }
     </>

@@ -1,34 +1,61 @@
 'use client'
 
-import { useRef, useState } from "react"
+import { useRef, useState } from 'react'
 import orderBy from 'lodash/orderBy'
 import mapValues from 'lodash/mapValues'
 import isEmpty from 'lodash/isEmpty'
-import Image from "next/image"
+import Image from 'next/image'
 import Select from 'react-select'
-import { POSITIONS } from "@/app/constants/positions"
-import { getPositionAbbreviation, getPositionName, getPositionOptionByValue, isCoach } from "@/app/helpers/positions"
-import { AthleteStatistics } from "./athlete-statistics"
-import { getFootballTeamBadgeLink, getFootballTeamName } from "@/app/helpers/teams"
-import { RenderedAthlete } from "../../types/athlete"
-import { PositionOption } from "../../types/position"
-
-const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
-const CAPTAIN_TIMES_OPTION = { value: 'captainTimes', label: 'Vezes capitão' }
-const POINTS_AVERAGE_OPTION = { value: 'pointsAverage', label: 'Média' }
-const OVERALL_AVERAGE_OPTION = { value: 'overallAverage', label: 'Média Geral' }
+import { POSITIONS } from '@/app/constants/positions'
+import { getPositionAbbreviation, getPositionName, getPositionOptionByValue, isCoach } from '@/app/helpers/positions'
+import { AthleteStatistics } from './athlete-statistics'
+import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
+import { RenderedAthlete } from '../../types/athlete'
+import { PositionOption } from '../../types/position'
+import { useFilterContext } from '../../contexts/filter-context.client'
+import {
+  CAPTAIN_TIMES_OPTION,
+  CAST_TIMES_OPTION,
+  DEFENSES_OPTION,
+  DEFENSES_TO_SUFFER_GOAL_OPTION,
+  FINISHES_OPTION,
+  FINISHES_TO_SCORE_OPTION,
+  GOALS_OPTION,
+  HIGHEST_POINTS_OPTION,
+  MINUTES_PLAYES_OPTION,
+  MINUTES_TO_SCORE_OPTION,
+  OVERALL_AVERAGE_OPTION,
+  POINTS_AVERAGE_OPTION,
+  type StatisticOption
+} from '@/app/constants/statistics'
 
 const options = [
   CAST_TIMES_OPTION,
   CAPTAIN_TIMES_OPTION,
   POINTS_AVERAGE_OPTION,
-  OVERALL_AVERAGE_OPTION
+  OVERALL_AVERAGE_OPTION,
+  HIGHEST_POINTS_OPTION,
+  MINUTES_PLAYES_OPTION,
+  GOALS_OPTION,
+  MINUTES_TO_SCORE_OPTION,
+  FINISHES_OPTION,
+  FINISHES_TO_SCORE_OPTION,
+  DEFENSES_OPTION,
+  DEFENSES_TO_SUFFER_GOAL_OPTION,
 ]
 
 const benchOptions = [
   CAST_TIMES_OPTION,
   POINTS_AVERAGE_OPTION,
-  OVERALL_AVERAGE_OPTION
+  OVERALL_AVERAGE_OPTION,
+  HIGHEST_POINTS_OPTION,
+  MINUTES_PLAYES_OPTION,
+  GOALS_OPTION,
+  MINUTES_TO_SCORE_OPTION,
+  FINISHES_OPTION,
+  FINISHES_TO_SCORE_OPTION,
+  DEFENSES_OPTION,
+  DEFENSES_TO_SUFFER_GOAL_OPTION,
 ]
 
 const positionsOptions = Object.entries(POSITIONS).map(([positionId, position]) => ({
@@ -172,7 +199,7 @@ export function AthleteCard({
             <div className="text-center font-bold text-lg truncate">
               <span title={athlete.apelido}>{athlete.apelido}</span>
             </div>
-            <AthleteStatistics athlete={athlete} />
+            <AthleteStatistics athlete={athlete} handleStatisticClick={handleStatisticClick} />
           </div>
         </div>
       </div>
@@ -181,12 +208,11 @@ export function AthleteCard({
 }
 
 export default function AthleteList({ athletes, isBench = false, title }: { athletes: Record<string, RenderedAthlete>, isBench?: boolean, title: string }) {
-  const [positionFilters, setPositionFilters] = useState<typeof positionsOptions>([]);
-  const [orderFilters, setOrderFilters] = useState([CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION]);
-  const sortSelectRef = useRef(null);
-  const positionSelectRef = useRef(null);
+  const [positionFilters, setPositionFilters] = useState<typeof positionsOptions>([])
+  const { orderFilters, handleOnStatisticSelect } = useFilterContext()
+  const sortSelectRef = useRef(null)
+  const positionSelectRef = useRef(null)
 
-  const handleOnStatisticsClick = (selectedOption: any) => setOrderFilters(selectedOption)
   const handleOnPositionSelection = (selectedPositionFilters: any) => setPositionFilters(selectedPositionFilters)
 
   return (
@@ -203,13 +229,13 @@ export default function AthleteList({ athletes, isBench = false, title }: { athl
             onChange={handleOnPositionSelection}
             isMulti
           />
-          <Select
+          <Select<StatisticOption, true>
             ref={sortSelectRef}
             className="w-64"
             options={isBench ? benchOptions : options}
             placeholder="Ordenar por"
             value={orderFilters}
-            onChange={handleOnStatisticsClick}
+            onChange={handleOnStatisticSelect}
             isMulti
           />
         </div>

@@ -1,7 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { headers } from "next/headers";
 import Link from 'next/link'
 import { TEAMS } from './constants/data'
 
