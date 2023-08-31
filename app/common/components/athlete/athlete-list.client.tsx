@@ -33,6 +33,7 @@ import {
   POINTS_AVERAGE_OPTION,
   type StatisticOption
 } from '@/app/constants/statistics'
+import { Tooltip } from '@mantine/core'
 
 const options = [
   CAST_TIMES_OPTION,
@@ -123,29 +124,32 @@ export function AthleteCard({
       <div className={`card-inner ${isBench ? 'bench-card' : 'player-card'}`}>
         <div className="absolute flex flex-col items-center card-front">
           <div className="absolute left-4 top-8">
-            <div
-              className="text-xl cursor-pointer"
-              title="Média Geral"
-              onClick={() => handleStatisticClick(OVERALL_AVERAGE_OPTION)}
-            >
-              {athlete.overallAverage.toFixed(1)}
-            </div>
-            <div className="flex flex-col justify-center items-center gap-1">
+            <Tooltip label="Média Geral">
               <div
-                className="uppercase text-xs cursor-pointer"
-                title={getPositionName(athlete.posicao_id)}
-                onClick={() => handlePositionAbbreviationClick(getPositionOptionByValue(positionsOptions, athlete.posicao_id.toString()))}
+                className="text-xl cursor-pointer"
+                onClick={() => handleStatisticClick(OVERALL_AVERAGE_OPTION)}
               >
-                {getPositionAbbreviation(athlete.posicao_id)}
+                {athlete.overallAverage.toFixed(1)}
               </div>
-              <Image
-                alt={getFootballTeamName(athlete.clube_id)}
-                src={getFootballTeamBadgeLink(athlete.clube_id)}
-                width={28}
-                height={28}
-                draggable="false"
-                title={getFootballTeamName(athlete.clube_id)}
-              />
+            </Tooltip>
+            <div className="flex flex-col justify-center items-center gap-1">
+              <Tooltip label={getPositionName(athlete.posicao_id)}>
+                <div
+                  className="uppercase text-xs cursor-pointer"
+                  onClick={() => handlePositionAbbreviationClick(getPositionOptionByValue(positionsOptions, athlete.posicao_id.toString()))}
+                >
+                  {getPositionAbbreviation(athlete.posicao_id)}
+                </div>
+              </Tooltip>
+              <Tooltip label={getFootballTeamName(athlete.clube_id)}>
+                <Image
+                  alt={getFootballTeamName(athlete.clube_id)}
+                  src={getFootballTeamBadgeLink(athlete.clube_id)}
+                  width={28}
+                  height={28}
+                  draggable="false"
+                />
+              </Tooltip>
             </div>
           </div>
           <div className="w-24 mt-6 ml-4">
@@ -157,8 +161,10 @@ export function AthleteCard({
               draggable="false"
             />
           </div>
-          <div className={`w-3/4 text-center font-bold truncate ${isBench ? 'text-amber-950' : 'text-emerald-950'}`}>
-            <span title={athlete.apelido}>{athlete.apelido}</span>
+          <div className={`w-3/4 text-center font-bold truncate cursor-default ${isBench ? 'text-amber-950' : 'text-emerald-950'}`}>
+            <Tooltip label={athlete.apelido}>
+              <span>{athlete.apelido}</span>
+            </Tooltip>
           </div>
           
           <div className="flex flex-col gap-0.5 w-3/4 text-xs">
@@ -180,7 +186,7 @@ export function AthleteCard({
               isCoach(athlete.posicao_id)
                 ? (
                   <div className="flex justify-between">
-                    <span title="Vitórias">Vitórias</span>
+                    <span>Vitórias</span>
                     <span>{athlete.scout?.V ?? 0}</span>
                   </div>
                 )
@@ -194,8 +200,10 @@ export function AthleteCard({
         </div>
         <div className={`absolute card-back flex justify-center`}>
           <div className="flex flex-col justify-center w-3/4 text-xs mt-[1rem] mb-10 mx-6">
-            <div className="text-center font-bold text-lg truncate">
-              <span title={athlete.apelido}>{athlete.apelido}</span>
+            <div className="text-center font-bold text-lg truncate cursor-default">
+              <Tooltip label={athlete.apelido}>
+                <span>{athlete.apelido}</span>
+              </Tooltip>
             </div>
             <AthleteStatistics athlete={athlete} handleStatisticClick={handleStatisticClick} />
           </div>

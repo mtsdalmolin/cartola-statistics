@@ -1,3 +1,5 @@
+import { Tooltip } from '@mantine/core'
+
 type StatisticValue = number | string
 
 interface StatisticItemProps {
@@ -12,7 +14,9 @@ export function StatisticItem({ canRender, label, title, value, handleStatisticC
   return canRender()
     ? (
       <div className="flex justify-between cursor-pointer hover:opacity-[0.9]" onClick={handleStatisticClick}>
-        <span title={title}>{label}</span>
+        <Tooltip label={title}>
+          <span>{label}</span>
+        </Tooltip>
         <span>{value}</span>
       </div>
     )
