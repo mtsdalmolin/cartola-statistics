@@ -9,6 +9,8 @@ import { ptBR } from 'date-fns/locale'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
   description: 'Site para analisar estatísticas que o cartola não utiliza.',
