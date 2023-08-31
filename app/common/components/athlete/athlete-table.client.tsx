@@ -491,7 +491,19 @@ const marketColumns: AthleteTableColumn[] = [
     id: 'performance',
     accessorKey: 'performance',
     header: 'Variação',
-    filterVariant: 'range-slider'
+    filterVariant: 'range-slider',
+    Cell: ({ cell }) => {
+      const performanceValue = cell.getValue<number>()
+      let component = <div className="text-white bg-yellow-600 px-4 py-2 rounded-md w-[65px] text-center">{performanceValue}</div>
+
+      if (performanceValue > 0) {
+        component = <div className="text-white bg-lime-700 px-4 py-2 rounded-md w-[65px] text-center">{performanceValue}</div>
+      } else if (performanceValue < 0) {
+        component = <div className="text-white bg-red-700  px-4 py-2 rounded-md w-[65px] text-center">{performanceValue}</div>
+      }
+
+      return component
+    }
   },
   {
     id: 'minToValuate',
