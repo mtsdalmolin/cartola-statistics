@@ -59,7 +59,7 @@ export default async function RootLayout({
               </nav>
             </div>
           </aside>
-          <main className="items-center py-8 px-12">
+          <main className="py-8 px-12">
             {children}
           </main>
         </div>
