@@ -655,7 +655,6 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
     enableColumnFilterModes: true,
     enableColumnOrdering: true,
     enablePinning: true,
-    enableStickyHeader: true,
     enableDensityToggle: false,
     enableFacetedValues: true,
     positionGlobalFilter: 'left',
