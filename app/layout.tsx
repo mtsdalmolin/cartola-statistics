@@ -4,8 +4,9 @@ import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import { TEAMS } from './constants/data'
 import { ENDPOINTS, request } from './services/cartola-api'
-import { formatDistance } from 'date-fns'
+import { formatDistanceToNow, intervalToDuration } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { CountdownRoundClock } from './common/components/countdown'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,12 +37,21 @@ export default async function RootLayout({
 
   const dateStr = `${marketStatus.fechamento.mes}/${marketStatus.fechamento.dia}/${marketStatus.fechamento.ano} ${marketStatus.fechamento.hora}:${marketStatus.fechamento.minuto}`
 
+  const distance = intervalToDuration({
+    start: new Date(dateStr),
+    end: new Date()
+  })
+
+  const dateDistanceText = formatDistanceToNow(new Date(dateStr), { locale: ptBR })
+
   return (
     <html lang="en">
       <body className={inter.className}>
         <header className="p-4 border-b-[1px]">
           <div className="text-center">
-            {marketStatus.nome_rodada} começa {formatDistance(new Date(dateStr), new Date(), { addSuffix: true, locale: ptBR })}
+            {marketStatus.nome_rodada} começa em {distance.days && distance.days < 0 ? (
+              <CountdownRoundClock date={dateStr} />
+            ) : dateDistanceText}
           </div>
         </header>
         <div className="flex min-h-screen">
