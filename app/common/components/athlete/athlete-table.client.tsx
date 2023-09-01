@@ -300,7 +300,7 @@ const POINTS_AVERAGE_HOME: AthleteTableColumn = {
   filterVariant: 'range-slider',
   Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
   Header: ({ column }) => (
-    <Tooltip label="Média de pontos como mandante">
+    <Tooltip label="Média de pontos como mandante"  position="right" withArrow>
       <Text>{column.columnDef.header}</Text>
     </Tooltip>
   )
@@ -313,7 +313,7 @@ const POINTS_AVERAGE_AWAY: AthleteTableColumn = {
   filterVariant: 'range-slider',
   Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
   Header: ({ column }) => (
-    <Tooltip label="Média de pontos como visitante">
+    <Tooltip label="Média de pontos como visitante" position="right" withArrow>
       <Text>{column.columnDef.header}</Text>
     </Tooltip>
   )
@@ -677,12 +677,8 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
     },
     initialState: {
       showGlobalFilter: true,
-      columnOrder: isMarketAndEditable(type, isEditable)
-        ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnOrder ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
-        : columnOrder,
-      columnVisibility: isMarketAndEditable(type, isEditable)
-        ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnVisibility ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
-        : columnVisibility,
+      columnOrder,
+      columnVisibility,
       columnPinning: {
         left: ['name']
       },
