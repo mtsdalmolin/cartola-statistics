@@ -37,9 +37,11 @@ export default async function RootLayout({
 
   const dateStr = `${marketStatus.fechamento.mes}/${marketStatus.fechamento.dia}/${marketStatus.fechamento.ano} ${marketStatus.fechamento.hora}:${marketStatus.fechamento.minuto}`
 
+  const datetimeThatClosesMarket = new Date(dateStr)
+  const today = new Date()
   const distance = intervalToDuration({
-    start: new Date(dateStr),
-    end: new Date()
+    start: datetimeThatClosesMarket,
+    end: today
   })
 
   const dateDistanceText = formatDistanceToNow(new Date(dateStr), { locale: ptBR })
@@ -48,11 +50,17 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <header className="p-4 border-b-[1px]">
-          <div className="text-center">
-            {marketStatus.nome_rodada} começa em {distance.days && distance.days < 0 ? (
-              <CountdownRoundClock date={dateStr} />
-            ) : dateDistanceText}
-          </div>
+          {datetimeThatClosesMarket <= today ? (
+            <div className="text-center">
+              {marketStatus.nome_rodada} começou!
+            </div>
+          ) : (
+            <div className="text-center">
+              {marketStatus.nome_rodada} começa em {distance.days === 0 ? (
+                <CountdownRoundClock date={dateStr} />
+              ) : dateDistanceText}
+            </div>
+          )}
         </header>
         <div className="flex min-h-screen">
           <aside className="border-r-[1px] border-r-white p-4 max-w-[250px]">
