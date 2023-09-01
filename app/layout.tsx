@@ -44,7 +44,7 @@ export default async function RootLayout({
     end: today
   })
 
-  const dateDistanceText = formatDistanceToNow(new Date(dateStr), { locale: ptBR })
+  const dateDistanceText = formatDistanceToNow(datetimeThatClosesMarket, { locale: ptBR })
 
   return (
     <html lang="en">
