@@ -50,7 +50,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <header className="p-4 border-b-[1px]">
-          {datetimeThatClosesMarket <= today ? (
+          {datetimeThatClosesMarket < today ? (
             <div className="text-center">
               {marketStatus.nome_rodada} começou!
             </div>
