@@ -148,7 +148,12 @@ export async function GET() {
       .order('created_at', { ascending: false })
   
     if (!supabaseMarketData?.[0].payload)
-      throw new Error('Couldn\'t load data from supabase')
+      return NextResponse.json({
+        ok: false,
+        error: new Error('Couldn\'t load data from supabase')
+      }, {
+        status: 400
+      })
   
     const changedAthletes: AthleteMessageEntity[] = []
   
@@ -186,6 +191,6 @@ export async function GET() {
       status: 'error'
     })
 
-    return NextResponse.json({ ok: false, error: err })
+    return NextResponse.json({ ok: false, error: err }, { status: 400 })
   }
 }
