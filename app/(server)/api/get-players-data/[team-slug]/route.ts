@@ -39,10 +39,21 @@ export async function GET(request: Request, context: GetContext) {
 
   const cartolaEndpoint = TEAM_ROUND_ENDPOINT(teamData.id.toString(), round)
 
+  const controller = new AbortController()
+  let requestTimeoutExceeded = false
+
+  const requestTimeout = setTimeout(() => {
+    controller.abort()
+    requestTimeoutExceeded = true
+  }, 2000);
+
   const cachedResponse = await supabase
     .from(TABLE_NAME)
     .select('payload')
     .like('endpoint', `%${cartolaEndpoint}`)
+    .abortSignal(controller.signal)
+
+  clearTimeout(requestTimeout)
 
   let result;
   let needsToFetchFromCartola = true
@@ -58,14 +69,16 @@ export async function GET(request: Request, context: GetContext) {
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 
-    const today = new Date()
-    await supabase
-      .from(TABLE_NAME)
-      .insert([{
-        payload: result,
-        endpoint: `${today.getFullYear()}/${cartolaEndpoint}`
-      }])
-      .select()
+    if (!requestTimeoutExceeded) {
+      const today = new Date()
+      await supabase
+        .from(TABLE_NAME)
+        .insert([{
+          payload: result,
+          endpoint: `${today.getFullYear()}/${cartolaEndpoint}`
+        }])
+        .select()
+    }
   }
 
   return NextResponse.json(result, { status: 200 })
