@@ -79,7 +79,7 @@ export default async function RootLayout({
               </nav>
             </div>
           </aside>
-          <main className="py-8 px-12">
+          <main className="flex flex-col w-full py-8 px-12">
             {children}
           </main>
         </div>

@@ -6,7 +6,7 @@ import { Flex } from './common/components/flex';
 export default function LoadingPage() {
   return (
     <Flex
-      className="w-full min-h-screen"
+      className="m-auto"
       align="center"
       justify="center"
     >
