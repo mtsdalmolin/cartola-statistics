@@ -178,8 +178,13 @@ export async function GET() {
     if (response.ok) {
       await saveSuccess(marketData)
     } else {
-      throw new Error(response.description ?? 'Couldn\'t send message to Telegram')
-    }
+      return NextResponse.json({
+        ok: false,
+        error: new Error(response.description ?? 'Couldn\'t send message to Telegram')
+      }, {
+        status: 400
+      })
+  }
     
     return NextResponse.json({ ok: true, message: telegramMessage })
   } catch (err: any) {
