@@ -124,12 +124,12 @@ export function AthleteCard({
       <div className={`card-inner ${isBench ? 'bench-card' : 'player-card'}`}>
         <div className="absolute flex flex-col items-center card-front">
           <div className="absolute left-4 top-8">
-            <Tooltip label="Média Geral">
+            <Tooltip label="Média">
               <div
                 className="text-xl cursor-pointer"
-                onClick={() => handleStatisticClick(OVERALL_AVERAGE_OPTION)}
+                onClick={() => handleStatisticClick(POINTS_AVERAGE_OPTION)}
               >
-                {athlete.overallAverage.toFixed(1)}
+                {athlete.pointsAverage.toFixed(1)}
               </div>
             </Tooltip>
             <div className="flex flex-col justify-center items-center gap-1">
@@ -192,9 +192,11 @@ export function AthleteCard({
                 )
                 : null
             }
-            <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(POINTS_AVERAGE_OPTION)}>
-              <span>Média</span>
-              <span>{athlete.pointsAverage.toFixed(2)}</span>
+            <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(OVERALL_AVERAGE_OPTION)}>
+              <Tooltip label="Soma das médias do cartola na rodada escalada dividido pelo número de escalações" multiline>
+                <span>Média geral</span>
+              </Tooltip>
+              <span>{athlete.overallAverage.toFixed(2)}</span>
             </div>
           </div>
         </div>
