@@ -1,4 +1,4 @@
-import { Athlete } from "../common/types/athlete"
+import { Athlete } from '../common/types/athlete'
 
 export interface RoundData {
   atletas: Athlete[]

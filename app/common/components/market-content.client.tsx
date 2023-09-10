@@ -7,7 +7,5 @@ import { AthleteTable } from './athlete/athlete-table.client'
 export function MarketContent({ athletes }: { athletes: MarketStatistics }) {
   const isClient = useClient()
 
-  return isClient ? (
-    <AthleteTable athletes={athletes} type="market" isEditable />
-  ) : null
+  return isClient ? <AthleteTable athletes={athletes} type="market" isEditable /> : null
 }

@@ -1,6 +1,6 @@
-import { RenderedAthlete } from '../common/types/athlete';
-import { STATISTICS_IDS } from '../constants/statistics';
-import { isCoach, isGoalkeeper } from './positions';
+import { RenderedAthlete } from '../common/types/athlete'
+import { STATISTICS_IDS } from '../constants/statistics'
+import { isCoach, isGoalkeeper } from './positions'
 
 export function getAthleteStatistics(athlete: RenderedAthlete) {
   return [
@@ -9,7 +9,7 @@ export function getAthleteStatistics(athlete: RenderedAthlete) {
       label: 'Maior pont.',
       title: 'Maior pontuação',
       value: athlete.highestPoint,
-      canRender: () => true,
+      canRender: () => true
     },
     {
       id: STATISTICS_IDS.minutesPlayed,
@@ -23,7 +23,8 @@ export function getAthleteStatistics(athlete: RenderedAthlete) {
       label: 'Gols',
       title: 'Gols',
       value: athlete.goals,
-      canRender: () => !isCoach(athlete.posicao_id) && (!isGoalkeeper(athlete.posicao_id) && athlete.goals > 0)
+      canRender: () =>
+        !isCoach(athlete.posicao_id) && !isGoalkeeper(athlete.posicao_id) && athlete.goals > 0
     },
     {
       id: STATISTICS_IDS.minutesToScore,
@@ -34,17 +35,20 @@ export function getAthleteStatistics(athlete: RenderedAthlete) {
     },
     {
       id: STATISTICS_IDS.finishes,
-      label: "Finalizações",
-      title: "Finalizações",
+      label: 'Finalizações',
+      title: 'Finalizações',
       value: athlete.finishes,
       canRender: () => !isGoalkeeper(athlete.posicao_id) && !isCoach(athlete.posicao_id)
     },
     {
       id: STATISTICS_IDS.finishesToScore,
-      label: "FPG",
-      title: "Finalizações para marcar gols",
+      label: 'FPG',
+      title: 'Finalizações para marcar gols',
       value: athlete.finishesToScore.toFixed(1),
-      canRender: () => !isGoalkeeper(athlete.posicao_id) && !isCoach(athlete.posicao_id) && isFinite(athlete.finishesToScore)
+      canRender: () =>
+        !isGoalkeeper(athlete.posicao_id) &&
+        !isCoach(athlete.posicao_id) &&
+        isFinite(athlete.finishesToScore)
     },
     {
       id: STATISTICS_IDS.defenses,
@@ -83,8 +87,8 @@ export function getAthleteStatistics(athlete: RenderedAthlete) {
     },
     {
       id: STATISTICS_IDS.victoriesPercentage,
-      label: "Vitórias %",
-      title: "Percentual de vitórias",
+      label: 'Vitórias %',
+      title: 'Percentual de vitórias',
       value: (athlete.victoriesAverage * 100).toFixed(1),
       canRender: () => isCoach(athlete.posicao_id)
     },
@@ -101,6 +105,6 @@ export function getAthleteStatistics(athlete: RenderedAthlete) {
       title: 'Rodadas que desvalorizou',
       value: athlete.valuation.rounds.belowZero,
       canRender: () => true
-    },
+    }
   ]
 }

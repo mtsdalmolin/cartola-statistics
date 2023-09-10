@@ -5,4 +5,7 @@ export type PositionOption = {
   label: string
 }
 
-export type PositionsStatistics = Record<string, { id: PositionsIds, points: number, pointsPercentage: number }>
+export type PositionsStatistics = Record<
+  string,
+  { id: PositionsIds; points: number; pointsPercentage: number }
+>

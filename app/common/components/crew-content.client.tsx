@@ -18,11 +18,9 @@ import { OrderContextProvider } from '../contexts/order-context.client'
 import { CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION } from '@/app/constants/statistics'
 
 function handleTableNumberValues(numberValue: number) {
-  if (isNil(numberValue))
-    return 0
+  if (isNil(numberValue)) return 0
 
-  if (isFinite(numberValue))
-    return numberValue
+  if (isFinite(numberValue)) return numberValue
 
   return 0
 }
@@ -57,97 +55,85 @@ function athleteTableDataFactory(athlete: RenderedAthlete): AthleteTableDataWith
 export function makeAthleteData(crew: CrewStatistics) {
   const athleteData: AthleteTableDataWithoutMatchKey[] = []
 
-  Object.values(crew).forEach(athlete =>
-    athleteData.push(athleteTableDataFactory(athlete))
-  )
+  Object.values(crew).forEach((athlete) => athleteData.push(athleteTableDataFactory(athlete)))
 
   return athleteData as AthleteTableData[]
 }
 
-function StatisticsContainer({ children, title }: { children: ReactElement | ReactElement[], title: string }) {
+function StatisticsContainer({
+  children,
+  title
+}: {
+  children: ReactElement | ReactElement[]
+  title: string
+}) {
   return (
     <div className="w-full rounded-md text-white bg-zinc-900 py-4 px-6">
       <div className="mt-[-0.175rem] mb-4">{title}</div>
-      <Flex justify="between">
-        {children}
-      </Flex>
+      <Flex justify="between">{children}</Flex>
     </div>
   )
 }
 
-
-export function CrewContent(
-  { athletes, bench, clubs, positions }:
-  {
-    athletes: CrewStatistics,
-    bench: CrewStatistics,
-    clubs: ClubStatistics,
-    positions: PositionsStatistics
-  }
-) {
+export function CrewContent({
+  athletes,
+  bench,
+  clubs,
+  positions
+}: {
+  athletes: CrewStatistics
+  bench: CrewStatistics
+  clubs: ClubStatistics
+  positions: PositionsStatistics
+}) {
   const [showTable, setShowTable] = useState(false)
 
   return (
     <>
       <Flex direction="column" gap="sm">
         <StatisticsContainer title="Percentual de pontos por clubes">
-          {
-            orderBy(Object.values(clubs), 'pointsPercentage', 'desc').map(
-              (club: ClubStatistics[0]) => (
-                <Flex key={club.id} align="center" gap="sm" direction="column">
-                  <Image
-                    alt={getFootballTeamName(club.id)}
-                    src={getFootballTeamBadgeLink(club.id)}
-                    width={30}
-                    height={30}
-                  />
-                  {club.pointsPercentage.toFixed(1)}%
-                </Flex>
-              )
+          {orderBy(Object.values(clubs), 'pointsPercentage', 'desc').map(
+            (club: ClubStatistics[0]) => (
+              <Flex key={club.id} align="center" gap="sm" direction="column">
+                <Image
+                  alt={getFootballTeamName(club.id)}
+                  src={getFootballTeamBadgeLink(club.id)}
+                  width={30}
+                  height={30}
+                />
+                {club.pointsPercentage.toFixed(1)}%
+              </Flex>
             )
-          }
+          )}
         </StatisticsContainer>
         <StatisticsContainer title="Percentual de pontos por posição">
-          {
-            orderBy(Object.values(positions), 'pointsPercentage', 'desc').map(
-              (position: PositionsStatistics[0]) => (
-                <Flex key={position.id} gap="sm" align="center">
-                  {getPositionName(position.id)}: {position.pointsPercentage.toFixed(1)}%
-                </Flex>
-              )
+          {orderBy(Object.values(positions), 'pointsPercentage', 'desc').map(
+            (position: PositionsStatistics[0]) => (
+              <Flex key={position.id} gap="sm" align="center">
+                {getPositionName(position.id)}: {position.pointsPercentage.toFixed(1)}%
+              </Flex>
             )
-          }
+          )}
         </StatisticsContainer>
       </Flex>
       <Switch
         size="md"
         onLabel={<IconTable size={16} stroke={2.5} />}
         offLabel={<IconCards size={16} stroke={2.5} />}
-        onChange={() => setShowTable(prevState => !prevState)}
+        onChange={() => setShowTable((prevState) => !prevState)}
       />
-      {
-        showTable
-          ? (
-            <AthleteTable
-              athletes={makeAthleteData(athletes)}
-              benchAthletes={makeAthleteData(bench)}
-              type="athlete"
-            />
-          )
-          : (
-            <OrderContextProvider initialStateValue={[CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION]}>
-              <AthleteList
-                title="Titulares"
-                athletes={athletes}
-              />
-              <AthleteList
-                title="Reservas"
-                isBench
-                athletes={bench}
-              />
-            </OrderContextProvider>
-          )
-      }
+      {showTable ? (
+        <AthleteTable
+          athletes={makeAthleteData(athletes)}
+          benchAthletes={makeAthleteData(bench)}
+          type="athlete"
+        />
+      ) : (
+        <OrderContextProvider initialStateValue={[CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION]}>
+          <AthleteList title="Titulares" athletes={athletes} />
+          <AthleteList title="Reservas" isBench athletes={bench} />
+        </OrderContextProvider>
+      )}
     </>
   )
 }

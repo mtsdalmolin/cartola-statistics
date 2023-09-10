@@ -28,11 +28,7 @@ interface RoundInfo {
   }
 }
 
-export default async function RootLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const marketStatus: RoundInfo = await request(ENDPOINTS.MARKET_STATUS)
 
   const dateStr = `${marketStatus.fechamento.mes}/${marketStatus.fechamento.dia}/${marketStatus.fechamento.ano} ${marketStatus.fechamento.hora}:${marketStatus.fechamento.minuto}`
@@ -41,7 +37,7 @@ export default async function RootLayout({
   const today = new Date()
   const distance = intervalToDuration({
     start: datetimeThatClosesMarket,
-    end: today
+    end: today,
   })
 
   const dateDistanceText = formatDistanceToNow(datetimeThatClosesMarket, { locale: ptBR })
@@ -51,14 +47,11 @@ export default async function RootLayout({
       <body className={inter.className}>
         <header className="p-4 border-b-[1px]">
           {datetimeThatClosesMarket < today ? (
-            <div className="text-center">
-              {marketStatus.nome_rodada} começou!
-            </div>
+            <div className="text-center">{marketStatus.nome_rodada} começou!</div>
           ) : (
             <div className="text-center">
-              {marketStatus.nome_rodada} começa em {distance.days === 0 ? (
-                <CountdownRoundClock date={dateStr} />
-              ) : dateDistanceText}
+              {marketStatus.nome_rodada} começa em{' '}
+              {distance.days === 0 ? <CountdownRoundClock date={dateStr} /> : dateDistanceText}
             </div>
           )}
         </header>
@@ -66,8 +59,10 @@ export default async function RootLayout({
           <aside className="border-r-[1px] border-r-white p-4 max-w-[250px]">
             <div className="sticky top-0 bottom-0 left-0">
               <nav className="flex flex-col">
-                <Link className="my-2 hover:underline" href="/mercado">Mercado</Link>
-                {TEAMS.map(team => 
+                <Link className="my-2 hover:underline" href="/mercado">
+                  Mercado
+                </Link>
+                {TEAMS.map((team) => (
                   <Link
                     key={team.id}
                     className="my-2 truncate hover:underline"
@@ -75,13 +70,11 @@ export default async function RootLayout({
                   >
                     {team.name}
                   </Link>
-                )}
+                ))}
               </nav>
             </div>
           </aside>
-          <main className="flex flex-col w-full py-8 px-12">
-            {children}
-          </main>
+          <main className="flex flex-col w-full py-8 px-12">{children}</main>
         </div>
       </body>
     </html>

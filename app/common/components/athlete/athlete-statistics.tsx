@@ -7,22 +7,20 @@ export function AthleteStatistics({
   athlete,
   handleStatisticClick
 }: {
-  athlete: RenderedAthlete,
+  athlete: RenderedAthlete
   handleStatisticClick: (selectedOption: StatisticOption) => void
 }) {
   const statistics = getAthleteStatistics(athlete)
 
   return (
     <div className="flex flex-col gap-0.5 h-[70%] divide-y overflow-auto hover:overscroll-contain hide-scroll">
-      {
-        statistics.map(statistic => (
-          <StatisticItem
-            key={statistic.label}
-            handleStatisticClick={() => handleStatisticClick(OPTIONS[statistic.id])}
-            {...statistic}
-          />
-        ))
-      }
+      {statistics.map((statistic) => (
+        <StatisticItem
+          key={statistic.label}
+          handleStatisticClick={() => handleStatisticClick(OPTIONS[statistic.id])}
+          {...statistic}
+        />
+      ))}
     </div>
   )
 }

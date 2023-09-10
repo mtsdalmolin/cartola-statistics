@@ -16,7 +16,7 @@ export interface Athlete {
   preco_num: number
   status_id?: StatusIds
   scout: {
-    A?: number  // Assistências
+    A?: number // Assistências
     CA?: number // Cartões amarelos
     CV?: number // Cartões vermelhos
     DE?: number // Defesas
@@ -26,13 +26,13 @@ export interface Athlete {
     FF?: number // Finalizações pra fora
     FS?: number // Faltas sofridas
     FT?: number // Finalizações na trave
-    G?: number  // Gols
+    G?: number // Gols
     GS?: number // Gols sofridos
-    I?: number  // Impedimentos
+    I?: number // Impedimentos
     PP?: number // Pênalti perdido
     PS?: number // Pênalti sofrido
     SG?: number // Sem sofrer gols
-    V?: number  // Vitória
+    V?: number // Vitória
   }
   gato_mestre: {
     minutos_jogados: number
@@ -79,4 +79,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
 }
 
 export type CrewStatistics = Record<string, RenderedAthlete>
-export type ClubStatistics = Record<string, { id: FootballTeamsIds, points: number, pointsPercentage: number }>
+export type ClubStatistics = Record<
+  string,
+  { id: FootballTeamsIds; points: number; pointsPercentage: number }
+>

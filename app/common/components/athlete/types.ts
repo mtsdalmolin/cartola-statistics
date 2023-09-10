@@ -1,6 +1,6 @@
 export interface AthleteTableData {
   id: number
-  photoUrl: string,
+  photoUrl: string
   name: string
   club: string
   clubBadgeUrl: string

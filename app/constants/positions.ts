@@ -5,7 +5,7 @@ export const MEIA = 4
 export const ATACANTE = 5
 export const TECNICO = 6
 
-export const POSITIONS: Record<number, { nome: string, abreviacao: string }> = {
+export const POSITIONS: Record<number, { nome: string; abreviacao: string }> = {
   [GOLEIRO]: {
     nome: 'Goleiro',
     abreviacao: 'gol'

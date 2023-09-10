@@ -47,7 +47,7 @@ const options = [
   FINISHES_OPTION,
   FINISHES_TO_SCORE_OPTION,
   DEFENSES_OPTION,
-  DEFENSES_TO_SUFFER_GOAL_OPTION,
+  DEFENSES_TO_SUFFER_GOAL_OPTION
 ]
 
 const benchOptions = [
@@ -61,7 +61,7 @@ const benchOptions = [
   FINISHES_OPTION,
   FINISHES_TO_SCORE_OPTION,
   DEFENSES_OPTION,
-  DEFENSES_TO_SUFFER_GOAL_OPTION,
+  DEFENSES_TO_SUFFER_GOAL_OPTION
 ]
 
 const positionsOptions = Object.entries(POSITIONS).map(([positionId, position]) => ({
@@ -69,7 +69,7 @@ const positionsOptions = Object.entries(POSITIONS).map(([positionId, position]) 
   label: position.nome
 }))
 
-const benchPositionsOptions = positionsOptions.filter(position => position.value !== '6')
+const benchPositionsOptions = positionsOptions.filter((position) => position.value !== '6')
 
 export function AthleteCard({
   athlete,
@@ -77,9 +77,9 @@ export function AthleteCard({
   sortSelectRef,
   positionSelectRef
 }: {
-  athlete: RenderedAthlete,
-  isBench: boolean,
-  sortSelectRef: any,
+  athlete: RenderedAthlete
+  isBench: boolean
+  sortSelectRef: any
   positionSelectRef: any
 }) {
   const cardRef = useRef<HTMLDivElement>(null)
@@ -88,7 +88,10 @@ export function AthleteCard({
     const currentValue = sortSelectRef.current.getValue()
 
     if (currentValue.some((option: any) => option.value === selectedOption.value)) {
-      sortSelectRef.current.onChange(currentValue.filter((option: any) => option.value !== selectedOption.value), {})
+      sortSelectRef.current.onChange(
+        currentValue.filter((option: any) => option.value !== selectedOption.value),
+        {}
+      )
       return
     }
 
@@ -99,7 +102,10 @@ export function AthleteCard({
     const currentValue = positionSelectRef.current.getValue()
 
     if (currentValue.some((option: any) => option.value === selectedPosition.value)) {
-      positionSelectRef.current.onChange(currentValue.filter((option: any) => option.value !== selectedPosition.value), {})
+      positionSelectRef.current.onChange(
+        currentValue.filter((option: any) => option.value !== selectedPosition.value),
+        {}
+      )
       return
     }
 
@@ -136,7 +142,11 @@ export function AthleteCard({
               <Tooltip label={getPositionName(athlete.posicao_id)}>
                 <div
                   className="uppercase text-xs cursor-pointer"
-                  onClick={() => handlePositionAbbreviationClick(getPositionOptionByValue(positionsOptions, athlete.posicao_id.toString()))}
+                  onClick={() =>
+                    handlePositionAbbreviationClick(
+                      getPositionOptionByValue(positionsOptions, athlete.posicao_id.toString())
+                    )
+                  }
                 >
                   {getPositionAbbreviation(athlete.posicao_id)}
                 </div>
@@ -161,39 +171,47 @@ export function AthleteCard({
               draggable="false"
             />
           </div>
-          <div className={`w-3/4 text-center font-bold truncate cursor-default ${isBench ? 'text-amber-950' : 'text-emerald-950'}`}>
+          <div
+            className={`w-3/4 text-center font-bold truncate cursor-default ${
+              isBench ? 'text-amber-950' : 'text-emerald-950'
+            }`}
+          >
             <Tooltip label={athlete.apelido}>
               <span>{athlete.apelido}</span>
             </Tooltip>
           </div>
-          
+
           <div className="flex flex-col gap-0.5 w-3/4 text-xs">
-            <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(CAST_TIMES_OPTION)}>
+            <div
+              className="flex justify-between cursor-pointer"
+              onClick={() => handleStatisticClick(CAST_TIMES_OPTION)}
+            >
               <span>Escalações</span>
               <span>{athlete.castTimes}</span>
             </div>
-            {
-              isBench || isCoach(athlete.posicao_id)
-              ? null
-              : (
-                <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(CAPTAIN_TIMES_OPTION)}>
-                  <span>Vezes capitão</span>
-                  <span>{athlete.captainTimes}</span>
-                </div>
-              )
-            }
-            {
-              isCoach(athlete.posicao_id)
-                ? (
-                  <div className="flex justify-between">
-                    <span>Vitórias</span>
-                    <span>{athlete.scout?.V ?? 0}</span>
-                  </div>
-                )
-                : null
-            }
-            <div className="flex justify-between cursor-pointer" onClick={() => handleStatisticClick(OVERALL_AVERAGE_OPTION)}>
-              <Tooltip label="Soma das médias do cartola na rodada escalada dividido pelo número de escalações" multiline>
+            {isBench || isCoach(athlete.posicao_id) ? null : (
+              <div
+                className="flex justify-between cursor-pointer"
+                onClick={() => handleStatisticClick(CAPTAIN_TIMES_OPTION)}
+              >
+                <span>Vezes capitão</span>
+                <span>{athlete.captainTimes}</span>
+              </div>
+            )}
+            {isCoach(athlete.posicao_id) ? (
+              <div className="flex justify-between">
+                <span>Vitórias</span>
+                <span>{athlete.scout?.V ?? 0}</span>
+              </div>
+            ) : null}
+            <div
+              className="flex justify-between cursor-pointer"
+              onClick={() => handleStatisticClick(OVERALL_AVERAGE_OPTION)}
+            >
+              <Tooltip
+                label="Soma das médias do cartola na rodada escalada dividido pelo número de escalações"
+                multiline
+              >
                 <span>Média geral</span>
               </Tooltip>
               <span>{athlete.overallAverage.toFixed(2)}</span>
@@ -215,13 +233,22 @@ export function AthleteCard({
   )
 }
 
-export default function AthleteList({ athletes, isBench = false, title }: { athletes: Record<string, RenderedAthlete>, isBench?: boolean, title: string }) {
+export default function AthleteList({
+  athletes,
+  isBench = false,
+  title
+}: {
+  athletes: Record<string, RenderedAthlete>
+  isBench?: boolean
+  title: string
+}) {
   const [positionFilters, setPositionFilters] = useState<typeof positionsOptions>([])
   const { orderFilters, handleOnStatisticSelect } = useOrderContext()
   const sortSelectRef = useRef<SelectInstance<StatisticOption, true>>(null)
-  const positionSelectRef = useRef<SelectInstance<typeof positionsOptions[0], true>>(null)
+  const positionSelectRef = useRef<SelectInstance<(typeof positionsOptions)[0], true>>(null)
 
-  const handleOnPositionSelection = (selectedPositionFilters: any) => setPositionFilters(selectedPositionFilters)
+  const handleOnPositionSelection = (selectedPositionFilters: any) =>
+    setPositionFilters(selectedPositionFilters)
 
   return (
     <section>
@@ -249,7 +276,11 @@ export default function AthleteList({ athletes, isBench = false, title }: { athl
         </div>
       </header>
       <div className="flex flex-wrap gap-x-2">
-        {orderBy(athletes, Object.values(mapValues(orderFilters, 'value')), orderFilters.map(() => 'desc')).map(athlete => (
+        {orderBy(
+          athletes,
+          Object.values(mapValues(orderFilters, 'value')),
+          orderFilters.map(() => 'desc')
+        ).map((athlete) =>
           isPositionSelectedOrIsFilterEmpty(positionFilters, athlete.posicao_id.toString()) ? (
             <div key={athlete.atleta_id}>
               <AthleteCard
@@ -260,7 +291,7 @@ export default function AthleteList({ athletes, isBench = false, title }: { athl
               />
             </div>
           ) : null
-        ))}
+        )}
       </div>
     </section>
   )

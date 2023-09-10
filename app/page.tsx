@@ -1,7 +1,3 @@
 export default function Home() {
-  return (
-    <section>
-      conteúdo aqui
-    </section>
-  )
+  return <section>conteúdo aqui</section>
 }

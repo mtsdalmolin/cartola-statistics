@@ -2,11 +2,7 @@ import { ReactElement, ReactNode } from 'react'
 import { VariantProps, tv } from 'tailwind-variants'
 
 const flexContainer = tv({
-  base: [
-    'flex',
-    'flex-wrap',
-    'grow'
-  ],
+  base: ['flex', 'flex-wrap', 'grow'],
   variants: {
     justify: {
       start: 'justify-start',
@@ -22,7 +18,7 @@ const flexContainer = tv({
       end: 'items-end',
       center: 'items-center',
       baseline: 'items-baseline',
-      stretch: 'items-stretch',
+      stretch: 'items-stretch'
     },
     direction: {
       row: '',
@@ -35,7 +31,7 @@ const flexContainer = tv({
       lg: 'gap-8',
       xl: 'gap-16',
       none: ''
-    },
+    }
   },
   defaultVariants: {
     justify: 'start',
@@ -45,9 +41,13 @@ const flexContainer = tv({
   }
 })
 
-type FlexChildren = (ReactElement | ReactNode | string)
+type FlexChildren = ReactElement | ReactNode | string
 
-export function Flex({ children, className, ...props }: {
+export function Flex({
+  children,
+  className,
+  ...props
+}: {
   children: FlexChildren[] | FlexChildren
   className?: string
 } & VariantProps<typeof flexContainer>) {

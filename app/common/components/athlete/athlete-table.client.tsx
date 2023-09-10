@@ -5,7 +5,7 @@ import {
   useMantineReactTable,
   type MRT_ColumnDef,
   type MRT_TableInstance,
-  MRT_ColumnFiltersState,
+  MRT_ColumnFiltersState
 } from 'mantine-react-table'
 import {
   ActionIcon,
@@ -50,8 +50,8 @@ function handleTableFilterChange<T>({
   filterId: string
   currentFilters: MRT_ColumnFiltersState
 }) {
-  const currentFilter = currentFilters.find(filter => filter.id === filterId)
-  const otherFilters = currentFilters.filter(filter => filter.id !== filterId)
+  const currentFilter = currentFilters.find((filter) => filter.id === filterId)
+  const otherFilters = currentFilters.filter((filter) => filter.id !== filterId)
 
   if (!isNil(currentFilter) && isArray(currentFilter.value)) {
     if (currentFilter.value.includes(currentValue)) {
@@ -59,7 +59,9 @@ function handleTableFilterChange<T>({
         ...otherFilters,
         {
           id: filterId,
-          value: currentFilter.value.filter(currentFilterValue => currentFilterValue !== currentValue)
+          value: currentFilter.value.filter(
+            (currentFilterValue) => currentFilterValue !== currentValue
+          )
         }
       ]
     }
@@ -68,10 +70,7 @@ function handleTableFilterChange<T>({
       ...otherFilters,
       {
         id: filterId,
-        value: [
-          ...currentFilter.value,
-          currentValue
-        ]
+        value: [...currentFilter.value, currentValue]
       }
     ]
   }
@@ -86,13 +85,12 @@ function handleTableFilterChange<T>({
 }
 
 function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance<TableData> }) {
-  const selectedPositions = tableObject
-    .getState()
-    .columnFilters
-    .find(filter => filter.id === 'position')?.value as string[] ?? []
+  const selectedPositions =
+    (tableObject.getState().columnFilters.find((filter) => filter.id === 'position')
+      ?.value as string[]) ?? []
 
-  const handleFilterChange = (position: typeof POSITIONS[0]) => {
-    tableObject.setColumnFilters(prev => {
+  const handleFilterChange = (position: (typeof POSITIONS)[0]) => {
+    tableObject.setColumnFilters((prev) => {
       return handleTableFilterChange({
         filterId: 'position',
         currentValue: position.nome,
@@ -106,15 +104,9 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
       <Menu.Target>
         <Tooltip label="Filtrar por posição">
           <ActionIcon>
-            {
-              !isEmpty(selectedPositions) ? (
-                <IconAlertCircleFilled
-                  className="absolute top-0 right-0 text-amber-400"
-                  size={12}
-                />
-              )
-              : null
-            }
+            {!isEmpty(selectedPositions) ? (
+              <IconAlertCircleFilled className="absolute top-0 right-0 text-amber-400" size={12} />
+            ) : null}
             <IconPlayFootball />
           </ActionIcon>
         </Tooltip>
@@ -123,7 +115,7 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
       <Menu.Dropdown>
         <Menu.Label>Filtrar por posição</Menu.Label>
         <Flex>
-          {Object.values(POSITIONS).map(position => (
+          {Object.values(POSITIONS).map((position) => (
             <Menu.Item
               className="relative w-auto"
               key={position.nome}
@@ -132,7 +124,9 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
               <Tooltip label={position.nome}>
                 <div>
                   <Text>{position.abreviacao.toUpperCase()}</Text>
-                  {selectedPositions.find(selectedPositionName => selectedPositionName === position.nome) ? (
+                  {selectedPositions.find(
+                    (selectedPositionName) => selectedPositionName === position.nome
+                  ) ? (
                     <IconCircleCheckFilled
                       className="absolute bottom-2 right-2 text-green-600"
                       size={12}
@@ -149,13 +143,12 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
 }
 
 function ToolbarClubFilter({ tableObject }: { tableObject: MRT_TableInstance<TableData> }) {
-  const selectedClubs = tableObject
-    .getState()
-    .columnFilters
-    .find(filter => filter.id === 'club')?.value as string[] ?? []
+  const selectedClubs =
+    (tableObject.getState().columnFilters.find((filter) => filter.id === 'club')
+      ?.value as string[]) ?? []
 
   const handleFilterChange = (clubName: string) => {
-    tableObject.setColumnFilters(prev => {
+    tableObject.setColumnFilters((prev) => {
       return handleTableFilterChange({
         filterId: 'club',
         currentValue: clubName,
@@ -169,15 +162,12 @@ function ToolbarClubFilter({ tableObject }: { tableObject: MRT_TableInstance<Tab
       <Menu.Target>
         <Tooltip label="Filtrar por clube">
           <ActionIcon>
-            {
-              !isEmpty(selectedClubs) ? (
-                <IconAlertCircleFilled
-                  className="absolute top-0 right-0 text-amber-400 z-50"
-                  size={12}
-                />
-              )
-              : null
-            }
+            {!isEmpty(selectedClubs) ? (
+              <IconAlertCircleFilled
+                className="absolute top-0 right-0 text-amber-400 z-50"
+                size={12}
+              />
+            ) : null}
             <IconShirtSport />
           </ActionIcon>
         </Tooltip>
@@ -194,13 +184,8 @@ function ToolbarClubFilter({ tableObject }: { tableObject: MRT_TableInstance<Tab
             >
               <Tooltip label={club.nome}>
                 <div>
-                  <Image
-                    alt={club.nome}
-                    src={club.escudos['30x30']}
-                    width={30}
-                    height={30}
-                  />
-                  {selectedClubs.find(selectedClubName => selectedClubName === club.nome) ? (
+                  <Image alt={club.nome} src={club.escudos['30x30']} width={30} height={30} />
+                  {selectedClubs.find((selectedClubName) => selectedClubName === club.nome) ? (
                     <IconCircleCheckFilled
                       className="absolute bottom-2 right-2 text-green-600"
                       size={12}
@@ -216,13 +201,23 @@ function ToolbarClubFilter({ tableObject }: { tableObject: MRT_TableInstance<Tab
   )
 }
 
-function AthleteNameTableCell({ name, photoUrl, clubName, clubBadgeUrl }: { name: string, photoUrl: string, clubName: string, clubBadgeUrl: string }) {
+function AthleteNameTableCell({
+  name,
+  photoUrl,
+  clubName,
+  clubBadgeUrl
+}: {
+  name: string
+  photoUrl: string
+  clubName: string
+  clubBadgeUrl: string
+}) {
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
-        gap: '16px',
+        gap: '16px'
       }}
     >
       <Box
@@ -230,13 +225,7 @@ function AthleteNameTableCell({ name, photoUrl, clubName, clubBadgeUrl }: { name
           position: 'relative'
         }}
       >
-        <Image
-          alt={name}
-          width={50}
-          height={50}
-          src={photoUrl}
-          style={{ borderRadius: '50%' }}
-        />
+        <Image alt={name} width={50} height={50} src={photoUrl} style={{ borderRadius: '50%' }} />
         <Image
           alt={clubName}
           width={20}
@@ -266,7 +255,7 @@ const NAME_ROW: AthleteTableColumn = {
       clubName={row.original.club}
       clubBadgeUrl={row.original.clubBadgeUrl}
     />
-  ),
+  )
 }
 
 const CLUB_ROW: AthleteTableColumn = {
@@ -283,14 +272,14 @@ const CLUB_ROW: AthleteTableColumn = {
     </Tooltip>
   ),
   header: 'Clube',
-  filterVariant: 'multi-select',
+  filterVariant: 'multi-select'
 }
 
 const POSITION_ROW: AthleteTableColumn = {
   id: 'position',
   accessorKey: 'position',
   header: 'Posição',
-  filterVariant: 'multi-select',
+  filterVariant: 'multi-select'
 }
 
 const POINTS_AVERAGE_HOME: AthleteTableColumn = {
@@ -300,7 +289,7 @@ const POINTS_AVERAGE_HOME: AthleteTableColumn = {
   filterVariant: 'range-slider',
   Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
   Header: ({ column }) => (
-    <Tooltip label="Média de pontos como mandante"  position="right" withArrow>
+    <Tooltip label="Média de pontos como mandante" position="right" withArrow>
       <Text>{column.columnDef.header}</Text>
     </Tooltip>
   )
@@ -361,7 +350,7 @@ const athleteColumns: AthleteTableColumn[] = [
     accessorKey: 'pointsAverage',
     header: 'Média',
     filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number>().toFixed(1),
+    Cell: ({ cell }) => cell.getValue<number>().toFixed(1)
   },
   POINTS_AVERAGE_HOME,
   POINTS_AVERAGE_AWAY,
@@ -388,19 +377,19 @@ const athleteColumns: AthleteTableColumn[] = [
     id: 'goals',
     accessorKey: 'goals',
     header: 'Gols',
-    filterVariant: 'range-slider',
+    filterVariant: 'range-slider'
   },
   {
     id: 'defenses',
     accessorKey: 'defenses',
     header: 'Defesas',
-    filterVariant: 'range-slider',
+    filterVariant: 'range-slider'
   },
   {
     id: 'goalsAgainst',
     accessorKey: 'goalsAgainst',
     header: 'Gols sofridos',
-    filterVariant: 'range-slider',
+    filterVariant: 'range-slider'
   },
   {
     id: 'defensesToSufferGoal',
@@ -437,13 +426,13 @@ const athleteColumns: AthleteTableColumn[] = [
     id: 'castTimes',
     accessorKey: 'castTimes',
     header: 'Escalações',
-    filterVariant: 'range-slider',
+    filterVariant: 'range-slider'
   },
   {
     id: 'captainTimes',
     accessorKey: 'captainTimes',
     header: 'Vezes Cap.',
-    filterVariant: 'range-slider',
+    filterVariant: 'range-slider'
   },
   CLUB_ROW
 ]
@@ -494,12 +483,24 @@ const marketColumns: AthleteTableColumn[] = [
     filterVariant: 'range-slider',
     Cell: ({ cell }) => {
       const performanceValue = cell.getValue<number>()
-      let component = <div className="text-white bg-yellow-600 px-4 py-2 rounded-md w-[65px] text-center">{performanceValue}</div>
+      let component = (
+        <div className="text-white bg-yellow-600 px-4 py-2 rounded-md w-[65px] text-center">
+          {performanceValue}
+        </div>
+      )
 
       if (performanceValue > 0) {
-        component = <div className="text-white bg-lime-700 px-4 py-2 rounded-md w-[65px] text-center">{performanceValue}</div>
+        component = (
+          <div className="text-white bg-lime-700 px-4 py-2 rounded-md w-[65px] text-center">
+            {performanceValue}
+          </div>
+        )
       } else if (performanceValue < 0) {
-        component = <div className="text-white bg-red-700  px-4 py-2 rounded-md w-[65px] text-center">{performanceValue}</div>
+        component = (
+          <div className="text-white bg-red-700  px-4 py-2 rounded-md w-[65px] text-center">
+            {performanceValue}
+          </div>
+        )
       }
 
       return component
@@ -522,7 +523,7 @@ const marketColumns: AthleteTableColumn[] = [
     id: 'points',
     accessorKey: 'points',
     header: 'Pontos',
-    filterVariant: 'range-slider',
+    filterVariant: 'range-slider'
   },
   {
     id: 'price',
@@ -564,8 +565,8 @@ const marketColumns: AthleteTableColumn[] = [
           />
         </Tooltip>
       </Flex>
-    ),
-  },
+    )
+  }
 ]
 
 const marketAthleteColumnsOrders = [
@@ -611,47 +612,56 @@ const TABLE_TYPE_SORTING = {
   athlete: [
     {
       id: 'castTimes',
-      desc: true,
+      desc: true
     },
     {
       id: 'pointsAverage',
-      desc: true,
-    },
+      desc: true
+    }
   ],
   market: [
     {
       id: 'price',
-      desc: true,
-    },
-  ],
+      desc: true
+    }
+  ]
 }
 
-type AthleteTableProps<T> = T extends AthleteTableData ? {
-  athletes: T[]
-  benchAthletes: AthleteTableData[]
-  type: keyof typeof TABLE_TYPE_COLUMNS
-  isEditable?: never
-} : {
-  athletes: T[]
-  benchAthletes?: never
-  type: keyof typeof TABLE_TYPE_COLUMNS
-  isEditable?: boolean
-}
+type AthleteTableProps<T> = T extends AthleteTableData
+  ? {
+      athletes: T[]
+      benchAthletes: AthleteTableData[]
+      type: keyof typeof TABLE_TYPE_COLUMNS
+      isEditable?: never
+    }
+  : {
+      athletes: T[]
+      benchAthletes?: never
+      type: keyof typeof TABLE_TYPE_COLUMNS
+      isEditable?: boolean
+    }
 
 function isMarketAndEditable(type: keyof typeof TABLE_TYPE_COLUMNS, isEditable: boolean) {
   return isEditable && type === 'market'
 }
 
-export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable = false }: AthleteTableProps<T>) {
+export function AthleteTable<T>({
+  athletes,
+  benchAthletes = [],
+  type,
+  isEditable = false
+}: AthleteTableProps<T>) {
   const [showBench, setShowBench] = useState(false)
   const [columnOrder, setColumnOrder] = useState(
     isMarketAndEditable(type, isEditable)
-      ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnOrder ?? TABLE_TYPE_COLUMNS_ORDERS[type]
+      ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnOrder ??
+          TABLE_TYPE_COLUMNS_ORDERS[type]
       : TABLE_TYPE_COLUMNS_ORDERS[type]
   )
   const [columnVisibility, setColumnVisibility] = useState(
     isMarketAndEditable(type, isEditable)
-      ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnVisibility ?? TABLE_TYPE_COLUMNS_VISIBILITY[type]
+      ? MarketTableAsyncExternalStorage.customizedTableColumnConfig?.columnVisibility ??
+          TABLE_TYPE_COLUMNS_VISIBILITY[type]
       : TABLE_TYPE_COLUMNS_VISIBILITY[type]
   )
   const [pagination, setPagination] = useState({
@@ -659,7 +669,7 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
     pageSize: 30
   })
 
-  const handleViewChange = () => setShowBench(prevState => !prevState)
+  const handleViewChange = () => setShowBench((prevState) => !prevState)
 
   const table = useMantineReactTable({
     columns: TABLE_TYPE_COLUMNS[type],
@@ -683,9 +693,7 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
         left: ['name']
       },
       sorting: TABLE_TYPE_SORTING[type],
-      columnFilters: [
-        { id: 'status', value: [STATUS[PROSPECTIVE].nome] }
-      ]
+      columnFilters: [{ id: 'status', value: [STATUS[PROSPECTIVE].nome] }]
     },
     onColumnOrderChange: setColumnOrder,
     onColumnVisibilityChange: setColumnVisibility,
@@ -709,8 +717,8 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
         width: 'calc(100vw - 346px)'
       }
     }
-  });
-  
+  })
+
   const initialTableState = useSyncExternalStore(
     MarketTableAsyncExternalStorage.subscribe,
     MarketTableAsyncExternalStorage.getSnapshot
@@ -722,19 +730,17 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
       return true
     }
 
-    if (JSON.stringify(parsedInitialTableState.columnVisibility) !== JSON.stringify(columnVisibility)) {
+    if (
+      JSON.stringify(parsedInitialTableState.columnVisibility) !== JSON.stringify(columnVisibility)
+    ) {
       return true
     }
 
     return false
-  }, [
-    initialTableState,
-    columnOrder,
-    columnVisibility
-  ])
+  }, [initialTableState, columnOrder, columnVisibility])
 
-  const showSaveTableDialog = useMemo(() =>
-    isMarketAndEditable(type, isEditable) && tableConfigDiffs,
+  const showSaveTableDialog = useMemo(
+    () => isMarketAndEditable(type, isEditable) && tableConfigDiffs,
     [type, isEditable, tableConfigDiffs]
   )
 
@@ -747,8 +753,10 @@ export function AthleteTable<T>({ athletes, benchAthletes = [], type, isEditable
 
         <Flex justify="end">
           <Button
-            onClick={() => MarketTableAsyncExternalStorage.updateLocalStorage({ columnOrder, columnVisibility })
-          }>
+            onClick={() =>
+              MarketTableAsyncExternalStorage.updateLocalStorage({ columnOrder, columnVisibility })
+            }
+          >
             Salvar
           </Button>
         </Flex>

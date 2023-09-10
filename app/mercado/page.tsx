@@ -12,7 +12,7 @@ import { NULL } from '../constants/status'
 
 export const metadata: Metadata = {
   title: 'Mercado',
-  description: '',
+  description: ''
 }
 
 // const ATHLETE_POINTS_ENDPOINT = (round: string) => `/atletas/pontuados/${round}`
@@ -21,7 +21,7 @@ const MATCHES_ENDPOINT = '/partidas'
 
 interface MarketData {
   atletas: Athlete[]
-  clubes: typeof FOOTBALL_TEAMS[]
+  clubes: (typeof FOOTBALL_TEAMS)[]
   posicoes: unknown[]
   status: unknown[]
 }
@@ -66,7 +66,10 @@ export interface MarketAthleteTableData {
   match: Match
 }
 
-function marketAthleteTableDataFactory(athlete: Athlete, roundMatches: { [key: string]: Match }): MarketAthleteTableData {
+function marketAthleteTableDataFactory(
+  athlete: Athlete,
+  roundMatches: { [key: string]: Match }
+): MarketAthleteTableData {
   return {
     id: athlete.atleta_id,
     name: athlete.apelido,
@@ -94,7 +97,7 @@ async function getMatchesData() {
 
   const roundMatches: { [key: string]: Match } = {}
 
-  matches.forEach(match => {
+  matches.forEach((match) => {
     const matchAssets = {
       home: {
         clubBadgeUrl: getFootballTeamBadgeLink(match.clube_casa_id as FootballTeamsIds),
@@ -118,7 +121,9 @@ async function getMarketData() {
   const roundMatches = await getMatchesData()
 
   const marketStatistics: MarketStatistics = []
-  athletes.forEach(athlete => marketStatistics.push(marketAthleteTableDataFactory(athlete, roundMatches)))
+  athletes.forEach((athlete) =>
+    marketStatistics.push(marketAthleteTableDataFactory(athlete, roundMatches))
+  )
 
   return { marketStatistics }
 }

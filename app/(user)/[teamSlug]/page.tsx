@@ -4,7 +4,12 @@ import { TEAMS } from '@/app/constants/data'
 import type { Metadata } from 'next'
 
 import './styles.css'
-import { Athlete, ClubStatistics, CrewStatistics, RenderedAthlete } from '../../common/types/athlete'
+import {
+  Athlete,
+  ClubStatistics,
+  CrewStatistics,
+  RenderedAthlete
+} from '../../common/types/athlete'
 import { CrewContent } from '../../common/components/crew-content.client'
 import { RoundData } from '../../services/types'
 import { UNEMPLOYED } from '@/app/constants/teams'
@@ -12,7 +17,7 @@ import { PositionsStatistics } from '@/app/common/types/position'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
-  description: 'Site para analisar estatísticas que o cartola não utiliza.',
+  description: 'Site para analisar estatísticas que o cartola não utiliza.'
 }
 
 const PHOTO_SIZE_FORMAT = '220x220'
@@ -22,9 +27,7 @@ function isCaptain(athleteId: number, captainId: number) {
 }
 
 function calculatePoints(athlete: Athlete, captainId: number) {
-  return isCaptain(athlete.atleta_id, captainId)
-    ? athlete.pontos_num * 1.5
-    : athlete.pontos_num
+  return isCaptain(athlete.atleta_id, captainId) ? athlete.pontos_num * 1.5 : athlete.pontos_num
 }
 
 function handleRoundValuation(roundsValuation: number[]) {
@@ -34,12 +37,12 @@ function handleRoundValuation(roundsValuation: number[]) {
     zero: 0
   }
 
-  roundsValuation.forEach(valuation => {
+  roundsValuation.forEach((valuation) => {
     if (valuation > 0) {
       valuationRounds.aboveZero++
       return
     }
-  
+
     if (valuation < 0) {
       valuationRounds.belowZero++
       return
@@ -115,7 +118,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     },
     away: {
       sumOfPoints: 0,
-      average: 0,
+      average: 0
     },
     highestPoint: athlete.pontos_num,
     finishes: getFinishesNumbers(athlete),
@@ -166,18 +169,28 @@ function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
   }
 }
 
-function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete: Athlete, captainId: number) {
+function playerStatisticsIncrementalFactory(
+  statistics: CrewStatistics,
+  athlete: Athlete,
+  captainId: number
+) {
   if (statistics[athlete.atleta_id]) {
     statistics[athlete.atleta_id].castTimes++
     statistics[athlete.atleta_id].sumOfPoints += calculatePoints(athlete, captainId)
     statistics[athlete.atleta_id].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
-    statistics[athlete.atleta_id].home.sumOfPoints += athlete.gato_mestre?.media_pontos_mandante ?? 0
-    statistics[athlete.atleta_id].away.sumOfPoints += athlete.gato_mestre?.media_pontos_visitante ?? 0
+    statistics[athlete.atleta_id].home.sumOfPoints +=
+      athlete.gato_mestre?.media_pontos_mandante ?? 0
+    statistics[athlete.atleta_id].away.sumOfPoints +=
+      athlete.gato_mestre?.media_pontos_visitante ?? 0
     statistics[athlete.atleta_id].sumOfOverallAverage += athlete.media_num
-    statistics[athlete.atleta_id].highestPoint = max([athlete.pontos_num, statistics[athlete.atleta_id].highestPoint]) ?? 0
+    statistics[athlete.atleta_id].highestPoint =
+      max([athlete.pontos_num, statistics[athlete.atleta_id].highestPoint]) ?? 0
     statistics[athlete.atleta_id].jogos_num = athlete.jogos_num
     statistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
-    statistics[athlete.atleta_id].scout = handleGameActions(athlete, statistics[athlete.atleta_id].scout)
+    statistics[athlete.atleta_id].scout = handleGameActions(
+      athlete,
+      statistics[athlete.atleta_id].scout
+    )
     statistics[athlete.atleta_id].finishes += getFinishesNumbers(athlete)
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
     statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
@@ -189,16 +202,15 @@ function playerStatisticsIncrementalFactory(statistics: CrewStatistics, athlete:
   return statistics
 }
 
-async function getPlayersTeamData(teamSlug: string, rounds: number[]): Promise<[
-  CrewStatistics,
-  CrewStatistics,
-  ClubStatistics,
-  PositionsStatistics
-]> {
+async function getPlayersTeamData(
+  teamSlug: string,
+  rounds: number[]
+): Promise<[CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics]> {
   const results = await Promise.allSettled<RoundData>(
-    rounds.map(round =>
-      fetch(`${process.env.NEXT_API_BASE_URL}/api/get-players-data/${teamSlug}?round=${round}`)
-        .then(res => res.json())
+    rounds.map((round) =>
+      fetch(
+        `${process.env.NEXT_API_BASE_URL}/api/get-players-data/${teamSlug}?round=${round}`
+      ).then((res) => res.json())
     )
   )
 
@@ -208,21 +220,16 @@ async function getPlayersTeamData(teamSlug: string, rounds: number[]): Promise<[
   let positionsStatistics: PositionsStatistics = {}
   let seasonPoints = 0
 
-  results.forEach(result => {
-    if (result.status === 'rejected')
-      return
+  results.forEach((result) => {
+    if (result.status === 'rejected') return
 
     seasonPoints = result.value.pontos_campeonato
 
-    const {
-      atletas: athletes,
-      reservas: bench,
-      capitao_id: captainId,
-    } = result.value
-    
-    athletes.forEach(athlete => {
+    const { atletas: athletes, reservas: bench, capitao_id: captainId } = result.value
+
+    athletes.forEach((athlete) => {
       playersStatistics = playerStatisticsIncrementalFactory(playersStatistics, athlete, captainId)
-      
+
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
       }
@@ -252,7 +259,7 @@ async function getPlayersTeamData(teamSlug: string, rounds: number[]): Promise<[
       }
     })
 
-    bench?.forEach(benchAthlete => {
+    bench?.forEach((benchAthlete) => {
       benchStatistics = playerStatisticsIncrementalFactory(benchStatistics, benchAthlete, captainId)
     })
   })
@@ -260,29 +267,24 @@ async function getPlayersTeamData(teamSlug: string, rounds: number[]): Promise<[
   Object.entries(playersStatistics).forEach(([athleteId, athlete]) => {
     playersStatistics[athleteId] = handlePlayersDerivedStatistics(athlete)
   })
-  
+
   Object.entries(benchStatistics).forEach(([athleteId, athlete]) => {
     benchStatistics[athleteId] = handlePlayersDerivedStatistics(athlete)
   })
 
   Object.entries(clubsStatistics).forEach(([clubId, club]) => {
-    clubsStatistics[clubId].pointsPercentage = club.points / seasonPoints * 100
-  })
-  
-  Object.entries(positionsStatistics).forEach(([positionId, position]) => {
-    positionsStatistics[positionId].pointsPercentage = position.points / seasonPoints * 100
+    clubsStatistics[clubId].pointsPercentage = (club.points / seasonPoints) * 100
   })
 
-  return [
-    playersStatistics,
-    benchStatistics,
-    clubsStatistics,
-    positionsStatistics
-  ]
+  Object.entries(positionsStatistics).forEach(([positionId, position]) => {
+    positionsStatistics[positionId].pointsPercentage = (position.points / seasonPoints) * 100
+  })
+
+  return [playersStatistics, benchStatistics, clubsStatistics, positionsStatistics]
 }
 
 export default async function Team({ params }: { params: { teamSlug: string } }) {
-  const teamData = TEAMS.find(team => team.slug === params.teamSlug)
+  const teamData = TEAMS.find((team) => team.slug === params.teamSlug)
 
   if (isNil(teamData)) {
     return 'no data'
@@ -290,12 +292,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
 
   metadata.title = teamData.name
 
-  const [
-    athletes,
-    bench,
-    clubs,
-    positions
-  ] = await getPlayersTeamData(
+  const [athletes, bench, clubs, positions] = await getPlayersTeamData(
     teamData.slug,
     teamData.rounds
   )
@@ -303,12 +300,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
   return (
     <>
       <h1 className="text-2xl mb-4">{teamData.name}</h1>
-      <CrewContent
-        athletes={athletes}
-        bench={bench}
-        clubs={clubs}
-        positions={positions}
-      />
+      <CrewContent athletes={athletes} bench={bench} clubs={clubs} positions={positions} />
     </>
   )
 }

@@ -16,7 +16,7 @@ const TEAM_ROUND_ENDPOINT = (teamId: string, round: string) => `/time/id/${teamI
 type GetContext = {
   params: {
     [key: string]: string
-  },
+  }
   searchParams: {
     [key: string]: string | string[]
   }
@@ -25,7 +25,7 @@ type GetContext = {
 const TABLE_NAME = 'cartola-request-cache'
 
 export async function GET(request: Request, context: GetContext) {
-  const teamData = TEAMS.find(team => team.slug === context.params['team-slug'])
+  const teamData = TEAMS.find((team) => team.slug === context.params['team-slug'])
   const { searchParams } = new URL(request.url)
   const round = searchParams.get('round')
 
@@ -45,7 +45,7 @@ export async function GET(request: Request, context: GetContext) {
   const requestTimeout = setTimeout(() => {
     controller.abort()
     requestTimeoutExceeded = true
-  }, 2000);
+  }, 2000)
 
   const cachedResponse = await supabase
     .from(TABLE_NAME)
@@ -55,7 +55,7 @@ export async function GET(request: Request, context: GetContext) {
 
   clearTimeout(requestTimeout)
 
-  let result;
+  let result
   let needsToFetchFromCartola = true
 
   if (!isNil(cachedResponse.data) && !isEmpty(cachedResponse.data)) {
@@ -73,10 +73,12 @@ export async function GET(request: Request, context: GetContext) {
       const today = new Date()
       await supabase
         .from(TABLE_NAME)
-        .insert([{
-          payload: result,
-          endpoint: `${today.getFullYear()}/${cartolaEndpoint}`
-        }])
+        .insert([
+          {
+            payload: result,
+            endpoint: `${today.getFullYear()}/${cartolaEndpoint}`
+          }
+        ])
         .select()
     }
   }

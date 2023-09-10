@@ -5,11 +5,7 @@ import { request } from '@/app/services/cartola-api'
 import { supabaseClient } from '@/app/services/supabase'
 import { getStatusName } from '@/app/helpers/status'
 import { Athlete } from '@/app/common/types/athlete'
-import {
-  StatusIds,
-  PROSPECTIVE,
-  NULL,
-} from '@/app/constants/status'
+import { StatusIds, PROSPECTIVE, NULL } from '@/app/constants/status'
 import { getFootballTeamName } from '@/app/helpers/teams'
 import { FOOTBALL_TEAMS, FootballTeamsIds } from '@/app/constants/teams'
 import { getPositionAbbreviation } from '@/app/helpers/positions'
@@ -27,7 +23,7 @@ export const dynamic = 'force-dynamic'
 
 const ENDPOINTS = {
   MARKET: '/atletas/mercado',
-  MATCHES: '/partidas',
+  MATCHES: '/partidas'
 }
 
 const MARKET_STATUS_REQUESTS_TABLE_NAME = 'market-status-requests'
@@ -41,7 +37,7 @@ async function sendMessageToTelegramGroup(message: string) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify({
         chat_id: chatId,
@@ -56,7 +52,7 @@ async function sendMessageToTelegramGroup(message: string) {
   }
 }
 
-async function saveMarketDataToSupabase({ payload, status }: { payload: any, status: string }) {
+async function saveMarketDataToSupabase({ payload, status }: { payload: any; status: string }) {
   return await supabaseClient
     .from(MARKET_STATUS_REQUESTS_TABLE_NAME)
     .insert([{ payload, status }])
@@ -70,21 +66,31 @@ async function getMarketDataFromCartolaApi() {
 }
 
 function escapeMarkdownSpecialCharacters(word: string) {
-  return word.replace(/(\-|\.)/g, match => `\\${match}`)
+  return word.replace(/(\-|\.)/g, (match) => `\\${match}`)
 }
 
 function clusterAthletesPerClub(changedAthletes: AthleteMessageEntity[]) {
   let message = ''
   let athleteIndex = 1
 
-  Object.keys(FOOTBALL_TEAMS).forEach(teamId => {
-    const teamChangedAthletes = changedAthletes.filter(athlete => athlete.clubId.toString() === teamId)
-    
-    if (!isEmpty(teamChangedAthletes)) {
-      message += `*${escapeMarkdownSpecialCharacters(getFootballTeamName(teamId as unknown as FootballTeamsIds))}*\n`
+  Object.keys(FOOTBALL_TEAMS).forEach((teamId) => {
+    const teamChangedAthletes = changedAthletes.filter(
+      (athlete) => athlete.clubId.toString() === teamId
+    )
 
-      teamChangedAthletes.forEach(athlete => {
-        message += `  ${athleteIndex.toString()}\\. _${escapeMarkdownSpecialCharacters(athlete.nickname)}_ \\(${getPositionAbbreviation(athlete.positionId).toUpperCase()}\\) mudou de *${getStatusName(athlete.oldStatusId as StatusIds)}* para *${getStatusName(athlete.newStatusId as StatusIds)}*\n`
+    if (!isEmpty(teamChangedAthletes)) {
+      message += `*${escapeMarkdownSpecialCharacters(
+        getFootballTeamName(teamId as unknown as FootballTeamsIds)
+      )}*\n`
+
+      teamChangedAthletes.forEach((athlete) => {
+        message += `  ${athleteIndex.toString()}\\. _${escapeMarkdownSpecialCharacters(
+          athlete.nickname
+        )}_ \\(${getPositionAbbreviation(
+          athlete.positionId
+        ).toUpperCase()}\\) mudou de *${getStatusName(
+          athlete.oldStatusId as StatusIds
+        )}* para *${getStatusName(athlete.newStatusId as StatusIds)}*\n`
         athleteIndex++
       })
     }
@@ -126,10 +132,7 @@ function isInProspectiveStatus(athlete: Athlete) {
 
 function isInProspectiveStatusAndDifference(oldAthlete: Athlete, athlete: Athlete) {
   return (
-    (
-      isInProspectiveStatus(oldAthlete) ||
-      isInProspectiveStatus(athlete)
-    ) &&
+    (isInProspectiveStatus(oldAthlete) || isInProspectiveStatus(athlete)) &&
     oldAthlete.status_id !== athlete.status_id
   )
 }
@@ -137,55 +140,61 @@ function isInProspectiveStatusAndDifference(oldAthlete: Athlete, athlete: Athlet
 export async function GET() {
   try {
     const marketData = await getMarketDataFromCartolaApi()
-  
-    if (!marketData)
-      throw new Error('Couldn\'t load data from cartola api')
-  
+
+    if (!marketData) throw new Error("Couldn't load data from cartola api")
+
     const { data: supabaseMarketData } = await supabaseClient
       .from(MARKET_STATUS_REQUESTS_TABLE_NAME)
       .select('payload')
       .eq('status', 'success')
       .order('created_at', { ascending: false })
-  
+
     if (!supabaseMarketData?.[0].payload)
-      return NextResponse.json({
-        ok: false,
-        error: new Error('Couldn\'t load data from supabase')
-      }, {
-        status: 400
-      })
-  
+      return NextResponse.json(
+        {
+          ok: false,
+          error: new Error("Couldn't load data from supabase")
+        },
+        {
+          status: 400
+        }
+      )
+
     const changedAthletes: AthleteMessageEntity[] = []
-  
-    marketData.forEach(athlete => {
-      const oldAthlete: Athlete = supabaseMarketData[0].payload.find((oldAthlete: Athlete) => oldAthlete.atleta_id === athlete.atleta_id)
-  
+
+    marketData.forEach((athlete) => {
+      const oldAthlete: Athlete = supabaseMarketData[0].payload.find(
+        (oldAthlete: Athlete) => oldAthlete.atleta_id === athlete.atleta_id
+      )
+
       if (!isNil(oldAthlete) && isInProspectiveStatusAndDifference(oldAthlete, athlete)) {
         changedAthletes.push(athleteMessageEntityFactory(athlete, oldAthlete))
       }
     })
-  
+
     const telegramMessage = clusterAthletesPerClub(changedAthletes)
 
-    if (isEmpty(telegramMessage))
-      return NextResponse.json({ ok: true, message: 'No differences' })
+    if (isEmpty(telegramMessage)) return NextResponse.json({ ok: true, message: 'No differences' })
 
     const response: {
-      ok: boolean,
+      ok: boolean
       description?: string
     } = await sendMessageToTelegramGroup(telegramMessage)
-  
+
     if (response.ok) {
       await saveSuccess(marketData)
     } else {
-      return NextResponse.json({
-        ok: false,
-        error: new Error(response.description ?? 'Couldn\'t send message to Telegram')
-      }, {
-        status: 400
-      })
-  }
-    
+      return NextResponse.json(
+        {
+          ok: false,
+          error: new Error(response.description ?? "Couldn't send message to Telegram")
+        },
+        {
+          status: 400
+        }
+      )
+    }
+
     return NextResponse.json({ ok: true, message: telegramMessage })
   } catch (err: any) {
     saveError({

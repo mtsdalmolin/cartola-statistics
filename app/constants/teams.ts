@@ -113,9 +113,12 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
   },
   282: {
     escudos: {
-      '60x60': 'https://s.sde.globo.com/media/organizations/2017/11/23/Atletico-Mineiro-escudo65px.png',
-      '45x45': 'https://s.sde.globo.com/media/organizations/2017/11/23/Atletico-Mineiro-escudo45px.png',
-      '30x30': 'https://s.sde.globo.com/media/organizations/2017/11/23/Atletico-Mineiro-escudo30px.png'
+      '60x60':
+        'https://s.sde.globo.com/media/organizations/2017/11/23/Atletico-Mineiro-escudo65px.png',
+      '45x45':
+        'https://s.sde.globo.com/media/organizations/2017/11/23/Atletico-Mineiro-escudo45px.png',
+      '30x30':
+        'https://s.sde.globo.com/media/organizations/2017/11/23/Atletico-Mineiro-escudo30px.png'
     },
     nome: 'Atlético-MG',
     abreviacao: 'CAM',
@@ -225,18 +228,21 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
 
 export const UNEMPLOYED = 1
 
-export const FOOTBALL_TEAMS = merge({
-  [UNEMPLOYED]: {
-    escudos: {
-      '60x60': '',
-      '45x45': '',
-      '30x30': ''
-    },
-    nome: 'Sem clube',
-    abreviacao: 'SEM',
-    slug: 'sem-clube',
-    apelido: 'Desempregado'
-  }
-}, FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED)
+export const FOOTBALL_TEAMS = merge(
+  {
+    [UNEMPLOYED]: {
+      escudos: {
+        '60x60': '',
+        '45x45': '',
+        '30x30': ''
+      },
+      nome: 'Sem clube',
+      abreviacao: 'SEM',
+      slug: 'sem-clube',
+      apelido: 'Desempregado'
+    }
+  },
+  FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED
+)
 
 export type FootballTeamsIds = keyof typeof FOOTBALL_TEAMS
