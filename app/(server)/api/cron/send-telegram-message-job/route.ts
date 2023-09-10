@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server'
-import isNil from 'lodash/isNil'
-import isEmpty from 'lodash/isEmpty'
-import { request } from '@/app/services/cartola-api'
-import { supabaseClient } from '@/app/services/supabase'
-import { getStatusName } from '@/app/helpers/status'
+
 import { Athlete } from '@/app/common/types/athlete'
 import { StatusIds, PROSPECTIVE, NULL } from '@/app/constants/status'
-import { getFootballTeamName } from '@/app/helpers/teams'
 import { FOOTBALL_TEAMS, FootballTeamsIds } from '@/app/constants/teams'
 import { getPositionAbbreviation } from '@/app/helpers/positions'
+import { getStatusName } from '@/app/helpers/status'
+import { getFootballTeamName } from '@/app/helpers/teams'
+import { request } from '@/app/services/cartola-api'
+import { supabaseClient } from '@/app/services/supabase'
+
+import isEmpty from 'lodash/isEmpty'
+import isNil from 'lodash/isNil'
 
 interface AthleteMessageEntity {
   athleteId: number

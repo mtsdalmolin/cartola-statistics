@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 
-import { request } from '../services/cartola-api'
-import { FOOTBALL_TEAMS, FootballTeamsIds } from '../constants/teams'
-import { Athlete } from '../common/types/athlete'
 import { MarketContent } from '../common/components/market-content.client'
+import { Athlete } from '../common/types/athlete'
 import { PHOTO_SIZE_FORMAT } from '../constants/format'
-import { getFootballTeamBadgeLink, getFootballTeamName } from '../helpers/teams'
+import { NULL } from '../constants/status'
+import { FOOTBALL_TEAMS, FootballTeamsIds } from '../constants/teams'
 import { getPositionName } from '../helpers/positions'
 import { getStatusName } from '../helpers/status'
-import { NULL } from '../constants/status'
+import { getFootballTeamBadgeLink, getFootballTeamName } from '../helpers/teams'
+import { request } from '../services/cartola-api'
 
 export const metadata: Metadata = {
   title: 'Mercado',

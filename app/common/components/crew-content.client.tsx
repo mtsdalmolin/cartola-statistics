@@ -1,21 +1,25 @@
 'use client'
 
 import { useState, ReactElement } from 'react'
-import { IconCards, IconTable } from '@tabler/icons-react'
-import { Switch } from '@mantine/core'
-import AthleteList from './athlete/athlete-list.client'
-import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
+
+import Image from 'next/image'
+
+import { CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION } from '@/app/constants/statistics'
 import { getPositionName } from '@/app/helpers/positions'
+import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
+import { Switch } from '@mantine/core'
+import { IconCards, IconTable } from '@tabler/icons-react'
+
 import isNil from 'lodash/isNil'
 import orderBy from 'lodash/orderBy'
+
+import { OrderContextProvider } from '../contexts/order-context.client'
+import { ClubStatistics, CrewStatistics, RenderedAthlete } from '../types/athlete'
+import { PositionsStatistics } from '../types/position'
+import AthleteList from './athlete/athlete-list.client'
 import { AthleteTable } from './athlete/athlete-table.client'
 import { AthleteTableData, AthleteTableDataWithoutMatchKey } from './athlete/types'
-import { ClubStatistics, CrewStatistics, RenderedAthlete } from '../types/athlete'
-import Image from 'next/image'
-import { PositionsStatistics } from '../types/position'
 import { Flex } from './flex'
-import { OrderContextProvider } from '../contexts/order-context.client'
-import { CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION } from '@/app/constants/statistics'
 
 function handleTableNumberValues(numberValue: number) {
   if (isNil(numberValue)) return 0

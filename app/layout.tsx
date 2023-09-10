@@ -2,11 +2,13 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
-import { TEAMS } from './constants/data'
-import { ENDPOINTS, request } from './services/cartola-api'
+
 import { formatDistanceToNow, intervalToDuration } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+
 import { CountdownRoundClock } from './common/components/countdown'
+import { TEAMS } from './constants/data'
+import { ENDPOINTS, request } from './services/cartola-api'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,7 +16,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
-  description: 'Site para analisar estatísticas que o cartola não utiliza.',
+  description: 'Site para analisar estatísticas que o cartola não utiliza.'
 }
 
 interface RoundInfo {
@@ -37,7 +39,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const today = new Date()
   const distance = intervalToDuration({
     start: datetimeThatClosesMarket,
-    end: today,
+    end: today
   })
 
   const dateDistanceText = formatDistanceToNow(datetimeThatClosesMarket, { locale: ptBR })

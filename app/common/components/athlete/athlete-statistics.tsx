@@ -1,7 +1,8 @@
+import { OPTIONS, type StatisticOption } from '@/app/constants/statistics'
 import { getAthleteStatistics } from '@/app/helpers/statistics'
+
 import { RenderedAthlete } from '../../types/athlete'
 import { StatisticItem } from '../statistic-item'
-import { OPTIONS, type StatisticOption } from '@/app/constants/statistics'
 
 export function AthleteStatistics({
   athlete,

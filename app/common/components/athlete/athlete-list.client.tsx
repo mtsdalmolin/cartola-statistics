@@ -1,23 +1,11 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import orderBy from 'lodash/orderBy'
-import mapValues from 'lodash/mapValues'
-import Image from 'next/image'
 import Select, { SelectInstance } from 'react-select'
+
+import Image from 'next/image'
+
 import { POSITIONS } from '@/app/constants/positions'
-import {
-  getPositionAbbreviation,
-  getPositionName,
-  getPositionOptionByValue,
-  isCoach,
-  isPositionSelectedOrIsFilterEmpty
-} from '@/app/helpers/positions'
-import { AthleteStatistics } from './athlete-statistics'
-import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
-import { RenderedAthlete } from '../../types/athlete'
-import { PositionOption } from '../../types/position'
-import { useOrderContext } from '../../contexts/order-context.client'
 import {
   CAPTAIN_TIMES_OPTION,
   CAST_TIMES_OPTION,
@@ -33,7 +21,23 @@ import {
   POINTS_AVERAGE_OPTION,
   type StatisticOption
 } from '@/app/constants/statistics'
+import {
+  getPositionAbbreviation,
+  getPositionName,
+  getPositionOptionByValue,
+  isCoach,
+  isPositionSelectedOrIsFilterEmpty
+} from '@/app/helpers/positions'
+import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
 import { Tooltip } from '@mantine/core'
+
+import mapValues from 'lodash/mapValues'
+import orderBy from 'lodash/orderBy'
+
+import { useOrderContext } from '../../contexts/order-context.client'
+import { RenderedAthlete } from '../../types/athlete'
+import { PositionOption } from '../../types/position'
+import { AthleteStatistics } from './athlete-statistics'
 
 const options = [
   CAST_TIMES_OPTION,

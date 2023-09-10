@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash'
-import { POSITIONS, PositionsIds } from '../constants/positions'
+
 import { PositionOption } from '../common/types/position'
+import { POSITIONS, PositionsIds } from '../constants/positions'
 
 export function isGoalkeeper(positionId: number) {
   const gkPositionId = Object.keys(POSITIONS).find(

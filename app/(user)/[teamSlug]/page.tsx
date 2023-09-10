@@ -1,19 +1,22 @@
-import isNil from 'lodash/isNil'
-import max from 'lodash/max'
-import { TEAMS } from '@/app/constants/data'
 import type { Metadata } from 'next'
 
-import './styles.css'
+import { PositionsStatistics } from '@/app/common/types/position'
+import { TEAMS } from '@/app/constants/data'
+import { UNEMPLOYED } from '@/app/constants/teams'
+
+import isNil from 'lodash/isNil'
+import max from 'lodash/max'
+
+import { CrewContent } from '../../common/components/crew-content.client'
 import {
   Athlete,
   ClubStatistics,
   CrewStatistics,
   RenderedAthlete
 } from '../../common/types/athlete'
-import { CrewContent } from '../../common/components/crew-content.client'
 import { RoundData } from '../../services/types'
-import { UNEMPLOYED } from '@/app/constants/teams'
-import { PositionsStatistics } from '@/app/common/types/position'
+
+import './styles.css'
 
 export const metadata: Metadata = {
   title: 'Cartola Statistics',

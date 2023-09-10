@@ -1,9 +1,28 @@
 {
   "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
   "plugins": [
+    "import-helpers",
     "prettier"
   ],
   "rules": {
+    "import-helpers/order-imports": [
+      "error",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          "/^react/",
+          "/^next/",
+          "/^@/",
+          "module",
+          "/^lodash/",
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ],
     "prettier/prettier": "error"
   }
 }

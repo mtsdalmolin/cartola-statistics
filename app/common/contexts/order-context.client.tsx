@@ -2,6 +2,7 @@
 
 import { ReactNode, RefObject, createContext, useContext, useState } from 'react'
 import type { SelectInstance, MultiValue } from 'react-select'
+
 import { StatisticOption } from '@/app/constants/statistics'
 
 type OrderFilters = MultiValue<StatisticOption>

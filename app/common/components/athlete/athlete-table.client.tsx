@@ -1,12 +1,14 @@
 'use client'
 
-import {
-  MantineReactTable,
-  useMantineReactTable,
-  type MRT_ColumnDef,
-  type MRT_TableInstance,
-  MRT_ColumnFiltersState
-} from 'mantine-react-table'
+import { useMemo, useState, useSyncExternalStore } from 'react'
+
+import Image from 'next/image'
+
+import { POSITIONS } from '@/app/constants/positions'
+import { PROSPECTIVE, STATUS } from '@/app/constants/status'
+import { FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED } from '@/app/constants/teams'
+import { MarketAthleteTableData } from '@/app/mercado/page'
+import { MarketTableAsyncExternalStorage } from '@/app/storage/localstorage/market-table.external'
 import {
   ActionIcon,
   Box,
@@ -17,16 +19,6 @@ import {
   Text,
   Tooltip
 } from '@mantine/core'
-
-import Image from 'next/image'
-import isNil from 'lodash/isNil'
-import isArray from 'lodash/isArray'
-import isEmpty from 'lodash/isEmpty'
-
-import { POSITIONS } from '@/app/constants/positions'
-import { AthleteTableData } from './types'
-import { MarketAthleteTableData } from '@/app/mercado/page'
-import { useMemo, useState, useSyncExternalStore } from 'react'
 import {
   IconArmchair,
   IconCircleCheckFilled,
@@ -35,11 +27,21 @@ import {
   IconPlayFootball,
   IconAlertCircleFilled
 } from '@tabler/icons-react'
-import { PROSPECTIVE, STATUS } from '@/app/constants/status'
-import { MarketTableAsyncExternalStorage } from '@/app/storage/localstorage/market-table.external'
-import { FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED } from '@/app/constants/teams'
+import {
+  MantineReactTable,
+  useMantineReactTable,
+  type MRT_ColumnDef,
+  type MRT_TableInstance,
+  MRT_ColumnFiltersState
+} from 'mantine-react-table'
+
+import isArray from 'lodash/isArray'
+import isEmpty from 'lodash/isEmpty'
+import isNil from 'lodash/isNil'
+
 import { Button } from '../button.client'
 import { Flex } from '../flex'
+import { AthleteTableData } from './types'
 
 function handleTableFilterChange<T>({
   currentValue,

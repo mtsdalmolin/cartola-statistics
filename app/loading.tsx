@@ -1,6 +1,7 @@
 'use client'
 
 import { Loader } from '@mantine/core'
+
 import { Flex } from './common/components/flex'
 
 export default function LoadingPage() {

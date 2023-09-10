@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server'
-import isNil from 'lodash/isNil'
-import isEmpty from 'lodash/isEmpty'
-import isArray from 'lodash/isArray'
+
+import { TEAMS } from '@/app/constants/data'
 import { request as makeRequest } from '@/app/services/cartola-api'
 import { createClient } from '@supabase/supabase-js'
-import { TEAMS } from '@/app/constants/data'
+
+import isArray from 'lodash/isArray'
+import isEmpty from 'lodash/isEmpty'
+import isNil from 'lodash/isNil'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
