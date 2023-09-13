@@ -31,7 +31,7 @@ interface RoundInfo {
   }
 }
 
-const SP_TIMEZONE_STRING = 'America/New_York'
+const SP_TIMEZONE_STRING = 'America/Sao_Paulo'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const marketStatus: RoundInfo = await request(ENDPOINTS.MARKET_STATUS)
@@ -44,6 +44,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     start: datetimeThatClosesMarket,
     end: today
   })
+
+  console.log({ datetimeThatClosesMarket, today })
 
   const dateDistanceText = formatDistanceToNow(datetimeThatClosesMarket, { locale: ptBR })
 
