@@ -31,7 +31,7 @@ interface RoundInfo {
   }
 }
 
-const SP_TIMEZONE_STRING = 'America/Sao_Paulo'
+const SP_TIMEZONE_STRING = 'America/New_York'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const marketStatus: RoundInfo = await request(ENDPOINTS.MARKET_STATUS)
