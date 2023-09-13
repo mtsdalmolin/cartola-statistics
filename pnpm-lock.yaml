@@ -14,6 +14,7 @@ specifiers:
   '@vercel/postgres': ^0.4.1
   autoprefixer: 10.4.14
   date-fns: ^2.30.0
+  date-fns-tz: ^2.0.0
   dayjs: ^1.11.9
   eslint: 8.47.0
   eslint-config-next: 13.4.13
@@ -43,6 +44,7 @@ dependencies:
   '@vercel/postgres': 0.4.1
   autoprefixer: 10.4.14_postcss@8.4.27
   date-fns: 2.30.0
+  date-fns-tz: 2.0.0_date-fns@2.30.0
   dayjs: 1.11.9
   lodash: 4.17.21
   mantine-react-table: 1.1.1_r3cgbpqs4eg5qnifrhnzyyiggy
@@ -1305,6 +1307,14 @@ packages:
   /damerau-levenshtein/1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
     dev: true
+
+  /date-fns-tz/2.0.0_date-fns@2.30.0:
+    resolution: {integrity: sha512-OAtcLdB9vxSXTWHdT8b398ARImVwQMyjfYGkKD2zaGpHseG2UPHbHjXELReErZFxWdSLph3c2zOaaTyHfOhERQ==}
+    peerDependencies:
+      date-fns: '>=2.0.0'
+    dependencies:
+      date-fns: 2.30.0
+    dev: false
 
   /date-fns/2.30.0:
     resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}

@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import Link from 'next/link'
 
 import { formatDistanceToNow, intervalToDuration } from 'date-fns'
+import { zonedTimeToUtc } from 'date-fns-tz'
 import { ptBR } from 'date-fns/locale'
 
 import { CountdownRoundClock } from './common/components/countdown'
@@ -30,13 +31,15 @@ interface RoundInfo {
   }
 }
 
+const SP_TIMEZONE_STRING = 'America/Sao_Paulo'
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const marketStatus: RoundInfo = await request(ENDPOINTS.MARKET_STATUS)
 
-  const dateStr = `${marketStatus.fechamento.mes}/${marketStatus.fechamento.dia}/${marketStatus.fechamento.ano} ${marketStatus.fechamento.hora}:${marketStatus.fechamento.minuto}`
+  const dateStr = `${marketStatus.fechamento.mes}/${marketStatus.fechamento.dia}/${marketStatus.fechamento.ano} ${marketStatus.fechamento.hora}:${marketStatus.fechamento.minuto}:59`
 
-  const datetimeThatClosesMarket = new Date(dateStr)
-  const today = new Date()
+  const datetimeThatClosesMarket = zonedTimeToUtc(new Date(dateStr), SP_TIMEZONE_STRING)
+  const today = zonedTimeToUtc(new Date(), SP_TIMEZONE_STRING)
   const distance = intervalToDuration({
     start: datetimeThatClosesMarket,
     end: today
@@ -53,7 +56,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           ) : (
             <div className="text-center">
               {marketStatus.nome_rodada} começa em{' '}
-              {distance.days === 0 ? <CountdownRoundClock date={dateStr} /> : dateDistanceText}
+              {distance.days === 0 ? (
+                <CountdownRoundClock date={datetimeThatClosesMarket} />
+              ) : (
+                dateDistanceText
+              )}
             </div>
           )}
         </header>
