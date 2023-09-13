@@ -7,7 +7,7 @@ import { getPositionAbbreviation } from '@/app/helpers/positions'
 import { getStatusName } from '@/app/helpers/status'
 import { getFootballTeamName } from '@/app/helpers/teams'
 import { request } from '@/app/services/cartola-api'
-import { supabaseClient } from '@/app/services/supabase'
+import { sql } from '@vercel/postgres'
 
 import isEmpty from 'lodash/isEmpty'
 import isNil from 'lodash/isNil'
@@ -27,8 +27,6 @@ const ENDPOINTS = {
   MARKET: '/atletas/mercado',
   MATCHES: '/partidas'
 }
-
-const MARKET_STATUS_REQUESTS_TABLE_NAME = 'market-status-requests'
 
 const token = process.env.NEXT_API_TELEGRAM_TOKEN
 const chatId = process.env.NEXT_API_TELEGRAM_CHAT_ID
@@ -54,11 +52,11 @@ async function sendMessageToTelegramGroup(message: string) {
   }
 }
 
-async function saveMarketDataToSupabase({ payload, status }: { payload: any; status: string }) {
-  return await supabaseClient
-    .from(MARKET_STATUS_REQUESTS_TABLE_NAME)
-    .insert([{ payload, status }])
-    .select()
+async function saveMarketDataToNeon({ payload, status }: { payload: string; status: string }) {
+  return await sql`
+    INSERT INTO market_status_requests (payload, status)
+    VALUES (${payload}, ${status});
+  `
 }
 
 async function getMarketDataFromCartolaApi() {
@@ -104,15 +102,15 @@ function clusterAthletesPerClub(changedAthletes: AthleteMessageEntity[]) {
 }
 
 async function saveSuccess<T>(marketData: T) {
-  return await saveMarketDataToSupabase({
-    payload: marketData,
+  return await saveMarketDataToNeon({
+    payload: JSON.stringify(marketData),
     status: 'success'
   })
 }
 
 async function saveError<T>(error: T) {
-  return await saveMarketDataToSupabase({
-    payload: error,
+  return await saveMarketDataToNeon({
+    payload: JSON.stringify(error),
     status: 'error'
   })
 }
@@ -145,17 +143,19 @@ export async function GET() {
 
     if (!marketData) throw new Error("Couldn't load data from cartola api")
 
-    const { data: supabaseMarketData } = await supabaseClient
-      .from(MARKET_STATUS_REQUESTS_TABLE_NAME)
-      .select('payload')
-      .eq('status', 'success')
-      .order('created_at', { ascending: false })
+    const neonMarketData = await sql`
+      SELECT payload
+      FROM market_status_requests
+      WHERE status = 'success'
+      ORDER BY created_at DESC
+      FETCH FIRST 1 ROWS ONLY;
+    `
 
-    if (!supabaseMarketData?.[0].payload)
+    if (!(neonMarketData.rows.length > 0))
       return NextResponse.json(
         {
           ok: false,
-          error: new Error("Couldn't load data from supabase")
+          error: 'Could not load data from database'
         },
         {
           status: 400
@@ -165,7 +165,7 @@ export async function GET() {
     const changedAthletes: AthleteMessageEntity[] = []
 
     marketData.forEach((athlete) => {
-      const oldAthlete: Athlete = supabaseMarketData[0].payload.find(
+      const oldAthlete: Athlete = neonMarketData.rows[0].payload.find(
         (oldAthlete: Athlete) => oldAthlete.atleta_id === athlete.atleta_id
       )
 
