@@ -45,8 +45,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     end: today
   })
 
-  console.log({ datetimeThatClosesMarket, today })
-
   const dateDistanceText = formatDistanceToNow(datetimeThatClosesMarket, { locale: ptBR })
 
   return (
