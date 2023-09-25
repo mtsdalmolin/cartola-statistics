@@ -2,16 +2,11 @@ import { NextResponse } from 'next/server'
 
 import { TEAMS } from '@/app/constants/data'
 import { request as makeRequest } from '@/app/services/cartola-api'
-import { createClient } from '@supabase/supabase-js'
+import { sql } from '@vercel/postgres'
 
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 import isNil from 'lodash/isNil'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey, { auth: { persistSession: false } })
 
 const TEAM_ROUND_ENDPOINT = (teamId: string, round: string) => `/time/id/${teamId}/${round}`
 
@@ -23,8 +18,6 @@ type GetContext = {
     [key: string]: string | string[]
   }
 }
-
-const TABLE_NAME = 'cartola-request-cache'
 
 export async function GET(request: Request, context: GetContext) {
   const teamData = TEAMS.find((team) => team.slug === context.params['team-slug'])
@@ -49,21 +42,24 @@ export async function GET(request: Request, context: GetContext) {
     requestTimeoutExceeded = true
   }, 2000)
 
-  const cachedResponse = await supabase
-    .from(TABLE_NAME)
-    .select('payload')
-    .like('endpoint', `%${cartolaEndpoint}`)
-    .abortSignal(controller.signal)
+  const likeCartolaEndpointStatement = `%${cartolaEndpoint}%`
+
+  const cachedResponse = await sql`
+    SELECT payload
+    FROM cartola_request_cache
+    WHERE endpoint LIKE ${likeCartolaEndpointStatement}
+    FETCH FIRST 1 ROWS ONLY;
+  `
 
   clearTimeout(requestTimeout)
 
   let result
   let needsToFetchFromCartola = true
 
-  if (!isNil(cachedResponse.data) && !isEmpty(cachedResponse.data)) {
-    result = cachedResponse.data[0].payload
+  if (!isNil(cachedResponse.rows) && !isEmpty(cachedResponse.rows)) {
+    result = cachedResponse.rows[0].payload
     needsToFetchFromCartola = false
-    console.log('got data from supabase cache')
+    console.log('got data from neon cache')
   }
 
   if (needsToFetchFromCartola) {
@@ -73,15 +69,12 @@ export async function GET(request: Request, context: GetContext) {
 
     if (!requestTimeoutExceeded) {
       const today = new Date()
-      await supabase
-        .from(TABLE_NAME)
-        .insert([
-          {
-            payload: result,
-            endpoint: `${today.getFullYear()}/${cartolaEndpoint}`
-          }
-        ])
-        .select()
+      const endpoint = `${today.getFullYear()}${cartolaEndpoint}`
+
+      sql`
+        INSERT INTO cartola_request_cache (payload, endpoint)
+        VALUES (${JSON.stringify(result)}, ${endpoint})
+      `
     }
   }
 
