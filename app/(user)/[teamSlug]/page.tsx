@@ -16,8 +16,6 @@ import {
 } from '../../common/types/athlete'
 import { RoundData } from '../../services/types'
 
-import './styles.css'
-
 export const metadata: Metadata = {
   title: 'Cartola Statistics',
   description: 'Site para analisar estatísticas que o cartola não utiliza.'
@@ -205,18 +203,9 @@ function playerStatisticsIncrementalFactory(
   return statistics
 }
 
-async function getPlayersTeamData(
-  teamSlug: string,
-  rounds: number[]
-): Promise<[CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics]> {
-  const results = await Promise.allSettled<RoundData>(
-    rounds.map((round) =>
-      fetch(
-        `${process.env.NEXT_API_BASE_URL}/api/get-players-data/${teamSlug}?round=${round}`
-      ).then((res) => res.json())
-    )
-  )
-
+export function formatCartolaApiData(
+  results: PromiseSettledResult<RoundData>[]
+): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
@@ -284,6 +273,21 @@ async function getPlayersTeamData(
   })
 
   return [playersStatistics, benchStatistics, clubsStatistics, positionsStatistics]
+}
+
+export async function getPlayersTeamData(
+  teamSlug: string,
+  rounds: number[]
+): Promise<[CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics]> {
+  const results = await Promise.allSettled<RoundData>(
+    rounds.map((round) => {
+      return fetch(
+        `${process.env.NEXT_API_BASE_URL}/api/get-players-data/${teamSlug}?round=${round}`
+      ).then((res) => res.json())
+    })
+  )
+
+  return formatCartolaApiData(results)
 }
 
 export default async function Team({ params }: { params: { teamSlug: string } }) {

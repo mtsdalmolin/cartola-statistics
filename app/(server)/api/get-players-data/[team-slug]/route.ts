@@ -34,14 +34,6 @@ export async function GET(request: Request, context: GetContext) {
 
   const cartolaEndpoint = TEAM_ROUND_ENDPOINT(teamData.id.toString(), round)
 
-  const controller = new AbortController()
-  let requestTimeoutExceeded = false
-
-  const requestTimeout = setTimeout(() => {
-    controller.abort()
-    requestTimeoutExceeded = true
-  }, 2000)
-
   const likeCartolaEndpointStatement = `%${cartolaEndpoint}%`
 
   const cachedResponse = await sql`
@@ -50,8 +42,6 @@ export async function GET(request: Request, context: GetContext) {
     WHERE endpoint LIKE ${likeCartolaEndpointStatement}
     FETCH FIRST 1 ROWS ONLY;
   `
-
-  clearTimeout(requestTimeout)
 
   let result
   let needsToFetchFromCartola = true
@@ -67,15 +57,13 @@ export async function GET(request: Request, context: GetContext) {
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 
-    if (!requestTimeoutExceeded) {
-      const today = new Date()
-      const endpoint = `${today.getFullYear()}${cartolaEndpoint}`
+    const today = new Date()
+    const endpoint = `${today.getFullYear()}${cartolaEndpoint}`
 
-      sql`
-        INSERT INTO cartola_request_cache (payload, endpoint)
-        VALUES (${JSON.stringify(result)}, ${endpoint})
-      `
-    }
+    sql`
+      INSERT INTO cartola_request_cache (payload, endpoint)
+      VALUES (${JSON.stringify(result)}, ${endpoint})
+    `
   }
 
   return NextResponse.json(result, { status: 200 })

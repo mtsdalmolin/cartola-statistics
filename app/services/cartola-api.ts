@@ -5,7 +5,8 @@ export const CARTOLA_API = 'https://api.cartola.globo.com'
 export const ENDPOINTS = {
   MARKET: '/atletas/mercado',
   MARKET_STATUS: '/mercado/status',
-  MATCHES: '/partidas'
+  MATCHES: '/partidas',
+  TEAM_ROUND: (teamId: string, round: string) => `/time/id/${teamId}/${round}`
 }
 
 const REVALIDATION_TIME_IN_SECONDS = 5 * 60

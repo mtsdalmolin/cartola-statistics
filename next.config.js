@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverActions: true
+  },
   images: {
     domains: ['s.sde.globo.com']
   },
@@ -7,7 +10,7 @@ const nextConfig = {
   modularizeImports: {
     lodash: {
       transform: 'lodash/{{member}}',
-      preventFullImport: true,
+      preventFullImport: true
     }
   }
 }
