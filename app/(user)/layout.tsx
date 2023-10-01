@@ -1,11 +1,14 @@
 import '@/app/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Image from 'next/image'
 import Link from 'next/link'
 
+import { Main } from '@/app/common/components/main/main.client'
 import { RoundStartInfo } from '@/app/common/components/round-start-info'
 import { TEAMS } from '@/app/constants/data'
 import { ENDPOINTS, request } from '@/app/services/cartola-api'
+import logo from '@/public/logo/edc-logo.svg'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -35,7 +38,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="p-4 border-b-[1px]">
+        <header className="grid grid-cols-3 items-center p-4 border-b-[1px]">
+          <Image src={logo} width={35} height={35} alt="Logo do estatísticas do cartola" />
           <RoundStartInfo dateStr={dateStr} roundName={marketStatus.nome_rodada} />
         </header>
         <div className="flex min-h-screen">
@@ -57,7 +61,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </nav>
             </div>
           </aside>
-          <main className="flex flex-col w-full py-8 px-12">{children}</main>
+          <Main className="flex flex-col w-full py-8 px-12">{children}</Main>
         </div>
       </body>
     </html>

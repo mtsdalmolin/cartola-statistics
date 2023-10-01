@@ -2,6 +2,8 @@ import '@/app/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
+import { Main } from '@/app/common/components/main/main.client'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const dynamic = 'force-dynamic'
@@ -15,7 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex flex-col w-full py-8 px-12">{children}</main>
+        <Main className="w-full px-8">{children}</Main>
       </body>
     </html>
   )

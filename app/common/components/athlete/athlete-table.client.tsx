@@ -4,21 +4,12 @@ import { useMemo, useState, useSyncExternalStore } from 'react'
 
 import Image from 'next/image'
 
+import { MarketAthleteTableData } from '@/app/(user)/mercado/page'
 import { POSITIONS } from '@/app/constants/positions'
 import { PROSPECTIVE, STATUS } from '@/app/constants/status'
 import { FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED } from '@/app/constants/teams'
-import { MarketAthleteTableData } from '@/app/mercado/page'
 import { MarketTableAsyncExternalStorage } from '@/app/storage/localstorage/market-table.external'
-import {
-  ActionIcon,
-  Box,
-  Dialog,
-  MantineProvider,
-  Menu,
-  Switch,
-  Text,
-  Tooltip
-} from '@mantine/core'
+import { ActionIcon, Box, Dialog, Menu, Switch, Text, Tooltip } from '@mantine/core'
 import {
   IconArmchair,
   IconCircleCheckFilled,
@@ -748,7 +739,7 @@ export function AthleteTable<T>({
   )
 
   return (
-    <MantineProvider theme={{ colorScheme: 'dark' }}>
+    <>
       <Dialog opened={showSaveTableDialog} size="md" radius="md">
         <Text size="md" mb="xs" weight={500}>
           Sua tabela sofreu alterações. Deseja salvar?
@@ -765,6 +756,6 @@ export function AthleteTable<T>({
         </Flex>
       </Dialog>
       <MantineReactTable table={table} />
-    </MantineProvider>
+    </>
   )
 }
