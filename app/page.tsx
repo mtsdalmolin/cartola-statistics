@@ -49,9 +49,6 @@ export default function Home() {
               required
             />
             <SubmitButton />
-            <p aria-live="polite" className="sr-only" role="status">
-              {state?.message}
-            </p>
           </form>
         </div>
       </div>

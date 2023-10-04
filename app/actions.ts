@@ -2,8 +2,8 @@
 
 import { revalidatePath } from 'next/cache'
 
-import { formatCartolaApiData } from './(user)/[teamSlug]/page'
 import { ROUNDS } from './constants/data'
+import { formatCartolaApiData } from './helpers/formatters/cartola'
 import { ENDPOINTS, request } from './services/cartola-api'
 import { RoundData } from './services/types'
 
