@@ -2,6 +2,7 @@
 
 import { experimental_useFormState as useFormState } from 'react-dom'
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 import Image from 'next/image'
 
@@ -39,7 +40,7 @@ export default function Home() {
   })
 
   return (
-    <>
+    <div className="w-full max-w-[1200px]">
       <div className="flex h-[100vh]">
         <div className="m-auto w-fit">
           <Image src={brand} width={500} height={500} alt="brand" />
@@ -58,12 +59,14 @@ export default function Home() {
         </div>
       </div>
       {state.data ? (
-        <div className="grid gap-8 grid-cols-statistics justify-items-center w-full max-w-[1200px]">
-          <LineupsPerTeam clubsData={state.data[2]} />
-          <HighestScorer crewData={state.data[0]} />
-          <Artillery crewData={state.data[0]} />
-        </div>
+        <ResponsiveMasonry columnsCountBreakPoints={{ 375: 1, 575: 2, 920: 3 }}>
+          <Masonry gutter="1rem" columnsCount={3}>
+            <LineupsPerTeam clubsData={state.data[2]} />
+            <HighestScorer crewData={state.data[0]} />
+            <Artillery crewData={state.data[0]} />
+          </Masonry>
+        </ResponsiveMasonry>
       ) : null}
-    </>
+    </div>
   )
 }
