@@ -8,6 +8,11 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
+function renderHighestPointText(homeAverage: number, isAbbreviated = true) {
+  if (isAbbreviated) return `${homeAverage.toFixed(1)} pts.`
+  return `${homeAverage.toFixed(1)} ponto${homeAverage > 1 ? 's' : ''}`
+}
+
 export function HighestScorer<TCrewData extends CrewStatistics>({
   crewData
 }: {
@@ -21,7 +26,7 @@ export function HighestScorer<TCrewData extends CrewStatistics>({
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={first.highestPoint.toFixed(1)}
+        data={renderHighestPointText(first.highestPoint, false)}
       />
 
       <StatisticsList>
@@ -31,7 +36,7 @@ export function HighestScorer<TCrewData extends CrewStatistics>({
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}
-            data={athlete.highestPoint.toFixed(1)}
+            data={renderHighestPointText(athlete.highestPoint)}
             position={idx + 2}
           />
         ))}
