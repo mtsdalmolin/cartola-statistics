@@ -8,6 +8,10 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
+function renderCastTimesText(castTimes: number) {
+  return `${castTimes} vez${castTimes > 1 ? 'es' : ''}`
+}
+
 export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
   crewData
 }: {
@@ -21,7 +25,7 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={first.castTimes.toString()}
+        data={renderCastTimesText(first.castTimes)}
       />
 
       <StatisticsList>
@@ -30,7 +34,8 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
             key={athlete.atleta_id}
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
-            data={athlete.castTimes.toString()}
+            imgSize={45}
+            data={renderCastTimesText(athlete.castTimes)}
             position={idx + 2}
           />
         ))}

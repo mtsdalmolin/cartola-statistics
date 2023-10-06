@@ -60,6 +60,7 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
             key={athlete.atleta_id}
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
+            imgSize={45}
             data={
               <Tooltip
                 label={<HotspotTooltipLabel roundsAsCaptain={athlete.captainRounds} />}
