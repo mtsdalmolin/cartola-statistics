@@ -22,6 +22,7 @@ import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
 import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
 import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
+import { WorstGoalkeeper } from './common/components/statistics/worst-goalkeeper'
 
 // color scheme
 // bg #254439 || #12211c
@@ -70,6 +71,7 @@ export default function Home() {
       {state.data ? (
         <ResponsiveMasonry columnsCountBreakPoints={{ 375: 1, 575: 2, 920: 3 }}>
           <Masonry gutter="1rem" columnsCount={3}>
+            <WorstGoalkeeper crewData={state.data[0]} />
             <BestCoach crewData={state.data[0]} />
             <LineupsPerTeam clubsData={state.data[2]} />
             <HighestScorer crewData={state.data[0]} />
