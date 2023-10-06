@@ -21,6 +21,7 @@ import { HighestScorer } from './common/components/statistics/highest-scorer'
 import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
 import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
+import { MostRoundsAsCaptain } from './common/components/statistics/most-rounds-as-captain'
 import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
 import { WorstGoalkeeper } from './common/components/statistics/worst-goalkeeper'
 
@@ -71,6 +72,7 @@ export default function Home() {
       {state.data ? (
         <ResponsiveMasonry columnsCountBreakPoints={{ 375: 1, 575: 2, 920: 3 }}>
           <Masonry gutter="1rem" columnsCount={3}>
+            <MostRoundsAsCaptain crewData={state.data[0]} />
             <WorstGoalkeeper crewData={state.data[0]} />
             <BestCoach crewData={state.data[0]} />
             <LineupsPerTeam clubsData={state.data[2]} />

@@ -86,6 +86,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     sumOfOverallAverage: athlete.media_num,
     overallAverage: 0,
     captainTimes: 0,
+    captainRounds: [],
     sumOfPoints: calculatePoints(athlete, captainId),
     pointsAverage: 0,
     clube_id: athlete.clube_id,
@@ -215,6 +216,10 @@ export function formatCartolaApiData(
 
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
+        playersStatistics[athlete.atleta_id].captainRounds.push({
+          round: result.value.rodada_atual,
+          points: calculatePoints(athlete, captainId)
+        })
       }
 
       const athletePoints = calculatePoints(athlete, captainId)
