@@ -47,7 +47,7 @@ function athleteTableDataFactory(athlete: RenderedAthlete): AthleteTableDataWith
     finishesToScore: handleTableNumberValues(athlete.finishesToScore),
     goals: handleTableNumberValues(athlete.goals),
     defenses: handleTableNumberValues(athlete.defenses),
-    goalsAgainst: handleTableNumberValues(athlete.goalsAgainst),
+    goalsConceded: handleTableNumberValues(athlete.goalsConceded),
     defensesToSufferGoal: handleTableNumberValues(athlete.defensesToSufferGoal),
     minutesToScore: handleTableNumberValues(athlete.minutesToScore),
     victoriesAverage: handleTableNumberValues(athlete.victoriesAverage * 100),
