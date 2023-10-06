@@ -58,7 +58,7 @@ export default function Home() {
         </div>
       </div>
       {state.data ? (
-        <div className="grid gap-8 grid-cols-statistics justify-items-center">
+        <div className="grid gap-8 grid-cols-statistics justify-items-center w-full max-w-[1200px]">
           <LineupsPerTeam clubsData={state.data[2]} />
           <HighestScorer crewData={state.data[0]} />
           <Artillery crewData={state.data[0]} />
