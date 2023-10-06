@@ -12,6 +12,7 @@ import { Button, Input, Loader } from '@mantine/core'
 import { getTeamStatistics } from './actions'
 import { Artillery } from './common/components/statistics/artillery'
 import { FinishEfficiency } from './common/components/statistics/finish-efficiency'
+import { HighestFinisher } from './common/components/statistics/highest-finisher'
 import { HighestScorer } from './common/components/statistics/highest-scorer'
 import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
 
@@ -66,6 +67,7 @@ export default function Home() {
             <HighestScorer crewData={state.data[0]} />
             <Artillery crewData={state.data[0]} />
             <FinishEfficiency crewData={state.data[0]} />
+            <HighestFinisher crewData={state.data[0]} />
           </Masonry>
         </ResponsiveMasonry>
       ) : null}
