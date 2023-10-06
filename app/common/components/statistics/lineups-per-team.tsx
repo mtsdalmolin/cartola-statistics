@@ -19,7 +19,7 @@ export function LineupsPerTeam<TClubsData extends ClubStatistics>({
   return (
     <SummaryContainer title="Times mais escalados">
       <Flex key={first.id} align="center" gap="sm" direction="column">
-        <Text className="truncate">{getFootballTeamName(first.id)}</Text>
+        <Text>{getFootballTeamName(first.id)}</Text>
         <Image
           alt={getFootballTeamName(first.id)}
           src={getFootballTeamBadgeLink(first.id, 'lg')}
@@ -40,7 +40,7 @@ export function LineupsPerTeam<TClubsData extends ClubStatistics>({
                 width={30}
                 height={30}
               />
-              <Text className="truncate">{getFootballTeamName(club.id)}</Text>
+              <Text>{getFootballTeamName(club.id)}</Text>
             </Flex>
             {club.pointsPercentage.toFixed(1)}%
           </Flex>
