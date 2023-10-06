@@ -20,6 +20,7 @@ import { HighestScorer } from './common/components/statistics/highest-scorer'
 import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
 import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
+import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
 
 // color scheme
 // bg #254439 || #12211c
@@ -78,6 +79,7 @@ export default function Home() {
             <BestHomePlayer crewData={state.data[0]} />
             <BestAwayPlayer crewData={state.data[0]} />
             <MoreAssists crewData={state.data[0]} />
+            <MostScheduledPlayer crewData={state.data[0]} />
           </Masonry>
         </ResponsiveMasonry>
       ) : null}
