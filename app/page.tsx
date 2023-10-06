@@ -18,6 +18,7 @@ import { FinishEfficiency } from './common/components/statistics/finish-efficien
 import { HighestFinisher } from './common/components/statistics/highest-finisher'
 import { HighestScorer } from './common/components/statistics/highest-scorer'
 import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
+import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
 
 // color scheme
@@ -76,6 +77,7 @@ export default function Home() {
             <MoreDefenses crewData={state.data[0]} />
             <BestHomePlayer crewData={state.data[0]} />
             <BestAwayPlayer crewData={state.data[0]} />
+            <MoreAssists crewData={state.data[0]} />
           </Masonry>
         </ResponsiveMasonry>
       ) : null}

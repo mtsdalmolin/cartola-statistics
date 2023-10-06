@@ -111,6 +111,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
       average: 0
     },
     highestPoint: athlete.pontos_num,
+    assists: athlete.scout?.A ?? 0,
     finishes: getFinishesNumbers(athlete),
     finishesToScore: 0,
     goals: 0,
@@ -182,6 +183,7 @@ function playerStatisticsIncrementalFactory(
       athlete,
       statistics[athlete.atleta_id].scout
     )
+    statistics[athlete.atleta_id].assists += handleGameActions(athlete)?.A ?? 0
     statistics[athlete.atleta_id].finishes += getFinishesNumbers(athlete)
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
     statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0

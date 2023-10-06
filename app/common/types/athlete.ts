@@ -67,6 +67,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
     sumOfPoints: number
     average: number
   }
+  assists: number
   finishes: number
   finishesToScore: number
   goals: number
