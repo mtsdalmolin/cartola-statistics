@@ -15,7 +15,7 @@ export interface AthleteTableData {
   finishesToScore: number
   goals: number
   defenses: number
-  goalsAgainst: number
+  goalsConceded: number
   defensesToSufferGoal: number
   minutesToScore: number
   victoriesAverage: number

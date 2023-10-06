@@ -72,7 +72,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   finishesToScore: number
   goals: number
   defenses: number
-  goalsAgainst: number
+  goalsConceded: number
   defensesToSufferGoal: number
   minutesToScore: number
   highestPoint: number

@@ -6,7 +6,7 @@ export const STATISTICS_IDS = {
   finishes: 'finishes',
   finishesToScore: 'finishes-to-score',
   defenses: 'defenses',
-  goalsAgainst: 'goals-against',
+  goalsConceded: 'goals-conceded',
   defensesToSufferGoal: 'defenses-to-suffer-goal',
   averagePointsHome: 'average-points-home',
   averagePointsAway: 'average-points-away',

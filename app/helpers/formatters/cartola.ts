@@ -116,7 +116,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     finishesToScore: 0,
     goals: 0,
     defenses: athlete.scout?.DE ?? 0,
-    goalsAgainst: athlete.scout?.GS ?? 0,
+    goalsConceded: athlete.scout?.GS ?? 0,
     defensesToSufferGoal: 0,
     minutesToScore: 0,
     victoriesAverage: 0,
@@ -133,7 +133,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
 
 function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
   const overallAverage = athlete.sumOfOverallAverage / athlete.castTimes
-  const defensesToSufferGoal = athlete.defenses / athlete.goalsAgainst
+  const defensesToSufferGoal = athlete.defenses / athlete.goalsConceded
 
   return {
     ...athlete,
@@ -187,7 +187,7 @@ function playerStatisticsIncrementalFactory(
     statistics[athlete.atleta_id].finishes += getFinishesNumbers(athlete)
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
     statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
-    statistics[athlete.atleta_id].goalsAgainst += handleGameActions(athlete)?.GS ?? 0
+    statistics[athlete.atleta_id].goalsConceded += handleGameActions(athlete)?.GS ?? 0
   } else {
     statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
   }

@@ -58,10 +58,10 @@ export function getAthleteStatistics(athlete: RenderedAthlete) {
       canRender: () => isGoalkeeper(athlete.posicao_id)
     },
     {
-      id: STATISTICS_IDS.goalsAgainst,
+      id: STATISTICS_IDS.goalsConceded,
       label: 'Gols sofridos',
       title: 'Gols sofridos',
-      value: athlete.goalsAgainst.toFixed(1),
+      value: athlete.goalsConceded.toFixed(1),
       canRender: () => isGoalkeeper(athlete.posicao_id)
     },
     {

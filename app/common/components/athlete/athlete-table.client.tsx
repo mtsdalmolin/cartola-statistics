@@ -380,8 +380,8 @@ const athleteColumns: AthleteTableColumn[] = [
     filterVariant: 'range-slider'
   },
   {
-    id: 'goalsAgainst',
-    accessorKey: 'goalsAgainst',
+    id: 'goalsConceded',
+    accessorKey: 'goalsConceded',
     header: 'Gols sofridos',
     filterVariant: 'range-slider'
   },
@@ -446,7 +446,7 @@ const athleteColumnsOrders = [
   'averageMinutesPerRound',
   'finishes',
   'finishesToScore',
-  'goalsAgainst',
+  'goalsConceded',
   'defensesToSufferGoal',
   'minutesToScore',
   'captainTimes',
@@ -459,7 +459,7 @@ const athleteColumnVisibility = {
   averageMinutesPerRound: false,
   finishes: false,
   finishesToScore: false,
-  goalsAgainst: false,
+  goalsConceded: false,
   defensesToSufferGoal: false,
   minutesToScore: false,
   captainTimes: false,
