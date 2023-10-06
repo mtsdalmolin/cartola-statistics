@@ -9,9 +9,8 @@ import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
 function renderFinishesToScoreText(finishesToScore: number, isAbbreviated = true) {
-  if (isAbbreviated)
-    return `${finishesToScore.toFixed(1)} finalizaç${finishesToScore > 1 ? 'ões' : 'ão'}`
-  return `${finishesToScore.toFixed(1)} fin.`
+  if (isAbbreviated) return `${finishesToScore.toFixed(1)} fin.`
+  return `${finishesToScore.toFixed(1)} finalizaç${finishesToScore > 1 ? 'ões' : 'ão'}`
 }
 
 export function FinishEfficiency<TCrewData extends CrewStatistics>({
@@ -27,7 +26,7 @@ export function FinishEfficiency<TCrewData extends CrewStatistics>({
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={renderFinishesToScoreText(first.finishesToScore)}
+        data={renderFinishesToScoreText(first.finishesToScore, false)}
       />
 
       <StatisticsList>
@@ -37,7 +36,7 @@ export function FinishEfficiency<TCrewData extends CrewStatistics>({
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}
-            data={renderFinishesToScoreText(athlete.finishesToScore, false)}
+            data={renderFinishesToScoreText(athlete.finishesToScore)}
             position={idx + 2}
           />
         ))}

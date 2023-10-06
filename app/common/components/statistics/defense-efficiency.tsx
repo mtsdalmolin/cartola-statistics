@@ -9,9 +9,8 @@ import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
 function renderDefensesToSufferGoalText(defensesToSufferGoal: number, isAbbreviated = true) {
-  if (isAbbreviated)
-    return `${defensesToSufferGoal.toFixed(1)} defesa${defensesToSufferGoal > 1 ? 's' : ''}`
-  return `${defensesToSufferGoal.toFixed(1)} def.`
+  if (isAbbreviated) return `${defensesToSufferGoal.toFixed(1)} def.`
+  return `${defensesToSufferGoal.toFixed(1)} defesa${defensesToSufferGoal > 1 ? 's' : ''}`
 }
 
 export function DefenseEfficiency<TCrewData extends CrewStatistics>({
@@ -31,7 +30,7 @@ export function DefenseEfficiency<TCrewData extends CrewStatistics>({
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={renderDefensesToSufferGoalText(first.defensesToSufferGoal)}
+        data={renderDefensesToSufferGoalText(first.defensesToSufferGoal, false)}
       />
 
       <StatisticsList>
@@ -41,7 +40,7 @@ export function DefenseEfficiency<TCrewData extends CrewStatistics>({
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}
-            data={renderDefensesToSufferGoalText(athlete.defensesToSufferGoal, false)}
+            data={renderDefensesToSufferGoalText(athlete.defensesToSufferGoal)}
             position={idx + 2}
           />
         ))}

@@ -9,8 +9,8 @@ import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
 function renderNumberOfFinishesText(numberOfFinishes: number, isAbbreviated = true) {
-  if (isAbbreviated) return `${numberOfFinishes} finalizaç${numberOfFinishes > 1 ? 'ões' : 'ão'}`
-  return `${numberOfFinishes} fin.`
+  if (isAbbreviated) return `${numberOfFinishes} fin.`
+  return `${numberOfFinishes} finalizaç${numberOfFinishes > 1 ? 'ões' : 'ão'}`
 }
 
 export function HighestFinisher<TCrewData extends CrewStatistics>({
@@ -26,7 +26,7 @@ export function HighestFinisher<TCrewData extends CrewStatistics>({
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={renderNumberOfFinishesText(first.finishes)}
+        data={renderNumberOfFinishesText(first.finishes, false)}
       />
 
       <StatisticsList>
@@ -36,7 +36,7 @@ export function HighestFinisher<TCrewData extends CrewStatistics>({
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}
-            data={renderNumberOfFinishesText(athlete.finishes, false)}
+            data={renderNumberOfFinishesText(athlete.finishes)}
             position={idx + 2}
           />
         ))}

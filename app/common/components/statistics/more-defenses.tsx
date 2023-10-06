@@ -9,8 +9,8 @@ import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
 function renderDefensesText(defenses: number, isAbbreviated = true) {
-  if (isAbbreviated) return `${defenses} defesa${defenses > 1 ? 's' : ''}`
-  return `${defenses} def.`
+  if (isAbbreviated) return `${defenses} def.`
+  return `${defenses} defesa${defenses > 1 ? 's' : ''}`
 }
 
 export function MoreDefenses<TCrewData extends CrewStatistics>({
@@ -30,7 +30,7 @@ export function MoreDefenses<TCrewData extends CrewStatistics>({
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={renderDefensesText(first.defenses)}
+        data={renderDefensesText(first.defenses, false)}
       />
 
       <StatisticsList>
@@ -40,7 +40,7 @@ export function MoreDefenses<TCrewData extends CrewStatistics>({
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}
-            data={renderDefensesText(athlete.defenses, false)}
+            data={renderDefensesText(athlete.defenses)}
             position={idx + 2}
           />
         ))}
