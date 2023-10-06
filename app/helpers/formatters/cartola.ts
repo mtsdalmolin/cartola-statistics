@@ -132,6 +132,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
 
 function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
   const overallAverage = athlete.sumOfOverallAverage / athlete.castTimes
+  const defensesToSufferGoal = athlete.defenses / athlete.goalsAgainst
 
   return {
     ...athlete,
@@ -154,7 +155,7 @@ function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
     },
     finishesToScore: athlete.finishes / athlete.goals,
     minutesToScore: athlete.sumOfPlayedMinutes / athlete.goals,
-    defensesToSufferGoal: athlete.defenses / athlete.goalsAgainst,
+    defensesToSufferGoal: isFinite(defensesToSufferGoal) ? defensesToSufferGoal : athlete.defenses,
     victoriesAverage: (athlete.scout?.V ?? 0) / athlete.castTimes
   }
 }
