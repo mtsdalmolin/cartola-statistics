@@ -26,7 +26,7 @@ export function MoreAssists<TCrewData extends CrewStatistics>({
   const first = orderedDefenseEfficiencyData[0]
   orderedDefenseEfficiencyData.shift()
   return (
-    <SummaryContainer title="Mais defesas">
+    <SummaryContainer title="Mais assistências">
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
