@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 import Image from 'next/image'
 
 import { Text } from '@mantine/core'
@@ -11,7 +13,7 @@ export function ListHotspot({
 }: {
   name: string
   imgSrc: string
-  data: string
+  data: string | ReactNode
 }) {
   return (
     <Flex align="center" gap="sm" direction="column">

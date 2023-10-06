@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 import Image from 'next/image'
 
 import { Text } from '@mantine/core'
@@ -14,7 +16,7 @@ export function ListItem({
   name: string
   imgSrc: string
   imgSize?: number
-  data: string
+  data: string | ReactNode
   position: number
 }) {
   return (

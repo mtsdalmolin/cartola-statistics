@@ -12,6 +12,7 @@ import { Button, Input, Loader } from '@mantine/core'
 import { getTeamStatistics } from './actions'
 import { Artillery } from './common/components/statistics/artillery'
 import { BestAwayPlayer } from './common/components/statistics/best-away-player'
+import { BestCoach } from './common/components/statistics/best-coach'
 import { BestHomePlayer } from './common/components/statistics/best-home-player'
 import { DefenseEfficiency } from './common/components/statistics/defense-efficiency'
 import { FinishEfficiency } from './common/components/statistics/finish-efficiency'
@@ -69,6 +70,7 @@ export default function Home() {
       {state.data ? (
         <ResponsiveMasonry columnsCountBreakPoints={{ 375: 1, 575: 2, 920: 3 }}>
           <Masonry gutter="1rem" columnsCount={3}>
+            <BestCoach crewData={state.data[0]} />
             <LineupsPerTeam clubsData={state.data[2]} />
             <HighestScorer crewData={state.data[0]} />
             <Artillery crewData={state.data[0]} />
