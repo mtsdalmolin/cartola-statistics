@@ -7,7 +7,15 @@ import { formatCartolaApiData } from './helpers/formatters/cartola'
 import { ENDPOINTS, request } from './services/cartola-api'
 import { RoundData } from './services/types'
 
-export async function searchTeamId(prevState: any, formData: FormData) {
+type GetTeamsStatisticsActionState = {
+  message: 'success' | 'error' | null
+  data?: ReturnType<typeof formatCartolaApiData> | null
+}
+
+export async function getTeamStatistics(
+  _: GetTeamsStatisticsActionState,
+  formData: FormData
+): Promise<GetTeamsStatisticsActionState> {
   try {
     const teamId = formData.get('teamId')!
 

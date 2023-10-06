@@ -8,8 +8,10 @@ import Image from 'next/image'
 import brand from '@/public/logo/brand.svg'
 import { Button, Input, Loader } from '@mantine/core'
 
-import { searchTeamId } from './actions'
-import { CrewContent } from './common/components/crew-content.client'
+import { getTeamStatistics } from './actions'
+import { Artillery } from './common/components/statistics/artillery'
+import { HighestScorer } from './common/components/statistics/highest-scorer'
+import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
 
 // color scheme
 // bg #254439 || #12211c
@@ -25,13 +27,16 @@ function SubmitButton() {
       type="submit"
       aria-disabled={pending}
     >
-      {pending ? <Loader color="#12211c" size={20} /> : 'Buscar'}
+      {pending ? <Loader color="#12211c" size={20} /> : 'Buscar resumo'}
     </Button>
   )
 }
 
 export default function Home() {
-  const [state, formAction] = useFormState(searchTeamId, { success: null, data: null })
+  const [state, formAction] = useFormState(getTeamStatistics, {
+    message: null,
+    data: null
+  })
 
   return (
     <>
@@ -45,7 +50,7 @@ export default function Home() {
               type="text"
               id="teamId"
               name="teamId"
-              placeholder="Ex.: 25929996"
+              placeholder="Ex.: 29367702"
               required
             />
             <SubmitButton />
@@ -53,13 +58,10 @@ export default function Home() {
         </div>
       </div>
       {state.data ? (
-        <div className="py-8 px-12">
-          <CrewContent
-            athletes={state.data[0]}
-            bench={state.data[1]}
-            clubs={state.data[2]}
-            positions={state.data[3]}
-          />
+        <div className="grid gap-8 grid-cols-statistics justify-items-center">
+          <LineupsPerTeam clubsData={state.data[2]} />
+          <HighestScorer crewData={state.data[0]} />
+          <Artillery crewData={state.data[0]} />
         </div>
       ) : null}
     </>
