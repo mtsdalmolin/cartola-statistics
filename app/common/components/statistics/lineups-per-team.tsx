@@ -1,11 +1,10 @@
-import Image from 'next/image'
-
 import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
-import { Text } from '@mantine/core'
 
 import { ClubStatistics } from '../../types/athlete'
-import { Flex } from '../flex'
+import { StatisticsList } from './list'
+import { ListHotspot } from './list/hotspot'
+import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
 export function LineupsPerTeam<TClubsData extends ClubStatistics>({
@@ -18,34 +17,23 @@ export function LineupsPerTeam<TClubsData extends ClubStatistics>({
   orderedClubsData.shift()
   return (
     <SummaryContainer title="Times mais escalados">
-      <Flex key={first.id} align="center" gap="sm" direction="column">
-        <Text>{getFootballTeamName(first.id)}</Text>
-        <Image
-          alt={getFootballTeamName(first.id)}
-          src={getFootballTeamBadgeLink(first.id, 'lg')}
-          width={70}
-          height={70}
-        />
-        {first.pointsPercentage.toFixed(1)}%
-      </Flex>
+      <ListHotspot
+        name={getFootballTeamName(first.id)}
+        imgSrc={getFootballTeamBadgeLink(first.id, 'lg')}
+        data={`${first.pointsPercentage.toFixed(1)}%`}
+      />
 
-      <Flex className="divide-y divide-gray-500" direction="column">
+      <StatisticsList>
         {orderedClubsData.map((club, idx) => (
-          <Flex key={club.id} className="w-full pt-2" justify="between" align="center" gap="sm">
-            <span>{idx + 2}º</span>
-            <Flex>
-              <Image
-                alt={getFootballTeamName(club.id)}
-                src={getFootballTeamBadgeLink(club.id, 'lg')}
-                width={30}
-                height={30}
-              />
-              <Text>{getFootballTeamName(club.id)}</Text>
-            </Flex>
-            {club.pointsPercentage.toFixed(1)}%
-          </Flex>
+          <ListItem
+            key={club.id}
+            name={getFootballTeamName(club.id)}
+            imgSrc={getFootballTeamBadgeLink(club.id, 'lg')}
+            data={`${club.pointsPercentage.toFixed(1)}%`}
+            position={idx + 2}
+          />
         ))}
-      </Flex>
+      </StatisticsList>
     </SummaryContainer>
   )
 }
