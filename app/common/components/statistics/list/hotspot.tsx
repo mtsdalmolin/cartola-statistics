@@ -10,12 +10,12 @@ export function ListHotspot({
   name,
   imgSrc,
   data,
-  statistics
+  details
 }: {
   name: string
   imgSrc: string
   data: string | ReactNode
-  statistics?: ReactNode
+  details?: ReactNode
 }) {
   return (
     <Flex align="center" justify="between" gap="sm">
@@ -24,7 +24,7 @@ export function ListHotspot({
         <Image className="rounded-full" alt={name} src={imgSrc} width={70} height={70} />
         {data}
       </Flex>
-      {statistics ? statistics : null}
+      {details}
     </Flex>
   )
 }

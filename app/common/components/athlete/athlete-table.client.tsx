@@ -33,6 +33,7 @@ import isNil from 'lodash/isNil'
 
 import { Button } from '../button.client'
 import { Flex } from '../flex'
+import { MatchVersus } from '../match-versus'
 import { AthleteTableData } from './types'
 
 function handleTableFilterChange<T>({
@@ -539,27 +540,7 @@ const marketColumns: AthleteTableColumn[] = [
     id: 'match',
     accessorKey: 'match',
     header: 'Confronto',
-    Cell: (cell) => (
-      <Flex align="center">
-        <Tooltip label={cell.row.original.match.home.name}>
-          <Image
-            alt={cell.row.original.match.home.name}
-            src={cell.row.original.match.home.clubBadgeUrl}
-            width={30}
-            height={30}
-          />
-        </Tooltip>
-        X
-        <Tooltip label={cell.row.original.match.away.name}>
-          <Image
-            alt={cell.row.original.match.away.name}
-            src={cell.row.original.match.away.clubBadgeUrl}
-            width={30}
-            height={30}
-          />
-        </Tooltip>
-      </Flex>
-    )
+    Cell: (cell) => <MatchVersus match={cell.row.original.match} />
   }
 ]
 

@@ -9,6 +9,7 @@ export interface Athlete {
   media_num: number
   pontos_num: number
   jogos_num: number
+  rodada_id: number
   clube_id: FootballTeamsIds
   posicao_id: PositionsIds
   variacao_num: number
@@ -74,6 +75,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   goals: number
   defenses: number
   goalsConceded: number
+  goalsConcededRoundIds: number[]
   defensesToSufferGoal: number
   minutesToScore: number
   highestPoint: number

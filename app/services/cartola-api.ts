@@ -1,9 +1,13 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 
 import { ClubStatistics, CrewStatistics } from '../common/types/athlete'
+import { Match } from '../common/types/match'
 import { PositionsStatistics } from '../common/types/position'
+import { FootballTeamsIds } from '../constants/teams'
 import { formatCartolaApiData } from '../helpers/formatters/cartola'
-import { RoundData } from './types'
+import { formatMatchData } from '../helpers/formatters/match'
+import { getFootballTeamBadgeLink, getFootballTeamName } from '../helpers/teams'
+import { MatchesData, RoundData } from './types'
 
 export const CARTOLA_API = 'https://api.cartola.globo.com'
 
@@ -11,6 +15,7 @@ export const ENDPOINTS = {
   MARKET: '/atletas/mercado',
   MARKET_STATUS: '/mercado/status',
   MATCHES: '/partidas',
+  MATCHES_BY_ID: (roundId: string) => `/partidas/${roundId}`,
   TEAM_ROUND: (teamId: string, round: string) => `/time/id/${teamId}/${round}`
 }
 
@@ -39,4 +44,28 @@ export async function getPlayersTeamData(
   )
 
   return formatCartolaApiData(results)
+}
+
+export async function getRoundsData(roundIds: number[]) {
+  const results = await Promise.allSettled<MatchesData>(
+    roundIds.map((roundId) => {
+      return request(ENDPOINTS.MATCHES_BY_ID(roundId.toString()))
+    })
+  )
+
+  const roundMatches: { [key: string]: { [key: string]: Match } } = {}
+
+  results.forEach((result, idx) => {
+    if (result.status === 'fulfilled') {
+      roundMatches[roundIds[idx]] = formatMatchData(result.value.partidas)
+    }
+  })
+
+  return roundMatches
+}
+
+export async function getMatchesData() {
+  const { partidas: matches }: MatchesData = await request(ENDPOINTS.MATCHES)
+
+  return formatMatchData(matches)
 }

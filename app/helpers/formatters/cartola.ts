@@ -78,6 +78,7 @@ function getFinishesNumbers(athlete: Athlete) {
 function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
   return {
     atleta_id: athlete.atleta_id,
+    rodada_id: athlete.rodada_id,
     apelido: athlete.apelido,
     castTimes: 1,
     foto: athlete.foto?.replace('FORMATO', PHOTO_SIZE_FORMAT) ?? '',
@@ -118,6 +119,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     goals: 0,
     defenses: athlete.scout?.DE ?? 0,
     goalsConceded: athlete.scout?.GS ?? 0,
+    goalsConcededRoundIds: athlete.scout?.GS ?? 0 > 0 ? [athlete.rodada_id] : [],
     defensesToSufferGoal: 0,
     minutesToScore: 0,
     victoriesAverage: 0,
@@ -188,13 +190,19 @@ function playerStatisticsIncrementalFactory(
     statistics[athlete.atleta_id].finishes += getFinishesNumbers(athlete)
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
     statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
-    statistics[athlete.atleta_id].goalsConceded += handleGameActions(athlete)?.GS ?? 0
+    const goalsConceded = handleGameActions(athlete)?.GS ?? 0
+    if (goalsConceded) {
+      athlete.apelido === 'Everson' && console.log(athlete.rodada_id)
+      statistics[athlete.atleta_id].goalsConceded += handleGameActions(athlete)?.GS ?? 0
+      statistics[athlete.atleta_id].goalsConcededRoundIds.push(athlete.rodada_id)
+    }
   } else {
     statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
   }
 
   return statistics
 }
+
 export function formatCartolaApiData(
   results: PromiseSettledResult<RoundData>[]
 ): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics] {

@@ -22,17 +22,12 @@ function CaptainStatistics<TRounds extends any[]>({
 }: {
   roundsAsCaptain: TRounds
 }) {
-  let highestPointsRound = maxBy(roundsAsCaptain, 'points')
-
   return (
     <div className="grow-[3] w-fit">
       {roundsAsCaptain.map((roundData) => {
         let diffBetweenPoints = roundData.points - roundData.rawPoints
-        let differencePercentage = getPointsPercentage(diffBetweenPoints, highestPointsRound.points)
-        let rawPointsPercentage = getPointsPercentage(
-          roundData.rawPoints,
-          highestPointsRound.points
-        )
+        let differencePercentage = getPointsPercentage(diffBetweenPoints, roundData.points)
+        let rawPointsPercentage = getPointsPercentage(roundData.rawPoints, roundData.points)
 
         return (
           <div key={roundData.points}>
@@ -79,7 +74,7 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderCaptainTimesText(first.captainTimes)}
-        statistics={<CaptainStatistics roundsAsCaptain={first.captainRounds} />}
+        details={<CaptainStatistics roundsAsCaptain={first.captainRounds} />}
       />
 
       <StatisticsList>
