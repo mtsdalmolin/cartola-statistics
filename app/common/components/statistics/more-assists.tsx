@@ -3,7 +3,7 @@ import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
-import { AssistsRoundMatchesResult } from './details/assists.round-matches-result'
+import { AssistsRoundMatchesResult } from './details/assists-round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'

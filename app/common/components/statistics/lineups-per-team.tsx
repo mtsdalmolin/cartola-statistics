@@ -2,6 +2,7 @@ import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/tea
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
 import { ClubStatistics } from '../../types/athlete'
+import { PositionsPercentage } from './details/positions-percentage'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -12,7 +13,7 @@ export function LineupsPerTeam<TClubsData extends ClubStatistics>({
 }: {
   clubsData: TClubsData
 }) {
-  const orderedClubsData = typedOrderBy(Object.values(clubsData), 'pointsPercentage', 'desc')
+  const orderedClubsData = typedOrderBy(Object.values(clubsData), 'lineupNumbers', 'desc')
   const first = orderedClubsData[0]
   orderedClubsData.shift()
   return (
@@ -20,7 +21,10 @@ export function LineupsPerTeam<TClubsData extends ClubStatistics>({
       <ListHotspot
         name={getFootballTeamName(first.id)}
         imgSrc={getFootballTeamBadgeLink(first.id, 'lg')}
-        data={`${first.pointsPercentage.toFixed(1)}%`}
+        data={`${first.lineupNumbers} escalações`}
+        details={
+          <PositionsPercentage positions={first.positions} totalSchedules={first.lineupNumbers} />
+        }
       />
 
       <StatisticsList>
@@ -29,7 +33,7 @@ export function LineupsPerTeam<TClubsData extends ClubStatistics>({
             key={club.id}
             name={getFootballTeamName(club.id)}
             imgSrc={getFootballTeamBadgeLink(club.id, 'lg')}
-            data={`${club.pointsPercentage.toFixed(1)}%`}
+            data={`${club.lineupNumbers} esc.`}
             position={idx + 2}
           />
         ))}

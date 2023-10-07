@@ -5,6 +5,15 @@ import {
   RenderedAthlete
 } from '@/app/common/types/athlete'
 import { PositionsStatistics } from '@/app/common/types/position'
+import {
+  ATACANTE,
+  GOLEIRO,
+  LATERAL,
+  MEIA,
+  PositionsIds,
+  TECNICO,
+  ZAGUEIRO
+} from '@/app/constants/positions'
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { RoundData } from '@/app/services/types'
 
@@ -221,6 +230,22 @@ function playerStatisticsIncrementalFactory(
   return statistics
 }
 
+function clubPositionFactory(positionId?: PositionsIds) {
+  const clubPosition = {
+    [GOLEIRO]: 0,
+    [LATERAL]: 0,
+    [ZAGUEIRO]: 0,
+    [MEIA]: 0,
+    [ATACANTE]: 0,
+    [TECNICO]: 0
+  }
+
+  if (positionId && positionId in clubPosition)
+    clubPosition[positionId as keyof typeof clubPosition]++
+
+  return clubPosition
+}
+
 export function formatCartolaApiData(
   results: PromiseSettledResult<RoundData>[]
 ): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics] {
@@ -253,12 +278,16 @@ export function formatCartolaApiData(
 
       if (clubsStatistics[athlete.clube_id]) {
         clubsStatistics[athlete.clube_id].points += athletePoints
+        clubsStatistics[athlete.clube_id].lineupNumbers++
+        clubsStatistics[athlete.clube_id].positions[athlete.posicao_id]++
       } else {
         if (athlete.clube_id !== UNEMPLOYED) {
           clubsStatistics[athlete.clube_id] = {
             id: athlete.clube_id,
             points: athletePoints,
-            pointsPercentage: 0
+            pointsPercentage: 0,
+            lineupNumbers: 1,
+            positions: clubPositionFactory(athlete.posicao_id)
           }
         }
       }
