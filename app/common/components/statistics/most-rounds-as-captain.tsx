@@ -1,7 +1,7 @@
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
-import { Progress, Tooltip } from '@mantine/core'
+import { Progress } from '@mantine/core'
 
-import { maxBy, take } from 'lodash'
+import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { StatisticsList } from './list'
@@ -31,7 +31,7 @@ function CaptainStatistics<TRounds extends any[]>({
 
         return (
           <div key={roundData.points}>
-            <div className="flex justify-between w-full text-xs text-left px-1">
+            <div className="flex justify-between w-full text-xs text-left">
               <span>Rodada {roundData.round}</span>
               <span>{roundData.points.toFixed(1)} pts</span>
             </div>
@@ -41,13 +41,13 @@ function CaptainStatistics<TRounds extends any[]>({
               sections={[
                 {
                   value: rawPointsPercentage,
-                  color: '#254439',
+                  color: '#104936',
                   label: `${roundData.rawPoints.toFixed(1)} pts`,
                   tooltip: `Pontos desconsiderando capitania: ${roundData.rawPoints.toFixed(1)}`
                 },
                 {
                   value: differencePercentage,
-                  color: '#376555',
+                  color: '#1c7a5b',
                   label: `+${diffBetweenPoints.toFixed(1)}`,
                   tooltip: `Pontos como capitão: ${roundData.points.toFixed(1)}`
                 }

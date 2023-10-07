@@ -25,17 +25,12 @@ import { MostRoundsAsCaptain } from './common/components/statistics/most-rounds-
 import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
 import { WorstGoalkeeper } from './common/components/statistics/worst-goalkeeper'
 
-// color scheme
-// bg #254439 || #12211c
-// highlight #7ae1bf
-// letter #ffffff
-
 function SubmitButton() {
   const { pending } = useFormStatus()
 
   return (
     <Button
-      className="bg-[#7ae1bf] hover:bg-[#7ae1bf] hover:opacity-[0.9] text-[#12211c]"
+      className="bg-palette-primary-500 hover:bg-palette-primary-700 text-palette-neutral-900"
       type="submit"
       aria-disabled={pending}
     >
