@@ -10,6 +10,8 @@ import { RoundData } from '@/app/services/types'
 
 import { max } from 'lodash'
 
+import { isCoach } from '../positions'
+
 const PHOTO_SIZE_FORMAT = '220x220'
 
 function isCaptain(athleteId: number, captainId: number) {
@@ -117,6 +119,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     finishes: getFinishesNumbers(athlete),
     finishesToScore: 0,
     goals: 0,
+    scoredGoalsRounds:
+      athlete.scout?.G ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.G ?? 0 } : {},
     defenses: athlete.scout?.DE ?? 0,
     goalsConceded: athlete.scout?.GS ?? 0,
     goalsConcededRoundIds: athlete.scout?.GS ?? 0 > 0 ? [athlete.rodada_id] : [],
@@ -198,8 +202,12 @@ function playerStatisticsIncrementalFactory(
       statistics[athlete.atleta_id].goalsConcededRoundIds.push(athlete.rodada_id)
     }
 
-    if (athlete.scout?.V) {
+    if (isCoach(athlete.posicao_id)) {
       statistics[athlete.atleta_id].victoriesRoundIds.push(athlete.rodada_id)
+    }
+
+    if (athlete.scout?.G) {
+      statistics[athlete.atleta_id].scoredGoalsRounds[athlete.rodada_id] = athlete.scout.G
     }
   } else {
     statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)

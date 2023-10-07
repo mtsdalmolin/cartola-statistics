@@ -3,7 +3,7 @@ import { getRoundsData } from '@/app/services/cartola-api'
 import { Flex } from '../../flex'
 import { MatchVersus } from '../../match-versus'
 
-export async function GoalsScoredMatches({
+export async function RoundMatchesResult({
   clubId,
   roundIds
 }: {

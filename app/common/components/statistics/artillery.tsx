@@ -3,6 +3,7 @@ import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
+import { ArtilleryRoundMatchesResult } from './details/artillery-round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -24,6 +25,12 @@ export function Artillery<TCrewData extends CrewStatistics>({ crewData }: { crew
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderGoalsText(first.goals)}
+        details={
+          <ArtilleryRoundMatchesResult
+            clubId={first.clube_id}
+            scoredGoalsRounds={first.scoredGoalsRounds}
+          />
+        }
       />
 
       <StatisticsList>

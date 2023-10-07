@@ -3,7 +3,7 @@ import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
-import { GoalsScoredMatches } from './details/goals-scored-matches'
+import { RoundMatchesResult } from './details/round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -35,7 +35,7 @@ export function WorstGoalkeeper<TCrewData extends CrewStatistics>({
         imgSrc={first.foto ?? ''}
         data={renderGoalsConcededText(first.goalsConceded, false)}
         details={
-          <GoalsScoredMatches clubId={first.clube_id} roundIds={first.goalsConcededRoundIds} />
+          <RoundMatchesResult clubId={first.clube_id} roundIds={first.goalsConcededRoundIds} />
         }
       />
 

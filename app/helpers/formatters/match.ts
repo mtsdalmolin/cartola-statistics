@@ -7,7 +7,7 @@ import { getFootballTeamBadgeLink, getFootballTeamName } from '../teams'
 export function formatMatchData(matches: MatchFromApi[]) {
   const roundMatches: { [key: string]: Match } = {}
 
-  matches.forEach((match) => {
+  matches?.forEach((match) => {
     const matchAssets = {
       home: {
         clubBadgeUrl: getFootballTeamBadgeLink(match.clube_casa_id as FootballTeamsIds),

@@ -5,7 +5,7 @@ import { Tooltip } from '@mantine/core'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
-import { GoalsScoredMatches } from './details/goals-scored-matches'
+import { RoundMatchesResult } from './details/round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -41,7 +41,7 @@ export function BestCoach<TCrewData extends CrewStatistics>({ crewData }: { crew
             <span>{renderVictoriesAverageText(first.victoriesAverage)}</span>
           </Tooltip>
         }
-        details={<GoalsScoredMatches clubId={first.clube_id} roundIds={first.victoriesRoundIds} />}
+        details={<RoundMatchesResult clubId={first.clube_id} roundIds={first.victoriesRoundIds} />}
       />
 
       <StatisticsList>
