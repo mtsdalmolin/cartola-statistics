@@ -18,7 +18,10 @@ export function FinishEfficiency<TCrewData extends CrewStatistics>({
 }: {
   crewData: TCrewData
 }) {
-  const orderedFinishEfficiencyData = typedOrderBy(Object.values(crewData), 'finishesToScore')
+  const orderedFinishEfficiencyData = typedOrderBy(
+    Object.values(crewData).filter((athlete) => isFinite(athlete.finishesToScore)),
+    'finishesToScore'
+  )
   const first = orderedFinishEfficiencyData[0]
   orderedFinishEfficiencyData.shift()
   return (
