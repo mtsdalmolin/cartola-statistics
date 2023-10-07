@@ -3,22 +3,22 @@ import { getRoundsData } from '@/app/services/cartola-api'
 import { Flex } from '../../flex'
 import { MatchVersus } from '../../match-versus'
 
-export async function ArtilleryRoundMatchesResult({
+export async function DefensesRoundMatchesResult({
   clubId,
-  scoredGoalsRounds
+  defensesRounds
 }: {
   clubId: number
-  scoredGoalsRounds: { [key: string]: number }
+  defensesRounds: { [key: string]: number }
 }) {
-  const matchesData = await getRoundsData(Object.keys(scoredGoalsRounds) as unknown as number[])
+  const matchesData = await getRoundsData(Object.keys(defensesRounds) as unknown as number[])
   return (
     <Flex className="grow-0" direction="column">
-      {Object.entries(scoredGoalsRounds).map(([roundId, scoredGoals]) => (
+      {Object.entries(defensesRounds).map(([roundId, defenses]) => (
         <Flex key={roundId} direction="column">
           <Flex className="text-xs" justify="between">
             <span>Rodada {roundId}</span>
             <span>
-              ({scoredGoals} gol{scoredGoals > 1 ? 's' : ''})
+              ({defenses} defesa{defenses > 1 ? 's' : ''})
             </span>
           </Flex>
           <Flex>

@@ -3,6 +3,7 @@ import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
+import { DefensesRoundMatchesResult } from './details/defenses-round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -31,6 +32,12 @@ export function MoreDefenses<TCrewData extends CrewStatistics>({
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderDefensesText(first.defenses, false)}
+        details={
+          <DefensesRoundMatchesResult
+            clubId={first.clube_id}
+            defensesRounds={first.defensesRounds}
+          />
+        }
       />
 
       <StatisticsList>

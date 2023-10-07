@@ -14,7 +14,7 @@ export function PositionsPercentage({
         <div key={positionId}>
           <div className="flex justify-between w-full text-xs text-left">
             <span>{getPositionName(+positionId)}</span>
-            <span>{(totalScheduled * 100) / totalSchedules}%</span>
+            <span>{((totalScheduled * 100) / totalSchedules).toFixed(1)}%</span>
           </div>
           <Progress
             radius="xs"
