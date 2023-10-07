@@ -116,6 +116,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     },
     highestPoint: athlete.pontos_num,
     assists: athlete.scout?.A ?? 0,
+    assistsRounds: athlete.scout?.A ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.A ?? 0 } : {},
     finishes: getFinishesNumbers(athlete),
     finishesToScore: 0,
     goals: 0,
@@ -208,6 +209,10 @@ function playerStatisticsIncrementalFactory(
 
     if (athlete.scout?.G) {
       statistics[athlete.atleta_id].scoredGoalsRounds[athlete.rodada_id] = athlete.scout.G
+    }
+
+    if (athlete.scout?.A) {
+      statistics[athlete.atleta_id].assistsRounds[athlete.rodada_id] = athlete.scout.A
     }
   } else {
     statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
