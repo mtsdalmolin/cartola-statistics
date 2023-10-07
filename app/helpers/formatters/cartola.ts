@@ -123,6 +123,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     defensesToSufferGoal: 0,
     minutesToScore: 0,
     victoriesAverage: 0,
+    victoriesRoundIds: athlete.scout?.V ?? 0 > 0 ? [athlete.rodada_id] : [],
     valuation: {
       rounds: {
         values: [athlete.variacao_num],
@@ -190,11 +191,15 @@ function playerStatisticsIncrementalFactory(
     statistics[athlete.atleta_id].finishes += getFinishesNumbers(athlete)
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
     statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
+
     const goalsConceded = handleGameActions(athlete)?.GS ?? 0
     if (goalsConceded) {
-      athlete.apelido === 'Everson' && console.log(athlete.rodada_id)
       statistics[athlete.atleta_id].goalsConceded += handleGameActions(athlete)?.GS ?? 0
       statistics[athlete.atleta_id].goalsConcededRoundIds.push(athlete.rodada_id)
+    }
+
+    if (athlete.scout?.V) {
+      statistics[athlete.atleta_id].victoriesRoundIds.push(athlete.rodada_id)
     }
   } else {
     statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)

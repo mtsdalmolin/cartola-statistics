@@ -80,6 +80,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   minutesToScore: number
   highestPoint: number
   victoriesAverage: number
+  victoriesRoundIds: number[]
 }
 
 export type CrewStatistics = Record<string, RenderedAthlete>
