@@ -45,7 +45,7 @@ export interface Athlete {
 export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   castTimes: number
   captainTimes: number
-  captainRounds: { round: number; points: number }[]
+  captainRounds: { round: number; points: number; rawPoints: number }[]
   sumOfPoints: number
   overallAverage: number
   sumOfOverallAverage: number

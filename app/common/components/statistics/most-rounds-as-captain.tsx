@@ -1,12 +1,9 @@
-import { ReactNode } from 'react'
-
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
-import { Tooltip } from '@mantine/core'
+import { Progress, Tooltip } from '@mantine/core'
 
-import { take } from 'lodash'
+import { maxBy, take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
-import { Flex } from '../flex'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -16,22 +13,56 @@ function renderCaptainTimesText(captainTimes: number) {
   return `${captainTimes} vez${captainTimes > 1 ? 'es' : ''}`
 }
 
-function HotspotTooltipLabel<TRounds extends any[]>({
+function getPointsPercentage(points: number, divider: number) {
+  return (points * 100) / divider
+}
+
+function CaptainStatistics<TRounds extends any[]>({
   roundsAsCaptain
 }: {
   roundsAsCaptain: TRounds
 }) {
-  let captainRoundsStatistics: ReactNode[] = []
+  let highestPointsRound = maxBy(roundsAsCaptain, 'points')
 
-  roundsAsCaptain.forEach((roundData) => {
-    captainRoundsStatistics.push(
-      <div>
-        Rodada: {roundData.round} - Pontos: {roundData.points.toFixed(2)}
-      </div>
-    )
-  })
+  return (
+    <div className="grow-[3] w-fit">
+      {roundsAsCaptain.map((roundData) => {
+        let diffBetweenPoints = roundData.points - roundData.rawPoints
+        let differencePercentage = getPointsPercentage(diffBetweenPoints, highestPointsRound.points)
+        let rawPointsPercentage = getPointsPercentage(
+          roundData.rawPoints,
+          highestPointsRound.points
+        )
 
-  return <Flex direction="column">{captainRoundsStatistics}</Flex>
+        return (
+          <div key={roundData.points}>
+            <div className="flex justify-between w-full text-xs text-left px-1">
+              <span>Rodada {roundData.round}</span>
+              <span>{roundData.points.toFixed(1)} pts</span>
+            </div>
+            <Progress
+              radius="xs"
+              size="xl"
+              sections={[
+                {
+                  value: rawPointsPercentage,
+                  color: '#254439',
+                  label: `${roundData.rawPoints.toFixed(1)} pts`,
+                  tooltip: `Pontos desconsiderando capitania: ${roundData.rawPoints.toFixed(1)}`
+                },
+                {
+                  value: differencePercentage,
+                  color: '#376555',
+                  label: `+${diffBetweenPoints.toFixed(1)}`,
+                  tooltip: `Pontos como capitão: ${roundData.points.toFixed(1)}`
+                }
+              ]}
+            />
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
@@ -47,11 +78,8 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={
-          <Tooltip label={<HotspotTooltipLabel roundsAsCaptain={first.captainRounds} />} multiline>
-            <span>{renderCaptainTimesText(first.captainTimes)}</span>
-          </Tooltip>
-        }
+        data={renderCaptainTimesText(first.captainTimes)}
+        statistics={<CaptainStatistics roundsAsCaptain={first.captainRounds} />}
       />
 
       <StatisticsList>
@@ -61,14 +89,7 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}
-            data={
-              <Tooltip
-                label={<HotspotTooltipLabel roundsAsCaptain={athlete.captainRounds} />}
-                multiline
-              >
-                <span>{renderCaptainTimesText(athlete.captainTimes)}</span>
-              </Tooltip>
-            }
+            data={renderCaptainTimesText(athlete.captainTimes)}
             position={idx + 2}
           />
         ))}

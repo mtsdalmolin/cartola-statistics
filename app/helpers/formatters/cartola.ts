@@ -218,7 +218,8 @@ export function formatCartolaApiData(
         playersStatistics[athlete.atleta_id].captainTimes++
         playersStatistics[athlete.atleta_id].captainRounds.push({
           round: result.value.rodada_atual,
-          points: calculatePoints(athlete, captainId)
+          points: calculatePoints(athlete, captainId),
+          rawPoints: athlete.pontos_num
         })
       }
 
