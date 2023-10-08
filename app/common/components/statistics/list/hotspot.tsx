@@ -21,7 +21,7 @@ export function ListHotspot({
     <Flex align="center" justify="between" gap="sm">
       <Flex align="center" gap="sm" direction="column">
         <Text>{name}</Text>
-        <Image className="rounded-full" alt={name} src={imgSrc} width={70} height={70} />
+        <Image className="rounded-b-full" alt={name} src={imgSrc} width={70} height={70} />
         {data}
       </Flex>
       {details}
