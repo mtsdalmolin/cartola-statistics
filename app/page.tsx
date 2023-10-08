@@ -2,7 +2,6 @@
 
 import { experimental_useFormState as useFormState } from 'react-dom'
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
-import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 import Image from 'next/image'
 
@@ -23,6 +22,7 @@ import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
 import { MostRoundsAsCaptain } from './common/components/statistics/most-rounds-as-captain'
 import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
+import { StatisticsSection } from './common/components/statistics/section'
 import { WorstGoalkeeper } from './common/components/statistics/worst-goalkeeper'
 
 function SubmitButton() {
@@ -46,7 +46,7 @@ export default function Home() {
   })
 
   return (
-    <div className="w-full max-w-[1200px]">
+    <div className="w-full">
       <div className="flex h-[100vh]">
         <div className="m-auto w-fit">
           <Image src={brand} width={500} height={500} alt="brand" />
@@ -65,24 +65,28 @@ export default function Home() {
         </div>
       </div>
       {state.data ? (
-        <ResponsiveMasonry columnsCountBreakPoints={{ 375: 1, 575: 2, 920: 3 }}>
-          <Masonry gutter="1rem" columnsCount={3}>
-            <MostRoundsAsCaptain crewData={state.data[0]} />
-            <WorstGoalkeeper crewData={state.data[0]} />
+        <>
+          <StatisticsSection title="os melhores">
             <BestCoach crewData={state.data[0]} />
-            <LineupsPerTeam clubsData={state.data[2]} />
-            <HighestScorer crewData={state.data[0]} />
             <Artillery crewData={state.data[0]} />
-            <FinishEfficiency crewData={state.data[0]} />
             <HighestFinisher crewData={state.data[0]} />
-            <DefenseEfficiency crewData={state.data[0]} />
-            <MoreDefenses crewData={state.data[0]} />
             <BestHomePlayer crewData={state.data[0]} />
             <BestAwayPlayer crewData={state.data[0]} />
+            <FinishEfficiency crewData={state.data[0]} />
+            <DefenseEfficiency crewData={state.data[0]} />
             <MoreAssists crewData={state.data[0]} />
+            <MoreDefenses crewData={state.data[0]} />
+          </StatisticsSection>
+          <StatisticsSection title="os piores">
+            <WorstGoalkeeper crewData={state.data[0]} />
+          </StatisticsSection>
+          <StatisticsSection title="resto">
+            <MostRoundsAsCaptain crewData={state.data[0]} />
+            <LineupsPerTeam clubsData={state.data[2]} />
+            <HighestScorer crewData={state.data[0]} />
             <MostScheduledPlayer crewData={state.data[0]} />
-          </Masonry>
-        </ResponsiveMasonry>
+          </StatisticsSection>
+        </>
       ) : null}
     </div>
   )
