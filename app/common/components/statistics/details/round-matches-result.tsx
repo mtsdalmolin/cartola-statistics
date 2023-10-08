@@ -12,7 +12,7 @@ export async function RoundMatchesResult({
 }) {
   const matchesData = await getRoundsData(roundIds)
   return (
-    <Flex className="min-w-[130px] grow-0" direction="column">
+    <Flex className="min-w-[130px] w-min" direction="column">
       {roundIds.map((roundId) => (
         <Flex key={roundId} direction="column">
           <span className="text-xs">Rodada {roundId}</span>

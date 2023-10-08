@@ -12,7 +12,7 @@ export async function AssistsRoundMatchesResult({
 }) {
   const matchesData = await getRoundsData(Object.keys(assistsRounds) as unknown as number[])
   return (
-    <Flex className="grow-0" direction="column">
+    <Flex className="w-min" direction="column">
       {Object.entries(assistsRounds).map(([roundId, scoredGoals]) => (
         <Flex key={roundId} direction="column">
           <Flex className="text-xs" justify="between">

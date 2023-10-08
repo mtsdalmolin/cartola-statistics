@@ -12,7 +12,7 @@ export async function ArtilleryRoundMatchesResult({
 }) {
   const matchesData = await getRoundsData(Object.keys(scoredGoalsRounds) as unknown as number[])
   return (
-    <Flex className="grow-0" direction="column">
+    <Flex className="w-min" direction="column">
       {Object.entries(scoredGoalsRounds).map(([roundId, scoredGoals]) => (
         <Flex key={roundId} direction="column">
           <Flex className="text-xs" justify="between">
