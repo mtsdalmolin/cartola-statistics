@@ -3,6 +3,8 @@ import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
+import { DetailedScore } from './details/detailed-score'
+import { RoundMatchesResult } from './details/round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -27,7 +29,12 @@ export function HighestScorer<TCrewData extends CrewStatistics>({
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderHighestPointText(first.highestPoint, false)}
+        details={
+          <RoundMatchesResult clubId={first.clube_id} roundIds={[first.highestPointsRound]} />
+        }
       />
+
+      <DetailedScore highestPoints={first.highestPoint} scout={first.highestPointScout} />
 
       <StatisticsList>
         {take(orderedHighestScorerData, 9).map((athlete, idx) => (

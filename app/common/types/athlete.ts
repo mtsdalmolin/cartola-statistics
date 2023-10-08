@@ -82,6 +82,8 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   defensesToSufferGoal: number
   minutesToScore: number
   highestPoint: number
+  highestPointScout: Athlete['scout']
+  highestPointsRound: number
   victoriesAverage: number
   victoriesRoundIds: number[]
 }

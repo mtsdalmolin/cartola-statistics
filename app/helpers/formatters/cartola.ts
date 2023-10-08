@@ -136,6 +136,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
       average: 0
     },
     highestPoint: athlete.pontos_num,
+    highestPointScout: athlete.scout,
+    highestPointsRound: athlete.rodada_id,
     assists: athlete.scout?.A ?? 0,
     assistsRounds: athlete.scout?.A ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.A ?? 0 } : {},
     finishes: getFinishesNumbers(athlete),
@@ -207,8 +209,6 @@ function playerStatisticsIncrementalFactory(
     statistics[athlete.atleta_id].away.sumOfPoints +=
       athlete.gato_mestre?.media_pontos_visitante ?? 0
     statistics[athlete.atleta_id].sumOfOverallAverage += athlete.media_num
-    statistics[athlete.atleta_id].highestPoint =
-      max([athlete.pontos_num, statistics[athlete.atleta_id].highestPoint]) ?? 0
     statistics[athlete.atleta_id].jogos_num = athlete.jogos_num
     statistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
     statistics[athlete.atleta_id].scout = handleGameActions(
@@ -219,6 +219,15 @@ function playerStatisticsIncrementalFactory(
     statistics[athlete.atleta_id].finishes += getFinishesNumbers(athlete)
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
     statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
+
+    const oldHighestPoints = statistics[athlete.atleta_id].highestPoint
+    statistics[athlete.atleta_id].highestPoint =
+      max([athlete.pontos_num, statistics[athlete.atleta_id].highestPoint]) ?? 0
+
+    if (oldHighestPoints !== statistics[athlete.atleta_id].highestPoint) {
+      statistics[athlete.atleta_id].highestPointScout = athlete.scout
+      statistics[athlete.atleta_id].highestPointsRound = athlete.rodada_id
+    }
 
     const goalsConceded = handleGameActions(athlete)?.GS ?? 0
     if (goalsConceded) {
