@@ -17,8 +17,8 @@ function renderVictoriesAverageTooltipLabel(castTimes: number, victories: number
   }`
 }
 
-function renderVictoriesAverageText(victoriesAverage: number) {
-  return `${(victoriesAverage * 100).toFixed(0)}%`
+function renderVictoriesAverageText(victoriesAverage: number, isAbbreviated = true) {
+  return `${(victoriesAverage * 100).toFixed(0)}% ${isAbbreviated ? '' : 'de aprov.'}`
 }
 
 export function BestCoach<TCrewData extends CrewStatistics>({ crewData }: { crewData: TCrewData }) {
@@ -38,7 +38,7 @@ export function BestCoach<TCrewData extends CrewStatistics>({ crewData }: { crew
         imgSrc={first.foto ?? ''}
         data={
           <Tooltip label={renderVictoriesAverageTooltipLabel(first.castTimes, first.scout.V ?? 0)}>
-            <span>{renderVictoriesAverageText(first.victoriesAverage)}</span>
+            <span>{renderVictoriesAverageText(first.victoriesAverage, false)}</span>
           </Tooltip>
         }
         details={<RoundMatchesResult clubId={first.clube_id} roundIds={first.victoriesRoundIds} />}
