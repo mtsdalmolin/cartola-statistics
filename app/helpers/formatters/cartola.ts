@@ -75,13 +75,25 @@ function handleGameActions(athlete: Athlete, cachedStats: typeof athlete.scout =
   return actions
 }
 
-function getFinishesNumbers(athlete: Athlete) {
+export function getAthleteFinishes(athlete: Athlete | RenderedAthlete) {
   const {
     FD: blockedFinishes,
     FF: outOfTargetFinishes,
     FT: finishesOnPost,
     G: goals
-  } = handleGameActions(athlete)
+  } = handleGameActions(athlete as Athlete)
+
+  return {
+    blockedFinishes,
+    outOfTargetFinishes,
+    finishesOnPost,
+    goals
+  }
+}
+
+function getFinishesNumbers(athlete: Athlete) {
+  const { blockedFinishes, outOfTargetFinishes, finishesOnPost, goals } =
+    getAthleteFinishes(athlete)
 
   return (blockedFinishes ?? 0) + (outOfTargetFinishes ?? 0) + (finishesOnPost ?? 0) + (goals ?? 0)
 }

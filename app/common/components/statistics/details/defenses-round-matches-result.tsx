@@ -17,9 +17,7 @@ export async function DefensesRoundMatchesResult({
         <Flex key={roundId} direction="column">
           <Flex className="text-xs" justify="between">
             <span>Rodada {roundId}</span>
-            <span>
-              ({defenses} defesa{defenses > 1 ? 's' : ''})
-            </span>
+            <span>({defenses} def.)</span>
           </Flex>
           <Flex>
             <MatchVersus match={matchesData[roundId][clubId]} badgeSize={25} />

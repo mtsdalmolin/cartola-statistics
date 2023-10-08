@@ -15,7 +15,7 @@ export async function AssistsRoundMatchesResult({
     <Flex className="w-min" direction="column">
       {Object.entries(assistsRounds).map(([roundId, scoredGoals]) => (
         <Flex key={roundId} direction="column">
-          <Flex className="text-xs" justify="between">
+          <Flex className="text-xs truncate" justify="between">
             <span>Rodada {roundId}</span>
             <span>({scoredGoals} assist.)</span>
           </Flex>

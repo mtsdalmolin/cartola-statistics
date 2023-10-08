@@ -1,8 +1,10 @@
+import { getAthleteFinishes } from '@/app/helpers/formatters/cartola'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
+import { FinishStats } from './details/finish-stats'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -27,6 +29,7 @@ export function HighestFinisher<TCrewData extends CrewStatistics>({
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderNumberOfFinishesText(first.finishes, false)}
+        details={<FinishStats finishes={getAthleteFinishes(first)} />}
       />
 
       <StatisticsList>

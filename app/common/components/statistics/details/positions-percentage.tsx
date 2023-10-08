@@ -21,7 +21,7 @@ export function PositionsPercentage({
             size="xl"
             sections={[
               {
-                value: (totalScheduled * 100) / totalSchedules + 25,
+                value: (totalScheduled * 100) / totalSchedules,
                 color: '#104936',
                 label: totalScheduled.toString()
               }
