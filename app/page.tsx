@@ -10,9 +10,9 @@ import { Button, Input, Loader } from '@mantine/core'
 
 import { getTeamStatistics } from './actions'
 import { Artillery } from './common/components/statistics/artillery'
-import { BestAwayPlayer } from './common/components/statistics/best-away-player'
+// import { BestAwayPlayer } from './common/components/statistics/best-away-player'
 import { BestCoach } from './common/components/statistics/best-coach'
-import { BestHomePlayer } from './common/components/statistics/best-home-player'
+// import { BestHomePlayer } from './common/components/statistics/best-home-player'
 import { DefenseEfficiency } from './common/components/statistics/defense-efficiency'
 import { FinishEfficiency } from './common/components/statistics/finish-efficiency'
 import { HighestFinisher } from './common/components/statistics/highest-finisher'
@@ -72,8 +72,8 @@ export default function Home() {
             <BestCoach crewData={state.data[0]} />
             <Artillery crewData={state.data[0]} />
             <HighestFinisher crewData={state.data[0]} />
-            <BestHomePlayer crewData={state.data[0]} />
-            <BestAwayPlayer crewData={state.data[0]} />
+            {/* <BestHomePlayer crewData={state.data[0]} />
+            <BestAwayPlayer crewData={state.data[0]} /> */}
             <FinishEfficiency crewData={state.data[0]} />
             <DefenseEfficiency crewData={state.data[0]} />
             <MoreAssists crewData={state.data[0]} />
