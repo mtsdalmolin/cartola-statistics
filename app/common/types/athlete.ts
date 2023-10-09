@@ -56,10 +56,11 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   averageMinutesPerRound: number
   valuation: {
     rounds: {
-      values: number[]
+      values: [number, number][]
       aboveZero: number
       belowZero: number
       zero: number
+      sum: number
     }
   }
   home: {

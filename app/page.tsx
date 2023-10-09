@@ -22,6 +22,7 @@ import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
 import { MostRoundsAsCaptain } from './common/components/statistics/most-rounds-as-captain'
 import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
+import { MostValuatedPlayer } from './common/components/statistics/most-valuated-player'
 import { StatisticsSection } from './common/components/statistics/section'
 import { WorstGoalkeeper } from './common/components/statistics/worst-goalkeeper'
 
@@ -67,6 +68,7 @@ export default function Home() {
       {state.data ? (
         <>
           <StatisticsSection title="os melhores">
+            <MostValuatedPlayer crewData={state.data[0]} />
             <BestCoach crewData={state.data[0]} />
             <Artillery crewData={state.data[0]} />
             <HighestFinisher crewData={state.data[0]} />

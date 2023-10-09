@@ -31,14 +31,17 @@ function calculatePoints(athlete: Athlete, captainId: number) {
   return isCaptain(athlete.atleta_id, captainId) ? athlete.pontos_num * 1.5 : athlete.pontos_num
 }
 
-function handleRoundValuation(roundsValuation: number[]) {
+function handleRoundValuation(roundsValuation: [number, number][]) {
   const valuationRounds = {
     aboveZero: 0,
     belowZero: 0,
     zero: 0
   }
+  let sum = 0
 
-  roundsValuation.forEach((valuation) => {
+  roundsValuation.forEach(([_, valuation]) => {
+    sum += valuation
+
     if (valuation > 0) {
       valuationRounds.aboveZero++
       return
@@ -54,6 +57,7 @@ function handleRoundValuation(roundsValuation: number[]) {
 
   return {
     ...valuationRounds,
+    sum,
     values: roundsValuation
   }
 }
@@ -157,10 +161,11 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     victoriesRoundIds: athlete.scout?.V ?? 0 > 0 ? [athlete.rodada_id] : [],
     valuation: {
       rounds: {
-        values: [athlete.variacao_num],
+        values: [[athlete.rodada_id, athlete.variacao_num]],
         aboveZero: 0,
         belowZero: 0,
-        zero: 0
+        zero: 0,
+        sum: 0
       }
     }
   }
@@ -212,7 +217,10 @@ function playerStatisticsIncrementalFactory(
       athlete.gato_mestre?.media_pontos_visitante ?? 0
     statistics[athlete.atleta_id].sumOfOverallAverage += athlete.media_num
     statistics[athlete.atleta_id].jogos_num = athlete.jogos_num
-    statistics[athlete.atleta_id].valuation.rounds.values.push(athlete.variacao_num)
+    statistics[athlete.atleta_id].valuation.rounds.values.push([
+      athlete.rodada_id,
+      athlete.variacao_num
+    ])
     statistics[athlete.atleta_id].scout = handleGameActions(
       athlete,
       statistics[athlete.atleta_id].scout

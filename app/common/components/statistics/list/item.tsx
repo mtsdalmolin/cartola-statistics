@@ -22,7 +22,7 @@ export function ListItem({
   return (
     <Flex className="w-full pt-2" justify="between" align="center" gap="sm">
       <span>{position}º</span>
-      <Flex align="center" gap="sm">
+      <Flex className="w-min" align="center" gap="sm">
         <Image alt={name} src={imgSrc} width={imgSize} height={imgSize} />
         <Text>{name}</Text>
       </Flex>
