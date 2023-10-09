@@ -104,6 +104,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     rodada_id: athlete.rodada_id,
     apelido: athlete.apelido,
     castTimes: 1,
+    castRounds: [athlete.rodada_id],
     foto: athlete.foto?.replace('FORMATO', PHOTO_SIZE_FORMAT) ?? '',
     media_num: athlete.media_num,
     jogos_num: athlete.jogos_num,
@@ -202,6 +203,7 @@ function playerStatisticsIncrementalFactory(
 ) {
   if (statistics[athlete.atleta_id]) {
     statistics[athlete.atleta_id].castTimes++
+    statistics[athlete.atleta_id].castRounds.push(athlete.rodada_id)
     statistics[athlete.atleta_id].sumOfPoints += calculatePoints(athlete, captainId)
     statistics[athlete.atleta_id].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
     statistics[athlete.atleta_id].home.sumOfPoints +=

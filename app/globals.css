@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base{
+  .pause-animation {
+    animation-play-state: paused;
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+  }
+}
+
 :root {
   --foreground-rgb: 255, 255, 255;
   --background-rgb: 0, 0, 0;

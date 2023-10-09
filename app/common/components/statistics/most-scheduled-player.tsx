@@ -3,6 +3,7 @@ import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
+import { RoundMatchesResult } from './details/round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -26,6 +27,9 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderCastTimesText(first.castTimes)}
+        details={
+          <RoundMatchesResult clubId={first.clube_id} roundIds={first.castRounds} isAnimated />
+        }
       />
 
       <StatisticsList>
