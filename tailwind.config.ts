@@ -8,14 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      'backgroundImage': {
+      backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
       },
-      'gridTemplateColumns': {
+      gridTemplateColumns: {
         statistics: 'repeat(auto-fill, minmax(320px, 1fr))'
       },
-      'colors': {
+      colors: {
         palette: {
           primary: {
             100: '#cdf4e7',
@@ -38,15 +38,14 @@ const config: Config = {
           }
         }
       },
-      'keyframes': {
+      keyframes: {
         scrollVertically: {
           '100%': { transform: 'translateY(-50%)' }
         }
       },
-      'animation': {
+      animation: {
         scrollVertically: 'scrollVertically 20s linear infinite'
-      },
-      'pause-animation': 'animation-play-state: paused'
+      }
     }
   },
   plugins: []
