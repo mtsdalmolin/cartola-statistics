@@ -31,7 +31,7 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
           <RoundMatchesResult
             clubId={first.clube_id}
             roundIds={first.castRounds}
-            isAnimated={first.castRounds.length > 6}
+            isAnimated={first.castRounds.length > 5}
           />
         }
       />
