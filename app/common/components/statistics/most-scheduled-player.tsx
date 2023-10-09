@@ -28,7 +28,11 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
         imgSrc={first.foto ?? ''}
         data={renderCastTimesText(first.castTimes)}
         details={
-          <RoundMatchesResult clubId={first.clube_id} roundIds={first.castRounds} isAnimated />
+          <RoundMatchesResult
+            clubId={first.clube_id}
+            roundIds={first.castRounds}
+            isAnimated={first.castRounds.length > 6}
+          />
         }
       />
 

@@ -143,7 +143,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     assistsRounds: athlete.scout?.A ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.A ?? 0 } : {},
     finishes: getFinishesNumbers(athlete),
     finishesToScore: 0,
-    goals: 0,
+    goals: athlete.scout?.G ?? 0,
     scoredGoalsRounds:
       athlete.scout?.G ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.G ?? 0 } : {},
     defenses: athlete.scout?.DE ?? 0,

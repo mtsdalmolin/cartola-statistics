@@ -29,6 +29,7 @@ export function Artillery<TCrewData extends CrewStatistics>({ crewData }: { crew
           <ArtilleryRoundMatchesResult
             clubId={first.clube_id}
             scoredGoalsRounds={first.scoredGoalsRounds}
+            isAnimated={Object.entries(first.scoredGoalsRounds).length > 5}
           />
         }
       />
