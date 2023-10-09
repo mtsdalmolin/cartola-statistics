@@ -36,6 +36,7 @@ export function MoreDefenses<TCrewData extends CrewStatistics>({
           <DefensesRoundMatchesResult
             clubId={first.clube_id}
             defensesRounds={first.defensesRounds}
+            isAnimated={Object.entries(first.defensesRounds).length > 5}
           />
         }
       />
