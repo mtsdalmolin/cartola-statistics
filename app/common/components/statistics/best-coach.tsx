@@ -41,7 +41,13 @@ export function BestCoach<TCrewData extends CrewStatistics>({ crewData }: { crew
             <span>{renderVictoriesAverageText(first.victoriesAverage, false)}</span>
           </Tooltip>
         }
-        details={<RoundMatchesResult clubId={first.clube_id} roundIds={first.victoriesRoundIds} />}
+        details={
+          <RoundMatchesResult
+            clubId={first.clube_id}
+            roundIds={first.victoriesRoundIds}
+            isAnimated={first.victoriesRoundIds.length > 5}
+          />
+        }
       />
 
       <StatisticsList>
