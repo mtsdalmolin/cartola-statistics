@@ -4,6 +4,7 @@ import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { Flex } from '../flex'
+import { ValuationRounds } from './details/valuation-rounds'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -58,18 +59,11 @@ export function MostValuatedPlayer<TCrewData extends CrewStatistics>({
           false
         )}
         details={
-          <Flex className="min-w-[130px] grow-0" direction="column">
-            {first.valuation.rounds.values
-              .filter(([_, valuation]) => valuation > 0)
-              .map(([roundId, valuation]) => (
-                <Flex key={roundId} className="w-full text-xs pr-4" justify="between">
-                  <div>Rodada {roundId}:</div>
-                  <div className="text-palette-primary-700">
-                    {valuation > 0 ? `+${valuation}` : valuation}
-                  </div>
-                </Flex>
-              ))}
-          </Flex>
+          <ValuationRounds
+            valuationRoundValues={first.valuation.rounds.values.filter(
+              ([_, valuation]) => valuation > 0
+            )}
+          />
         }
       />
 
