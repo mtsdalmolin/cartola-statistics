@@ -47,6 +47,7 @@ export default function Home() {
     message: null,
     data: null
   })
+  const { pending } = useFormStatus()
 
   return (
     <div className="w-full">
@@ -69,7 +70,10 @@ export default function Home() {
       </div>
       {state.data ? (
         <>
-          <StatisticsSection title="os melhores">
+          <StatisticsSection
+            title="os melhores"
+            apiHasEndedRequestsAndReturnedData={!!state.data && !pending}
+          >
             <MostValuatedPlayer crewData={state.data[0]} />
             <BestCoach crewData={state.data[0]} matchesData={state.data[4]} />
             <Artillery crewData={state.data[0]} matchesData={state.data[4]} />
