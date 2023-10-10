@@ -1,4 +1,5 @@
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
+import { RoundMatchesData } from '@/app/services/types'
 
 import { take } from 'lodash'
 
@@ -17,9 +18,11 @@ function renderGoalsConcededText(goalsConceded: number, isAbbreviated = true) {
 }
 
 export function WorstGoalkeeper<TCrewData extends CrewStatistics>({
-  crewData
+  crewData,
+  matchesData
 }: {
   crewData: TCrewData
+  matchesData: RoundMatchesData
 }) {
   const orderedWorstGoalkeeperData = typedOrderBy(
     Object.values(crewData),
@@ -37,6 +40,7 @@ export function WorstGoalkeeper<TCrewData extends CrewStatistics>({
         details={
           <RoundMatchesResult
             clubId={first.clube_id}
+            matchesData={matchesData}
             roundIds={first.goalsConcededRoundIds}
             isAnimated={first.goalsConcededRoundIds.length > 5}
           />

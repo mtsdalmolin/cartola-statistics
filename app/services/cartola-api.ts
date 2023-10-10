@@ -5,7 +5,7 @@ import { Match } from '../common/types/match'
 import { PositionsStatistics } from '../common/types/position'
 import { formatCartolaApiData } from '../helpers/formatters/cartola'
 import { formatMatchData } from '../helpers/formatters/match'
-import { MatchesData, RoundData } from './types'
+import { MatchesData, RoundData, RoundMatchesData } from './types'
 
 export const CARTOLA_API = 'https://api.cartola.globo.com'
 
@@ -61,9 +61,9 @@ function serializeQueryParams(queryParams: {
   }, '?')
 }
 
-export async function getRoundsData(roundIds: number[]) {
+export async function getRoundsData(roundIds: number[]): Promise<RoundMatchesData> {
   const roundMatches = await fetch(
-    `/api/get-rounds-data/${serializeQueryParams({
+    `${process.env.NEXT_API_BASE_URL}/api/get-rounds-data/${serializeQueryParams({
       rounds: roundIds
     })}`
   ).then((res) => res.json())

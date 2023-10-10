@@ -1,4 +1,5 @@
 import { Athlete } from '../common/types/athlete'
+import { Match } from '../common/types/match'
 
 export interface RoundData {
   atletas: Athlete[]
@@ -18,4 +19,8 @@ export interface MatchFromApi {
 
 export interface MatchesData {
   partidas: MatchFromApi[]
+}
+
+export interface RoundMatchesData {
+  [roundId: string]: { [clubId: string]: Match }
 }

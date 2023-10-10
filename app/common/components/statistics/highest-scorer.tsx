@@ -1,4 +1,5 @@
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
+import { RoundMatchesData } from '@/app/services/types'
 
 import { take } from 'lodash'
 
@@ -16,9 +17,11 @@ function renderHighestPointText(homeAverage: number, isAbbreviated = true) {
 }
 
 export function HighestScorer<TCrewData extends CrewStatistics>({
-  crewData
+  crewData,
+  matchesData
 }: {
   crewData: TCrewData
+  matchesData: RoundMatchesData
 }) {
   const orderedHighestScorerData = typedOrderBy(Object.values(crewData), 'highestPoint', 'desc')
   const first = orderedHighestScorerData[0]
@@ -30,7 +33,11 @@ export function HighestScorer<TCrewData extends CrewStatistics>({
         imgSrc={first.foto ?? ''}
         data={renderHighestPointText(first.highestPoint, false)}
         details={
-          <RoundMatchesResult clubId={first.clube_id} roundIds={[first.highestPointsRound]} />
+          <RoundMatchesResult
+            clubId={first.clube_id}
+            roundIds={[first.highestPointsRound]}
+            matchesData={matchesData}
+          />
         }
       />
 

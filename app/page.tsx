@@ -69,24 +69,24 @@ export default function Home() {
         <>
           <StatisticsSection title="os melhores">
             <MostValuatedPlayer crewData={state.data[0]} />
-            <BestCoach crewData={state.data[0]} />
-            <Artillery crewData={state.data[0]} />
+            <BestCoach crewData={state.data[0]} matchesData={state.data[4]} />
+            <Artillery crewData={state.data[0]} matchesData={state.data[4]} />
             <HighestFinisher crewData={state.data[0]} />
             {/* <BestHomePlayer crewData={state.data[0]} />
             <BestAwayPlayer crewData={state.data[0]} /> */}
             <FinishEfficiency crewData={state.data[0]} />
             <DefenseEfficiency crewData={state.data[0]} />
-            <MoreAssists crewData={state.data[0]} />
-            <MoreDefenses crewData={state.data[0]} />
+            <MoreAssists crewData={state.data[0]} matchesData={state.data[4]} />
+            <MoreDefenses crewData={state.data[0]} matchesData={state.data[4]} />
           </StatisticsSection>
           <StatisticsSection title="os piores">
-            <WorstGoalkeeper crewData={state.data[0]} />
+            <WorstGoalkeeper crewData={state.data[0]} matchesData={state.data[4]} />
           </StatisticsSection>
           <StatisticsSection title="resto">
             <MostRoundsAsCaptain crewData={state.data[0]} />
             <LineupsPerTeam clubsData={state.data[2]} />
-            <HighestScorer crewData={state.data[0]} />
-            <MostScheduledPlayer crewData={state.data[0]} />
+            <HighestScorer crewData={state.data[0]} matchesData={state.data[4]} />
+            <MostScheduledPlayer crewData={state.data[0]} matchesData={state.data[4]} />
           </StatisticsSection>
         </>
       ) : null}

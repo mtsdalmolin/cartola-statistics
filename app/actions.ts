@@ -4,12 +4,14 @@ import { revalidatePath } from 'next/cache'
 
 import { ROUNDS } from './constants/data'
 import { formatCartolaApiData } from './helpers/formatters/cartola'
-import { ENDPOINTS, request } from './services/cartola-api'
+import { ENDPOINTS, getRoundsData, request } from './services/cartola-api'
 import { RoundData } from './services/types'
 
 type GetTeamsStatisticsActionState = {
   message: 'success' | 'error' | null
-  data?: ReturnType<typeof formatCartolaApiData> | null
+  data?:
+    | [...ReturnType<typeof formatCartolaApiData>, Awaited<ReturnType<typeof getRoundsData>>]
+    | null
 }
 
 export async function getTeamStatistics(
@@ -26,9 +28,10 @@ export async function getTeamStatistics(
     )
 
     const data = formatCartolaApiData(results)
+    const rounds = await getRoundsData(ROUNDS)
 
     revalidatePath('/')
-    return { message: 'success', data }
+    return { message: 'success', data: [...data, rounds] }
   } catch (e) {
     console.log(e)
     return { message: 'error' }

@@ -1,4 +1,5 @@
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
+import { RoundMatchesData } from '@/app/services/types'
 
 import { take } from 'lodash'
 
@@ -14,9 +15,11 @@ function renderCastTimesText(castTimes: number) {
 }
 
 export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
-  crewData
+  crewData,
+  matchesData
 }: {
   crewData: TCrewData
+  matchesData: RoundMatchesData
 }) {
   const mostScheduledPlayerData = typedOrderBy(Object.values(crewData), 'castTimes', 'desc')
   const first = mostScheduledPlayerData[0]
@@ -31,6 +34,7 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
           <RoundMatchesResult
             clubId={first.clube_id}
             roundIds={first.castRounds}
+            matchesData={matchesData}
             isAnimated={first.castRounds.length > 5}
           />
         }

@@ -1,4 +1,5 @@
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
+import { RoundMatchesData } from '@/app/services/types'
 
 import { take } from 'lodash'
 
@@ -15,9 +16,11 @@ function renderAssistsText(defenses: number, isAbbreviated = true) {
 }
 
 export function MoreAssists<TCrewData extends CrewStatistics>({
-  crewData
+  crewData,
+  matchesData
 }: {
   crewData: TCrewData
+  matchesData: RoundMatchesData
 }) {
   const orderedDefenseEfficiencyData = typedOrderBy(
     Object.values(crewData),
@@ -33,7 +36,11 @@ export function MoreAssists<TCrewData extends CrewStatistics>({
         imgSrc={first.foto ?? ''}
         data={renderAssistsText(first.assists, false)}
         details={
-          <AssistsRoundMatchesResult clubId={first.clube_id} assistsRounds={first.assistsRounds} />
+          <AssistsRoundMatchesResult
+            clubId={first.clube_id}
+            assistsRounds={first.assistsRounds}
+            matchesData={matchesData}
+          />
         }
       />
 

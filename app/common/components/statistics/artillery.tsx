@@ -1,4 +1,5 @@
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
+import { RoundMatchesData } from '@/app/services/types'
 
 import { take } from 'lodash'
 
@@ -13,7 +14,13 @@ function renderGoalsText(numberOfGoals: number) {
   return `${numberOfGoals} gol${numberOfGoals > 1 ? 's' : ''}`
 }
 
-export function Artillery<TCrewData extends CrewStatistics>({ crewData }: { crewData: TCrewData }) {
+export function Artillery<TCrewData extends CrewStatistics>({
+  crewData,
+  matchesData
+}: {
+  crewData: TCrewData
+  matchesData: RoundMatchesData
+}) {
   const orderedArtilleryData = typedOrderBy(Object.values(crewData), 'goals', 'desc').filter(
     (athlete) => athlete.goals > 0
   )
@@ -28,6 +35,7 @@ export function Artillery<TCrewData extends CrewStatistics>({ crewData }: { crew
         details={
           <ArtilleryRoundMatchesResult
             clubId={first.clube_id}
+            matchesData={matchesData}
             scoredGoalsRounds={first.scoredGoalsRounds}
             isAnimated={Object.entries(first.scoredGoalsRounds).length > 5}
           />

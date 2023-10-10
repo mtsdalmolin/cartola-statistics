@@ -1,5 +1,6 @@
 import { isCoach } from '@/app/helpers/positions'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
+import { RoundMatchesData } from '@/app/services/types'
 import { Tooltip } from '@mantine/core'
 
 import { take } from 'lodash'
@@ -21,7 +22,13 @@ function renderVictoriesAverageText(victoriesAverage: number, isAbbreviated = tr
   return `${(victoriesAverage * 100).toFixed(0)}% ${isAbbreviated ? '' : 'de aprov.'}`
 }
 
-export function BestCoach<TCrewData extends CrewStatistics>({ crewData }: { crewData: TCrewData }) {
+export function BestCoach<TCrewData extends CrewStatistics>({
+  crewData,
+  matchesData
+}: {
+  crewData: TCrewData
+  matchesData: RoundMatchesData
+}) {
   const orderedDefenseEfficiencyData = typedOrderBy(
     Object.values(crewData).filter(
       (athlete) => isCoach(athlete.posicao_id) && athlete.victoriesAverage
@@ -44,6 +51,7 @@ export function BestCoach<TCrewData extends CrewStatistics>({ crewData }: { crew
         details={
           <RoundMatchesResult
             clubId={first.clube_id}
+            matchesData={matchesData}
             roundIds={first.victoriesRoundIds}
             isAnimated={first.victoriesRoundIds.length > 5}
           />

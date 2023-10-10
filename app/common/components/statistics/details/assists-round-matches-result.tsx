@@ -1,16 +1,17 @@
-import { getRoundsData } from '@/app/services/cartola-api'
+import { RoundMatchesData } from '@/app/services/types'
 
 import { Flex } from '../../flex'
 import { MatchVersus } from '../../match-versus'
 
-export async function AssistsRoundMatchesResult({
+export function AssistsRoundMatchesResult({
   clubId,
-  assistsRounds
+  assistsRounds,
+  matchesData
 }: {
   clubId: number
   assistsRounds: { [key: string]: number }
+  matchesData: RoundMatchesData
 }) {
-  const matchesData = await getRoundsData(Object.keys(assistsRounds) as unknown as number[])
   return (
     <Flex className="w-min" direction="column">
       {Object.entries(assistsRounds).map(([roundId, scoredGoals]) => (

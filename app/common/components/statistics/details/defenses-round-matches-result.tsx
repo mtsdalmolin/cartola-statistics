@@ -1,18 +1,19 @@
-import { getRoundsData } from '@/app/services/cartola-api'
+import { RoundMatchesData } from '@/app/services/types'
 
 import { Flex } from '../../flex'
 import { MatchVersus } from '../../match-versus'
 
-export async function DefensesRoundMatchesResult({
+export function DefensesRoundMatchesResult({
   clubId,
   defensesRounds,
+  matchesData,
   isAnimated = false
 }: {
   clubId: number
   defensesRounds: { [key: string]: number }
+  matchesData: RoundMatchesData
   isAnimated?: boolean
 }) {
-  const matchesData = await getRoundsData(Object.keys(defensesRounds) as unknown as number[])
   return (
     <Flex
       className={`min-w-[130px] w-min max-h-60 ${isAnimated ? 'flex-nowrap overflow-hidden' : ''}`}
