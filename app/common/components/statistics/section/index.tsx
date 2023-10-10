@@ -18,7 +18,6 @@ export function StatisticsSection({
 
   useEffect(() => {
     if (apiHasEndedRequestsAndReturnedData) {
-      console.log({ sectionRef })
       sectionRef.current?.scrollIntoView({
         behavior: 'smooth'
       })
