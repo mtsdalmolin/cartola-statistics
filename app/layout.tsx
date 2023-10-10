@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ['latin'] })
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Cartola Statistics',
-  description: 'Site para analisar estatísticas que o cartola não utiliza.'
+  title: 'Estatísticas do Cartola',
+  description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.'
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
