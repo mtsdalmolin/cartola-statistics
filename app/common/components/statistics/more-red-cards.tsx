@@ -28,6 +28,9 @@ export function MoreRedCards<TCrewData extends CrewStatistics>({
     'scout.CV' as any,
     'desc'
   ).filter((athlete) => athlete.scout?.CV ?? 0 > 0)
+
+  if (orderedMoreRedCardsData.length === 0) return null
+
   const first = orderedMoreRedCardsData[0]
   orderedMoreRedCardsData.shift()
   return (
@@ -38,7 +41,7 @@ export function MoreRedCards<TCrewData extends CrewStatistics>({
         data={renderCardsText(first.scout?.CV ?? 0, false)}
         details={
           <CardsStatsDetails
-            cardsRoundIds={first.cardsRounds.yellow}
+            cardsRoundIds={first.cardsRounds.red}
             clubId={first.clube_id}
             matchesData={matchesData}
           />
