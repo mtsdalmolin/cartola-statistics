@@ -44,20 +44,29 @@ export async function getPlayersTeamData(
   return formatCartolaApiData(results)
 }
 
-export async function getRoundsData(roundIds: number[]) {
-  const results = await Promise.allSettled<MatchesData>(
-    roundIds.map((roundId) => {
-      return request(ENDPOINTS.MATCHES_BY_ID(roundId.toString()))
-    })
-  )
-
-  const roundMatches: { [key: string]: { [key: string]: Match } } = {}
-
-  results.forEach((result, idx) => {
-    if (result.status === 'fulfilled') {
-      roundMatches[roundIds[idx]] = formatMatchData(result.value.partidas)
+function serializeQueryParams(queryParams: {
+  [key: string]: number | string | number[] | string[]
+}) {
+  return Object.entries(queryParams).reduce((acc, [pKey, pValue]) => {
+    if (Array.isArray(pValue)) {
+      pValue.forEach((p) => {
+        if (acc === '?') acc += `${pKey}=${p}`
+        else acc += `&${pKey}=${p}`
+      })
+    } else {
+      if (acc === '?') acc += `${pKey}=${pValue}`
+      else acc += `&${pKey}=${pValue}`
     }
-  })
+    return acc
+  }, '?')
+}
+
+export async function getRoundsData(roundIds: number[]) {
+  const roundMatches = await fetch(
+    `/api/get-rounds-data/${serializeQueryParams({
+      rounds: roundIds
+    })}`
+  ).then((res) => res.json())
 
   return roundMatches
 }
