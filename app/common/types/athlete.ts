@@ -71,6 +71,10 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
     sumOfPoints: number
     average: number
   }
+  cardsRounds: {
+    yellow: { [key: string]: number }
+    red: { [key: string]: number }
+  }
   assists: number
   assistsRounds: { [key: string]: number }
   finishes: number

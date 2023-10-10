@@ -20,6 +20,8 @@ import { HighestScorer } from './common/components/statistics/highest-scorer'
 import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
 import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
+import { MoreRedCards } from './common/components/statistics/more-red-cards'
+import { MoreYellowCards } from './common/components/statistics/more-yellow-cards'
 import { MostRoundsAsCaptain } from './common/components/statistics/most-rounds-as-captain'
 import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
 import { MostValuatedPlayer } from './common/components/statistics/most-valuated-player'
@@ -81,6 +83,8 @@ export default function Home() {
           </StatisticsSection>
           <StatisticsSection title="os piores">
             <WorstGoalkeeper crewData={state.data[0]} matchesData={state.data[4]} />
+            <MoreYellowCards crewData={state.data[0]} matchesData={state.data[4]} />
+            <MoreRedCards crewData={state.data[0]} matchesData={state.data[4]} />
           </StatisticsSection>
           <StatisticsSection title="resto">
             <MostRoundsAsCaptain crewData={state.data[0]} />

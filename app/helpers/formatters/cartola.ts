@@ -140,6 +140,10 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
       sumOfPoints: 0,
       average: 0
     },
+    cardsRounds: {
+      yellow: athlete.scout?.CA ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.CA ?? 0 } : {},
+      red: athlete.scout?.CV ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.CV ?? 0 } : {}
+    },
     highestPoint: athlete.pontos_num,
     highestPointScout: athlete.scout,
     highestPointsRound: athlete.rodada_id,
@@ -259,6 +263,14 @@ function playerStatisticsIncrementalFactory(
 
     if (athlete.scout?.DE) {
       statistics[athlete.atleta_id].defensesRounds[athlete.rodada_id] = athlete.scout.DE
+    }
+
+    if (athlete.scout?.CA) {
+      statistics[athlete.atleta_id].cardsRounds.yellow[athlete.rodada_id] = athlete.scout.CA
+    }
+
+    if (athlete.scout?.CV) {
+      statistics[athlete.atleta_id].cardsRounds.red[athlete.rodada_id] = athlete.scout.CV
     }
   } else {
     statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
