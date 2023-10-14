@@ -4,7 +4,7 @@ import { RoundMatchesData } from '@/app/services/types'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
-import { DefensesRoundMatchesResult } from './details/defenses-round-matches-result'
+import { AnimatedStatsRoundMatchesResult } from './details/animated-stats-round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -36,11 +36,12 @@ export function MoreDefenses<TCrewData extends CrewStatistics>({
         imgSrc={first.foto ?? ''}
         data={renderDefensesText(first.defenses, false)}
         details={
-          <DefensesRoundMatchesResult
+          <AnimatedStatsRoundMatchesResult
             clubId={first.clube_id}
-            defensesRounds={first.defensesRounds}
             matchesData={matchesData}
-            isAnimated={Object.entries(first.defensesRounds).length > 5}
+            statRounds={first.defensesRounds}
+            statText="def."
+            isAnimated={Object.keys(first.defensesRounds).length > 5}
           />
         }
       />
