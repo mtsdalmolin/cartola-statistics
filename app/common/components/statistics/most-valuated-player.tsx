@@ -3,38 +3,12 @@ import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
-import { Flex } from '../flex'
 import { ValuationRounds } from './details/valuation-rounds'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
-
-function renderAboveZeroValuationRoundsText(
-  valuatedRoundsAboveZero: number,
-  valuationValue: number,
-  isAbbreviated = true
-) {
-  if (isAbbreviated)
-    return (
-      <span>
-        {`${valuatedRoundsAboveZero} rds.`}(
-        <span className={valuationValue > 0 ? 'text-palette-primary-700' : 'text-red-500'}>
-          {valuationValue > 0 ? `+${valuationValue.toFixed(1)}` : valuationValue}
-        </span>
-        )
-      </span>
-    )
-  return (
-    <span>
-      {`${valuatedRoundsAboveZero} rodada${valuatedRoundsAboveZero > 1 ? 's' : ''}`} (
-      <span className={valuationValue > 0 ? 'text-palette-primary-700' : 'text-red-500'}>
-        {valuationValue > 0 ? `+${valuationValue.toFixed(1)}` : valuationValue}
-      </span>
-      )
-    </span>
-  )
-}
+import { ValuationRoundsText } from './text/valuation-rounds'
 
 export function MostValuatedPlayer<TCrewData extends CrewStatistics>({
   crewData
@@ -53,11 +27,12 @@ export function MostValuatedPlayer<TCrewData extends CrewStatistics>({
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={renderAboveZeroValuationRoundsText(
-          first.valuation.rounds.aboveZero,
-          first.valuation.rounds.sum,
-          false
-        )}
+        data={
+          <ValuationRoundsText
+            valuatedRoundsAboveZero={first.valuation.rounds.aboveZero}
+            valuationValue={first.valuation.rounds.sum}
+          />
+        }
         details={
           <ValuationRounds
             valuationRoundValues={first.valuation.rounds.values.filter(
@@ -74,10 +49,13 @@ export function MostValuatedPlayer<TCrewData extends CrewStatistics>({
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}
-            data={renderAboveZeroValuationRoundsText(
-              athlete.valuation.rounds.aboveZero,
-              athlete.valuation.rounds.sum
-            )}
+            data={
+              <ValuationRoundsText
+                valuatedRoundsAboveZero={athlete.valuation.rounds.aboveZero}
+                valuationValue={athlete.valuation.rounds.sum}
+                isAbbreviated
+              />
+            }
             position={idx + 2}
           />
         ))}
