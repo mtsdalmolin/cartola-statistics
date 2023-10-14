@@ -24,6 +24,7 @@ import { MoreDefenses } from './common/components/statistics/more-defenses'
 import { MoreRedCards } from './common/components/statistics/more-red-cards'
 import { MoreTackles } from './common/components/statistics/more-tackles'
 import { MoreYellowCards } from './common/components/statistics/more-yellow-cards'
+import { MostOffsidedPlayer } from './common/components/statistics/most-offsided-player'
 import { MostRoundsAsCaptain } from './common/components/statistics/most-rounds-as-captain'
 import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
 import { MostValuatedPlayer } from './common/components/statistics/most-valuated-player'
@@ -99,6 +100,7 @@ export default function Home() {
             <LineupsPerTeam clubsData={state.data[2]} />
             <HighestScorer crewData={state.data[0]} matchesData={state.data[4]} />
             <MostScheduledPlayer crewData={state.data[0]} matchesData={state.data[4]} />
+            <MostOffsidedPlayer crewData={state.data[0]} matchesData={state.data[4]} />
           </StatisticsSection>
         </>
       ) : null}
