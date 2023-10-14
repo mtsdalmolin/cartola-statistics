@@ -17,6 +17,7 @@ import { DefenseEfficiency } from './common/components/statistics/defense-effici
 import { FinishEfficiency } from './common/components/statistics/finish-efficiency'
 import { HighestFinisher } from './common/components/statistics/highest-finisher'
 import { HighestScorer } from './common/components/statistics/highest-scorer'
+import { LeastValuatedPlayer } from './common/components/statistics/least-valuated-player'
 import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
 import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
@@ -88,6 +89,7 @@ export default function Home() {
             <MoreTackles crewData={state.data[0]} matchesData={state.data[4]} />
           </StatisticsSection>
           <StatisticsSection title="os piores">
+            <LeastValuatedPlayer crewData={state.data[0]} />
             <WorstGoalkeeper crewData={state.data[0]} matchesData={state.data[4]} />
             <MoreYellowCards crewData={state.data[0]} matchesData={state.data[4]} />
             <MoreRedCards crewData={state.data[0]} matchesData={state.data[4]} />

@@ -10,7 +10,7 @@ export function ValuationRounds({
       {valuationRoundValues.map(([roundId, valuation]) => (
         <Flex key={roundId} className="w-full text-xs pr-4" justify="between">
           <div>Rodada {roundId}:</div>
-          <div className="text-palette-primary-700">
+          <div className={valuation > 0 ? 'text-palette-primary-700' : 'text-red-500'}>
             {valuation > 0 ? `+${valuation}` : valuation}
           </div>
         </Flex>
