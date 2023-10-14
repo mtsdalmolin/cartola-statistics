@@ -13,7 +13,7 @@ export function AnimatedStatsRoundMatchesResult({
   clubId: number
   matchesData: RoundMatchesData
   statRounds: { [key: string]: number }
-  statText: string
+  statText: string | ((statValue: number) => string)
   isAnimated?: boolean
 }) {
   return (
@@ -27,7 +27,7 @@ export function AnimatedStatsRoundMatchesResult({
             <Flex className="text-xs" justify="between">
               <span>Rodada {roundId}</span>
               <span>
-                ({statValue} {statText})
+                ({statValue} {typeof statText === 'function' ? statText(statValue) : statText})
               </span>
             </Flex>
             <Flex>
@@ -41,7 +41,7 @@ export function AnimatedStatsRoundMatchesResult({
                 <Flex className="text-xs" justify="between">
                   <span>Rodada {roundId}</span>
                   <span>
-                    ({statValue} {statText})
+                    ({statValue} {typeof statText === 'function' ? statText(statValue) : statText})
                   </span>
                 </Flex>
                 <Flex>

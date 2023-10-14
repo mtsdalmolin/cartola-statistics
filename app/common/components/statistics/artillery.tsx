@@ -4,7 +4,7 @@ import { RoundMatchesData } from '@/app/services/types'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
-import { ArtilleryRoundMatchesResult } from './details/artillery-round-matches-result'
+import { AnimatedStatsRoundMatchesResult } from './details/animated-stats-round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -33,11 +33,12 @@ export function Artillery<TCrewData extends CrewStatistics>({
         imgSrc={first.foto ?? ''}
         data={renderGoalsText(first.goals)}
         details={
-          <ArtilleryRoundMatchesResult
+          <AnimatedStatsRoundMatchesResult
             clubId={first.clube_id}
             matchesData={matchesData}
-            scoredGoalsRounds={first.scoredGoalsRounds}
-            isAnimated={Object.entries(first.scoredGoalsRounds).length > 5}
+            statRounds={first.scoredGoalsRounds}
+            statText={(scoredGoals) => `gol${scoredGoals > 1 ? 's' : ''}`}
+            isAnimated={Object.keys(first.scoredGoalsRounds).length > 5}
           />
         }
       />
