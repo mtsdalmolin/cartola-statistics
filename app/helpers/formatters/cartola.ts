@@ -88,10 +88,10 @@ export function getAthleteFinishes(athlete: Athlete | RenderedAthlete) {
   } = handleGameActions(athlete as Athlete)
 
   return {
-    blockedFinishes,
-    outOfTargetFinishes,
-    finishesOnPost,
-    goals
+    blockedFinishes: blockedFinishes ?? 0,
+    outOfTargetFinishes: outOfTargetFinishes ?? 0,
+    finishesOnPost: finishesOnPost ?? 0,
+    goals: goals ?? 0
   }
 }
 
