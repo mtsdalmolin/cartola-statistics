@@ -161,6 +161,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     goalsConcededRoundIds: athlete.scout?.GS ?? 0 > 0 ? [athlete.rodada_id] : [],
     defensesToSufferGoal: 0,
     minutesToScore: 0,
+    tacklesRounds:
+      athlete.scout?.DS ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.DS ?? 0 } : {},
     victoriesAverage: 0,
     victoriesRoundIds: athlete.scout?.V ?? 0 > 0 ? [athlete.rodada_id] : [],
     valuation: {
@@ -263,6 +265,10 @@ function playerStatisticsIncrementalFactory(
 
     if (athlete.scout?.DE) {
       statistics[athlete.atleta_id].defensesRounds[athlete.rodada_id] = athlete.scout.DE
+    }
+
+    if (athlete.scout?.DS) {
+      statistics[athlete.atleta_id].tacklesRounds[athlete.rodada_id] = athlete.scout.DS
     }
 
     if (athlete.scout?.CA) {

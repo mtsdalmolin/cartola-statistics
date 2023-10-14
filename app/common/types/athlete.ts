@@ -90,6 +90,7 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   highestPoint: number
   highestPointScout: Athlete['scout']
   highestPointsRound: number
+  tacklesRounds: { [key: string]: number }
   victoriesAverage: number
   victoriesRoundIds: number[]
 }
