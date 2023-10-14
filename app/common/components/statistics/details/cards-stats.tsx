@@ -16,7 +16,7 @@ export function CardsStatsDetails({
     <Flex className="min-w-[130px] grow-0" direction="column">
       {Object.entries(cardsRoundIds).map(([roundId, numberOfCards]) => (
         <Flex key={roundId} direction="column">
-          <Flex className="text-xs truncate" justify="between">
+          <Flex className="text-xs" justify="between">
             <span>Rodada {roundId}</span>
             <span>
               ({numberOfCards} cart{numberOfCards > 1 ? 'ões' : 'ão'})
