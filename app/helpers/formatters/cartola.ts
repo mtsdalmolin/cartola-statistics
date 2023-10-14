@@ -103,6 +103,7 @@ function getFinishesNumbers(athlete: Athlete) {
 }
 
 function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
+  const pointsInRound = calculatePoints(athlete, captainId)
   return {
     atleta_id: athlete.atleta_id,
     rodada_id: athlete.rodada_id,
@@ -116,7 +117,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     overallAverage: 0,
     captainTimes: 0,
     captainRounds: [],
-    sumOfPoints: calculatePoints(athlete, captainId),
+    sumOfPoints: pointsInRound,
     pointsAverage: 0,
     clube_id: athlete.clube_id,
     posicao_id: athlete.posicao_id,
@@ -162,7 +163,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     defensesToSufferGoal: 0,
     minutesToScore: 0,
     offsideRounds: athlete.scout?.I ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.I ?? 0 } : {},
-    pointsPerRound: { [athlete.rodada_id]: athlete.pontos_num },
+    pointsPerRound: { [athlete.rodada_id]: Number(pointsInRound.toFixed(1)) },
     tacklesRounds:
       athlete.scout?.DS ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.DS ?? 0 } : {},
     victoriesAverage: 0,
