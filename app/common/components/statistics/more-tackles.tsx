@@ -4,7 +4,6 @@ import { RoundMatchesData } from '@/app/services/types'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
-import { CardsStatsDetails } from './details/cards-stats'
 import { TacklesRoundMatchesResult } from './details/tackles-round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
