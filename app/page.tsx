@@ -15,6 +15,7 @@ import { BestCoach } from './common/components/statistics/best-coach'
 // import { BestHomePlayer } from './common/components/statistics/best-home-player'
 // import { DefenseEfficiency } from './common/components/statistics/defense-efficiency'
 // import { FinishEfficiency } from './common/components/statistics/finish-efficiency'
+import { HighestAverage } from './common/components/statistics/highest-average'
 import { HighestFinisher } from './common/components/statistics/highest-finisher'
 import { HighestScorer } from './common/components/statistics/highest-scorer'
 import { LeastValuatedPlayer } from './common/components/statistics/least-valuated-player'
@@ -88,6 +89,7 @@ export default function Home() {
             <MoreAssists crewData={state.data[0]} matchesData={state.data[4]} />
             <MoreDefenses crewData={state.data[0]} matchesData={state.data[4]} />
             <MoreTackles crewData={state.data[0]} matchesData={state.data[4]} />
+            <HighestAverage crewData={state.data[0]} matchesData={state.data[4]} />
           </StatisticsSection>
           <StatisticsSection title="os piores">
             <LeastValuatedPlayer crewData={state.data[0]} />

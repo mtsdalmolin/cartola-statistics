@@ -162,6 +162,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     defensesToSufferGoal: 0,
     minutesToScore: 0,
     offsideRounds: athlete.scout?.I ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.I ?? 0 } : {},
+    pointsPerRound: { [athlete.rodada_id]: athlete.pontos_num },
     tacklesRounds:
       athlete.scout?.DS ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.DS ?? 0 } : {},
     victoriesAverage: 0,
@@ -214,9 +215,11 @@ function playerStatisticsIncrementalFactory(
   captainId: number
 ) {
   if (statistics[athlete.atleta_id]) {
+    const pointsInRound = calculatePoints(athlete, captainId)
+
     statistics[athlete.atleta_id].castTimes++
     statistics[athlete.atleta_id].castRounds.push(athlete.rodada_id)
-    statistics[athlete.atleta_id].sumOfPoints += calculatePoints(athlete, captainId)
+    statistics[athlete.atleta_id].sumOfPoints += pointsInRound
     statistics[athlete.atleta_id].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
     statistics[athlete.atleta_id].home.sumOfPoints +=
       athlete.gato_mestre?.media_pontos_mandante ?? 0
@@ -245,6 +248,10 @@ function playerStatisticsIncrementalFactory(
       statistics[athlete.atleta_id].highestPointScout = athlete.scout
       statistics[athlete.atleta_id].highestPointsRound = athlete.rodada_id
     }
+
+    statistics[athlete.atleta_id].pointsPerRound[athlete.rodada_id] = Number(
+      pointsInRound.toFixed(1)
+    )
 
     const goalsConceded = handleGameActions(athlete)?.GS ?? 0
     if (goalsConceded) {
