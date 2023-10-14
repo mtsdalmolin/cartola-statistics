@@ -5,7 +5,6 @@ import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { AnimatedStatsRoundMatchesResult } from './details/animated-stats-round-matches-result'
-import { TacklesRoundMatchesResult } from './details/tackles-round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
