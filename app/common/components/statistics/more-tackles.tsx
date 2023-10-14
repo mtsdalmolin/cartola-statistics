@@ -4,7 +4,7 @@ import { RoundMatchesData } from '@/app/services/types'
 import { take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
-import { TacklesRoundMatchesResult } from './details/tackles-round-matches-result'
+import { AnimatedStatsRoundMatchesResult } from './details/animated-stats-round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
@@ -40,10 +40,11 @@ export function MoreTackles<TCrewData extends CrewStatistics>({
         imgSrc={first.foto ?? ''}
         data={renderTacklesText(first.scout?.DS ?? 0, false)}
         details={
-          <TacklesRoundMatchesResult
+          <AnimatedStatsRoundMatchesResult
             clubId={first.clube_id}
             matchesData={matchesData}
-            tacklesRounds={first.tacklesRounds}
+            statRounds={first.tacklesRounds}
+            statText="des."
             isAnimated={Object.keys(first.tacklesRounds).length > 5}
           />
         }
