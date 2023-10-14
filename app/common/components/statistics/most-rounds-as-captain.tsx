@@ -65,7 +65,11 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
 }: {
   crewData: TCrewData
 }) {
-  const mostRoundsAsCaptainData = typedOrderBy(Object.values(crewData), 'captainTimes', 'desc')
+  const mostRoundsAsCaptainData = typedOrderBy(
+    Object.values(crewData).filter((athlete) => athlete.captainTimes > 0),
+    'captainTimes',
+    'desc'
+  )
   const first = mostRoundsAsCaptainData[0]
   mostRoundsAsCaptainData.shift()
   return (
