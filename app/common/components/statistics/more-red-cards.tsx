@@ -1,7 +1,7 @@
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
-import { take } from 'lodash'
+import { isEmpty, take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { AnimatedStatsRoundMatchesResult } from './details/animated-stats-round-matches-result'
@@ -35,33 +35,37 @@ export function MoreRedCards<TCrewData extends CrewStatistics>({
   orderedMoreRedCardsData.shift()
   return (
     <SummaryContainer title="Cartões vermelhos">
-      <ListHotspot
-        name={first.apelido}
-        imgSrc={first.foto ?? ''}
-        data={renderCardsText(first.scout?.CV ?? 0, false)}
-        details={
-          <AnimatedStatsRoundMatchesResult
-            clubId={first.clube_id}
-            matchesData={matchesData}
-            statRounds={first.cardsRounds.red}
-            statText="cart."
-            isAnimated={Object.keys(first.cardsRounds.red).length > 5}
-          />
-        }
-      />
+      <>
+        <ListHotspot
+          name={first.apelido}
+          imgSrc={first.foto ?? ''}
+          data={renderCardsText(first.scout?.CV ?? 0, false)}
+          details={
+            <AnimatedStatsRoundMatchesResult
+              clubId={first.clube_id}
+              matchesData={matchesData}
+              statRounds={first.cardsRounds.red}
+              statText="cart."
+              isAnimated={Object.keys(first.cardsRounds.red).length > 5}
+            />
+          }
+        />
 
-      <StatisticsList>
-        {take(orderedMoreRedCardsData, 9).map((athlete, idx) => (
-          <ListItem
-            key={athlete.atleta_id}
-            name={athlete.apelido}
-            imgSrc={athlete.foto ?? ''}
-            imgSize={45}
-            data={renderCardsText(athlete.scout?.CV ?? 0)}
-            position={idx + 2}
-          />
-        ))}
-      </StatisticsList>
+        {!isEmpty(orderedMoreRedCardsData) ? (
+          <StatisticsList>
+            {take(orderedMoreRedCardsData, 9).map((athlete, idx) => (
+              <ListItem
+                key={athlete.atleta_id}
+                name={athlete.apelido}
+                imgSrc={athlete.foto ?? ''}
+                imgSize={45}
+                data={renderCardsText(athlete.scout?.CV ?? 0)}
+                position={idx + 2}
+              />
+            ))}
+          </StatisticsList>
+        ) : null}
+      </>
     </SummaryContainer>
   )
 }
