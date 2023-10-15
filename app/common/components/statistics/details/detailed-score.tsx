@@ -1,10 +1,5 @@
 import { Athlete } from '@/app/common/types/athlete'
-import {
-  calculateScoutPoints,
-  getScoutColor,
-  getScoutMultipliedValue,
-  getScoutName
-} from '@/app/helpers/athlete-scout'
+import { getScoutColor, getScoutMultipliedValue, getScoutName } from '@/app/helpers/athlete-scout'
 import { Progress } from '@mantine/core'
 
 export function DetailedScore({
