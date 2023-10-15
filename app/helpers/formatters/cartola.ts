@@ -15,7 +15,7 @@ import {
   ZAGUEIRO
 } from '@/app/constants/positions'
 import { UNEMPLOYED } from '@/app/constants/teams'
-import { RoundData } from '@/app/services/types'
+import { RoundData, RoundMatchesData } from '@/app/services/types'
 
 import { max } from 'lodash'
 
@@ -60,6 +60,26 @@ function handleRoundValuation(roundsValuation: [number, number][]) {
     sum,
     values: roundsValuation
   }
+}
+
+function getRoundResultPoints(round: RoundMatchesData[0], clubId: number) {
+  return round[clubId].result.winner === 'draw' ? 1 : round[clubId].result.winner === clubId ? 3 : 0
+}
+
+export function getRoundResults(athlete: RenderedAthlete, rounds: RoundMatchesData) {
+  let results: number[] = []
+
+  athlete.castRounds.forEach((roundId) => {
+    results.push(getRoundResultPoints(rounds[roundId], athlete.clube_id))
+  })
+
+  return results
+}
+
+function calculateResultEfficiency(athlete: RenderedAthlete, rounds: RoundMatchesData) {
+  const results = getRoundResults(athlete, rounds)
+
+  return results.reduce((acc, points) => acc + points, 0)
 }
 
 function handleGameActions(athlete: Athlete, cachedStats: typeof athlete.scout = {}) {
@@ -180,7 +200,7 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
   }
 }
 
-function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
+function handlePlayersDerivedStatistics(athlete: RenderedAthlete, rounds: RoundMatchesData) {
   const overallAverage = athlete.sumOfOverallAverage / athlete.castTimes
   const defensesToSufferGoal = athlete.defenses / athlete.goalsConceded
 
@@ -206,7 +226,7 @@ function handlePlayersDerivedStatistics(athlete: RenderedAthlete) {
     finishesToScore: athlete.finishes / athlete.goals,
     minutesToScore: athlete.sumOfPlayedMinutes / athlete.goals,
     defensesToSufferGoal: isFinite(defensesToSufferGoal) ? defensesToSufferGoal : athlete.defenses,
-    victoriesAverage: (athlete.scout?.V ?? 0) / athlete.castTimes
+    victoriesAverage: calculateResultEfficiency(athlete, rounds)
   }
 }
 
@@ -315,7 +335,8 @@ function clubPositionFactory(positionId?: PositionsIds) {
 }
 
 export function formatCartolaApiData(
-  results: PromiseSettledResult<RoundData>[]
+  results: PromiseSettledResult<RoundData>[],
+  rounds: RoundMatchesData
 ): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
@@ -377,11 +398,11 @@ export function formatCartolaApiData(
   })
 
   Object.entries(playersStatistics).forEach(([athleteId, athlete]) => {
-    playersStatistics[athleteId] = handlePlayersDerivedStatistics(athlete)
+    playersStatistics[athleteId] = handlePlayersDerivedStatistics(athlete, rounds)
   })
 
   Object.entries(benchStatistics).forEach(([athleteId, athlete]) => {
-    benchStatistics[athleteId] = handlePlayersDerivedStatistics(athlete)
+    benchStatistics[athleteId] = handlePlayersDerivedStatistics(athlete, rounds)
   })
 
   Object.entries(clubsStatistics).forEach(([clubId, club]) => {

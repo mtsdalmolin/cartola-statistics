@@ -10,5 +10,6 @@ export interface Match {
   result: {
     home?: number
     away?: number
+    winner?: string | number
   }
 }

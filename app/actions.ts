@@ -27,8 +27,8 @@ export async function getTeamStatistics(
       })
     )
 
-    const data = formatCartolaApiData(results)
     const rounds = await getRoundsData(ROUNDS)
+    const data = formatCartolaApiData(results, rounds)
 
     revalidatePath('/')
     return { message: 'success', data: [...data, rounds] }

@@ -1,7 +1,6 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 
 import { ClubStatistics, CrewStatistics } from '../common/types/athlete'
-import { Match } from '../common/types/match'
 import { PositionsStatistics } from '../common/types/position'
 import { formatCartolaApiData } from '../helpers/formatters/cartola'
 import { formatMatchData } from '../helpers/formatters/match'
@@ -41,7 +40,9 @@ export async function getPlayersTeamData(
     })
   )
 
-  return formatCartolaApiData(results)
+  const roundMatches = await getRoundsData(rounds)
+
+  return formatCartolaApiData(results, roundMatches)
 }
 
 function serializeQueryParams(queryParams: {
