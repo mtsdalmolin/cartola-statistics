@@ -79,7 +79,7 @@ export function getRoundResults(athlete: RenderedAthlete, rounds: RoundMatchesDa
 function calculateResultEfficiency(athlete: RenderedAthlete, rounds: RoundMatchesData) {
   const results = getRoundResults(athlete, rounds)
 
-  return results.reduce((acc, points) => acc + points, 0)
+  return results.reduce((acc, points) => acc + points, 0) / (athlete.castTimes * 3)
 }
 
 function handleGameActions(athlete: Athlete, cachedStats: typeof athlete.scout = {}) {
