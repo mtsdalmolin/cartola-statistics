@@ -78,31 +78,49 @@ export default function Home() {
             title="os melhores"
             apiHasEndedRequestsAndReturnedData={!!state.data && !pending}
           >
-            <MostValuatedPlayer crewData={state.data[0]} />
-            <BestCoach crewData={state.data[0]} matchesData={state.data[4]} />
-            <Artillery crewData={state.data[0]} matchesData={state.data[4]} />
-            <HighestFinisher crewData={state.data[0]} />
-            {/* <BestHomePlayer crewData={state.data[0]} />
-            <BestAwayPlayer crewData={state.data[0]} /> */}
-            {/* <FinishEfficiency crewData={state.data[0]} />
-            <DefenseEfficiency crewData={state.data[0]} /> */}
-            <MoreAssists crewData={state.data[0]} matchesData={state.data[4]} />
-            <MoreDefenses crewData={state.data[0]} matchesData={state.data[4]} />
-            <MoreTackles crewData={state.data[0]} matchesData={state.data[4]} />
-            <HighestAverage crewData={state.data[0]} matchesData={state.data[4]} />
+            <MostValuatedPlayer crewData={state.data.athleteStatistics} />
+            <BestCoach crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
+            <Artillery crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
+            <HighestFinisher crewData={state.data.athleteStatistics} />
+            {/* <BestHomePlayer crewData={state.data.athleteStatistics} />
+            <BestAwayPlayer crewData={state.data.athleteStatistics} /> */}
+            {/* <FinishEfficiency crewData={state.data.athleteStatistics} />
+            <DefenseEfficiency crewData={state.data.athleteStatistics} /> */}
+            <MoreAssists crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
+            <MoreDefenses crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
+            <MoreTackles crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
+            <HighestAverage
+              crewData={state.data.athleteStatistics}
+              matchesData={state.data.rounds}
+            />
           </StatisticsSection>
           <StatisticsSection title="os piores">
-            <LeastValuatedPlayer crewData={state.data[0]} />
-            <WorstGoalkeeper crewData={state.data[0]} matchesData={state.data[4]} />
-            <MoreYellowCards crewData={state.data[0]} matchesData={state.data[4]} />
-            <MoreRedCards crewData={state.data[0]} matchesData={state.data[4]} />
+            <LeastValuatedPlayer crewData={state.data.athleteStatistics} />
+            <WorstGoalkeeper
+              crewData={state.data.athleteStatistics}
+              matchesData={state.data.rounds}
+            />
+            <MoreYellowCards
+              crewData={state.data.athleteStatistics}
+              matchesData={state.data.rounds}
+            />
+            <MoreRedCards crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
           </StatisticsSection>
           <StatisticsSection title="resto">
-            <MostRoundsAsCaptain crewData={state.data[0]} />
-            <LineupsPerTeam clubsData={state.data[2]} />
-            <HighestScorer crewData={state.data[0]} matchesData={state.data[4]} />
-            <MostScheduledPlayer crewData={state.data[0]} matchesData={state.data[4]} />
-            <MostOffsidedPlayer crewData={state.data[0]} matchesData={state.data[4]} />
+            <MostRoundsAsCaptain crewData={state.data.athleteStatistics} />
+            <LineupsPerTeam clubsData={state.data.clubStatistics} />
+            <HighestScorer
+              crewData={state.data.athleteStatistics}
+              matchesData={state.data.rounds}
+            />
+            <MostScheduledPlayer
+              crewData={state.data.athleteStatistics}
+              matchesData={state.data.rounds}
+            />
+            <MostOffsidedPlayer
+              crewData={state.data.athleteStatistics}
+              matchesData={state.data.rounds}
+            />
           </StatisticsSection>
         </>
       ) : null}

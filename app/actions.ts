@@ -7,11 +7,19 @@ import { formatCartolaApiData } from './helpers/formatters/cartola'
 import { ENDPOINTS, getRoundsData, request } from './services/cartola-api'
 import { RoundData } from './services/types'
 
+type FormatCartolaApiDataType = ReturnType<typeof formatCartolaApiData>
+
+type NthChild<Archetype extends Array<unknown>, ChildIndex extends number> = Archetype[ChildIndex]
+
 type GetTeamsStatisticsActionState = {
   message: 'success' | 'error' | null
-  data?:
-    | [...ReturnType<typeof formatCartolaApiData>, Awaited<ReturnType<typeof getRoundsData>>]
-    | null
+  data?: {
+    athleteStatistics: NthChild<FormatCartolaApiDataType, 0>
+    benchStatistics: NthChild<FormatCartolaApiDataType, 1>
+    clubStatistics: NthChild<FormatCartolaApiDataType, 2>
+    positionsStatistics: NthChild<FormatCartolaApiDataType, 3>
+    rounds: Awaited<ReturnType<typeof getRoundsData>>
+  } | null
 }
 
 export async function getTeamStatistics(
@@ -28,10 +36,20 @@ export async function getTeamStatistics(
     )
 
     const rounds = await getRoundsData(ROUNDS)
-    const data = formatCartolaApiData(results, rounds)
+    const [athleteStatistics, benchStatistics, clubStatistics, positionsStatistics] =
+      formatCartolaApiData(results, rounds)
 
     revalidatePath('/')
-    return { message: 'success', data: [...data, rounds] }
+    return {
+      message: 'success',
+      data: {
+        athleteStatistics,
+        benchStatistics,
+        clubStatistics,
+        positionsStatistics,
+        rounds
+      }
+    }
   } catch (e) {
     console.log(e)
     return { message: 'error' }
