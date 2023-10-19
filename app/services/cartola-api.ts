@@ -1,7 +1,5 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 
-import { ClubStatistics, CrewStatistics } from '../common/types/athlete'
-import { PositionsStatistics } from '../common/types/position'
 import { formatCartolaApiData } from '../helpers/formatters/cartola'
 import { formatMatchData } from '../helpers/formatters/match'
 import { MatchesData, RoundData, RoundMatchesData } from './types'
@@ -28,10 +26,7 @@ export function request(endpoint: string, options: RequestInit = {}) {
   return fetch(`${CARTOLA_API}${endpoint}`, requestOptions).then((res) => res.json())
 }
 
-export async function getPlayersTeamData(
-  teamSlug: string,
-  rounds: number[]
-): Promise<[CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics]> {
+export async function getPlayersTeamData(teamSlug: string, rounds: number[]) {
   const results = await Promise.allSettled<RoundData>(
     rounds.map((round) => {
       return fetch(
