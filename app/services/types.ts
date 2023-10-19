@@ -6,6 +6,7 @@ export interface RoundData {
   reservas?: Athlete[]
   rodada_atual: number
   capitao_id: number
+  pontos: number
   pontos_campeonato: number
 }
 

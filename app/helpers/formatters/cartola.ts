@@ -15,6 +15,7 @@ import {
   ZAGUEIRO
 } from '@/app/constants/positions'
 import { UNEMPLOYED } from '@/app/constants/teams'
+import * as TROPHIES from '@/app/constants/trophies'
 import { RoundData, RoundMatchesData } from '@/app/services/types'
 
 import { max } from 'lodash'
@@ -337,33 +338,49 @@ function clubPositionFactory(positionId?: PositionsIds) {
 export function formatCartolaApiData(
   results: PromiseSettledResult<RoundData>[],
   rounds: RoundMatchesData
-): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics] {
+): [
+  CrewStatistics,
+  CrewStatistics,
+  ClubStatistics,
+  PositionsStatistics,
+  { [key: string]: Athlete[] | RoundData }
+] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
   let positionsStatistics: PositionsStatistics = {}
   let seasonPoints = 0
+  const trophiesEarned: string[] = []
+  const teamsTrophies: { [key: string]: Athlete[] | RoundData } = {}
+  const redCardedAthletes: Athlete[] = []
+  const athletesThatMissedPenalty: Athlete[] = []
 
   results.forEach((result) => {
     if (result.status === 'rejected') return
 
     seasonPoints = result.value.pontos_campeonato
+    const athletesThatScoredInRound: Athlete[] = []
 
-    const { atletas: athletes, reservas: bench, capitao_id: captainId } = result.value
+    const {
+      atletas: athletes,
+      reservas: bench,
+      capitao_id: captainId,
+      pontos: pointsInRound,
+      rodada_atual: currentRound
+    } = result.value
 
     athletes.forEach((athlete) => {
       playersStatistics = playerStatisticsIncrementalFactory(playersStatistics, athlete, captainId)
+      const athletePoints = calculatePoints(athlete, captainId)
 
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
         playersStatistics[athlete.atleta_id].captainTimes++
         playersStatistics[athlete.atleta_id].captainRounds.push({
           round: result.value.rodada_atual,
-          points: calculatePoints(athlete, captainId),
+          points: athletePoints,
           rawPoints: athlete.pontos_num
         })
       }
-
-      const athletePoints = calculatePoints(athlete, captainId)
 
       if (clubsStatistics[athlete.clube_id]) {
         clubsStatistics[athlete.clube_id].points += athletePoints
@@ -390,6 +407,62 @@ export function formatCartolaApiData(
           pointsPercentage: 0
         }
       }
+
+      if (
+        athletePoints > 30 &&
+        !trophiesEarned.includes(TROPHIES.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND)
+      ) {
+        trophiesEarned.push(TROPHIES.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND)
+        teamsTrophies[TROPHIES.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND] = [athlete]
+      }
+
+      if (athlete.scout?.G && athlete.scout.G > 0) {
+        athletesThatScoredInRound.push(athlete)
+        if (
+          athletesThatScoredInRound.length >= 7 &&
+          !trophiesEarned.includes(TROPHIES.SEVEN_PLAYERS_SCORED)
+        ) {
+          trophiesEarned.push(TROPHIES.SEVEN_PLAYERS_SCORED)
+          teamsTrophies[TROPHIES.SEVEN_PLAYERS_SCORED] = athletesThatScoredInRound
+        }
+
+        if (athlete.scout.G === 3) {
+          trophiesEarned.push(TROPHIES.PLAYER_SCORED_HATTRICK)
+          teamsTrophies[TROPHIES.PLAYER_SCORED_HATTRICK] = [athlete]
+        }
+      }
+
+      if (athlete.scout?.CV && athlete.scout.CV > 0) {
+        redCardedAthletes.push(athlete)
+        if (
+          redCardedAthletes.length >= 3 &&
+          !trophiesEarned.includes(TROPHIES.MORE_THAN_THREE_RED_CARDED_PLAYERS)
+        ) {
+          trophiesEarned.push(TROPHIES.MORE_THAN_THREE_RED_CARDED_PLAYERS)
+          teamsTrophies[TROPHIES.MORE_THAN_THREE_RED_CARDED_PLAYERS] = redCardedAthletes
+        }
+      }
+
+      if (athlete.scout?.PP && athlete.scout.PP > 0) {
+        athletesThatMissedPenalty.push(athlete)
+        if (
+          athletesThatMissedPenalty.length >= 3 &&
+          !trophiesEarned.includes(TROPHIES.THREE_PLAYERS_MISSED_PENALTY)
+        ) {
+          trophiesEarned.push(TROPHIES.THREE_PLAYERS_MISSED_PENALTY)
+          teamsTrophies[TROPHIES.THREE_PLAYERS_MISSED_PENALTY] = athletesThatMissedPenalty
+        }
+      }
+
+      if (pointsInRound > 100 && !trophiesEarned.includes(TROPHIES.MORE_THAN_100_POINTS_IN_ROUND)) {
+        trophiesEarned.push(TROPHIES.MORE_THAN_100_POINTS_IN_ROUND)
+        teamsTrophies[TROPHIES.MORE_THAN_100_POINTS_IN_ROUND] = result.value
+      }
+
+      if (pointsInRound > 150 && !trophiesEarned.includes(TROPHIES.MORE_THAN_150_POINTS_IN_ROUND)) {
+        trophiesEarned.push(TROPHIES.MORE_THAN_150_POINTS_IN_ROUND)
+        teamsTrophies[TROPHIES.MORE_THAN_150_POINTS_IN_ROUND] = result.value
+      }
     })
 
     bench?.forEach((benchAthlete) => {
@@ -413,5 +486,5 @@ export function formatCartolaApiData(
     positionsStatistics[positionId].pointsPercentage = (position.points / seasonPoints) * 100
   })
 
-  return [playersStatistics, benchStatistics, clubsStatistics, positionsStatistics]
+  return [playersStatistics, benchStatistics, clubsStatistics, positionsStatistics, teamsTrophies]
 }

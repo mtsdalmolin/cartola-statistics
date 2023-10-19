@@ -19,6 +19,7 @@ type GetTeamsStatisticsActionState = {
     clubStatistics: NthChild<FormatCartolaApiDataType, 2>
     positionsStatistics: NthChild<FormatCartolaApiDataType, 3>
     rounds: Awaited<ReturnType<typeof getRoundsData>>
+    trophies: NthChild<FormatCartolaApiDataType, 4>
   } | null
 }
 
@@ -36,7 +37,7 @@ export async function getTeamStatistics(
     )
 
     const rounds = await getRoundsData(ROUNDS)
-    const [athleteStatistics, benchStatistics, clubStatistics, positionsStatistics] =
+    const [athleteStatistics, benchStatistics, clubStatistics, positionsStatistics, trophies] =
       formatCartolaApiData(results, rounds)
 
     revalidatePath('/')
@@ -47,7 +48,8 @@ export async function getTeamStatistics(
         benchStatistics,
         clubStatistics,
         positionsStatistics,
-        rounds
+        rounds,
+        trophies
       }
     }
   } catch (e) {
