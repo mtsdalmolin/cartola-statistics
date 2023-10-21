@@ -75,11 +75,12 @@ export default function Home() {
       </div>
       {state.data ? (
         <>
-          <TeamProfile teamInfo={state.data.teamInfo} trophies={state.data.trophies} />
-          <StatisticsSection
-            title="os melhores"
+          <TeamProfile
+            teamInfo={state.data.teamInfo}
+            trophies={state.data.trophies}
             apiHasEndedRequestsAndReturnedData={!!state.data && !pending}
-          >
+          />
+          <StatisticsSection title="os melhores">
             <MostValuatedPlayer crewData={state.data.athleteStatistics} />
             <BestCoach crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
             <Artillery crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
