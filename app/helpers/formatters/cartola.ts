@@ -5,6 +5,7 @@ import {
   RenderedAthlete
 } from '@/app/common/types/athlete'
 import { PositionsStatistics } from '@/app/common/types/position'
+import { TeamInfo } from '@/app/common/types/team'
 import { TrophiesData } from '@/app/common/types/trophies'
 import { Trophies } from '@/app/common/types/trophies'
 import {
@@ -347,12 +348,16 @@ function clubPositionFactory(positionId?: PositionsIds) {
 export function formatCartolaApiData(
   results: PromiseSettledResult<RoundData>[],
   rounds: RoundMatchesData
-): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics, TrophiesData] {
+): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics, TrophiesData, TeamInfo] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
   let positionsStatistics: PositionsStatistics = {}
   let seasonPoints = 0
+  const teamInfo: TeamInfo = {
+    badgePhotoUrl: '',
+    name: ''
+  }
   const trophiesEarned: string[] = []
   const teamsTrophies: TrophiesData = {}
   const redCardedAthletes: Athlete[] = []
@@ -361,7 +366,9 @@ export function formatCartolaApiData(
   results.forEach((result) => {
     if (result.status === 'rejected') return
 
-    seasonPoints = result.value.pontos_campeonato
+    teamInfo.badgePhotoUrl = result.value.time.url_escudo_png
+    teamInfo.name = result.value.time.nome
+
     const athletesThatScoredInRound: Athlete[] = []
 
     const {
@@ -493,5 +500,12 @@ export function formatCartolaApiData(
     positionsStatistics[positionId].pointsPercentage = (position.points / seasonPoints) * 100
   })
 
-  return [playersStatistics, benchStatistics, clubsStatistics, positionsStatistics, teamsTrophies]
+  return [
+    playersStatistics,
+    benchStatistics,
+    clubsStatistics,
+    positionsStatistics,
+    teamsTrophies,
+    teamInfo
+  ]
 }

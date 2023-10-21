@@ -8,6 +8,11 @@ export interface RoundData {
   capitao_id: number
   pontos: number
   pontos_campeonato: number
+  time: {
+    url_escudo_svg: string
+    url_escudo_png: string
+    nome: string
+  }
 }
 
 export interface MatchFromApi {

@@ -4,7 +4,7 @@ const nextConfig = {
     serverActions: true
   },
   images: {
-    domains: ['s.sde.globo.com']
+    domains: ['s.sde.globo.com', 's2-cartola.glbimg.com']
   },
   swcMinify: false,
   modularizeImports: {

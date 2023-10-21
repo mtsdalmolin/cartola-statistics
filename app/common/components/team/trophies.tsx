@@ -1,6 +1,7 @@
 import Image from 'next/image'
 
 import { type TrophiesReturnType } from '@/app/actions'
+import { Flex } from '@/app/common/components/flex'
 import bagreBadge from '@/public/badges/bagre-badge.svg'
 import hattrickBadge from '@/public/badges/hat-trick-badge.svg'
 import moreThanHundredFiftyPointsInRoundBadge from '@/public/badges/more-than-hundred-fifty-points-in-round-badge.svg'
@@ -12,7 +13,10 @@ import threePlayersRedCardedBadge from '@/public/badges/three-players-red-carded
 
 export function Trophies({ trophies }: { trophies: TrophiesReturnType }) {
   return (
-    <div className="flex">
+    <Flex
+      className="flex-nowrap overflow-x-auto px-2 py-8 w-full mobile:justify-start"
+      justify="center"
+    >
       {trophies['player-scored-hattrick'] ? (
         <Image
           className="hover:scale-150"
@@ -85,6 +89,6 @@ export function Trophies({ trophies }: { trophies: TrophiesReturnType }) {
           alt="Medalha de conquista porque fez menos que 30 pontos em alguma rodada"
         />
       ) : null}
-    </div>
+    </Flex>
   )
 }
