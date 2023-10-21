@@ -46,15 +46,15 @@ export function BestCoach<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
-  const orderedDefenseEfficiencyData = typedOrderBy(
+  const orderedBestCoachData = typedOrderBy(
     Object.values(crewData).filter(
       (athlete) => isCoach(athlete.posicao_id) && athlete.victoriesAverage
     ),
     ['victoriesAverage', 'castTimes'],
     ['desc', 'desc']
   )
-  const first = orderedDefenseEfficiencyData[0]
-  orderedDefenseEfficiencyData.shift()
+  const first = orderedBestCoachData[0]
+  orderedBestCoachData.shift()
   return (
     <SummaryContainer title="Melhor técnico">
       <ListHotspot
@@ -82,7 +82,7 @@ export function BestCoach<TCrewData extends CrewStatistics>({
       />
 
       <StatisticsList>
-        {take(orderedDefenseEfficiencyData, 9).map((athlete, idx) => (
+        {take(orderedBestCoachData, 9).map((athlete, idx) => (
           <ListItem
             key={athlete.atleta_id}
             name={athlete.apelido}
