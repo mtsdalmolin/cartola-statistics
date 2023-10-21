@@ -31,6 +31,7 @@ import { MostScheduledPlayer } from './common/components/statistics/most-schedul
 import { MostValuatedPlayer } from './common/components/statistics/most-valuated-player'
 import { StatisticsSection } from './common/components/statistics/section'
 import { WorstGoalkeeper } from './common/components/statistics/worst-goalkeeper'
+import { Trophies } from './common/components/team/trophies'
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -53,6 +54,8 @@ export default function Home() {
   })
   const { pending } = useFormStatus()
 
+  console.log({ state })
+
   return (
     <div className="w-full">
       <div className="flex h-[100vh]">
@@ -74,6 +77,7 @@ export default function Home() {
       </div>
       {state.data ? (
         <>
+          <Trophies trophies={state.data.trophies} />
           <StatisticsSection
             title="os melhores"
             apiHasEndedRequestsAndReturnedData={!!state.data && !pending}

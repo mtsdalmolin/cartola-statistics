@@ -11,6 +11,8 @@ type FormatCartolaApiDataType = ReturnType<typeof formatCartolaApiData>
 
 type NthChild<Archetype extends Array<unknown>, ChildIndex extends number> = Archetype[ChildIndex]
 
+export type TrophiesReturnType = NthChild<FormatCartolaApiDataType, 4>
+
 type GetTeamsStatisticsActionState = {
   message: 'success' | 'error' | null
   data?: {
@@ -19,7 +21,7 @@ type GetTeamsStatisticsActionState = {
     clubStatistics: NthChild<FormatCartolaApiDataType, 2>
     positionsStatistics: NthChild<FormatCartolaApiDataType, 3>
     rounds: Awaited<ReturnType<typeof getRoundsData>>
-    trophies: NthChild<FormatCartolaApiDataType, 4>
+    trophies: TrophiesReturnType
   } | null
 }
 

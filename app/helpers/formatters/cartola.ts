@@ -5,6 +5,8 @@ import {
   RenderedAthlete
 } from '@/app/common/types/athlete'
 import { PositionsStatistics } from '@/app/common/types/position'
+import { TrophiesData } from '@/app/common/types/trophies'
+import { Trophies } from '@/app/common/types/trophies'
 import {
   ATACANTE,
   GOLEIRO,
@@ -15,7 +17,6 @@ import {
   ZAGUEIRO
 } from '@/app/constants/positions'
 import { UNEMPLOYED } from '@/app/constants/teams'
-import * as TROPHIES from '@/app/constants/trophies'
 import { RoundData, RoundMatchesData } from '@/app/services/types'
 
 import { max } from 'lodash'
@@ -64,7 +65,15 @@ function handleRoundValuation(roundsValuation: [number, number][]) {
 }
 
 function getRoundResultPoints(round: RoundMatchesData[0], clubId: number) {
-  return round[clubId].result.winner === 'draw' ? 1 : round[clubId].result.winner === clubId ? 3 : 0
+  if (clubId in round) {
+    return round[clubId].result.winner === 'draw'
+      ? 1
+      : round[clubId].result.winner === clubId
+      ? 3
+      : 0
+  }
+
+  return 0
 }
 
 export function getRoundResults(athlete: RenderedAthlete, rounds: RoundMatchesData) {
@@ -338,20 +347,14 @@ function clubPositionFactory(positionId?: PositionsIds) {
 export function formatCartolaApiData(
   results: PromiseSettledResult<RoundData>[],
   rounds: RoundMatchesData
-): [
-  CrewStatistics,
-  CrewStatistics,
-  ClubStatistics,
-  PositionsStatistics,
-  { [key: string]: Athlete[] | RoundData }
-] {
+): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics, TrophiesData] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
   let positionsStatistics: PositionsStatistics = {}
   let seasonPoints = 0
   const trophiesEarned: string[] = []
-  const teamsTrophies: { [key: string]: Athlete[] | RoundData } = {}
+  const teamsTrophies: TrophiesData = {}
   const redCardedAthletes: Athlete[] = []
   const athletesThatMissedPenalty: Athlete[] = []
 
@@ -365,8 +368,7 @@ export function formatCartolaApiData(
       atletas: athletes,
       reservas: bench,
       capitao_id: captainId,
-      pontos: pointsInRound,
-      rodada_atual: currentRound
+      pontos: pointsInRound
     } = result.value
 
     athletes.forEach((athlete) => {
@@ -410,25 +412,25 @@ export function formatCartolaApiData(
 
       if (
         athletePoints > 30 &&
-        !trophiesEarned.includes(TROPHIES.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND)
+        !trophiesEarned.includes(Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND)
       ) {
-        trophiesEarned.push(TROPHIES.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND)
-        teamsTrophies[TROPHIES.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND] = [athlete]
+        trophiesEarned.push(Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND)
+        teamsTrophies[Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND] = [athlete]
       }
 
       if (athlete.scout?.G && athlete.scout.G > 0) {
         athletesThatScoredInRound.push(athlete)
         if (
           athletesThatScoredInRound.length >= 7 &&
-          !trophiesEarned.includes(TROPHIES.SEVEN_PLAYERS_SCORED)
+          !trophiesEarned.includes(Trophies.SEVEN_PLAYERS_SCORED)
         ) {
-          trophiesEarned.push(TROPHIES.SEVEN_PLAYERS_SCORED)
-          teamsTrophies[TROPHIES.SEVEN_PLAYERS_SCORED] = athletesThatScoredInRound
+          trophiesEarned.push(Trophies.SEVEN_PLAYERS_SCORED)
+          teamsTrophies[Trophies.SEVEN_PLAYERS_SCORED] = athletesThatScoredInRound
         }
 
         if (athlete.scout.G === 3) {
-          trophiesEarned.push(TROPHIES.PLAYER_SCORED_HATTRICK)
-          teamsTrophies[TROPHIES.PLAYER_SCORED_HATTRICK] = [athlete]
+          trophiesEarned.push(Trophies.PLAYER_SCORED_HATTRICK)
+          teamsTrophies[Trophies.PLAYER_SCORED_HATTRICK] = [athlete]
         }
       }
 
@@ -436,10 +438,10 @@ export function formatCartolaApiData(
         redCardedAthletes.push(athlete)
         if (
           redCardedAthletes.length >= 3 &&
-          !trophiesEarned.includes(TROPHIES.MORE_THAN_THREE_RED_CARDED_PLAYERS)
+          !trophiesEarned.includes(Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS)
         ) {
-          trophiesEarned.push(TROPHIES.MORE_THAN_THREE_RED_CARDED_PLAYERS)
-          teamsTrophies[TROPHIES.MORE_THAN_THREE_RED_CARDED_PLAYERS] = redCardedAthletes
+          trophiesEarned.push(Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS)
+          teamsTrophies[Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS] = redCardedAthletes
         }
       }
 
@@ -447,21 +449,26 @@ export function formatCartolaApiData(
         athletesThatMissedPenalty.push(athlete)
         if (
           athletesThatMissedPenalty.length >= 3 &&
-          !trophiesEarned.includes(TROPHIES.THREE_PLAYERS_MISSED_PENALTY)
+          !trophiesEarned.includes(Trophies.THREE_PLAYERS_MISSED_PENALTY)
         ) {
-          trophiesEarned.push(TROPHIES.THREE_PLAYERS_MISSED_PENALTY)
-          teamsTrophies[TROPHIES.THREE_PLAYERS_MISSED_PENALTY] = athletesThatMissedPenalty
+          trophiesEarned.push(Trophies.THREE_PLAYERS_MISSED_PENALTY)
+          teamsTrophies[Trophies.THREE_PLAYERS_MISSED_PENALTY] = athletesThatMissedPenalty
         }
       }
 
-      if (pointsInRound > 100 && !trophiesEarned.includes(TROPHIES.MORE_THAN_100_POINTS_IN_ROUND)) {
-        trophiesEarned.push(TROPHIES.MORE_THAN_100_POINTS_IN_ROUND)
-        teamsTrophies[TROPHIES.MORE_THAN_100_POINTS_IN_ROUND] = result.value
+      if (pointsInRound < 30 && !trophiesEarned.includes(Trophies.LESS_THAN_30_POINTS_IN_ROUND)) {
+        trophiesEarned.push(Trophies.LESS_THAN_30_POINTS_IN_ROUND)
+        teamsTrophies[Trophies.LESS_THAN_30_POINTS_IN_ROUND] = result.value
       }
 
-      if (pointsInRound > 150 && !trophiesEarned.includes(TROPHIES.MORE_THAN_150_POINTS_IN_ROUND)) {
-        trophiesEarned.push(TROPHIES.MORE_THAN_150_POINTS_IN_ROUND)
-        teamsTrophies[TROPHIES.MORE_THAN_150_POINTS_IN_ROUND] = result.value
+      if (pointsInRound > 100 && !trophiesEarned.includes(Trophies.MORE_THAN_100_POINTS_IN_ROUND)) {
+        trophiesEarned.push(Trophies.MORE_THAN_100_POINTS_IN_ROUND)
+        teamsTrophies[Trophies.MORE_THAN_100_POINTS_IN_ROUND] = result.value
+      }
+
+      if (pointsInRound > 150 && !trophiesEarned.includes(Trophies.MORE_THAN_150_POINTS_IN_ROUND)) {
+        trophiesEarned.push(Trophies.MORE_THAN_150_POINTS_IN_ROUND)
+        teamsTrophies[Trophies.MORE_THAN_150_POINTS_IN_ROUND] = result.value
       }
     })
 
