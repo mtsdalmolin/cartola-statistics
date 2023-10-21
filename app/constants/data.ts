@@ -1,4 +1,4 @@
-const MIOLLO_AND_THOMAS_ROUNDS = [18, 19, 20, 21, 22, 23, 24, 25, 26]
+const MIOLLO_AND_THOMAS_ROUNDS = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
 export const ROUNDS = [
   1,
   2,
