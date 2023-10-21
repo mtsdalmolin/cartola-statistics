@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { type TrophiesReturnType } from '@/app/actions'
 import { Flex } from '@/app/common/components/flex'
 import bagreBadge from '@/public/badges/bagre-badge.svg'
+import futebolaoLeaguePlayerBadge from '@/public/badges/futebolao-league-badge.svg'
 import hattrickBadge from '@/public/badges/hat-trick-badge.svg'
 import moreThanHundredFiftyPointsInRoundBadge from '@/public/badges/more-than-hundred-fifty-points-in-round-badge.svg'
 import moreThanHundredPointsInRoundBadge from '@/public/badges/more-than-hundred-points-in-round-badge.svg'
@@ -87,6 +88,15 @@ export function Trophies({ trophies }: { trophies: TrophiesReturnType }) {
           width={128}
           height={128}
           alt="Medalha de conquista porque fez menos que 30 pontos em alguma rodada"
+        />
+      ) : null}
+      {trophies['futebolao-league-player'] ? (
+        <Image
+          className="hover:scale-150"
+          src={futebolaoLeaguePlayerBadge}
+          width={128}
+          height={128}
+          alt="Medalha de conquista por ter participado da liga Futebolão"
         />
       ) : null}
     </Flex>

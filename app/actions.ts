@@ -2,7 +2,10 @@
 
 import { revalidatePath } from 'next/cache'
 
-import { ROUNDS } from './constants/data'
+import { find } from 'lodash'
+
+import { Trophies } from './common/types/trophies'
+import { ROUNDS, TEAMS } from './constants/data'
 import { formatCartolaApiData } from './helpers/formatters/cartola'
 import { ENDPOINTS, getRoundsData, request } from './services/cartola-api'
 import { RoundData } from './services/types'
@@ -48,6 +51,8 @@ export async function getTeamStatistics(
       trophies,
       teamInfo
     ] = formatCartolaApiData(results, rounds)
+
+    if (find(TEAMS, { id: Number(teamId) })) trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
 
     revalidatePath('/')
     return {

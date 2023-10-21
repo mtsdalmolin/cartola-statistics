@@ -54,8 +54,6 @@ export default function Home() {
   })
   const { pending } = useFormStatus()
 
-  console.log({ state })
-
   return (
     <div className="w-full">
       <div className="flex h-[100vh]">
