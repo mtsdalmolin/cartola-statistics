@@ -6,9 +6,9 @@ import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 import Image from 'next/image'
 
 import brand from '@/public/logo/brand.svg'
-import { Button, Input, Loader } from '@mantine/core'
 
 import { getTeamStatistics } from './actions'
+import { SearchTeamStatisticsForm } from './common/components/forms/search-team-statistics'
 import { Artillery } from './common/components/statistics/artillery'
 // import { BestAwayPlayer } from './common/components/statistics/best-away-player'
 import { BestCoach } from './common/components/statistics/best-coach'
@@ -33,44 +33,19 @@ import { StatisticsSection } from './common/components/statistics/section'
 import { WorstGoalkeeper } from './common/components/statistics/worst-goalkeeper'
 import { TeamProfile } from './common/components/team/profile'
 
-function SubmitButton() {
-  const { pending } = useFormStatus()
-
-  return (
-    <Button
-      className="bg-palette-primary-500 hover:bg-palette-primary-700 text-palette-neutral-900"
-      type="submit"
-      aria-disabled={pending}
-    >
-      {pending ? <Loader color="#12211c" size={20} /> : 'Buscar resumo'}
-    </Button>
-  )
-}
-
 export default function Home() {
+  const { pending } = useFormStatus()
   const [state, formAction] = useFormState(getTeamStatistics, {
     message: null,
     data: null
   })
-  const { pending } = useFormStatus()
 
   return (
     <div className="w-full">
       <div className="flex h-[100vh]">
         <div className="m-auto w-fit">
           <Image src={brand} width={500} height={500} alt="brand" />
-          <form className="flex flex-col gap-4 w-full" action={formAction}>
-            <label htmlFor="teamId">Id do time do Cartola</label>
-            <Input
-              className="text-[#254439]"
-              type="text"
-              id="teamId"
-              name="teamId"
-              placeholder="Ex.: 29367702"
-              required
-            />
-            <SubmitButton />
-          </form>
+          <SearchTeamStatisticsForm action={formAction} />
         </div>
       </div>
       {state.data ? (

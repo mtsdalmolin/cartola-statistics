@@ -30,3 +30,10 @@ export interface MatchesData {
 export interface RoundMatchesData {
   [roundId: string]: { [clubId: string]: Match }
 }
+
+export interface TeamFromSearchApi {
+  time_id: number
+  nome: string
+  nome_cartola: string
+  url_escudo_png: string
+}

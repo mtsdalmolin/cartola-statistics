@@ -11,12 +11,13 @@ export const ENDPOINTS = {
   MARKET_STATUS: '/mercado/status',
   MATCHES: '/partidas',
   MATCHES_BY_ID: (roundId: string) => `/partidas/${roundId}`,
-  TEAM_ROUND: (teamId: string, round: string) => `/time/id/${teamId}/${round}`
+  TEAM_ROUND: (teamId: string, round: string) => `/time/id/${teamId}/${round}`,
+  SEARCH_TEAM_BY_NAME: (teamNameSearch: string) => `/busca?q=${teamNameSearch}`
 }
 
 const REVALIDATION_TIME_IN_SECONDS = 5 * 60
 
-export function request(endpoint: string, options: RequestInit = {}) {
+export function request<TData>(endpoint: string, options: RequestInit = {}): Promise<TData> {
   const requestOptions = options ?? {
     next: {
       revalidate: REVALIDATION_TIME_IN_SECONDS
