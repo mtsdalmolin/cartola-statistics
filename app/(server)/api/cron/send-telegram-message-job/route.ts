@@ -60,9 +60,9 @@ async function saveMarketDataToNeon({ payload, status }: { payload: string; stat
 }
 
 async function getMarketDataFromCartolaApi() {
-  const response = await request(ENDPOINTS.MARKET, { cache: 'no-store' })
+  const response = await request<{ atletas: Athlete[] }>(ENDPOINTS.MARKET, { cache: 'no-store' })
 
-  return response.atletas as Athlete[]
+  return response.atletas
 }
 
 function escapeMarkdownSpecialCharacters(word: string) {
