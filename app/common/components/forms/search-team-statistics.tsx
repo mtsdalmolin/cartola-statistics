@@ -1,8 +1,7 @@
 import { forwardRef, useState } from 'react'
 import { experimental_useFormStatus } from 'react-dom'
 
-import { ENDPOINTS, request } from '@/app/services/cartola-api'
-import { TeamFromSearchApi } from '@/app/services/types'
+import { searchTeamName } from '@/app/services/cartola-api'
 import { Autocomplete, Avatar, Button, Group, Loader, Text } from '@mantine/core'
 
 import { debounce } from 'lodash'
@@ -51,7 +50,7 @@ const AutoCompleteItem = forwardRef<HTMLDivElement, any>(
 )
 AutoCompleteItem.displayName = 'AutoCompleteItem'
 
-interface TeamsAutocompleteList {
+export interface TeamsAutocompleteList {
   id: number
   value: string
   subtitle: string
@@ -76,18 +75,8 @@ export function SearchTeamStatisticsForm({ action }: { action: (payload: FormDat
         ))}
         data={listOfTeamsInSearch}
         onKeyUp={debounce(async (event) => {
-          const teamsFound = await request<TeamFromSearchApi[]>(
-            ENDPOINTS.SEARCH_TEAM_BY_NAME(event.target.value)
-          )
-          const filteredTeamsFound = teamsFound
-            .filter((team) => team.time_id)
-            .map((team) => ({
-              id: team.time_id,
-              value: team.nome,
-              subtitle: team.nome_cartola,
-              badgeUrl: team.url_escudo_png
-            }))
-          setListOfTeamsInSearch(filteredTeamsFound)
+          const teamsFound = await searchTeamName(event.target.value)
+          setListOfTeamsInSearch(teamsFound)
         }, HALF_SECOND_IN_MS)}
       />
       <SubmitButton />

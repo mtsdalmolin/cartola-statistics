@@ -1,5 +1,6 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 
+import { TeamsAutocompleteList } from '../common/components/forms/search-team-statistics'
 import { formatCartolaApiData } from '../helpers/formatters/cartola'
 import { formatMatchData } from '../helpers/formatters/match'
 import { MatchesData, RoundData, RoundMatchesData } from './types'
@@ -56,6 +57,12 @@ function serializeQueryParams(queryParams: {
     }
     return acc
   }, '?')
+}
+
+export async function searchTeamName(teamName: string): Promise<TeamsAutocompleteList[]> {
+  const roundMatches = await fetch(`/api/search-team-names?q=${teamName}`).then((res) => res.json())
+
+  return roundMatches
 }
 
 export async function getRoundsData(roundIds: number[]): Promise<RoundMatchesData> {
