@@ -11,6 +11,7 @@ import { getTeamStatistics } from './actions'
 import { SearchTeamStatisticsForm } from './common/components/forms/search-team-statistics'
 import { Artillery } from './common/components/statistics/artillery'
 // import { BestAwayPlayer } from './common/components/statistics/best-away-player'
+import { BestBench } from './common/components/statistics/best-bench'
 import { BestCoach } from './common/components/statistics/best-coach'
 // import { BestHomePlayer } from './common/components/statistics/best-home-player'
 // import { DefenseEfficiency } from './common/components/statistics/defense-efficiency'
@@ -58,6 +59,7 @@ export default function Home() {
           <StatisticsSection title="os melhores">
             <MostValuatedPlayer crewData={state.data.athleteStatistics} />
             <BestCoach crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
+            <BestBench crewData={state.data.benchStatistics} matchesData={state.data.rounds} />
             <Artillery crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
             <HighestFinisher crewData={state.data.athleteStatistics} />
             {/* <BestHomePlayer crewData={state.data.athleteStatistics} />
