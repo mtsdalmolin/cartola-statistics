@@ -12,7 +12,7 @@ import { SummaryContainer } from './summary-container'
 
 function renderPointsAverageText(pointsAverage: string, isAbbreviated = true) {
   if (isAbbreviated) return `${pointsAverage} P/R`
-  return `${pointsAverage} pontos/rodada`
+  return `${pointsAverage} pts./rodada`
 }
 
 export function HighestAverage<TCrewData extends CrewStatistics>({
