@@ -4,7 +4,7 @@ import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 import { Tooltip } from '@mantine/core'
 
-import { countBy, take } from 'lodash'
+import { countBy } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { RoundMatchesResult } from './details/round-matches-result'
@@ -82,7 +82,7 @@ export function BestCoach<TCrewData extends CrewStatistics>({
       />
 
       <StatisticsList>
-        {take(orderedBestCoachData, 9).map((athlete, idx) => (
+        {orderedBestCoachData.map((athlete, idx) => (
           <ListItem
             key={athlete.atleta_id}
             name={athlete.apelido}
