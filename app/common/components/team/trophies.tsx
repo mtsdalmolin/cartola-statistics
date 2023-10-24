@@ -70,7 +70,15 @@ function getRoundValuation(round: RoundData) {
   return round.atletas.reduce((acc, athlete) => acc + athlete.variacao_num, 0)
 }
 
-function AthleteDetail({ athlete, title }: { athlete: Athlete; title: string }) {
+function AthleteDetail({
+  athlete,
+  isCaptain,
+  title
+}: {
+  athlete: Athlete
+  isCaptain?: boolean
+  title: string
+}) {
   return (
     <Flex className="w-full" direction="column">
       <Text weight={600} size="xs">
@@ -84,8 +92,11 @@ function AthleteDetail({ athlete, title }: { athlete: Athlete; title: string }) 
           />
         </Flex>
         <Flex className="w-max" align="center" justify="between">
-          <Text>{athlete?.apelido}</Text>
-          <Text>{(athlete?.pontos_num ?? 0).toFixed(1)} pts.</Text>
+          <Text className="truncate max-w-[80px]">{athlete?.apelido}</Text>
+          <Text>
+            {(isCaptain ? (athlete?.pontos_num ?? 0) * 1.5 : athlete?.pontos_num ?? 0).toFixed(1)}{' '}
+            pts.
+          </Text>
         </Flex>
       </Flex>
     </Flex>
@@ -151,11 +162,12 @@ function TrophyDescription({
                 }
                 weight={600}
               >
+                {getRoundValuation(data) > 0 ? '+' : ''}
                 {getRoundValuation(data).toFixed(1)}
               </Text>
             </Flex>
           </Flex>
-          <AthleteDetail athlete={getCaptainFromRound(data)!} title="Capitão" />
+          <AthleteDetail athlete={getCaptainFromRound(data)!} title="Capitão" isCaptain />
           <AthleteDetail athlete={getHighestScorer(data)!} title="Maior pontuador" />
           <AthleteDetail athlete={getLowestScorer(data)!} title="Menor pontuador" />
         </Flex>
