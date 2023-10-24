@@ -1,7 +1,7 @@
 import { Progress } from '@mantine/core'
 
 const FINISH_TYPE_TITLE = {
-  blockedFinishes: 'Fin. bloqueadas',
+  blockedFinishes: 'Fin. defendidas',
   finishesOnPost: 'Fin. na trave',
   goals: 'Gols',
   outOfTargetFinishes: 'Fin. para fora'
