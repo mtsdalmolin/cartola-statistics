@@ -1,7 +1,7 @@
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
-import { take } from 'lodash'
+import { isEmpty, take } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { AnimatedStatsRoundMatchesResult } from './details/animated-stats-round-matches-result'
@@ -23,6 +23,8 @@ export function BestBench<TCrewData extends CrewStatistics>({
   matchesData: RoundMatchesData
 }) {
   const orderedBestBenchData = typedOrderBy(Object.values(crewData), ['pointsAverage'], ['desc'])
+  if (isEmpty(orderedBestBenchData)) return null
+
   const first = orderedBestBenchData[0]
   orderedBestBenchData.shift()
   return (
