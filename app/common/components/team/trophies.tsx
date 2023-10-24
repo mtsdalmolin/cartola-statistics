@@ -151,7 +151,7 @@ function TrophyDescription({
                 }
                 weight={600}
               >
-                {getRoundValuation(data)}
+                {getRoundValuation(data).toFixed(1)}
               </Text>
             </Flex>
           </Flex>
