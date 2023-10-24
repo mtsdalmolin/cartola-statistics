@@ -52,6 +52,7 @@ export default function Home() {
       {state.data ? (
         <>
           <TeamProfile
+            matchesData={state.data.rounds}
             teamInfo={state.data.teamInfo}
             trophies={state.data.trophies}
             apiHasEndedRequestsAndReturnedData={!!state.data && !pending}
