@@ -20,7 +20,7 @@ import {
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { RoundData, RoundMatchesData } from '@/app/services/types'
 
-import { max, some } from 'lodash'
+import { isEmpty, max, some } from 'lodash'
 
 import { isCoach } from '../positions'
 
@@ -493,6 +493,7 @@ export function formatCartolaApiData(
     )
 
     if (
+      !isEmpty(defenseAthletes) &&
       !trophiesEarned.includes(Trophies.DEFENSE_DIDNT_SUFFER_GOALS) &&
       defenseAthletes.every((athlete) => athlete.scout.SG)
     ) {
