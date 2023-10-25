@@ -4,9 +4,11 @@ import { type TrophiesReturnType } from '@/app/actions'
 import { Flex } from '@/app/common/components/flex'
 import { TrophiesData, Trophies as TrophiesEnum } from '@/app/common/types/trophies'
 import { PHOTO_SIZE_FORMAT } from '@/app/constants/format'
+import { UNEMPLOYED } from '@/app/constants/teams'
 import { RoundData, RoundMatchesData } from '@/app/services/types'
 import bagreBadge from '@/public/badges/bagre-badge.svg'
 import futebolaoLeaguePlayerBadge from '@/public/badges/futebolao-league-badge.svg'
+import goalsInThreeSectionsBadge from '@/public/badges/goals-in-three-sections-badge.svg'
 import hattrickBadge from '@/public/badges/hat-trick-badge.svg'
 import moreThanHundredFiftyPointsInRoundBadge from '@/public/badges/more-than-hundred-fifty-points-in-round-badge.svg'
 import moreThanHundredPointsInRoundBadge from '@/public/badges/more-than-hundred-points-in-round-badge.svg'
@@ -23,6 +25,7 @@ import { MatchVersus } from '../match-versus'
 
 const TROPHIES_IMAGE = {
   [TrophiesEnum.FUTEBOLAO_LEAGUE_PLAYER]: futebolaoLeaguePlayerBadge,
+  [TrophiesEnum.GOALS_IN_THREE_SECTIONS]: goalsInThreeSectionsBadge,
   [TrophiesEnum.LESS_THAN_30_POINTS_IN_ROUND]: bagreBadge,
   [TrophiesEnum.MORE_THAN_100_POINTS_IN_ROUND]: moreThanHundredPointsInRoundBadge,
   [TrophiesEnum.MORE_THAN_150_POINTS_IN_ROUND]: moreThanHundredFiftyPointsInRoundBadge,
@@ -36,6 +39,8 @@ const TROPHIES_IMAGE = {
 const TROPHY_DESCRIPTION = {
   [TrophiesEnum.FUTEBOLAO_LEAGUE_PLAYER]:
     'Medalha de conquista por ter participado da liga Futebolão.',
+  [TrophiesEnum.GOALS_IN_THREE_SECTIONS]:
+    'Medalha de conquista por ter escalado jogadores dos 3 setores do campo que marcaram.',
   [TrophiesEnum.LESS_THAN_30_POINTS_IN_ROUND]:
     'Medalha de conquista por ter feito menos de 30 pontos em alguma rodada.',
   [TrophiesEnum.MORE_THAN_100_POINTS_IN_ROUND]:
@@ -126,11 +131,17 @@ function TrophyDescription({
                   <Text weight={600} size="xs">
                     Rodada {athlete.rodada_id}
                   </Text>
-                  <MatchVersus
-                    match={matchesData[athlete.rodada_id][athlete.clube_id]}
-                    badgeSize={18}
-                    fontSize="xs"
-                  />
+                  {athlete.clube_id === UNEMPLOYED ? (
+                    <Text className="text-inherit" size="xs">
+                      Atleta sem clube
+                    </Text>
+                  ) : (
+                    <MatchVersus
+                      match={matchesData[athlete.rodada_id][athlete.clube_id]}
+                      badgeSize={18}
+                      fontSize="xs"
+                    />
+                  )}
                 </Flex>
                 <Flex align="center" justify="end">
                   <Text className="truncate max-w-[70px]">{athlete.apelido}</Text>

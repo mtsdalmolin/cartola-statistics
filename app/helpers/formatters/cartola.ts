@@ -20,7 +20,7 @@ import {
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { RoundData, RoundMatchesData } from '@/app/services/types'
 
-import { max } from 'lodash'
+import { max, some } from 'lodash'
 
 import { isCoach } from '../positions'
 
@@ -478,6 +478,15 @@ export function formatCartolaApiData(
         teamsTrophies[Trophies.MORE_THAN_150_POINTS_IN_ROUND] = result.value
       }
     })
+
+    if (
+      !trophiesEarned.includes(Trophies.GOALS_IN_THREE_SECTIONS) &&
+      some(athletesThatScoredInRound, { posicao_id: LATERAL || ZAGUEIRO }) &&
+      some(athletesThatScoredInRound, { posicao_id: MEIA }) &&
+      some(athletesThatScoredInRound, { posicao_id: ATACANTE })
+    ) {
+      teamsTrophies[Trophies.GOALS_IN_THREE_SECTIONS] = athletesThatScoredInRound
+    }
 
     bench?.forEach((benchAthlete) => {
       benchStatistics = playerStatisticsIncrementalFactory(benchStatistics, benchAthlete, captainId)
