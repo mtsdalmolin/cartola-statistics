@@ -488,6 +488,17 @@ export function formatCartolaApiData(
       teamsTrophies[Trophies.GOALS_IN_THREE_SECTIONS] = athletesThatScoredInRound
     }
 
+    const defenseAthletes = athletes.filter((athlete) =>
+      [GOLEIRO, ZAGUEIRO, LATERAL].includes(athlete.posicao_id)
+    )
+
+    if (
+      !trophiesEarned.includes(Trophies.DEFENSE_DIDNT_SUFFER_GOALS) &&
+      defenseAthletes.every((athlete) => athlete.scout.SG)
+    ) {
+      teamsTrophies[Trophies.DEFENSE_DIDNT_SUFFER_GOALS] = result.value
+    }
+
     bench?.forEach((benchAthlete) => {
       benchStatistics = playerStatisticsIncrementalFactory(benchStatistics, benchAthlete, captainId)
     })

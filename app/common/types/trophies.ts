@@ -3,6 +3,7 @@ import { RoundData } from '@/app/services/types'
 import { Athlete } from './athlete'
 
 export enum Trophies {
+  DEFENSE_DIDNT_SUFFER_GOALS = 'defense-didnt-suffer-goals',
   FUTEBOLAO_LEAGUE_PLAYER = 'futebolao-league-player',
   GOALS_IN_THREE_SECTIONS = 'goals-in-three-sections',
   LESS_THAN_30_POINTS_IN_ROUND = 'less-than-30-points-in-round',

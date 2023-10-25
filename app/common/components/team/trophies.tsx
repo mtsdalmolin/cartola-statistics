@@ -7,6 +7,7 @@ import { PHOTO_SIZE_FORMAT } from '@/app/constants/format'
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { RoundData, RoundMatchesData } from '@/app/services/types'
 import bagreBadge from '@/public/badges/bagre-badge.svg'
+import defenseDidntSufferGoalsBadge from '@/public/badges/defense-didnt-suffer-goals-badge.svg'
 import futebolaoLeaguePlayerBadge from '@/public/badges/futebolao-league-badge.svg'
 import goalsInThreeSectionsBadge from '@/public/badges/goals-in-three-sections-badge.svg'
 import hattrickBadge from '@/public/badges/hat-trick-badge.svg'
@@ -24,6 +25,7 @@ import { Athlete } from '../../types/athlete'
 import { MatchVersus } from '../match-versus'
 
 const TROPHIES_IMAGE = {
+  [TrophiesEnum.DEFENSE_DIDNT_SUFFER_GOALS]: defenseDidntSufferGoalsBadge,
   [TrophiesEnum.FUTEBOLAO_LEAGUE_PLAYER]: futebolaoLeaguePlayerBadge,
   [TrophiesEnum.GOALS_IN_THREE_SECTIONS]: goalsInThreeSectionsBadge,
   [TrophiesEnum.LESS_THAN_30_POINTS_IN_ROUND]: bagreBadge,
@@ -37,6 +39,8 @@ const TROPHIES_IMAGE = {
 }
 
 const TROPHY_DESCRIPTION = {
+  [TrophiesEnum.DEFENSE_DIDNT_SUFFER_GOALS]:
+    'Medalha de conquista por ter escalado uma defesa que não sofreu gols.',
   [TrophiesEnum.FUTEBOLAO_LEAGUE_PLAYER]:
     'Medalha de conquista por ter participado da liga Futebolão.',
   [TrophiesEnum.GOALS_IN_THREE_SECTIONS]:
