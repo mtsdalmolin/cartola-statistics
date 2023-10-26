@@ -13,6 +13,7 @@ specifiers:
   '@types/react-responsive-masonry': ^2.1.1
   '@typescript-eslint/eslint-plugin': ^6.7.5
   '@typescript-eslint/parser': ^6.7.5
+  '@vercel/analytics': ^1.1.1
   '@vercel/postgres': ^0.4.1
   autoprefixer: 10.4.14
   date-fns: ^2.30.0
@@ -44,6 +45,7 @@ dependencies:
   '@mantine/dates': 6.0.21_2fyk7yet2txjlbngtel2uytbm4
   '@mantine/hooks': 6.0.21_react@18.2.0
   '@tabler/icons-react': 2.30.0_react@18.2.0
+  '@vercel/analytics': 1.1.1
   '@vercel/postgres': 0.4.1
   autoprefixer: 10.4.14_postcss@8.4.27
   date-fns: 2.30.0
@@ -914,6 +916,12 @@ packages:
       '@typescript-eslint/types': 6.7.5
       eslint-visitor-keys: 3.4.3
     dev: true
+
+  /@vercel/analytics/1.1.1:
+    resolution: {integrity: sha512-+NqgNmSabg3IFfxYhrWCfB/H+RCUOCR5ExRudNG2+pcRehq628DJB5e1u1xqwpLtn4pAYii4D98w7kofORAGQA==}
+    dependencies:
+      server-only: 0.0.1
+    dev: false
 
   /@vercel/postgres/0.4.1:
     resolution: {integrity: sha512-rYlNnaXrr2/NWK/OodhAUyed0bomaizKKC8XXjNYv8I1K3m75oocP4IGTcBpZe76VCrHuaKW5d6jLQnuRRoNKg==}
@@ -3248,6 +3256,10 @@ packages:
     dependencies:
       lru-cache: 6.0.0
     dev: true
+
+  /server-only/0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+    dev: false
 
   /shebang-command/2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
