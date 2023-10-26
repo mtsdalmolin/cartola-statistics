@@ -7,6 +7,8 @@ import Image from 'next/image'
 
 import brand from '@/public/logo/brand.svg'
 
+import { isEmpty } from 'lodash'
+
 import { getTeamStatistics } from './actions'
 import { SearchTeamStatisticsForm } from './common/components/forms/search-team-statistics'
 import { Artillery } from './common/components/statistics/artillery'
@@ -57,52 +59,76 @@ export default function Home() {
             trophies={state.data.trophies}
             apiHasEndedRequestsAndReturnedData={!!state.data && !pending}
           />
-          <StatisticsSection title="os melhores">
-            <MostValuatedPlayer crewData={state.data.athleteStatistics} />
-            <BestCoach crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
-            <BestBench crewData={state.data.benchStatistics} matchesData={state.data.rounds} />
-            <Artillery crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
-            <HighestFinisher crewData={state.data.athleteStatistics} />
-            {/* <BestHomePlayer crewData={state.data.athleteStatistics} />
+          {!isEmpty(state.data.athleteStatistics) ? (
+            <>
+              <StatisticsSection title="os melhores">
+                <MostValuatedPlayer crewData={state.data.athleteStatistics} />
+                <BestCoach
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+                <BestBench crewData={state.data.benchStatistics} matchesData={state.data.rounds} />
+                <Artillery
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+                <HighestFinisher crewData={state.data.athleteStatistics} />
+                {/* <BestHomePlayer crewData={state.data.athleteStatistics} />
             <BestAwayPlayer crewData={state.data.athleteStatistics} /> */}
-            {/* <FinishEfficiency crewData={state.data.athleteStatistics} />
+                {/* <FinishEfficiency crewData={state.data.athleteStatistics} />
             <DefenseEfficiency crewData={state.data.athleteStatistics} /> */}
-            <MoreAssists crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
-            <MoreDefenses crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
-            <MoreTackles crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
-            <HighestAverage
-              crewData={state.data.athleteStatistics}
-              matchesData={state.data.rounds}
-            />
-          </StatisticsSection>
-          <StatisticsSection title="os piores">
-            <LeastValuatedPlayer crewData={state.data.athleteStatistics} />
-            <WorstGoalkeeper
-              crewData={state.data.athleteStatistics}
-              matchesData={state.data.rounds}
-            />
-            <MoreYellowCards
-              crewData={state.data.athleteStatistics}
-              matchesData={state.data.rounds}
-            />
-            <MoreRedCards crewData={state.data.athleteStatistics} matchesData={state.data.rounds} />
-          </StatisticsSection>
-          <StatisticsSection title="resto">
-            <MostRoundsAsCaptain crewData={state.data.athleteStatistics} />
-            <LineupsPerTeam clubsData={state.data.clubStatistics} />
-            <HighestScorer
-              crewData={state.data.athleteStatistics}
-              matchesData={state.data.rounds}
-            />
-            <MostScheduledPlayer
-              crewData={state.data.athleteStatistics}
-              matchesData={state.data.rounds}
-            />
-            <MostOffsidedPlayer
-              crewData={state.data.athleteStatistics}
-              matchesData={state.data.rounds}
-            />
-          </StatisticsSection>
+                <MoreAssists
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+                <MoreDefenses
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+                <MoreTackles
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+                <HighestAverage
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+              </StatisticsSection>
+              <StatisticsSection title="os piores">
+                <LeastValuatedPlayer crewData={state.data.athleteStatistics} />
+                <WorstGoalkeeper
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+                <MoreYellowCards
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+                <MoreRedCards
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+              </StatisticsSection>
+              <StatisticsSection title="resto">
+                <MostRoundsAsCaptain crewData={state.data.athleteStatistics} />
+                <LineupsPerTeam clubsData={state.data.clubStatistics} />
+                <HighestScorer
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+                <MostScheduledPlayer
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+                <MostOffsidedPlayer
+                  crewData={state.data.athleteStatistics}
+                  matchesData={state.data.rounds}
+                />
+              </StatisticsSection>
+            </>
+          ) : (
+            'Sem dados'
+          )}
         </>
       ) : null}
     </div>

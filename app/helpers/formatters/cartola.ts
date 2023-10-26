@@ -8,6 +8,7 @@ import { PositionsStatistics } from '@/app/common/types/position'
 import { TeamInfo } from '@/app/common/types/team'
 import { TrophiesData } from '@/app/common/types/trophies'
 import { Trophies } from '@/app/common/types/trophies'
+import { FIRST_TURN_ROUNDS, SECOND_TURN_ROUNDS } from '@/app/constants/data'
 import {
   ATACANTE,
   GOLEIRO,
@@ -356,7 +357,17 @@ export function formatCartolaApiData(
   let seasonPoints = 0
   const teamInfo: TeamInfo = {
     badgePhotoUrl: '',
-    name: ''
+    name: '',
+    pointsPerTurn: {
+      first: {
+        total: 0,
+        average: 0
+      },
+      second: {
+        total: 0,
+        average: 0
+      }
+    }
   }
   const trophiesEarned: string[] = []
   const teamsTrophies: TrophiesData = {}
@@ -368,6 +379,12 @@ export function formatCartolaApiData(
 
     teamInfo.badgePhotoUrl = result.value.time.url_escudo_png
     teamInfo.name = result.value.time.nome
+
+    if (FIRST_TURN_ROUNDS.includes(result.value.rodada_atual)) {
+      teamInfo.pointsPerTurn.first.total += result.value.pontos
+    } else if (SECOND_TURN_ROUNDS.includes(result.value.rodada_atual)) {
+      teamInfo.pointsPerTurn.second.total += result.value.pontos
+    }
 
     const athletesThatScoredInRound: Athlete[] = []
 
@@ -520,6 +537,11 @@ export function formatCartolaApiData(
   Object.entries(positionsStatistics).forEach(([positionId, position]) => {
     positionsStatistics[positionId].pointsPercentage = (position.points / seasonPoints) * 100
   })
+
+  teamInfo.pointsPerTurn.first.average =
+    teamInfo.pointsPerTurn.first.total / FIRST_TURN_ROUNDS.length
+  teamInfo.pointsPerTurn.second.average =
+    teamInfo.pointsPerTurn.second.total / SECOND_TURN_ROUNDS.length
 
   return [
     playersStatistics,
