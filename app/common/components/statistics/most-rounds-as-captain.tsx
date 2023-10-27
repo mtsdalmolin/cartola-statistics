@@ -30,7 +30,7 @@ function CaptainStatistics<TRounds extends any[]>({
         let rawPointsPercentage = getPointsPercentage(roundData.rawPoints, roundData.points)
 
         return (
-          <div key={roundData.points}>
+          <div key={`${roundData.round}-${roundData.points}`}>
             <div className="flex justify-between w-full text-xs text-left">
               <span>Rodada {roundData.round}</span>
               <span>{roundData.points.toFixed(1)} pts</span>
