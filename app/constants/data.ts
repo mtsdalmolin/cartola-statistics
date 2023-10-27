@@ -1,7 +1,7 @@
 export const FIRST_TURN_ROUNDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-export const SECOND_TURN_ROUNDS = [20, 21, 22, 23, 24, 25, 26, 27, 28]
+export const SECOND_TURN_ROUNDS = [20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
 
-const MIOLLO_AND_THOMAS_ROUNDS = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+const MIOLLO_AND_THOMAS_ROUNDS = [18, 19, ...SECOND_TURN_ROUNDS]
 export const ROUNDS = [
   1,
   2,
