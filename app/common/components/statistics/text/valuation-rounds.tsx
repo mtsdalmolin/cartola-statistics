@@ -1,16 +1,16 @@
 export function ValuationRoundsText({
-  valuatedRoundsAboveZero,
+  valuedRoundsAboveZero,
   valuationValue,
   isAbbreviated = false
 }: {
-  valuatedRoundsAboveZero: number
+  valuedRoundsAboveZero: number
   valuationValue: number
   isAbbreviated?: boolean
 }) {
   if (isAbbreviated)
     return (
       <span>
-        {`${valuatedRoundsAboveZero} rds.`}(
+        {`${valuedRoundsAboveZero} rds.`}(
         <span className={valuationValue > 0 ? 'text-palette-primary-700' : 'text-red-500'}>
           {valuationValue > 0 ? `+${valuationValue.toFixed(1)}` : valuationValue.toFixed(1)}
         </span>
@@ -19,7 +19,7 @@ export function ValuationRoundsText({
     )
   return (
     <span>
-      {`${valuatedRoundsAboveZero} rodada${valuatedRoundsAboveZero > 1 ? 's' : ''}`} (
+      {`${valuedRoundsAboveZero} rodada${valuedRoundsAboveZero > 1 ? 's' : ''}`} (
       <span className={valuationValue > 0 ? 'text-palette-primary-700' : 'text-red-500'}>
         {valuationValue > 0 ? `+${valuationValue.toFixed(1)}` : valuationValue.toFixed(1)}
       </span>

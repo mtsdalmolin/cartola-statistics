@@ -11,8 +11,8 @@ export const STATISTICS_IDS = {
   averagePointsHome: 'average-points-home',
   averagePointsAway: 'average-points-away',
   victoriesPercentage: 'victories-percentage',
-  roundsValuated: 'rounds-valuated',
-  roundsDevaluated: 'rounds-devaluated'
+  roundsValued: 'rounds-valued',
+  roundsDevalued: 'rounds-devalued'
 }
 
 export const CAST_TIMES_OPTION = { value: 'castTimes', label: 'Escalações' }
@@ -39,11 +39,11 @@ export const DEFENSES_TO_SUFFER_GOAL_OPTION = {
   label: 'Defesas para sofrer gol (DPG)'
 }
 export const VICTORIES_PERCENTAGE_OPTION = { value: 'victoriesAverage', label: 'Vitórias %' }
-export const ROUNDS_THAT_VALUATED_OPTION = {
+export const ROUNDS_THAT_VALUED_OPTION = {
   value: 'valuation.rounds.aboveZero',
   label: 'Rodadas que valorizou'
 }
-export const ROUNDS_THAT_DEVALUATED_OPTION = {
+export const ROUNDS_THAT_DEVALUED_OPTION = {
   value: 'valuation.rounds.belowZero',
   label: 'Rodadas que desvalorizou'
 }
@@ -60,8 +60,8 @@ export const OPTIONS = {
   [STATISTICS_IDS.defenses]: DEFENSES_OPTION,
   [STATISTICS_IDS.defensesToSufferGoal]: DEFENSES_TO_SUFFER_GOAL_OPTION,
   [STATISTICS_IDS.victoriesPercentage]: VICTORIES_PERCENTAGE_OPTION,
-  [STATISTICS_IDS.roundsValuated]: ROUNDS_THAT_VALUATED_OPTION,
-  [STATISTICS_IDS.roundsDevaluated]: ROUNDS_THAT_DEVALUATED_OPTION
+  [STATISTICS_IDS.roundsValued]: ROUNDS_THAT_VALUED_OPTION,
+  [STATISTICS_IDS.roundsDevalued]: ROUNDS_THAT_DEVALUED_OPTION
 }
 
 export type StatisticOption = typeof CAST_TIMES_OPTION

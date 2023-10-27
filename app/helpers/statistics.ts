@@ -93,14 +93,14 @@ export function getAthleteStatistics(athlete: RenderedAthlete) {
       canRender: () => isCoach(athlete.posicao_id)
     },
     {
-      id: STATISTICS_IDS.roundsValuated,
+      id: STATISTICS_IDS.roundsValued,
       label: 'RV',
       title: 'Rodadas que valorizou',
       value: athlete.valuation.rounds.aboveZero,
       canRender: () => true
     },
     {
-      id: STATISTICS_IDS.roundsDevaluated,
+      id: STATISTICS_IDS.roundsDevalued,
       label: 'RD',
       title: 'Rodadas que desvalorizou',
       value: athlete.valuation.rounds.belowZero,

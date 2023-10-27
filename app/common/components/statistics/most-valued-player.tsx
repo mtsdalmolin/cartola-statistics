@@ -10,40 +10,40 @@ import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 import { ValuationRoundsText } from './text/valuation-rounds'
 
-export function LeastValuatedPlayer<TCrewData extends CrewStatistics>({
+export function MostValuedPlayer<TCrewData extends CrewStatistics>({
   crewData
 }: {
   crewData: TCrewData
 }) {
-  const orderedLeastValuatedPlayerData = typedOrderBy(
+  const orderedMostValuedPlayerData = typedOrderBy(
     Object.values(crewData),
     'valuation.rounds.sum' as any,
-    'asc'
+    'desc'
   )
-  const first = orderedLeastValuatedPlayerData[0]
-  orderedLeastValuatedPlayerData.shift()
+  const first = orderedMostValuedPlayerData[0]
+  orderedMostValuedPlayerData.shift()
   return (
-    <SummaryContainer title="Mais desvalorizados">
+    <SummaryContainer title="Mais valorizados">
       <ListHotspot
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={
           <ValuationRoundsText
-            valuatedRoundsAboveZero={first.valuation.rounds.belowZero}
+            valuedRoundsAboveZero={first.valuation.rounds.aboveZero}
             valuationValue={first.valuation.rounds.sum}
           />
         }
         details={
           <ValuationRounds
             valuationRoundValues={first.valuation.rounds.values.filter(
-              ([_, valuation]) => valuation < 0
+              ([_, valuation]) => valuation > 0
             )}
           />
         }
       />
 
       <StatisticsList>
-        {take(orderedLeastValuatedPlayerData, 9).map((athlete, idx) => (
+        {take(orderedMostValuedPlayerData, 9).map((athlete, idx) => (
           <ListItem
             key={athlete.atleta_id}
             name={athlete.apelido}
@@ -51,7 +51,7 @@ export function LeastValuatedPlayer<TCrewData extends CrewStatistics>({
             imgSize={45}
             data={
               <ValuationRoundsText
-                valuatedRoundsAboveZero={athlete.valuation.rounds.belowZero}
+                valuedRoundsAboveZero={athlete.valuation.rounds.aboveZero}
                 valuationValue={athlete.valuation.rounds.sum}
                 isAbbreviated
               />

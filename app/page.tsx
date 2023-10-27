@@ -21,7 +21,7 @@ import { BestCoach } from './common/components/statistics/best-coach'
 import { HighestAverage } from './common/components/statistics/highest-average'
 import { HighestFinisher } from './common/components/statistics/highest-finisher'
 import { HighestScorer } from './common/components/statistics/highest-scorer'
-import { LeastValuatedPlayer } from './common/components/statistics/least-valuated-player'
+import { LeastValuedPlayer } from './common/components/statistics/least-valued-player'
 import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
 import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
@@ -31,7 +31,7 @@ import { MoreYellowCards } from './common/components/statistics/more-yellow-card
 import { MostOffsidedPlayer } from './common/components/statistics/most-offsided-player'
 import { MostRoundsAsCaptain } from './common/components/statistics/most-rounds-as-captain'
 import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
-import { MostValuatedPlayer } from './common/components/statistics/most-valuated-player'
+import { MostValuedPlayer } from './common/components/statistics/most-valued-player'
 import { StatisticsSection } from './common/components/statistics/section'
 import { WorstGoalkeeper } from './common/components/statistics/worst-goalkeeper'
 import { TeamProfile } from './common/components/team/profile'
@@ -62,7 +62,7 @@ export default function Home() {
           {!isEmpty(state.data.athleteStatistics) ? (
             <>
               <StatisticsSection title="os melhores">
-                <MostValuatedPlayer crewData={state.data.athleteStatistics} />
+                <MostValuedPlayer crewData={state.data.athleteStatistics} />
                 <BestCoach
                   crewData={state.data.athleteStatistics}
                   matchesData={state.data.rounds}
@@ -95,7 +95,7 @@ export default function Home() {
                 />
               </StatisticsSection>
               <StatisticsSection title="os piores">
-                <LeastValuatedPlayer crewData={state.data.athleteStatistics} />
+                <LeastValuedPlayer crewData={state.data.athleteStatistics} />
                 <WorstGoalkeeper
                   crewData={state.data.athleteStatistics}
                   matchesData={state.data.rounds}
