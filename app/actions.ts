@@ -2,6 +2,8 @@
 
 import { revalidatePath } from 'next/cache'
 
+import { track } from '@vercel/analytics/server'
+
 import { find } from 'lodash'
 
 import { Trophies } from './common/types/trophies'
@@ -35,6 +37,12 @@ export async function getTeamStatistics(
 ): Promise<GetTeamsStatisticsActionState> {
   try {
     const teamId = formData.get('teamId')!
+    const teamName = formData.get('teamName')!
+
+    track('getTeamStatistics', {
+      teamId: teamId as unknown as number,
+      teamName: teamName as unknown as string
+    })
 
     const results = await Promise.allSettled<RoundData>(
       ROUNDS.map((round) => {
