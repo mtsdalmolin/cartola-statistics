@@ -347,6 +347,22 @@ function clubPositionFactory(positionId?: PositionsIds) {
   return clubPosition
 }
 
+function clubPositionPointsFactory(athlete: Athlete, points: number) {
+  const clubPositionPoints = {
+    [GOLEIRO]: 0,
+    [LATERAL]: 0,
+    [ZAGUEIRO]: 0,
+    [MEIA]: 0,
+    [ATACANTE]: 0,
+    [TECNICO]: 0
+  }
+
+  if (athlete.posicao_id && athlete.posicao_id in clubPositionPoints)
+    clubPositionPoints[athlete.posicao_id as keyof typeof clubPositionPoints] += points
+
+  return clubPositionPoints
+}
+
 export function formatCartolaApiData(
   results: PromiseSettledResult<RoundData>[],
   rounds: RoundMatchesData,
@@ -356,7 +372,6 @@ export function formatCartolaApiData(
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
   let positionsStatistics: PositionsStatistics = {}
-  let seasonPoints = 0
   const teamInfo: TeamInfo = {
     badgePhotoUrl: '',
     name: '',
@@ -423,6 +438,7 @@ export function formatCartolaApiData(
         clubsStatistics[athlete.clube_id].points += athletePoints
         clubsStatistics[athlete.clube_id].lineupNumbers++
         clubsStatistics[athlete.clube_id].positions[athlete.posicao_id]++
+        clubsStatistics[athlete.clube_id].positionsPoints[athlete.posicao_id] += athletePoints
       } else {
         if (athlete.clube_id !== UNEMPLOYED) {
           clubsStatistics[athlete.clube_id] = {
@@ -430,7 +446,8 @@ export function formatCartolaApiData(
             points: athletePoints,
             pointsPercentage: 0,
             lineupNumbers: 1,
-            positions: clubPositionFactory(athlete.posicao_id)
+            positions: clubPositionFactory(athlete.posicao_id),
+            positionsPoints: clubPositionPointsFactory(athlete, athletePoints)
           }
         }
       }
@@ -591,6 +608,8 @@ export function formatCartolaApiData(
   Object.entries(benchStatistics).forEach(([athleteId, athlete]) => {
     benchStatistics[athleteId] = handlePlayersDerivedStatistics(athlete, rounds)
   })
+
+  const seasonPoints = teamInfo.pointsPerTurn.first.total + teamInfo.pointsPerTurn.second.total
 
   Object.entries(clubsStatistics).forEach(([clubId, club]) => {
     clubsStatistics[clubId].pointsPercentage = (club.points / seasonPoints) * 100

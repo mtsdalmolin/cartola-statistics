@@ -106,5 +106,6 @@ export type ClubStatistics = Record<
     pointsPercentage: number
     lineupNumbers: number
     positions: Record<string, number>
+    positionsPoints: Record<string, number>
   }
 >

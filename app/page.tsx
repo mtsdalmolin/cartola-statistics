@@ -32,6 +32,7 @@ import { MostOffsidedPlayer } from './common/components/statistics/most-offsided
 import { MostRoundsAsCaptain } from './common/components/statistics/most-rounds-as-captain'
 import { MostScheduledPlayer } from './common/components/statistics/most-scheduled-player'
 import { MostValuedPlayer } from './common/components/statistics/most-valued-player'
+import { PointsPerClub } from './common/components/statistics/points-per-club'
 import { StatisticsSection } from './common/components/statistics/section'
 import { WorstGoalkeeper } from './common/components/statistics/worst-goalkeeper'
 import { TeamProfile } from './common/components/team/profile'
@@ -112,6 +113,7 @@ export default function Home() {
               <StatisticsSection title="resto">
                 <MostRoundsAsCaptain crewData={state.data.athleteStatistics} />
                 <LineupsPerClub clubsData={state.data.clubStatistics} />
+                <PointsPerClub clubsData={state.data.clubStatistics} />
                 <HighestScorer
                   crewData={state.data.athleteStatistics}
                   matchesData={state.data.rounds}
