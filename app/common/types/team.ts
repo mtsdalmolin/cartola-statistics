@@ -1,14 +1,14 @@
+type TurnData = {
+  average: number
+  total: number
+  validRounds: number
+}
+
 export interface TeamInfo {
   badgePhotoUrl: string
   name: string
   pointsPerTurn: {
-    first: {
-      average: number
-      total: number
-    }
-    second: {
-      average: number
-      total: number
-    }
+    first: TurnData
+    second: TurnData
   }
 }

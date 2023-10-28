@@ -24,6 +24,7 @@ import { RoundData, RoundMatchesData } from '@/app/services/types'
 import { isEmpty, max, some } from 'lodash'
 
 import { isCoach } from '../positions'
+import { isValidRound } from '../rounds'
 
 const PHOTO_SIZE_FORMAT = '220x220'
 
@@ -361,15 +362,16 @@ export function formatCartolaApiData(
     pointsPerTurn: {
       first: {
         total: 0,
-        average: 0
+        average: 0,
+        validRounds: 0
       },
       second: {
         total: 0,
-        average: 0
+        average: 0,
+        validRounds: 0
       }
     }
   }
-  const trophiesEarned: string[] = []
   const teamsTrophies: TrophiesData = {}
   const redCardedAthletes: Athlete[] = []
   const athletesThatMissedPenalty: Athlete[] = []
@@ -380,10 +382,14 @@ export function formatCartolaApiData(
     teamInfo.badgePhotoUrl = result.value.time.url_escudo_png
     teamInfo.name = result.value.time.nome
 
-    if (FIRST_TURN_ROUNDS.includes(result.value.rodada_atual)) {
-      teamInfo.pointsPerTurn.first.total += result.value.pontos
-    } else if (SECOND_TURN_ROUNDS.includes(result.value.rodada_atual)) {
-      teamInfo.pointsPerTurn.second.total += result.value.pontos
+    if (isValidRound(result.value)) {
+      if (FIRST_TURN_ROUNDS.includes(result.value.rodada_atual)) {
+        teamInfo.pointsPerTurn.first.validRounds++
+        teamInfo.pointsPerTurn.first.total += result.value.pontos
+      } else if (SECOND_TURN_ROUNDS.includes(result.value.rodada_atual)) {
+        teamInfo.pointsPerTurn.second.validRounds++
+        teamInfo.pointsPerTurn.second.total += result.value.pontos
+      }
     }
 
     const athletesThatScoredInRound: Athlete[] = []
@@ -539,9 +545,9 @@ export function formatCartolaApiData(
   })
 
   teamInfo.pointsPerTurn.first.average =
-    teamInfo.pointsPerTurn.first.total / FIRST_TURN_ROUNDS.length
+    teamInfo.pointsPerTurn.first.total / teamInfo.pointsPerTurn.first.validRounds
   teamInfo.pointsPerTurn.second.average =
-    teamInfo.pointsPerTurn.second.total / SECOND_TURN_ROUNDS.length
+    teamInfo.pointsPerTurn.second.total / teamInfo.pointsPerTurn.second.validRounds
 
   return [
     playersStatistics,
