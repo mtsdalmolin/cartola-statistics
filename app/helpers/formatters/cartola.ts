@@ -19,7 +19,7 @@ import {
   ZAGUEIRO
 } from '@/app/constants/positions'
 import { UNEMPLOYED } from '@/app/constants/teams'
-import { RoundData, RoundMatchesData } from '@/app/services/types'
+import { RoundData, RoundMatchesData, SubsData } from '@/app/services/types'
 
 import { isEmpty, max, some } from 'lodash'
 
@@ -349,7 +349,8 @@ function clubPositionFactory(positionId?: PositionsIds) {
 
 export function formatCartolaApiData(
   results: PromiseSettledResult<RoundData>[],
-  rounds: RoundMatchesData
+  rounds: RoundMatchesData,
+  subs: Record<string, SubsData[]>
 ): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics, TrophiesData, TeamInfo] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
@@ -393,12 +394,16 @@ export function formatCartolaApiData(
     }
 
     const athletesThatScoredInRound: Athlete[] = []
+    const athletesThatMadeLessThanZeroPointsInRound: Athlete[] = []
+    const athletesThatValuedInRound: Athlete[] = []
 
     const {
       atletas: athletes,
       reservas: bench,
       capitao_id: captainId,
-      pontos: pointsInRound
+      patrimonio: wealth,
+      pontos: pointsInRound,
+      rodada_atual: currentRound
     } = result.value
 
     athletes.forEach((athlete) => {
@@ -440,11 +445,31 @@ export function formatCartolaApiData(
         }
       }
 
+      if (athletePoints > athlete.minimo_para_valorizar) {
+        athletesThatValuedInRound.push(athlete)
+        if (
+          !(Trophies.EVERY_ATHLETE_VALUED in teamsTrophies) &&
+          athletesThatValuedInRound.length === 12
+        ) {
+          teamsTrophies[Trophies.EVERY_ATHLETE_VALUED] = athletesThatValuedInRound
+        }
+      }
+
+      if (athletePoints < 0) {
+        athletesThatMadeLessThanZeroPointsInRound.push(athlete)
+        if (
+          !(Trophies.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS in teamsTrophies) &&
+          athletesThatMadeLessThanZeroPointsInRound.length >= 4
+        ) {
+          teamsTrophies[Trophies.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS] =
+            athletesThatMadeLessThanZeroPointsInRound
+        }
+      }
+
       if (
         athletePoints > 30 &&
-        !trophiesEarned.includes(Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND)
+        !(Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND in teamsTrophies)
       ) {
-        trophiesEarned.push(Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND)
         teamsTrophies[Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND] = [athlete]
       }
 
@@ -452,14 +477,12 @@ export function formatCartolaApiData(
         athletesThatScoredInRound.push(athlete)
         if (
           athletesThatScoredInRound.length >= 7 &&
-          !trophiesEarned.includes(Trophies.SEVEN_PLAYERS_SCORED)
+          !(Trophies.SEVEN_PLAYERS_SCORED in teamsTrophies)
         ) {
-          trophiesEarned.push(Trophies.SEVEN_PLAYERS_SCORED)
           teamsTrophies[Trophies.SEVEN_PLAYERS_SCORED] = athletesThatScoredInRound
         }
 
         if (athlete.scout.G === 3) {
-          trophiesEarned.push(Trophies.PLAYER_SCORED_HATTRICK)
           teamsTrophies[Trophies.PLAYER_SCORED_HATTRICK] = [athlete]
         }
       }
@@ -468,9 +491,8 @@ export function formatCartolaApiData(
         redCardedAthletes.push(athlete)
         if (
           redCardedAthletes.length >= 3 &&
-          !trophiesEarned.includes(Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS)
+          !(Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS in teamsTrophies)
         ) {
-          trophiesEarned.push(Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS)
           teamsTrophies[Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS] = redCardedAthletes
         }
       }
@@ -479,31 +501,41 @@ export function formatCartolaApiData(
         athletesThatMissedPenalty.push(athlete)
         if (
           athletesThatMissedPenalty.length >= 3 &&
-          !trophiesEarned.includes(Trophies.THREE_PLAYERS_MISSED_PENALTY)
+          !(Trophies.THREE_PLAYERS_MISSED_PENALTY in teamsTrophies)
         ) {
-          trophiesEarned.push(Trophies.THREE_PLAYERS_MISSED_PENALTY)
           teamsTrophies[Trophies.THREE_PLAYERS_MISSED_PENALTY] = athletesThatMissedPenalty
         }
       }
 
-      if (pointsInRound < 30 && !trophiesEarned.includes(Trophies.LESS_THAN_30_POINTS_IN_ROUND)) {
-        trophiesEarned.push(Trophies.LESS_THAN_30_POINTS_IN_ROUND)
+      if (pointsInRound < 30 && !(Trophies.LESS_THAN_30_POINTS_IN_ROUND in teamsTrophies)) {
         teamsTrophies[Trophies.LESS_THAN_30_POINTS_IN_ROUND] = result.value
       }
 
-      if (pointsInRound > 100 && !trophiesEarned.includes(Trophies.MORE_THAN_100_POINTS_IN_ROUND)) {
-        trophiesEarned.push(Trophies.MORE_THAN_100_POINTS_IN_ROUND)
+      if (pointsInRound > 100 && !(Trophies.MORE_THAN_100_POINTS_IN_ROUND in teamsTrophies)) {
         teamsTrophies[Trophies.MORE_THAN_100_POINTS_IN_ROUND] = result.value
       }
 
-      if (pointsInRound > 150 && !trophiesEarned.includes(Trophies.MORE_THAN_150_POINTS_IN_ROUND)) {
-        trophiesEarned.push(Trophies.MORE_THAN_150_POINTS_IN_ROUND)
+      if (pointsInRound > 150 && !(Trophies.MORE_THAN_150_POINTS_IN_ROUND in teamsTrophies)) {
         teamsTrophies[Trophies.MORE_THAN_150_POINTS_IN_ROUND] = result.value
       }
     })
 
+    Object.entries(subs).forEach(([_, sub]) => {
+      sub.forEach((change) => {
+        if (
+          !(Trophies.CAME_FROM_BENCH_AND_MADE_12_POINTS in teamsTrophies) &&
+          change.entrou.pontos_num >= 12
+        ) {
+          teamsTrophies[Trophies.CAME_FROM_BENCH_AND_MADE_12_POINTS] = {
+            in: change.entrou,
+            out: change.saiu
+          }
+        }
+      })
+    })
+
     if (
-      !trophiesEarned.includes(Trophies.GOALS_IN_THREE_SECTIONS) &&
+      !(Trophies.GOALS_IN_THREE_SECTIONS in teamsTrophies) &&
       some(athletesThatScoredInRound, { posicao_id: LATERAL || ZAGUEIRO }) &&
       some(athletesThatScoredInRound, { posicao_id: MEIA }) &&
       some(athletesThatScoredInRound, { posicao_id: ATACANTE })
@@ -517,10 +549,34 @@ export function formatCartolaApiData(
 
     if (
       !isEmpty(defenseAthletes) &&
-      !trophiesEarned.includes(Trophies.DEFENSE_DIDNT_SUFFER_GOALS) &&
+      !(Trophies.DEFENSE_DIDNT_SUFFER_GOALS in teamsTrophies) &&
       defenseAthletes.every((athlete) => athlete.scout.SG)
     ) {
       teamsTrophies[Trophies.DEFENSE_DIDNT_SUFFER_GOALS] = result.value
+    }
+
+    if (!(Trophies.REACHED_200_CARTOLETAS in teamsTrophies) && wealth >= 200) {
+      teamsTrophies[Trophies.REACHED_200_CARTOLETAS] = result.value
+    }
+
+    const midfielders = athletes.filter((athlete) => MEIA === athlete.posicao_id)
+
+    if (
+      !(Trophies.EVERY_MIDFIELDER_HAVE_ASSISTS in teamsTrophies) &&
+      !isEmpty(midfielders) &&
+      midfielders.every((athlete) => athlete.scout.A)
+    ) {
+      teamsTrophies[Trophies.EVERY_MIDFIELDER_HAVE_ASSISTS] = midfielders
+    }
+
+    const strikers = athletes.filter((athlete) => ATACANTE === athlete.posicao_id)
+
+    if (
+      !(Trophies.EVERY_STRIKER_SCORED in teamsTrophies) &&
+      !isEmpty(strikers) &&
+      strikers.every((athlete) => athlete.scout.G)
+    ) {
+      teamsTrophies[Trophies.EVERY_STRIKER_SCORED] = strikers
     }
 
     bench?.forEach((benchAthlete) => {

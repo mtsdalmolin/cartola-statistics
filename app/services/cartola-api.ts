@@ -1,9 +1,10 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 
 import { TeamsAutocompleteList } from '../common/components/forms/search-team-statistics'
+import { TEAMS } from '../constants/data'
 import { formatCartolaApiData } from '../helpers/formatters/cartola'
 import { formatMatchData } from '../helpers/formatters/match'
-import { MatchesData, RoundData, RoundMatchesData } from './types'
+import { MatchesData, RoundData, RoundMatchesData, SubsData } from './types'
 
 export const CARTOLA_API = 'https://api.cartola.globo.com'
 
@@ -13,7 +14,8 @@ export const ENDPOINTS = {
   MATCHES: '/partidas',
   MATCHES_BY_ID: (roundId: string) => `/partidas/${roundId}`,
   TEAM_ROUND: (teamId: string, round: string) => `/time/id/${teamId}/${round}`,
-  SEARCH_TEAM_BY_NAME: (teamNameSearch: string) => `/busca?q=${teamNameSearch}`
+  SEARCH_TEAM_BY_NAME: (teamNameSearch: string) => `/busca?q=${teamNameSearch}`,
+  GET_TEAM_SUBS: (teamId: string, round: string) => `/time/substituicoes/${teamId}/${round}`
 }
 
 const REVALIDATION_TIME_IN_SECONDS = 5 * 60
@@ -37,9 +39,14 @@ export async function getPlayersTeamData(teamSlug: string, rounds: number[]) {
     })
   )
 
-  const roundMatches = await getRoundsData(rounds)
+  const team = TEAMS.find((team) => team.slug === teamSlug)
 
-  return formatCartolaApiData(results, roundMatches)
+  const roundMatches = await getRoundsData(rounds)
+  const subs = await getSubsData(team!.id.toString(), rounds)
+
+  if (!team) throw new Error('Forbidden')
+
+  return formatCartolaApiData(results, roundMatches, subs)
 }
 
 function serializeQueryParams(queryParams: {
@@ -73,6 +80,19 @@ export async function getRoundsData(roundIds: number[]): Promise<RoundMatchesDat
   ).then((res) => res.json())
 
   return roundMatches
+}
+
+export async function getSubsData(
+  teamId: string,
+  roundIds: number[]
+): Promise<Record<string, SubsData[]>> {
+  const subs = await fetch(
+    `${process.env.NEXT_API_BASE_URL}/api/get-subs-data/${teamId}${serializeQueryParams({
+      rounds: roundIds
+    })}`
+  ).then((res) => res.json())
+
+  return subs
 }
 
 export async function getMatchesData() {

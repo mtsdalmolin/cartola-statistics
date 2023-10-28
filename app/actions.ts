@@ -9,7 +9,7 @@ import { find } from 'lodash'
 import { Trophies } from './common/types/trophies'
 import { ROUNDS, TEAMS } from './constants/data'
 import { formatCartolaApiData } from './helpers/formatters/cartola'
-import { ENDPOINTS, getRoundsData, request } from './services/cartola-api'
+import { ENDPOINTS, getRoundsData, getSubsData, request } from './services/cartola-api'
 import { RoundData } from './services/types'
 
 type FormatCartolaApiDataType = ReturnType<typeof formatCartolaApiData>
@@ -51,6 +51,7 @@ export async function getTeamStatistics(
     )
 
     const rounds = await getRoundsData(ROUNDS)
+    const subs = await getSubsData(teamId.toString(), ROUNDS)
     const [
       athleteStatistics,
       benchStatistics,
@@ -58,7 +59,7 @@ export async function getTeamStatistics(
       positionsStatistics,
       trophies,
       teamInfo
-    ] = formatCartolaApiData(results, rounds)
+    ] = formatCartolaApiData(results, rounds, subs)
 
     if (find(TEAMS, { id: Number(teamId) })) trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
 

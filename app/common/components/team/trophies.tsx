@@ -17,7 +17,9 @@ import moreThanThirtyPointsWithOnePlayerBadge from '@/public/badges/more-than-th
 import sevenPlayersScoredInRoundBadge from '@/public/badges/seven-players-scored-in-round-badge.svg'
 import threePlayersMissedPenaltyBadge from '@/public/badges/three-players-missed-penalty-badge.svg'
 import threePlayersRedCardedBadge from '@/public/badges/three-players-red-carded-badge.svg'
+import edcLogo from '@/public/logo/edc-logo.svg'
 import { Avatar, HoverCard, Stack, Text } from '@mantine/core'
+import { IconArrowBigDownFilled, IconArrowBigUpFilled } from '@tabler/icons-react'
 
 import { isArray, isEmpty, isNil, maxBy, minBy } from 'lodash'
 
@@ -25,7 +27,12 @@ import { Athlete } from '../../types/athlete'
 import { MatchVersus } from '../match-versus'
 
 const TROPHIES_IMAGE = {
+  [TrophiesEnum.CAME_FROM_BENCH_AND_MADE_12_POINTS]: edcLogo,
   [TrophiesEnum.DEFENSE_DIDNT_SUFFER_GOALS]: defenseDidntSufferGoalsBadge,
+  [TrophiesEnum.EVERY_ATHLETE_VALUED]: edcLogo,
+  [TrophiesEnum.EVERY_MIDFIELDER_HAVE_ASSISTS]: edcLogo,
+  [TrophiesEnum.EVERY_STRIKER_SCORED]: edcLogo,
+  [TrophiesEnum.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS]: edcLogo,
   [TrophiesEnum.FUTEBOLAO_LEAGUE_PLAYER]: futebolaoLeaguePlayerBadge,
   [TrophiesEnum.GOALS_IN_THREE_SECTIONS]: goalsInThreeSectionsBadge,
   [TrophiesEnum.LESS_THAN_30_POINTS_IN_ROUND]: bagreBadge,
@@ -34,13 +41,24 @@ const TROPHIES_IMAGE = {
   [TrophiesEnum.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND]: moreThanThirtyPointsWithOnePlayerBadge,
   [TrophiesEnum.MORE_THAN_THREE_RED_CARDED_PLAYERS]: threePlayersRedCardedBadge,
   [TrophiesEnum.PLAYER_SCORED_HATTRICK]: hattrickBadge,
+  [TrophiesEnum.REACHED_200_CARTOLETAS]: edcLogo,
   [TrophiesEnum.SEVEN_PLAYERS_SCORED]: sevenPlayersScoredInRoundBadge,
   [TrophiesEnum.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyBadge
 }
 
 const TROPHY_DESCRIPTION = {
+  [TrophiesEnum.CAME_FROM_BENCH_AND_MADE_12_POINTS]:
+    'Medalha de conquista por ter um jogador substituído por alguém do banco que fez mais de 12 pontos.',
   [TrophiesEnum.DEFENSE_DIDNT_SUFFER_GOALS]:
     'Medalha de conquista por ter escalado uma defesa que não sofreu gols.',
+  [TrophiesEnum.EVERY_ATHLETE_VALUED]:
+    'Medalha de conquista quando em uma escalação, todos os jogadores valorizaram.',
+  [TrophiesEnum.EVERY_MIDFIELDER_HAVE_ASSISTS]:
+    'Medalha de conquista quando em uma escalação, todos os meias deram assistências.',
+  [TrophiesEnum.EVERY_STRIKER_SCORED]:
+    'Medalha de conquista quando em uma escalação, todos os atacantes marcaram.',
+  [TrophiesEnum.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS]:
+    'Medalha de conquista por ter escalado 4 ou mais jogadores fizeram menos de 0 pontos.',
   [TrophiesEnum.FUTEBOLAO_LEAGUE_PLAYER]:
     'Medalha de conquista por ter participado da liga Futebolão.',
   [TrophiesEnum.GOALS_IN_THREE_SECTIONS]:
@@ -57,6 +75,7 @@ const TROPHY_DESCRIPTION = {
     'Medalha de conquista por ter escalado 3 ou mais jogadores que foram expulsos.',
   [TrophiesEnum.PLAYER_SCORED_HATTRICK]:
     'Medalha de conquista quando um jogador escalado fez 3 gols na partida.',
+  [TrophiesEnum.REACHED_200_CARTOLETAS]: 'Medalha de conquista por ter atingido 200 cartoletas.',
   [TrophiesEnum.SEVEN_PLAYERS_SCORED]:
     'Medalha de conquista quando em uma escalação, 7 jogadores marcaram gols.',
   [TrophiesEnum.THREE_PLAYERS_MISSED_PENALTY]:
@@ -155,6 +174,28 @@ function TrophyDescription({
             ))}
           </Stack>
         ) : null
+      ) : 'in' in data && 'out' in data ? (
+        <Stack className="px-4 py-2 w-full">
+          <Flex direction="column">
+            <Text weight={600} size="xs">
+              Rodada {data.in.rodada_id}
+            </Text>
+          </Flex>
+          {Object.entries(data).map(([action, athlete]) => (
+            <Flex key={athlete.atleta_id} align="center">
+              <Flex align="center">
+                {action === 'in' ? (
+                  <IconArrowBigUpFilled className="text-palette-primary-700" />
+                ) : (
+                  <IconArrowBigDownFilled className="text-red-500" />
+                )}
+                <Avatar src={athlete.foto?.replace('FORMATO', PHOTO_SIZE_FORMAT) ?? ''} />
+                <Text className="truncate max-w-[70px]">{athlete.apelido}</Text>
+                <Text className="grow-[3] text-end">{athlete.pontos_num} pts.</Text>
+              </Flex>
+            </Flex>
+          ))}
+        </Stack>
       ) : (
         <Flex className="px-4 py-2 w-full" direction="column">
           <Flex className="w-full" align="center" justify="between">

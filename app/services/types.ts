@@ -6,6 +6,7 @@ export interface RoundData {
   reservas?: Athlete[]
   rodada_atual: number
   capitao_id: number
+  patrimonio: number
   pontos: number
   pontos_campeonato: number
   time: {
@@ -14,7 +15,6 @@ export interface RoundData {
     nome: string
   }
 }
-
 export interface MatchFromApi {
   clube_visitante_id: number
   clube_casa_id: number
@@ -29,6 +29,11 @@ export interface MatchesData {
 
 export interface RoundMatchesData {
   [roundId: string]: { [clubId: string]: Match }
+}
+
+export interface SubsData {
+  entrou: Athlete
+  saiu: Athlete
 }
 
 export interface TeamFromSearchApi {
