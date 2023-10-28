@@ -39,8 +39,8 @@ export async function getTeamStatistics(
     const teamId = formData.get('teamId')!
     const teamName = formData.get('teamName')!
 
-    track('getTeamStatistics', {
-      teamId: teamId as unknown as number,
+    await track('action:getTeamStatistics', {
+      teamId: teamId as unknown as string,
       teamName: teamName as unknown as string
     })
 
