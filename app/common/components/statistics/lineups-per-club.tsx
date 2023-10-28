@@ -8,7 +8,7 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
-export function LineupsPerTeam<TClubsData extends ClubStatistics>({
+export function LineupsPerClub<TClubsData extends ClubStatistics>({
   clubsData
 }: {
   clubsData: TClubsData

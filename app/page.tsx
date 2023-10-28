@@ -22,7 +22,7 @@ import { HighestAverage } from './common/components/statistics/highest-average'
 import { HighestFinisher } from './common/components/statistics/highest-finisher'
 import { HighestScorer } from './common/components/statistics/highest-scorer'
 import { LeastValuedPlayer } from './common/components/statistics/least-valued-player'
-import { LineupsPerTeam } from './common/components/statistics/lineups-per-team'
+import { LineupsPerClub } from './common/components/statistics/lineups-per-club'
 import { MoreAssists } from './common/components/statistics/more-assists'
 import { MoreDefenses } from './common/components/statistics/more-defenses'
 import { MoreRedCards } from './common/components/statistics/more-red-cards'
@@ -111,7 +111,7 @@ export default function Home() {
               </StatisticsSection>
               <StatisticsSection title="resto">
                 <MostRoundsAsCaptain crewData={state.data.athleteStatistics} />
-                <LineupsPerTeam clubsData={state.data.clubStatistics} />
+                <LineupsPerClub clubsData={state.data.clubStatistics} />
                 <HighestScorer
                   crewData={state.data.athleteStatistics}
                   matchesData={state.data.rounds}
