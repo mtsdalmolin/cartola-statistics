@@ -18,7 +18,7 @@ type NthChild<Archetype extends Array<unknown>, ChildIndex extends number> = Arc
 
 export type TrophiesReturnType = NthChild<FormatCartolaApiDataType, 4>
 
-type GetTeamsStatisticsActionState = {
+export interface GetTeamsStatisticsActionState {
   message: 'success' | 'error' | null
   data?: {
     athleteStatistics: NthChild<FormatCartolaApiDataType, 0>
@@ -64,6 +64,7 @@ export async function getTeamStatistics(
     if (find(TEAMS, { id: Number(teamId) })) trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
 
     revalidatePath('/')
+    revalidatePath(`/estatisticas/${teamId}`)
     return {
       message: 'success',
       data: {

@@ -1,9 +1,11 @@
 import '@/app/globals.css'
+
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import { Main } from '@/app/common/components/main/main.client'
 import { Analytics } from '@vercel/analytics/react'
+
+import { Main } from './common/components/main/main.client'
 const inter = Inter({ subsets: ['latin'] })
 
 export const dynamic = 'force-dynamic'

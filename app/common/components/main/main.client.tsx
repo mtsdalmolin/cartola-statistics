@@ -5,6 +5,8 @@ import { ReactNode } from 'react'
 import { useClient } from '@/app/helpers/hooks/use-client'
 import { MantineProvider } from '@mantine/core'
 
+import { LoadingFallback } from '../loading-fallback'
+
 export function Main({ children, className }: { children: ReactNode; className?: string }) {
   const isClient = useClient()
 
@@ -12,5 +14,7 @@ export function Main({ children, className }: { children: ReactNode; className?:
     <MantineProvider theme={{ colorScheme: 'dark' }}>
       <main className={className}>{children}</main>
     </MantineProvider>
-  ) : null
+  ) : (
+    <LoadingFallback message="Carregando..." />
+  )
 }

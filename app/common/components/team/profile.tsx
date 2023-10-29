@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 
 import { Bebas_Neue } from 'next/font/google'
 import Image from 'next/image'
@@ -46,23 +47,22 @@ function TeamTurnData({
 export function TeamProfile({
   matchesData,
   teamInfo,
-  trophies,
-  apiHasEndedRequestsAndReturnedData
+  trophies
 }: {
   matchesData: RoundMatchesData
   teamInfo: TeamInfo
   trophies: TrophiesData
-  apiHasEndedRequestsAndReturnedData?: boolean
 }) {
   const sectionRef = useRef<HTMLElement>(null)
+  const { pending } = useFormStatus()
 
   useEffect(() => {
-    if (apiHasEndedRequestsAndReturnedData) {
+    if (!pending) {
       sectionRef.current?.scrollIntoView({
         behavior: 'smooth'
       })
     }
-  }, [apiHasEndedRequestsAndReturnedData])
+  }, [pending])
 
   return (
     <section className="pt-8" ref={sectionRef}>
