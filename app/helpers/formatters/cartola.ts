@@ -569,7 +569,7 @@ export function formatCartolaApiData(
       !(Trophies.DEFENSE_DIDNT_SUFFER_GOALS in teamsTrophies) &&
       defenseAthletes.every((athlete) => athlete.scout.SG)
     ) {
-      teamsTrophies[Trophies.DEFENSE_DIDNT_SUFFER_GOALS] = result.value
+      teamsTrophies[Trophies.DEFENSE_DIDNT_SUFFER_GOALS] = defenseAthletes
     }
 
     if (!(Trophies.REACHED_200_CARTOLETAS in teamsTrophies) && wealth >= 200) {
