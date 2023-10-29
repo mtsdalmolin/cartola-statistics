@@ -14,11 +14,18 @@ import {
   Text,
   Tooltip
 } from '@mantine/core'
+import { useLocalStorage } from '@mantine/hooks'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
 
-import { debounce } from 'lodash'
+import { debounce, isEmpty } from 'lodash'
 
 const HALF_SECOND_IN_MS = 500
+const MEMOIZED_SEARCHED_TEAMS_KEY = '@cartola-statistics/memoized-searched-teams'
+
+let initialMemoizedSearchedTeams: TeamsAutocompleteList[] = []
+
+if (localStorage && localStorage.getItem(MEMOIZED_SEARCHED_TEAMS_KEY))
+  initialMemoizedSearchedTeams = JSON.parse(localStorage.getItem(MEMOIZED_SEARCHED_TEAMS_KEY)!)
 
 function SubmitButton({ disabled }: { disabled?: boolean }) {
   const { pending } = useFormStatus()
@@ -63,11 +70,32 @@ function CopyStaticPageUrl({
 
 const AutoCompleteItem = forwardRef<HTMLDivElement, any>(
   (
-    { subtitle, value, badgeUrl, id, setSelectedTeamId, formRef, onMouseDown, ...others }: any,
+    {
+      subtitle,
+      value,
+      badgeUrl,
+      id,
+      setSelectedTeamId,
+      setMemoizedSearchedTeams,
+      formRef,
+      onMouseDown,
+      ...others
+    }: any,
     ref
   ) => {
     const onMouseDownHandler = (event: MouseEvent) => {
       setSelectedTeamId(id)
+      setMemoizedSearchedTeams((prevState: TeamsAutocompleteList[]) =>
+        [
+          {
+            id,
+            value,
+            subtitle,
+            badgeUrl
+          },
+          ...prevState
+        ].splice(0, 3)
+      )
       onMouseDown(event)
     }
 
@@ -106,6 +134,12 @@ export function SearchTeamStatisticsForm({
   const [selectedTeamId, setSelectedTeamId] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [listOfTeamsInSearch, setListOfTeamsInSearch] = useState<TeamsAutocompleteList[] | []>([])
+  const [memoizedSearchedTeams, setMemoizedSearchedTeams] = useLocalStorage<
+    TeamsAutocompleteList[]
+  >({
+    key: '@cartola-statistics/memoized-searched-teams',
+    defaultValue: initialMemoizedSearchedTeams ?? []
+  })
   const teamIdInput = useRef<HTMLInputElement>(null)
 
   return (
@@ -119,10 +153,19 @@ export function SearchTeamStatisticsForm({
         // eslint-disable-next-line react/display-name
         itemComponent={forwardRef((args, ref) => (
           // eslint-disable-next-line react/display-name
-          <AutoCompleteItem ref={ref} setSelectedTeamId={setSelectedTeamId} {...args} />
+          <AutoCompleteItem
+            ref={ref}
+            setSelectedTeamId={setSelectedTeamId}
+            setMemoizedSearchedTeams={setMemoizedSearchedTeams}
+            {...args}
+          />
         ))}
         description={isLoading ? <>Buscando times...</> : <>Digite o nome do time no cartola</>}
-        data={listOfTeamsInSearch}
+        data={
+          !isEmpty(memoizedSearchedTeams)
+            ? [...listOfTeamsInSearch, ...memoizedSearchedTeams]
+            : listOfTeamsInSearch
+        }
         onKeyUp={debounce(async (event) => {
           setIsLoading(true)
           const teamsFound = await searchTeamName(event.target.value)
