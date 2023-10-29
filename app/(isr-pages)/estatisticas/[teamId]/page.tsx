@@ -14,9 +14,14 @@ import { find } from 'lodash'
 export const metadata: Metadata = {
   title: 'Estatísticas do Cartola',
   description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
+  openGraph: {
+    type: 'website',
+    title: 'Estatísticas do Cartola',
+    description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
+    images: [edcBrand.src]
+  },
   twitter: {
     card: 'summary_large_image',
-    site: 'Estatísticas do Cartola',
     title: 'Estatísticas do Cartola',
     description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
     creator: '@mtsdalmolin',
