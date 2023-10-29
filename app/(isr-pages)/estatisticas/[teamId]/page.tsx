@@ -7,6 +7,7 @@ import { ROUNDS, TEAMS } from '@/app/constants/data'
 import { formatCartolaApiData } from '@/app/helpers/formatters/cartola'
 import { ENDPOINTS, getRoundsData, getSubsData, request } from '@/app/services/cartola-api'
 import { RoundData } from '@/app/services/types'
+import edcBrand from '@/public/logo/brand-bg.svg'
 
 import { find } from 'lodash'
 
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
     creator: '@mtsdalmolin',
     creatorId: '1686521332597477400',
-    images: []
+    images: [edcBrand.src]
   }
 }
 
@@ -37,7 +38,6 @@ export default async function TeamStatisticsStaticPage({ params }: { params: { t
     if (metadata.twitter) {
       metadata.twitter.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
       metadata.twitter.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
-      metadata.twitter.images = [results[0].value.time.url_escudo_png]
     }
   }
 
