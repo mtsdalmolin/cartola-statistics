@@ -7,17 +7,22 @@ import { PHOTO_SIZE_FORMAT } from '@/app/constants/format'
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { RoundData, RoundMatchesData } from '@/app/services/types'
 import bagreBadge from '@/public/badges/bagre-badge.svg'
+import cameFromBenchAndMadeTwelvePointsBadge from '@/public/badges/came-from-bench-and-made-twelve-points-badge.svg'
 import defenseDidntSufferGoalsBadge from '@/public/badges/defense-didnt-suffer-goals-badge.svg'
+import everyAthleteValuedBadge from '@/public/badges/every-athlete-valued-badge.svg'
+import everyMidfielderHaveAssistsBadge from '@/public/badges/every-midfielder-have-assists-badge.svg'
+import everyStrikerScoredBadge from '@/public/badges/every-striker-scored-badge.svg'
+import fourPlayersMadeLessThanZeroPointsBadge from '@/public/badges/four-players-made-less-than-zero-points-badge.svg'
 import futebolaoLeaguePlayerBadge from '@/public/badges/futebolao-league-badge.svg'
 import goalsInThreeSectionsBadge from '@/public/badges/goals-in-three-sections-badge.svg'
 import hattrickBadge from '@/public/badges/hat-trick-badge.svg'
 import moreThanHundredFiftyPointsInRoundBadge from '@/public/badges/more-than-hundred-fifty-points-in-round-badge.svg'
 import moreThanHundredPointsInRoundBadge from '@/public/badges/more-than-hundred-points-in-round-badge.svg'
 import moreThanThirtyPointsWithOnePlayerBadge from '@/public/badges/more-than-thirty-points-with-one-player-badge.svg'
+import reached200CartoletasBadge from '@/public/badges/reached-200-cartoletas-badge.svg'
 import sevenPlayersScoredInRoundBadge from '@/public/badges/seven-players-scored-in-round-badge.svg'
 import threePlayersMissedPenaltyBadge from '@/public/badges/three-players-missed-penalty-badge.svg'
 import threePlayersRedCardedBadge from '@/public/badges/three-players-red-carded-badge.svg'
-import edcLogo from '@/public/logo/edc-logo.svg'
 import { Avatar, HoverCard, Stack, Text } from '@mantine/core'
 import { IconArrowBigDownFilled, IconArrowBigUpFilled } from '@tabler/icons-react'
 
@@ -27,12 +32,13 @@ import { Athlete } from '../../types/athlete'
 import { MatchVersus } from '../match-versus'
 
 const TROPHIES_IMAGE = {
-  [TrophiesEnum.CAME_FROM_BENCH_AND_MADE_12_POINTS]: edcLogo,
+  [TrophiesEnum.CAME_FROM_BENCH_AND_MADE_12_POINTS]: cameFromBenchAndMadeTwelvePointsBadge,
   [TrophiesEnum.DEFENSE_DIDNT_SUFFER_GOALS]: defenseDidntSufferGoalsBadge,
-  [TrophiesEnum.EVERY_ATHLETE_VALUED]: edcLogo,
-  [TrophiesEnum.EVERY_MIDFIELDER_HAVE_ASSISTS]: edcLogo,
-  [TrophiesEnum.EVERY_STRIKER_SCORED]: edcLogo,
-  [TrophiesEnum.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS]: edcLogo,
+  [TrophiesEnum.EVERY_ATHLETE_VALUED]: everyAthleteValuedBadge,
+  [TrophiesEnum.EVERY_MIDFIELDER_HAVE_ASSISTS]: everyMidfielderHaveAssistsBadge,
+  [TrophiesEnum.EVERY_STRIKER_SCORED]: everyStrikerScoredBadge,
+  [TrophiesEnum.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS]:
+    fourPlayersMadeLessThanZeroPointsBadge,
   [TrophiesEnum.FUTEBOLAO_LEAGUE_PLAYER]: futebolaoLeaguePlayerBadge,
   [TrophiesEnum.GOALS_IN_THREE_SECTIONS]: goalsInThreeSectionsBadge,
   [TrophiesEnum.LESS_THAN_30_POINTS_IN_ROUND]: bagreBadge,
@@ -41,7 +47,7 @@ const TROPHIES_IMAGE = {
   [TrophiesEnum.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND]: moreThanThirtyPointsWithOnePlayerBadge,
   [TrophiesEnum.MORE_THAN_THREE_RED_CARDED_PLAYERS]: threePlayersRedCardedBadge,
   [TrophiesEnum.PLAYER_SCORED_HATTRICK]: hattrickBadge,
-  [TrophiesEnum.REACHED_200_CARTOLETAS]: edcLogo,
+  [TrophiesEnum.REACHED_200_CARTOLETAS]: reached200CartoletasBadge,
   [TrophiesEnum.SEVEN_PLAYERS_SCORED]: sevenPlayersScoredInRoundBadge,
   [TrophiesEnum.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyBadge
 }
