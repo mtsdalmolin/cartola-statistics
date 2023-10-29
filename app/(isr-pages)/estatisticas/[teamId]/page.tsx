@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { Signature } from '@/app/common/components/signature'
 import TeamStatisticsContent from '@/app/common/content/team-statistics'
 import { Trophies } from '@/app/common/types/trophies'
 import { ROUNDS, TEAMS } from '@/app/constants/data'
@@ -39,7 +40,7 @@ export default async function TeamStatisticsStaticPage({ params }: { params: { t
   if (find(TEAMS, { id: Number(teamId) })) trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-4">
       <TeamStatisticsContent
         data={{
           athleteStatistics,
@@ -51,6 +52,7 @@ export default async function TeamStatisticsStaticPage({ params }: { params: { t
           rounds
         }}
       />
+      <Signature />
     </div>
   )
 }
