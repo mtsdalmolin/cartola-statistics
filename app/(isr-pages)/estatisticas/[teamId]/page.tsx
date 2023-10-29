@@ -12,7 +12,15 @@ import { find } from 'lodash'
 
 export const metadata: Metadata = {
   title: 'Estatísticas do Cartola',
-  description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.'
+  description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Estatísticas do Cartola',
+    description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
+    creator: '@mtsdalmolin',
+    creatorId: '1686521332597477400',
+    images: []
+  }
 }
 
 export default async function TeamStatisticsStaticPage({ params }: { params: { teamId: string } }) {
@@ -24,7 +32,14 @@ export default async function TeamStatisticsStaticPage({ params }: { params: { t
     })
   )
 
-  if (results[0].status === 'fulfilled') metadata.title = `EDC | ${results[0].value.time.nome}`
+  if (results[0].status === 'fulfilled') {
+    metadata.title = `EDC | ${results[0].value.time.nome}`
+    if (metadata.twitter) {
+      metadata.twitter.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
+      metadata.twitter.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
+      metadata.twitter.images = [results[0].value.time.url_escudo_png]
+    }
+  }
 
   const rounds = await getRoundsData(ROUNDS)
   const subs = await getSubsData(teamId.toString(), ROUNDS)

@@ -2,7 +2,19 @@ import { forwardRef, useRef, useState } from 'react'
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 
 import { searchTeamName } from '@/app/services/cartola-api'
-import { Autocomplete, Avatar, Button, Group, Loader, Text } from '@mantine/core'
+import {
+  ActionIcon,
+  Autocomplete,
+  Avatar,
+  Button,
+  CopyButton,
+  Flex,
+  Group,
+  Loader,
+  Text,
+  Tooltip
+} from '@mantine/core'
+import { IconCheck, IconCopy } from '@tabler/icons-react'
 
 import { debounce } from 'lodash'
 
@@ -21,6 +33,32 @@ function SubmitButton({ disabled }: { disabled?: boolean }) {
       {pending ? <Loader color="#7ae1bf" size={20} /> : 'Buscar estatísticas'}
     </Button>
   )
+}
+
+function CopyStaticPageUrl({
+  teamIdInput,
+  showLinkButton
+}: {
+  teamIdInput: number
+  showLinkButton: boolean
+}) {
+  return showLinkButton ? (
+    <Flex align="center" justify="center">
+      <Text>Link para compartilhar</Text>
+      <CopyButton
+        value={`https://cartola-statistics.vercel.app/estatisticas/${teamIdInput}`}
+        timeout={2000}
+      >
+        {({ copied, copy }) => (
+          <Tooltip label={copied ? 'Copiado' : 'Copiar'} withArrow position="right">
+            <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+              {copied ? <IconCheck size="1rem" /> : <IconCopy size="1rem" />}
+            </ActionIcon>
+          </Tooltip>
+        )}
+      </CopyButton>
+    </Flex>
+  ) : null
 }
 
 const AutoCompleteItem = forwardRef<HTMLDivElement, any>(
@@ -58,7 +96,13 @@ export interface TeamsAutocompleteList {
   badgeUrl: string
 }
 
-export function SearchTeamStatisticsForm({ action }: { action: (payload: FormData) => void }) {
+export function SearchTeamStatisticsForm({
+  action,
+  formReturnedData
+}: {
+  action: (payload: FormData) => void
+  formReturnedData: boolean
+}) {
   const [selectedTeamId, setSelectedTeamId] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [listOfTeamsInSearch, setListOfTeamsInSearch] = useState<TeamsAutocompleteList[] | []>([])
@@ -87,6 +131,7 @@ export function SearchTeamStatisticsForm({ action }: { action: (payload: FormDat
         }, HALF_SECOND_IN_MS)}
       />
       <SubmitButton disabled={!teamIdInput.current?.value || isLoading} />
+      <CopyStaticPageUrl teamIdInput={selectedTeamId} showLinkButton={formReturnedData} />
     </form>
   )
 }
