@@ -15,7 +15,7 @@ export function Signature({ absolute = false }: { absolute?: boolean }) {
       size="md"
     >
       feito com ⚽ por{' '}
-      <Link href="https://github.com/mtsdalmolin" target="_blank">
+      <Link href="https://twitter.com/mtsdalmolin" target="_blank">
         @mtsdalmolin
       </Link>
     </Text>
