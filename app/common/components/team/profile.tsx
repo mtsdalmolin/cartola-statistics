@@ -65,7 +65,7 @@ export function TeamProfile({
   }, [apiHasEndedRequestsAndReturnedData])
 
   return (
-    <section ref={sectionRef}>
+    <section className="pt-8" ref={sectionRef}>
       <Flex className={bebasNeue.className} justify="center" align="center" direction="column">
         <h1 className="text-5xl">{teamInfo.name}</h1>
         <Flex className="mobile:flex-col" align="center" gap="lg">
