@@ -278,7 +278,7 @@ export function Trophies({
 }) {
   return (
     <Flex
-      className="flex-nowrap overflow-x-auto px-2 py-8 w-full mobile:justify-start"
+      className="overflow-x-auto px-2 py-8 w-full mobile:justify-start mobile:flex-nowrap"
       justify="center"
     >
       {Object.entries(trophies).map(([trophyName, trophyData]) => (
