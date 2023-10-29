@@ -7,7 +7,7 @@ import { ROUNDS, TEAMS } from '@/app/constants/data'
 import { formatCartolaApiData } from '@/app/helpers/formatters/cartola'
 import { ENDPOINTS, getRoundsData, getSubsData, request } from '@/app/services/cartola-api'
 import { RoundData } from '@/app/services/types'
-import edcBrand from '@/public/logo/brand-bg.svg'
+import edcBrand from '@/public/logo/twitter-card.png'
 
 import { find } from 'lodash'
 
@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
   twitter: {
     card: 'summary_large_image',
+    site: 'Estatísticas do Cartola',
     title: 'Estatísticas do Cartola',
     description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
     creator: '@mtsdalmolin',
