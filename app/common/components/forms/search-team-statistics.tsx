@@ -16,6 +16,7 @@ import {
 } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
+import { track } from '@vercel/analytics'
 
 import { debounce, isEmpty } from 'lodash'
 
@@ -141,12 +142,23 @@ export function SearchTeamStatisticsForm({
     defaultValue: initialMemoizedSearchedTeams ?? []
   })
   const teamIdInput = useRef<HTMLInputElement>(null)
+  const teamNameInput = useRef<HTMLInputElement>(null)
 
   return (
-    <form className="flex flex-col gap-4 w-full" action={action}>
+    <form
+      className="flex flex-col gap-4 w-full"
+      action={action}
+      onSubmit={() => {
+        track('form:submit', {
+          teamId: teamIdInput.current?.value ?? '',
+          teamName: teamNameInput.current?.value ?? ''
+        })
+      }}
+    >
       <input ref={teamIdInput} name="teamId" type="hidden" value={selectedTeamId} />
       <Autocomplete
         required
+        ref={teamNameInput}
         id="teamName"
         name="teamName"
         placeholder="Nome do time no cartola"
