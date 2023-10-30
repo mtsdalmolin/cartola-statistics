@@ -1,4 +1,5 @@
 'use client'
+import { usePathname } from 'next/navigation'
 
 import { GetTeamsStatisticsActionState } from '@/app/actions'
 import { Artillery } from '@/app/common/components/statistics/artillery'
@@ -31,7 +32,10 @@ import { Flex } from '../components/flex'
 import { useShareStatisticsLinkContext } from '../contexts/share-statistics-link-context.client'
 
 function CopyStaticPageUrl() {
+  const pathname = usePathname()
   const { shareLink } = useShareStatisticsLinkContext()
+
+  if (pathname.startsWith('/estatisticas')) return null
 
   return (
     <Flex className="w-fit px-4 py-2 " align="center" justify="center">
