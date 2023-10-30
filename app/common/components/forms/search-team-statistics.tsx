@@ -2,23 +2,13 @@ import { forwardRef, useRef, useState } from 'react'
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 
 import { searchTeamName } from '@/app/services/cartola-api'
-import {
-  ActionIcon,
-  Autocomplete,
-  Avatar,
-  Button,
-  CopyButton,
-  Flex,
-  Group,
-  Loader,
-  Text,
-  Tooltip
-} from '@mantine/core'
+import { Autocomplete, Avatar, Button, Group, Loader, Text } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
-import { IconCheck, IconCopy } from '@tabler/icons-react'
 import { track } from '@vercel/analytics'
 
 import { debounce, isEmpty, uniqBy } from 'lodash'
+
+import { useShareStatisticsLinkContext } from '../../contexts/share-statistics-link-context.client'
 
 const HALF_SECOND_IN_MS = 500
 const MEMOIZED_SEARCHED_TEAMS_KEY = '@cartola-statistics/memoized-searched-teams'
@@ -43,32 +33,6 @@ function SubmitButton({ disabled }: { disabled?: boolean }) {
   )
 }
 
-function CopyStaticPageUrl({
-  teamIdInput,
-  showLinkButton
-}: {
-  teamIdInput: number
-  showLinkButton: boolean
-}) {
-  return showLinkButton ? (
-    <Flex align="center" justify="center">
-      <Text>Link para compartilhar</Text>
-      <CopyButton
-        value={`https://cartola-statistics.vercel.app/estatisticas/${teamIdInput}`}
-        timeout={2000}
-      >
-        {({ copied, copy }) => (
-          <Tooltip label={copied ? 'Copiado' : 'Copiar'} withArrow position="right">
-            <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
-              {copied ? <IconCheck size="1rem" /> : <IconCopy size="1rem" />}
-            </ActionIcon>
-          </Tooltip>
-        )}
-      </CopyButton>
-    </Flex>
-  ) : null
-}
-
 const AutoCompleteItem = forwardRef<HTMLDivElement, any>(
   (
     {
@@ -84,8 +48,11 @@ const AutoCompleteItem = forwardRef<HTMLDivElement, any>(
     }: any,
     ref
   ) => {
+    const { setTeamIdInShareLink } = useShareStatisticsLinkContext()
+
     const onMouseDownHandler = (event: MouseEvent) => {
       setSelectedTeamId(id)
+      setTeamIdInShareLink(id)
       setMemoizedSearchedTeams((prevState: TeamsAutocompleteList[]) =>
         uniqBy(
           [
@@ -189,7 +156,6 @@ export function SearchTeamStatisticsForm({
         }, HALF_SECOND_IN_MS)}
       />
       <SubmitButton disabled={!teamIdInput.current?.value || isLoading} />
-      <CopyStaticPageUrl teamIdInput={selectedTeamId} showLinkButton={formReturnedData} />
     </form>
   )
 }

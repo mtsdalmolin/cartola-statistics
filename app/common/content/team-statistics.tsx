@@ -22,8 +22,41 @@ import { PointsPerClub } from '@/app/common/components/statistics/points-per-clu
 import { StatisticsSection } from '@/app/common/components/statistics/section'
 import { WorstGoalkeeper } from '@/app/common/components/statistics/worst-goalkeeper'
 import { TeamProfile } from '@/app/common/components/team/profile'
+import { Button, CopyButton, Text, Tooltip } from '@mantine/core'
+import { IconCheck, IconCopy } from '@tabler/icons-react'
 
 import { isEmpty } from 'lodash'
+
+import { Flex } from '../components/flex'
+import { useShareStatisticsLinkContext } from '../contexts/share-statistics-link-context.client'
+
+function CopyStaticPageUrl() {
+  const { shareLink } = useShareStatisticsLinkContext()
+
+  return (
+    <Flex className="w-fit px-4 py-2 " align="center" justify="center">
+      <CopyButton value={shareLink} timeout={2000}>
+        {({ copied, copy }) => (
+          <Tooltip label={copied ? 'Copiado' : 'Copiar'} withArrow position="right">
+            <Button
+              className="bg-palette-neutral-800 hover:bg-palette-neutral-700 rounded-md"
+              onClick={copy}
+            >
+              <Flex align="center">
+                <Text>Link para compartilhar</Text>
+                {copied ? (
+                  <IconCheck className="text-palette-primary-500" size="1rem" />
+                ) : (
+                  <IconCopy size="1rem" />
+                )}
+              </Flex>
+            </Button>
+          </Tooltip>
+        )}
+      </CopyButton>
+    </Flex>
+  )
+}
 
 export default function TeamStatisticsContent({
   data
@@ -33,6 +66,9 @@ export default function TeamStatisticsContent({
   return data ? (
     <div className="py-4">
       <TeamProfile matchesData={data.rounds} teamInfo={data.teamInfo} trophies={data.trophies} />
+      <Flex className="w-full" justify="center">
+        <CopyStaticPageUrl />
+      </Flex>
       {!isEmpty(data.athleteStatistics) ? (
         <>
           <StatisticsSection title="os melhores">
