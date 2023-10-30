@@ -18,7 +18,7 @@ import { useLocalStorage } from '@mantine/hooks'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
 import { track } from '@vercel/analytics'
 
-import { debounce, isEmpty } from 'lodash'
+import { debounce, isEmpty, uniqBy } from 'lodash'
 
 const HALF_SECOND_IN_MS = 500
 const MEMOIZED_SEARCHED_TEAMS_KEY = '@cartola-statistics/memoized-searched-teams'
@@ -87,15 +87,18 @@ const AutoCompleteItem = forwardRef<HTMLDivElement, any>(
     const onMouseDownHandler = (event: MouseEvent) => {
       setSelectedTeamId(id)
       setMemoizedSearchedTeams((prevState: TeamsAutocompleteList[]) =>
-        [
-          {
-            id,
-            value,
-            subtitle,
-            badgeUrl
-          },
-          ...prevState
-        ].splice(0, 3)
+        uniqBy(
+          [
+            {
+              id,
+              value,
+              subtitle,
+              badgeUrl
+            },
+            ...prevState
+          ],
+          'id'
+        ).splice(0, 3)
       )
       onMouseDown(event)
     }
