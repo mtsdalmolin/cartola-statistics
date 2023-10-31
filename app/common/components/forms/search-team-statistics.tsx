@@ -4,7 +4,6 @@ import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 import { searchTeamName } from '@/app/services/cartola-api'
 import { Autocomplete, Avatar, Button, Group, Loader, Text } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
-import { track } from '@vercel/analytics'
 
 import { debounce, isEmpty, uniqBy } from 'lodash'
 
@@ -95,13 +94,7 @@ export interface TeamsAutocompleteList {
   badgeUrl: string
 }
 
-export function SearchTeamStatisticsForm({
-  action,
-  formReturnedData
-}: {
-  action: (payload: FormData) => void
-  formReturnedData: boolean
-}) {
+export function SearchTeamStatisticsForm({ action }: { action: (payload: FormData) => void }) {
   const [selectedTeamId, setSelectedTeamId] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [listOfTeamsInSearch, setListOfTeamsInSearch] = useState<TeamsAutocompleteList[] | []>([])
@@ -115,16 +108,7 @@ export function SearchTeamStatisticsForm({
   const teamNameInput = useRef<HTMLInputElement>(null)
 
   return (
-    <form
-      className="flex flex-col gap-4 w-full"
-      action={action}
-      onSubmit={() => {
-        track('form:submit', {
-          teamId: teamIdInput.current?.value ?? '',
-          teamName: teamNameInput.current?.value ?? ''
-        })
-      }}
-    >
+    <form className="flex flex-col gap-4 w-full" action={action}>
       <input ref={teamIdInput} name="teamId" type="hidden" value={selectedTeamId} />
       <Autocomplete
         required

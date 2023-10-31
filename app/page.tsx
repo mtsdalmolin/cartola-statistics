@@ -6,8 +6,6 @@ import Image from 'next/image'
 
 import brand from '@/public/logo/brand.svg'
 
-import { isEmpty, isNil } from 'lodash'
-
 import { getTeamStatistics } from './actions'
 import { SearchTeamStatisticsForm } from './common/components/forms/search-team-statistics'
 import { Signature } from './common/components/signature'
@@ -26,10 +24,7 @@ export default function Home() {
         <div className="relative flex h-[100vh]">
           <div className="m-auto w-fit">
             <Image src={brand} width={500} height={500} alt="brand" />
-            <SearchTeamStatisticsForm
-              action={formAction}
-              formReturnedData={!isNil(state.data) && !isEmpty(state.data)}
-            />
+            <SearchTeamStatisticsForm action={formAction} />
             <Signature absolute />
           </div>
         </div>
