@@ -23,6 +23,7 @@ import { RoundData, RoundMatchesData, SubsData } from '@/app/services/types'
 
 import { isEmpty, max, some } from 'lodash'
 
+import { registerTrophyEvent } from '../analytics'
 import { isCoach } from '../positions'
 import { isValidRound } from '../rounds'
 
@@ -392,7 +393,7 @@ export function formatCartolaApiData(
   const redCardedAthletes: Athlete[] = []
   const athletesThatMissedPenalty: Athlete[] = []
 
-  results.forEach((result) => {
+  results.forEach(async (result) => {
     if (result.status === 'rejected') return
 
     teamInfo.badgePhotoUrl = result.value.time.url_escudo_png
@@ -417,11 +418,10 @@ export function formatCartolaApiData(
       reservas: bench,
       capitao_id: captainId,
       patrimonio: wealth,
-      pontos: pointsInRound,
-      rodada_atual: currentRound
+      pontos: pointsInRound
     } = result.value
 
-    athletes.forEach((athlete) => {
+    athletes.forEach(async (athlete) => {
       playersStatistics = playerStatisticsIncrementalFactory(playersStatistics, athlete, captainId)
       const athletePoints = calculatePoints(athlete, captainId)
 
@@ -468,6 +468,7 @@ export function formatCartolaApiData(
           !(Trophies.EVERY_ATHLETE_VALUED in teamsTrophies) &&
           athletesThatValuedInRound.length === 12
         ) {
+          registerTrophyEvent(Trophies.EVERY_ATHLETE_VALUED, { team: teamInfo.name })
           teamsTrophies[Trophies.EVERY_ATHLETE_VALUED] = athletesThatValuedInRound
         }
       }
@@ -478,6 +479,9 @@ export function formatCartolaApiData(
           !(Trophies.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS in teamsTrophies) &&
           athletesThatMadeLessThanZeroPointsInRound.length >= 4
         ) {
+          registerTrophyEvent(Trophies.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS, {
+            team: teamInfo.name
+          })
           teamsTrophies[Trophies.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS] =
             athletesThatMadeLessThanZeroPointsInRound
         }
@@ -487,6 +491,9 @@ export function formatCartolaApiData(
         athletePoints > 30 &&
         !(Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND in teamsTrophies)
       ) {
+        registerTrophyEvent(Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND, {
+          team: teamInfo.name
+        })
         teamsTrophies[Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND] = [athlete]
       }
 
@@ -496,10 +503,12 @@ export function formatCartolaApiData(
           athletesThatScoredInRound.length >= 7 &&
           !(Trophies.SEVEN_PLAYERS_SCORED in teamsTrophies)
         ) {
+          registerTrophyEvent(Trophies.SEVEN_PLAYERS_SCORED, { team: teamInfo.name })
           teamsTrophies[Trophies.SEVEN_PLAYERS_SCORED] = athletesThatScoredInRound
         }
 
         if (athlete.scout.G === 3) {
+          registerTrophyEvent(Trophies.PLAYER_SCORED_HATTRICK, { team: teamInfo.name })
           teamsTrophies[Trophies.PLAYER_SCORED_HATTRICK] = [athlete]
         }
       }
@@ -510,6 +519,9 @@ export function formatCartolaApiData(
           redCardedAthletes.length >= 3 &&
           !(Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS in teamsTrophies)
         ) {
+          registerTrophyEvent(Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS, {
+            team: teamInfo.name
+          })
           teamsTrophies[Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS] = redCardedAthletes
         }
       }
@@ -520,29 +532,36 @@ export function formatCartolaApiData(
           athletesThatMissedPenalty.length >= 3 &&
           !(Trophies.THREE_PLAYERS_MISSED_PENALTY in teamsTrophies)
         ) {
+          registerTrophyEvent(Trophies.THREE_PLAYERS_MISSED_PENALTY, { team: teamInfo.name })
           teamsTrophies[Trophies.THREE_PLAYERS_MISSED_PENALTY] = athletesThatMissedPenalty
         }
       }
 
       if (pointsInRound < 30 && !(Trophies.LESS_THAN_30_POINTS_IN_ROUND in teamsTrophies)) {
+        registerTrophyEvent(Trophies.LESS_THAN_30_POINTS_IN_ROUND, { team: teamInfo.name })
         teamsTrophies[Trophies.LESS_THAN_30_POINTS_IN_ROUND] = result.value
       }
 
       if (pointsInRound > 100 && !(Trophies.MORE_THAN_100_POINTS_IN_ROUND in teamsTrophies)) {
+        registerTrophyEvent(Trophies.MORE_THAN_100_POINTS_IN_ROUND, { team: teamInfo.name })
         teamsTrophies[Trophies.MORE_THAN_100_POINTS_IN_ROUND] = result.value
       }
 
       if (pointsInRound > 150 && !(Trophies.MORE_THAN_150_POINTS_IN_ROUND in teamsTrophies)) {
+        registerTrophyEvent(Trophies.MORE_THAN_150_POINTS_IN_ROUND, { team: teamInfo.name })
         teamsTrophies[Trophies.MORE_THAN_150_POINTS_IN_ROUND] = result.value
       }
     })
 
     Object.entries(subs).forEach(([_, sub]) => {
-      sub.forEach((change) => {
+      sub.forEach(async (change) => {
         if (
           !(Trophies.CAME_FROM_BENCH_AND_MADE_12_POINTS in teamsTrophies) &&
           change.entrou.pontos_num >= 12
         ) {
+          registerTrophyEvent(Trophies.CAME_FROM_BENCH_AND_MADE_12_POINTS, {
+            team: teamInfo.name
+          })
           teamsTrophies[Trophies.CAME_FROM_BENCH_AND_MADE_12_POINTS] = {
             in: change.entrou,
             out: change.saiu
@@ -557,6 +576,7 @@ export function formatCartolaApiData(
       some(athletesThatScoredInRound, { posicao_id: MEIA }) &&
       some(athletesThatScoredInRound, { posicao_id: ATACANTE })
     ) {
+      registerTrophyEvent(Trophies.GOALS_IN_THREE_SECTIONS, { team: teamInfo.name })
       teamsTrophies[Trophies.GOALS_IN_THREE_SECTIONS] = athletesThatScoredInRound
     }
 
@@ -569,10 +589,12 @@ export function formatCartolaApiData(
       !(Trophies.DEFENSE_DIDNT_SUFFER_GOALS in teamsTrophies) &&
       defenseAthletes.every((athlete) => athlete.scout.SG)
     ) {
+      registerTrophyEvent(Trophies.DEFENSE_DIDNT_SUFFER_GOALS, { team: teamInfo.name })
       teamsTrophies[Trophies.DEFENSE_DIDNT_SUFFER_GOALS] = defenseAthletes
     }
 
     if (!(Trophies.REACHED_200_CARTOLETAS in teamsTrophies) && wealth >= 200) {
+      registerTrophyEvent(Trophies.REACHED_200_CARTOLETAS, { team: teamInfo.name })
       teamsTrophies[Trophies.REACHED_200_CARTOLETAS] = result.value
     }
 
@@ -583,6 +605,7 @@ export function formatCartolaApiData(
       !isEmpty(midfielders) &&
       midfielders.every((athlete) => athlete.scout.A)
     ) {
+      registerTrophyEvent(Trophies.EVERY_MIDFIELDER_HAVE_ASSISTS, { team: teamInfo.name })
       teamsTrophies[Trophies.EVERY_MIDFIELDER_HAVE_ASSISTS] = midfielders
     }
 
@@ -593,6 +616,7 @@ export function formatCartolaApiData(
       !isEmpty(strikers) &&
       strikers.every((athlete) => athlete.scout.G)
     ) {
+      registerTrophyEvent(Trophies.EVERY_STRIKER_SCORED, { team: teamInfo.name })
       teamsTrophies[Trophies.EVERY_STRIKER_SCORED] = strikers
     }
 
