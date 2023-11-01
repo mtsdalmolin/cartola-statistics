@@ -374,6 +374,7 @@ export function formatCartolaApiData(
   let clubsStatistics: ClubStatistics = {}
   let positionsStatistics: PositionsStatistics = {}
   const teamInfo: TeamInfo = {
+    id: 1,
     badgePhotoUrl: '',
     name: '',
     pointsPerTurn: {
@@ -398,6 +399,7 @@ export function formatCartolaApiData(
 
     teamInfo.badgePhotoUrl = result.value.time.url_escudo_png
     teamInfo.name = result.value.time.nome
+    teamInfo.id = result.value.time.time_id
 
     if (isValidRound(result.value)) {
       if (FIRST_TURN_ROUNDS.includes(result.value.rodada_atual)) {

@@ -13,6 +13,7 @@ export interface RoundData {
     url_escudo_svg: string
     url_escudo_png: string
     nome: string
+    time_id: number
   }
 }
 export interface MatchFromApi {
