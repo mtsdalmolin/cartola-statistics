@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 
 import { Signature } from '@/app/common/components/signature'
 import TeamStatisticsContent from '@/app/common/content/team-statistics'
@@ -46,6 +47,10 @@ export default async function TeamStatisticsStaticPage({
 }) {
   const { highlight, teamId } = params
 
+  if (!(highlight in PARAM_TO_HIGHLIGHT) && highlight !== 'estatisticas') {
+    redirect('/')
+  }
+
   const results = await Promise.allSettled<RoundData>(
     ROUNDS.map((round) => {
       return request(ENDPOINTS.TEAM_ROUND(teamId, round.toString()))
@@ -58,7 +63,7 @@ export default async function TeamStatisticsStaticPage({
       metadata.twitter.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
       metadata.twitter.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
 
-      if (highlight !== 'estatisticas') {
+      if (highlight in PARAM_TO_HIGHLIGHT) {
         if (await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])) {
           metadata.twitter.images = [
             `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`
@@ -71,7 +76,7 @@ export default async function TeamStatisticsStaticPage({
       metadata.openGraph.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
       metadata.openGraph.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
 
-      if (highlight !== 'estatisticas') {
+      if (highlight in PARAM_TO_HIGHLIGHT) {
         if (await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])) {
           metadata.openGraph.images = [
             `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`
