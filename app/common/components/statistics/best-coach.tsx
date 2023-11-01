@@ -35,8 +35,8 @@ function renderVictoriesAverageTooltipLabel(castTimes: number, results: number[]
   )
 }
 
-function renderVictoriesAverageText(victoriesAverage: number, isAbbreviated = true) {
-  return `${(victoriesAverage * 100).toFixed(0)}% ${isAbbreviated ? '' : 'de aprov.'}`
+function renderPointsAverageText(pointsAverage: number, isAbbreviated = true) {
+  return `${pointsAverage.toFixed(1)} ${isAbbreviated ? 'pts.' : 'pontos'}`
 }
 
 export function BestCoach<TCrewData extends CrewStatistics>({
@@ -50,8 +50,8 @@ export function BestCoach<TCrewData extends CrewStatistics>({
     Object.values(crewData).filter(
       (athlete) => isCoach(athlete.posicao_id) && athlete.victoriesAverage
     ),
-    ['victoriesAverage', 'castTimes'],
-    ['desc', 'desc']
+    ['pointsAverage'],
+    ['desc']
   )
   const first = orderedBestCoachData[0]
   orderedBestCoachData.shift()
@@ -69,7 +69,7 @@ export function BestCoach<TCrewData extends CrewStatistics>({
             )}
             multiline
           >
-            <span>{renderVictoriesAverageText(first.victoriesAverage, false)}</span>
+            <span>{renderPointsAverageText(first.pointsAverage, false)}</span>
           </Tooltip>
         }
         details={
@@ -96,7 +96,7 @@ export function BestCoach<TCrewData extends CrewStatistics>({
                   getRoundResults(athlete, matchesData)
                 )}
               >
-                <span>{renderVictoriesAverageText(athlete.victoriesAverage)}</span>
+                <span>{renderPointsAverageText(athlete.pointsAverage)}</span>
               </Tooltip>
             }
             position={idx + 2}
