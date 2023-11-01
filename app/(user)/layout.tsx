@@ -53,7 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <Link
                     key={team.id}
                     className="my-2 truncate hover:underline"
-                    href={`/${team.slug}`}
+                    href={`/in/${team.slug}`}
                   >
                     {team.name}
                   </Link>

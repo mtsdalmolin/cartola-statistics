@@ -4,6 +4,7 @@ import { Signature } from '@/app/common/components/signature'
 import TeamStatisticsContent from '@/app/common/content/team-statistics'
 import { Trophies } from '@/app/common/types/trophies'
 import { ROUNDS, TEAMS } from '@/app/constants/data'
+import { PARAM_TO_HIGHLIGHT } from '@/app/constants/highlight'
 import { formatCartolaApiData } from '@/app/helpers/formatters/cartola'
 import { ENDPOINTS, getRoundsData, getSubsData, request } from '@/app/services/cartola-api'
 import { RoundData } from '@/app/services/types'
@@ -39,13 +40,11 @@ async function teamHasStatisticStaticImage(teamId: number, highlight: string) {
 }
 
 export default async function TeamStatisticsStaticPage({
-  params,
-  searchParams
+  params
 }: {
-  params: { teamId: string }
-  searchParams: { highlight?: string }
+  params: { highlight: string; teamId: string }
 }) {
-  const { teamId } = params
+  const { highlight, teamId } = params
 
   const results = await Promise.allSettled<RoundData>(
     ROUNDS.map((round) => {
@@ -59,10 +58,10 @@ export default async function TeamStatisticsStaticPage({
       metadata.twitter.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
       metadata.twitter.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
 
-      if (searchParams.highlight) {
-        if (await teamHasStatisticStaticImage(+teamId, searchParams.highlight)) {
+      if (highlight) {
+        if (await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])) {
           metadata.twitter.images = [
-            `/api/image?teamId=${teamId}&highlight=${searchParams.highlight}`
+            `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`
           ]
         }
       }
@@ -72,10 +71,10 @@ export default async function TeamStatisticsStaticPage({
       metadata.openGraph.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
       metadata.openGraph.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
 
-      if (searchParams.highlight) {
-        if (await teamHasStatisticStaticImage(+teamId, searchParams.highlight)) {
+      if (highlight) {
+        if (await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])) {
           metadata.openGraph.images = [
-            `/api/image?teamId=${teamId}&highlight=${searchParams.highlight}`
+            `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`
           ]
         }
       }

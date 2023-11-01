@@ -37,6 +37,9 @@ export async function POST(request: Request): Promise<NextResponse> {
   const filename = searchParams.get('filename')
   const teamId = searchParams.get('teamId')
 
+  if (!(filename && teamId))
+    return NextResponse.json({ message: 'Couldnt process request' }, { status: 422 })
+
   try {
     const blob = await put(`${filename}.jpg`, request.body!, {
       access: 'public'
@@ -44,7 +47,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     await sql`INSERT INTO share_static_images (team_id, image_url) VALUES (${teamId}, ${blob.url})`
 
-    const highlight = filename!.split('_')
+    const highlight = filename.split('_')
 
     const message = CLUB_STATS.includes(highlight[0])
       ? STATISTICS_MESSAGES[highlight[0]].replace('%club%', highlight[1])

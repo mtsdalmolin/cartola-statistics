@@ -5,6 +5,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import Link from 'next/link'
 
 import { Flex } from '@/app/common/components/flex'
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { URLS } from '@/app/constants/url'
 import { Notification, Text } from '@mantine/core'
 import { IconBrandX } from '@tabler/icons-react'
@@ -86,7 +87,9 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
       ) : null}
       {showTweetReady && uploadReturnMessage ? (
         <Link
-          href={`http://twitter.com/share?text=${uploadReturnMessage}&url=${URLS.cartolaStatisticsPage}/estatisticas/${teamId}?highlight=${highlight}&hashtags=estatisticasdocartola`}
+          href={`http://twitter.com/share?text=${uploadReturnMessage}&url=${
+            URLS.cartolaStatisticsPage
+          }/${HIGHLIGHT_TO_PARAM[highlight!]}/${teamId}&hashtags=estatisticasdocartola`}
           target="_blank"
           onClick={() => setShowTweetReady(false)}
         >
