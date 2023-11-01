@@ -26,7 +26,7 @@ export function HighestFinisher<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Mais finalizações">
       <ListHotspot
-        imgName={`highest-finisher-${first.apelido}`}
+        imgName={`highest-finisher_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderNumberOfFinishesText(first.finishes, false)}

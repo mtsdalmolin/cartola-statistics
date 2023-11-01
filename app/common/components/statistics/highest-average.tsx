@@ -28,7 +28,7 @@ export function HighestAverage<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Melhor média">
       <ListHotspot
-        imgName={`highest-average-${first.apelido}`}
+        imgName={`highest-average_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderPointsAverageText(first.pointsAverage.toFixed(1), false)}

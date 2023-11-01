@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     if (!teamId) return NextResponse.json({ message: 'TeamId must be informed.' }, { status: 422 })
 
     const teamImages =
-      await sql`SELECT image_url FROM share_static_images WHERE team_id = ${+teamId}`
+      await sql`SELECT image_url FROM share_static_images WHERE team_id = ${+teamId} ORDER BY id DESC`
 
     if (!teamImages.rows)
       return NextResponse.json({ message: 'Team images not found' }, { status: 404 })

@@ -34,7 +34,7 @@ export function WorstGoalkeeper<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Gols sofridos">
       <ListHotspot
-        imgName={`worst-goalkeeper-${first.apelido}`}
+        imgName={`worst-goalkeeper_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderGoalsConcededText(first.goalsConceded, false)}

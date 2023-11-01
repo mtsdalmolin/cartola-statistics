@@ -28,6 +28,7 @@ export function BestAwayPlayer<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Média jogando fora">
       <ListHotspot
+        imgName={`best-away-player_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderAwayAverageText(first.away.average, false)}

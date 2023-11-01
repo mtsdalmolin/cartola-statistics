@@ -28,6 +28,7 @@ export function BestHomePlayer<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Média jogando em casa">
       <ListHotspot
+        imgName={`best-home-player_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderHomeAverageText(first.home.average, false)}

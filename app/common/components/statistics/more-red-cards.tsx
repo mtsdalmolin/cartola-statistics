@@ -37,7 +37,7 @@ export function MoreRedCards<TCrewData extends CrewStatistics>({
     <SummaryContainer title="Cartões vermelhos">
       <>
         <ListHotspot
-          imgName={`more-red-cards-${first.apelido}`}
+          imgName={`more-red-cards_${first.apelido}`}
           name={first.apelido}
           imgSrc={first.foto ?? ''}
           data={renderCardsText(first.scout?.CV ?? 0, false)}

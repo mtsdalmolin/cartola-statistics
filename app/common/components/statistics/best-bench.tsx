@@ -30,7 +30,7 @@ export function BestBench<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Melhor banco">
       <ListHotspot
-        imgName={`best-bench-${first.apelido}`}
+        imgName={`best-bench_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderPointsAverageText(first.pointsAverage, false)}

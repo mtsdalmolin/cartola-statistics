@@ -28,6 +28,7 @@ export function DefenseEfficiency<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Eficiência defensiva">
       <ListHotspot
+        imgName={`defense-efficiency_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderDefensesToSufferGoalText(first.defensesToSufferGoal, false)}

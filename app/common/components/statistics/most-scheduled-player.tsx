@@ -27,7 +27,7 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Jogador mais escalado">
       <ListHotspot
-        imgName={`most-scheduled-player-${first.apelido}`}
+        imgName={`most-scheduled-player_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderCastTimesText(first.castTimes)}

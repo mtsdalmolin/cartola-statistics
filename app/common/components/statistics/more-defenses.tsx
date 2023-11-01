@@ -32,7 +32,7 @@ export function MoreDefenses<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Mais defesas">
       <ListHotspot
-        imgName={`more-defenses-${first.apelido}`}
+        imgName={`more-defenses_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderDefensesText(first.defenses, false)}

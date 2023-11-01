@@ -33,7 +33,7 @@ export function MoreYellowCards<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Cartões amarelos">
       <ListHotspot
-        imgName={`more-yellow-cards-${first.apelido}`}
+        imgName={`more-yellow-cards_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderCardsText(first.scout?.CA ?? 0, false)}

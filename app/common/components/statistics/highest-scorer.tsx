@@ -29,7 +29,7 @@ export function HighestScorer<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Maior pontuador">
       <ListHotspot
-        imgName={`highest-scorer-${first.apelido}`}
+        imgName={`highest-scorer_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderHighestPointText(first.highestPoint, false)}

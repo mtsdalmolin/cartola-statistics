@@ -27,6 +27,7 @@ export function FinishEfficiency<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Eficiência de conversão">
       <ListHotspot
+        imgName={`finish-efficiency_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderFinishesToScoreText(first.finishesToScore, false)}
