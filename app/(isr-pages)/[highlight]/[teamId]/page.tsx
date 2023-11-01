@@ -58,7 +58,7 @@ export default async function TeamStatisticsStaticPage({
       metadata.twitter.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
       metadata.twitter.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
 
-      if (highlight) {
+      if (highlight !== 'estatisticas') {
         if (await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])) {
           metadata.twitter.images = [
             `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`
@@ -71,7 +71,7 @@ export default async function TeamStatisticsStaticPage({
       metadata.openGraph.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
       metadata.openGraph.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
 
-      if (highlight) {
+      if (highlight !== 'estatisticas') {
         if (await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])) {
           metadata.openGraph.images = [
             `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`
