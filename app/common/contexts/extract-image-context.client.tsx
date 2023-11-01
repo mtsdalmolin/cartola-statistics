@@ -5,6 +5,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import Link from 'next/link'
 
 import { Flex } from '@/app/common/components/flex'
+import { URLS } from '@/app/constants/url'
 import { Notification, Text } from '@mantine/core'
 import { IconBrandX } from '@tabler/icons-react'
 
@@ -85,7 +86,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
       ) : null}
       {showTweetReady && uploadReturnMessage ? (
         <Link
-          href={`http://twitter.com/share?text=${uploadReturnMessage}&url=https://cartola-statistics.vercel.app/estatisticas/${teamId}?highlight=${highlight}&hashtags=estatisticasdocartola`}
+          href={`http://twitter.com/share?text=${uploadReturnMessage}&url=${URLS.cartolaStatisticsPage}/estatisticas/${teamId}?highlight=${highlight}&hashtags=estatisticasdocartola`}
           target="_blank"
           onClick={() => setShowTweetReady(false)}
         >

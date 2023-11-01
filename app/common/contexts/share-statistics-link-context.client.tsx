@@ -2,6 +2,8 @@
 
 import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from 'react'
 
+import { URLS } from '@/app/constants/url'
+
 const ShareStatisticsLinkContext = createContext<{
   shareLink: string
   setTeamIdInShareLink: Dispatch<SetStateAction<null>>
@@ -13,7 +15,7 @@ export function ShareStatisticsLinkContextProvider({ children }: { children: Rea
   return (
     <ShareStatisticsLinkContext.Provider
       value={{
-        shareLink: `https://cartola-statistics.vercel.app/estatisticas/${teamId ?? ''}`,
+        shareLink: `${URLS.cartolaStatisticsPage}/estatisticas/${teamId ?? ''}`,
         setTeamIdInShareLink: setTeamId
       }}
     >
