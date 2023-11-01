@@ -8,6 +8,7 @@ import { formatCartolaApiData } from '@/app/helpers/formatters/cartola'
 import { ENDPOINTS, getRoundsData, getSubsData, request } from '@/app/services/cartola-api'
 import { RoundData } from '@/app/services/types'
 import edcBrand from '@/public/logo/twitter-card.png'
+import { sql } from '@vercel/postgres'
 
 import { find } from 'lodash'
 
@@ -30,7 +31,20 @@ export const metadata: Metadata = {
   }
 }
 
-export default async function TeamStatisticsStaticPage({ params }: { params: { teamId: string } }) {
+async function teamHasStatisticStaticImage(teamId: number, highlight: string) {
+  const teamImagesResult =
+    await sql`SELECT image_url FROM share_static_images WHERE team_id = ${+teamId} ORDER BY id DESC`
+
+  return !!teamImagesResult.rows.find((row) => row.image_url.includes(highlight))
+}
+
+export default async function TeamStatisticsStaticPage({
+  params,
+  searchParams
+}: {
+  params: { teamId: string }
+  searchParams: { highlight?: string }
+}) {
   const { teamId } = params
 
   const results = await Promise.allSettled<RoundData>(
@@ -44,6 +58,27 @@ export default async function TeamStatisticsStaticPage({ params }: { params: { t
     if (metadata.twitter) {
       metadata.twitter.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
       metadata.twitter.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
+
+      if (searchParams.highlight) {
+        if (await teamHasStatisticStaticImage(+teamId, searchParams.highlight)) {
+          metadata.twitter.images = [
+            `/api/image?teamId=${teamId}&highlight=${searchParams.highlight}`
+          ]
+        }
+      }
+    }
+
+    if (metadata.openGraph) {
+      metadata.openGraph.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
+      metadata.openGraph.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
+
+      if (searchParams.highlight) {
+        if (await teamHasStatisticStaticImage(+teamId, searchParams.highlight)) {
+          metadata.openGraph.images = [
+            `/api/image?teamId=${teamId}&highlight=${searchParams.highlight}`
+          ]
+        }
+      }
     }
   }
 

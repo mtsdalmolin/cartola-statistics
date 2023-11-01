@@ -1,6 +1,7 @@
 import { ReactNode, useRef } from 'react'
 
 import NextImage from 'next/image'
+import { useParams } from 'next/navigation'
 
 import { useExtractImageContext } from '@/app/common/contexts/extract-image-context.client'
 import { useTeamInfoContext } from '@/app/common/contexts/team-info-context.client'
@@ -22,6 +23,7 @@ export function ListHotspot({
   data: string | ReactNode
   details?: ReactNode
 }) {
+  const params = useParams()
   const hotspotRef = useRef(null)
   const { createImageAndSaveInBlobStore } = useExtractImageContext()
   const { teamInfo } = useTeamInfoContext()
@@ -41,7 +43,7 @@ export function ListHotspot({
               createImageAndSaveInBlobStore({
                 element: hotspotRef.current!,
                 imgName,
-                teamId: teamInfo?.id ?? 0
+                teamId: teamInfo?.id ?? +(params.teamId as string) ?? 0
               })
             }
           >

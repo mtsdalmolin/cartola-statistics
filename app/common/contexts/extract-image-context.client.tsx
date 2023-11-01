@@ -24,9 +24,17 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
   const [loadingUpload, setLoadingUpload] = useState(false)
   const [uploadReturnMessage, setUploadReturnMessage] = useState('')
   const [showTweetReady, setShowTweetReady] = useState(false)
+  const [teamId, setTeamId] = useState<number | null>(null)
+  const [highlight, setHighlight] = useState<string | null>(null)
 
-  const createImageAndSaveInBlobStore = ({ element, imgName, teamId }: BlobParamsToSave) => {
+  const createImageAndSaveInBlobStore = ({
+    element,
+    imgName,
+    teamId: scopedTeamId
+  }: BlobParamsToSave) => {
     setLoadingUpload(true)
+    setTeamId(scopedTeamId)
+    setHighlight(imgName.split('_')[0])
     const mime = 'image/jpg'
     html2canvas(element)
       .then((canvas) => {
@@ -34,7 +42,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
           async (blob) => {
             const file = new File([blob] as BlobPart[], `${imgName}.jpg`)
             const uploadResponse = await fetch(
-              `/api/image/upload?filename=${imgName}&teamId=${teamId}`,
+              `/api/image/upload?filename=${imgName}&teamId=${scopedTeamId}`,
               {
                 method: 'POST',
                 body: file,
@@ -77,7 +85,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
       ) : null}
       {showTweetReady && uploadReturnMessage ? (
         <Link
-          href={`http://twitter.com/share?text=${uploadReturnMessage}&url=https://cartola-statistics.vercel.app/estatisticas/29367702?highlight=artillery&hashtags=estatisticasdocartola`}
+          href={`http://twitter.com/share?text=${uploadReturnMessage}&url=https://cartola-statistics.vercel.app/estatisticas/${teamId}?highlight=${highlight}&hashtags=estatisticasdocartola`}
           target="_blank"
           onClick={() => setShowTweetReady(false)}
         >
