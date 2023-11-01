@@ -32,6 +32,7 @@ export function MoreAssists<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Mais assistências">
       <ListHotspot
+        imgName={`more-assists-${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderAssistsText(first.assists, false)}

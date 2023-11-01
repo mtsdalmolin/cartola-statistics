@@ -36,6 +36,7 @@ export function MoreTackles<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Mais desarmes">
       <ListHotspot
+        imgName={`more-tackles-${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderTacklesText(first.scout?.DS ?? 0, false)}

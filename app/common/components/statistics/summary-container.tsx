@@ -1,5 +1,7 @@
 import { ReactElement } from 'react'
 
+import { Flex } from '../flex'
+
 export function SummaryContainer({
   children,
   title
@@ -8,9 +10,9 @@ export function SummaryContainer({
   title: string
 }) {
   return (
-    <div className="w-full rounded-md text-white bg-palette-neutral-900 h-fit p-4">
+    <div className="relative w-full rounded-md text-white bg-palette-neutral-900 h-fit p-4">
       <div className="mt-[-0.175rem] mb-4">{title}</div>
-      <div className="flex flex-col gap-x-4 gap-y-12">{children}</div>
+      <Flex gap="sm">{children}</Flex>
     </div>
   )
 }

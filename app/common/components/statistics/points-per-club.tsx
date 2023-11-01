@@ -19,6 +19,7 @@ export function PointsPerClub<TClubsData extends ClubStatistics>({
   return (
     <SummaryContainer title="Time que mais pontuou">
       <ListHotspot
+        imgName={`points-per-club-${getFootballTeamName(first.id)}`}
         name={getFootballTeamName(first.id)}
         imgSrc={getFootballTeamBadgeLink(first.id, 'lg')}
         data={`${first.points.toFixed(1)} pontos`}

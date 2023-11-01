@@ -5,6 +5,7 @@ type TurnData = {
 }
 
 export interface TeamInfo {
+  id: number
   badgePhotoUrl: string
   name: string
   pointsPerTurn: {

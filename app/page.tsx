@@ -6,17 +6,25 @@ import Image from 'next/image'
 
 import brand from '@/public/logo/brand.svg'
 
+import { isEmpty, isNil } from 'lodash'
+
 import { getTeamStatistics } from './actions'
 import { SearchTeamStatisticsForm } from './common/components/forms/search-team-statistics'
 import { Signature } from './common/components/signature'
 import TeamStatisticsContent from './common/content/team-statistics'
 import { ShareStatisticsLinkContextProvider } from './common/contexts/share-statistics-link-context.client'
+import { useTeamInfoContext } from './common/contexts/team-info-context.client'
 
 export default function Home() {
   const [state, formAction] = useFormState(getTeamStatistics, {
     message: null,
     data: null
   })
+  const { setTeamInfo } = useTeamInfoContext()
+
+  if (!isEmpty(state.data) && !isNil(setTeamInfo)) {
+    setTeamInfo(state.data.teamInfo)
+  }
 
   return (
     <div className="w-full">

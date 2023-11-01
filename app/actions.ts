@@ -74,7 +74,10 @@ export async function getTeamStatistics(
         positionsStatistics,
         rounds,
         trophies,
-        teamInfo
+        teamInfo: {
+          ...teamInfo,
+          id: +teamId
+        }
       }
     }
   } catch (e) {

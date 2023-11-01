@@ -36,6 +36,7 @@ export function MostOffsidedPlayer<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Mais impedido">
       <ListHotspot
+        imgName={`most-offside-player-${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderOffsidesText(first.scout?.I ?? 0, false)}

@@ -25,6 +25,7 @@ export function LeastValuedPlayer<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Mais desvalorizados">
       <ListHotspot
+        imgName={`least-valued-player-${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={

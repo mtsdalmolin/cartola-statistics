@@ -29,6 +29,7 @@ export function Artillery<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Artilharia">
       <ListHotspot
+        imgName={`artillery-${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderGoalsText(first.goals)}

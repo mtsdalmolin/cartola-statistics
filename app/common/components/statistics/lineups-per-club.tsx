@@ -19,6 +19,7 @@ export function LineupsPerClub<TClubsData extends ClubStatistics>({
   return (
     <SummaryContainer title="Times mais escalados">
       <ListHotspot
+        imgName={`lineups-per-club-${getFootballTeamName(first.id)}`}
         name={getFootballTeamName(first.id)}
         imgSrc={getFootballTeamBadgeLink(first.id, 'lg')}
         data={`${first.lineupNumbers} escalações`}

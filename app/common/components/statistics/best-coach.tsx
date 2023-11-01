@@ -58,6 +58,7 @@ export function BestCoach<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Melhor técnico">
       <ListHotspot
+        imgName={`best-coach-${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={

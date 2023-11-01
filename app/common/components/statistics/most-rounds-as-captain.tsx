@@ -75,6 +75,7 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
   return (
     <SummaryContainer title="Mais escalado como capitão">
       <ListHotspot
+        imgName={`most-rounds-as-captain-${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
         data={renderCaptainTimesText(first.captainTimes)}

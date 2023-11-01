@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode, Ref, forwardRef } from 'react'
 
 import { VariantProps, tv } from 'tailwind-variants'
 
@@ -44,17 +44,22 @@ const flexContainer = tv({
 
 type FlexChildren = ReactElement | ReactNode | string
 
-export function Flex({
-  children,
-  className,
-  ...props
-}: {
-  children: FlexChildren[] | FlexChildren
-  className?: string
-} & VariantProps<typeof flexContainer>) {
+function FlexComponent(
+  {
+    children,
+    className,
+    ...props
+  }: {
+    children: FlexChildren[] | FlexChildren
+    className?: string
+  } & VariantProps<typeof flexContainer>,
+  ref: Ref<HTMLDivElement>
+) {
   return (
-    <div className={flexContainer({ ...props, className: className ?? '' })} {...props}>
+    <div ref={ref} className={flexContainer({ ...props, className: className ?? '' })} {...props}>
       {children}
     </div>
   )
 }
+
+export const Flex = forwardRef(FlexComponent)
