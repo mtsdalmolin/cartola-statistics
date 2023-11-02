@@ -1,11 +1,12 @@
 import { forwardRef, useRef, useState } from 'react'
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 
+import { SECOND_TURN_ROUNDS } from '@/app/constants/data'
 import { searchTeamName } from '@/app/services/cartola-api'
 import { Autocomplete, Avatar, Button, Group, Loader, Text } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
 
-import { debounce, isEmpty, uniqBy } from 'lodash'
+import { debounce, isEmpty, last, uniqBy } from 'lodash'
 
 import { useShareStatisticsLinkContext } from '../../contexts/share-statistics-link-context.client'
 
@@ -47,11 +48,12 @@ const AutoCompleteItem = forwardRef<HTMLDivElement, any>(
     }: any,
     ref
   ) => {
-    const { setTeamIdInShareLink } = useShareStatisticsLinkContext()
+    const { setRoundIdInShareLink, setTeamIdInShareLink } = useShareStatisticsLinkContext()
 
     const onMouseDownHandler = (event: MouseEvent) => {
       setSelectedTeamId(id)
       setTeamIdInShareLink(id)
+      setRoundIdInShareLink(last(SECOND_TURN_ROUNDS)!)
       setMemoizedSearchedTeams((prevState: TeamsAutocompleteList[]) =>
         uniqBy(
           [

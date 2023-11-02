@@ -5,18 +5,32 @@ import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useStat
 import { URLS } from '@/app/constants/url'
 
 const ShareStatisticsLinkContext = createContext<{
+  getShareLinkWithHighlight: (highlight: string) => string
   shareLink: string
   setTeamIdInShareLink: Dispatch<SetStateAction<null>>
-}>({ shareLink: '', setTeamIdInShareLink: () => {} })
+  setRoundIdInShareLink: Dispatch<SetStateAction<number>>
+}>({
+  getShareLinkWithHighlight: () => '',
+  shareLink: '',
+  setTeamIdInShareLink: () => {},
+  setRoundIdInShareLink: () => {}
+})
 
 export function ShareStatisticsLinkContextProvider({ children }: { children: ReactNode }) {
   const [teamId, setTeamId] = useState(null)
+  const [roundId, setRoundId] = useState(0)
+
+  const getShareLinkWithHighlight = (highlight: string) => {
+    return `${URLS.cartolaStatisticsPage}/${highlight}/${teamId ?? ''}?roundId=${roundId ?? ''}`
+  }
 
   return (
     <ShareStatisticsLinkContext.Provider
       value={{
-        shareLink: `${URLS.cartolaStatisticsPage}/estatisticas/${teamId ?? ''}`,
-        setTeamIdInShareLink: setTeamId
+        getShareLinkWithHighlight,
+        shareLink: getShareLinkWithHighlight('estatisticas'),
+        setTeamIdInShareLink: setTeamId,
+        setRoundIdInShareLink: setRoundId
       }}
     >
       {children}

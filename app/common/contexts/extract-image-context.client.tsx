@@ -5,11 +5,12 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import Link from 'next/link'
 
 import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
-import { URLS } from '@/app/constants/url'
 import { Notification } from '@mantine/core'
 import { IconBrandX, IconX } from '@tabler/icons-react'
 
 import html2canvas from 'html2canvas'
+
+import { useShareStatisticsLinkContext } from './share-statistics-link-context.client'
 
 interface BlobParamsToSave {
   element: HTMLElement
@@ -27,18 +28,17 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
   const [uploadReturnMessage, setUploadReturnMessage] = useState('')
   const [apiReturnedError, setApiReturnedError] = useState(false)
   const [showTweetReady, setShowTweetReady] = useState(false)
-  const [teamId, setTeamId] = useState<number | null>(null)
   const [highlight, setHighlight] = useState<string | null>(null)
+  const { getShareLinkWithHighlight } = useShareStatisticsLinkContext()
 
   const createImageAndSaveInBlobStore = ({
     element,
     imgName,
-    teamId: scopedTeamId,
+    teamId,
     roundId
   }: BlobParamsToSave) => {
     setApiReturnedError(false)
     setLoadingUpload(true)
-    setTeamId(scopedTeamId)
     setHighlight(imgName.split('_')[0])
 
     const mime = 'image/jpg'
@@ -48,7 +48,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
           async (blob) => {
             const file = new File([blob] as BlobPart[], `${imgName}.jpg`)
             const uploadResponse = await fetch(
-              `/api/image/upload?filename=${imgName}&teamId=${scopedTeamId}&roundId=${roundId}`,
+              `/api/image/upload?filename=${imgName}&teamId=${teamId}&roundId=${roundId}`,
               {
                 method: 'POST',
                 body: file,
@@ -70,7 +70,6 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
         )
       })
       .catch(() => {
-        console.log('aqui')
         setLoadingUpload(false)
       })
   }
@@ -95,9 +94,9 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
       ) : null}
       {showTweetReady && uploadReturnMessage ? (
         <Link
-          href={`http://twitter.com/share?text=${uploadReturnMessage}&url=${
-            URLS.cartolaStatisticsPage
-          }/${HIGHLIGHT_TO_PARAM[highlight!]}/${teamId}&hashtags=estatisticasdocartola`}
+          href={`http://twitter.com/share?text=${uploadReturnMessage}&url=${getShareLinkWithHighlight(
+            HIGHLIGHT_TO_PARAM[highlight!]
+          )}&hashtags=estatisticasdocartola`}
           target="_blank"
           onClick={() => setShowTweetReady(false)}
         >
