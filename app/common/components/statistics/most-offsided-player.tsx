@@ -13,7 +13,7 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
-const ELEMENT_ID = HIGHLIGHT_TO_PARAM['more-offsided-player']
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['most-offsided-player']
 
 function renderOffsidesText(numberOfCards: number, isAbbreviated = true) {
   if (isAbbreviated) return `${numberOfCards} imp.`
