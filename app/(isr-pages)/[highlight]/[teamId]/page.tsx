@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { Signature } from '@/app/common/components/signature'
 import TeamStatisticsContent from '@/app/common/content/team-statistics'
 import { Trophies } from '@/app/common/types/trophies'
-import { ROUNDS, TEAMS } from '@/app/constants/data'
+import { ROUNDS, SECOND_TURN_ROUNDS, TEAMS } from '@/app/constants/data'
 import { PARAM_TO_HIGHLIGHT } from '@/app/constants/highlight'
 import { formatCartolaApiData } from '@/app/helpers/formatters/cartola'
 import { ENDPOINTS, getRoundsData, getSubsData, request } from '@/app/services/cartola-api'
@@ -12,7 +12,7 @@ import { RoundData } from '@/app/services/types'
 import edcBrand from '@/public/logo/twitter-card.png'
 import { sql } from '@vercel/postgres'
 
-import { find } from 'lodash'
+import { find, last } from 'lodash'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -29,7 +29,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const hasImage = await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])
 
   const images = hasImage
-    ? [`/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`]
+    ? [
+        `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}&roundId=${last(
+          SECOND_TURN_ROUNDS
+        )}`
+      ]
     : [edcBrand.src]
 
   const pageTitle = result ? `EDC | ${result.time.nome}` : 'Estatísticas do Cartola'

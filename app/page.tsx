@@ -20,10 +20,16 @@ export default function Home() {
     message: null,
     data: null
   })
-  const { setTeamInfo } = useTeamInfoContext()
+  const { setCurrentRound, setTeamInfo } = useTeamInfoContext()
 
-  if (!isEmpty(state.data) && !isNil(setTeamInfo)) {
-    setTeamInfo(state.data.teamInfo)
+  if (!isEmpty(state.data)) {
+    if (!isNil(setTeamInfo)) {
+      setTeamInfo(state.data.teamInfo)
+    }
+
+    if (!isNil(setCurrentRound)) {
+      setCurrentRound(Object.keys(state.data.rounds).length)
+    }
   }
 
   return (

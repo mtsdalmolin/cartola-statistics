@@ -26,7 +26,7 @@ export function ListHotspot({
   const params = useParams()
   const hotspotRef = useRef(null)
   const { createImageAndSaveInBlobStore } = useExtractImageContext()
-  const { teamInfo } = useTeamInfoContext()
+  const { currentRound, teamInfo } = useTeamInfoContext()
 
   const renderedHtml = (
     <Flex
@@ -43,7 +43,8 @@ export function ListHotspot({
               createImageAndSaveInBlobStore({
                 element: hotspotRef.current!,
                 imgName,
-                teamId: teamInfo?.id ?? +(params.teamId as string) ?? 0
+                teamId: teamInfo?.id ?? +(params.teamId as string) ?? 0,
+                roundId: currentRound ?? 0
               })
             }
           >

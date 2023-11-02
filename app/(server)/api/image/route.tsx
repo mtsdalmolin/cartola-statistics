@@ -10,19 +10,26 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const teamId = searchParams.get('teamId')
   const highlight = searchParams.get('highlight')
+  const roundId = searchParams.get('roundId')
 
   try {
-    if (!teamId) return NextResponse.json({ message: 'TeamId must be informed.' }, { status: 422 })
+    if (!(teamId && roundId && highlight))
+      return NextResponse.json({ message: 'Couldnt process request' }, { status: 422 })
 
-    const teamImages =
-      await sql`SELECT image_url FROM share_static_images WHERE team_id = ${+teamId} ORDER BY id DESC`
+    const teamImages = await sql`
+        SELECT image_url
+        FROM share_static_images
+        WHERE
+          team_id = ${+teamId} AND
+          round_id = ${+roundId}
+        ORDER BY id DESC`
 
     if (!teamImages.rows)
       return NextResponse.json({ message: 'Team images not found' }, { status: 404 })
 
     const highlightRow = teamImages.rows.find((row) => row.image_url.includes(highlight))
     if (!isNil(highlightRow) && !highlightRow.image_url)
-      return NextResponse.json({ message: 'Highlight image not found' }, { status: 404 })
+      return NextResponse.json({ message: 'Team images not found' }, { status: 404 })
 
     const image = await fetch(highlightRow!.image_url as unknown as string).then((res) =>
       res.arrayBuffer()
@@ -42,7 +49,7 @@ export async function GET(request: Request) {
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element*/}
-          <img width="350" height="225" src={image as unknown as string} alt="" />
+          <img width="350" height="225" src={image as unknown as string} alt={highlight} />
         </div>
       ),
       {

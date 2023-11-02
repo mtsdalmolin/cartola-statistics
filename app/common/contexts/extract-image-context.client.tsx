@@ -4,11 +4,10 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 
 import Link from 'next/link'
 
-import { Flex } from '@/app/common/components/flex'
 import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { URLS } from '@/app/constants/url'
-import { Notification, Text } from '@mantine/core'
-import { IconBrandX } from '@tabler/icons-react'
+import { Notification } from '@mantine/core'
+import { IconBrandX, IconX } from '@tabler/icons-react'
 
 import html2canvas from 'html2canvas'
 
@@ -16,6 +15,7 @@ interface BlobParamsToSave {
   element: HTMLElement
   imgName: string
   teamId: number
+  roundId: number
 }
 
 const ExtractImageContext = createContext<{
@@ -25,6 +25,7 @@ const ExtractImageContext = createContext<{
 export function ExtractImageContextProvider({ children }: { children: ReactNode }) {
   const [loadingUpload, setLoadingUpload] = useState(false)
   const [uploadReturnMessage, setUploadReturnMessage] = useState('')
+  const [apiReturnedError, setApiReturnedError] = useState(false)
   const [showTweetReady, setShowTweetReady] = useState(false)
   const [teamId, setTeamId] = useState<number | null>(null)
   const [highlight, setHighlight] = useState<string | null>(null)
@@ -32,11 +33,14 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
   const createImageAndSaveInBlobStore = ({
     element,
     imgName,
-    teamId: scopedTeamId
+    teamId: scopedTeamId,
+    roundId
   }: BlobParamsToSave) => {
+    setApiReturnedError(false)
     setLoadingUpload(true)
     setTeamId(scopedTeamId)
     setHighlight(imgName.split('_')[0])
+
     const mime = 'image/jpg'
     html2canvas(element)
       .then((canvas) => {
@@ -44,7 +48,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
           async (blob) => {
             const file = new File([blob] as BlobPart[], `${imgName}.jpg`)
             const uploadResponse = await fetch(
-              `/api/image/upload?filename=${imgName}&teamId=${scopedTeamId}`,
+              `/api/image/upload?filename=${imgName}&teamId=${scopedTeamId}&roundId=${roundId}`,
               {
                 method: 'POST',
                 body: file,
@@ -55,6 +59,8 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
             if (uploadResponse.success) {
               setShowTweetReady(true)
               setUploadReturnMessage(uploadResponse.message)
+            } else {
+              setApiReturnedError(true)
             }
 
             setLoadingUpload(false)
@@ -64,6 +70,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
         )
       })
       .catch(() => {
+        console.log('aqui')
         setLoadingUpload(false)
       })
   }
@@ -80,6 +87,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
           className="fixed bottom-2 right-2 max-w-xs"
           title="Estamos gerando o seu tweet"
           color="#7ae1bf"
+          withCloseButton={false}
           loading
         >
           Estamos gerando a imagem e isso pode demorar um instante...
@@ -98,12 +106,22 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
             title="O seu tweet está pronto!"
             icon={<IconBrandX size="1.1rem" />}
             color="dark"
+            withCloseButton={false}
           >
-            <Flex>
-              <Text>Clique aqui para compartilhar a sua estatística no twitter/X!</Text>
-            </Flex>
+            Clique aqui para compartilhar a sua estatística no twitter/X!
           </Notification>
         </Link>
+      ) : null}
+      {apiReturnedError ? (
+        <Notification
+          className="fixed bottom-2 right-2 max-w-xs"
+          title="Aconteceu um erro inesperado!"
+          icon={<IconX size="1.1rem" />}
+          color="red"
+          onClose={() => setApiReturnedError(false)}
+        >
+          Tente novamente mais tarde. Pode ser que algum dos nossos serviços esteja congestionado.
+        </Notification>
       ) : null}
     </ExtractImageContext.Provider>
   )

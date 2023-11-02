@@ -36,18 +36,35 @@ export async function POST(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url)
   const filename = searchParams.get('filename')
   const teamId = searchParams.get('teamId')
+  const roundId = searchParams.get('roundId')
 
-  if (!(filename && teamId))
+  if (!(filename && teamId && eval(roundId ?? 'undefined')))
     return NextResponse.json({ message: 'Couldnt process request' }, { status: 422 })
 
   try {
-    const blob = await put(`${filename}.jpg`, request.body!, {
-      access: 'public'
-    })
-
-    await sql`INSERT INTO share_static_images (team_id, image_url) VALUES (${teamId}, ${blob.url})`
-
     const highlight = filename.split('_')
+
+    const teamImages = await sql`
+      SELECT image_url
+      FROM share_static_images
+      WHERE
+        team_id = ${+teamId} AND
+        round_id = ${roundId}
+      ORDER BY
+        id DESC
+      `
+
+    const teamAlreadyHasGeneratedImage = teamImages.rows.find((row) =>
+      row.image_url.includes(highlight[0])
+    )
+
+    if (!teamAlreadyHasGeneratedImage) {
+      const blob = await put(`${filename}.jpg`, request.body!, {
+        access: 'public'
+      })
+
+      await sql`INSERT INTO share_static_images (team_id, image_url, round_id) VALUES (${teamId}, ${blob.url}, ${roundId})`
+    }
 
     const message = CLUB_STATS.includes(highlight[0])
       ? STATISTICS_MESSAGES[highlight[0]].replace('%club%', highlight[1])
