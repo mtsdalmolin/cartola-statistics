@@ -38,7 +38,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const teamId = searchParams.get('teamId')
   const roundId = searchParams.get('roundId')
 
-  if (!(filename && teamId && eval(roundId ?? 'undefined')))
+  if (!(filename && teamId && !!roundId))
     return NextResponse.json({ message: 'Couldnt process request' }, { status: 422 })
 
   try {
