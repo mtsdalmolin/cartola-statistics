@@ -14,22 +14,47 @@ import { sql } from '@vercel/postgres'
 
 import { find } from 'lodash'
 
-export const metadata: Metadata = {
-  title: 'Estatísticas do Cartola',
-  description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
-  openGraph: {
-    type: 'website',
-    title: 'Estatísticas do Cartola',
-    description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
-    images: [edcBrand.src]
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Estatísticas do Cartola',
-    description: 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.',
-    creator: '@mtsdalmolin',
-    creatorId: '1686521332597477400',
-    images: [edcBrand.src]
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+type Props = {
+  params: { highlight: string; teamId: string }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { highlight, teamId } = params
+
+  const result = await request<RoundData>(ENDPOINTS.TEAM_ROUND(teamId, '1'))
+
+  const hasImage = await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])
+
+  const images = hasImage
+    ? [`/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`]
+    : [edcBrand.src]
+
+  const pageTitle = result ? `EDC | ${result.time.nome}` : 'Estatísticas do Cartola'
+  const title = result ? `Estatísticas do Cartola | ${result.time.nome}` : 'Estatísticas do Cartola'
+  const description = result
+    ? `Veja as estatísticas do time ${result.time.nome}`
+    : 'Analise as estatísticas das suas escalações e veja o restrospecto do ano.'
+
+  return {
+    title: pageTitle,
+    description,
+    openGraph: {
+      type: 'website',
+      title,
+      description,
+      images
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      creator: '@mtsdalmolin',
+      creatorId: '1686521332597477400',
+      images
+    }
   }
 }
 
@@ -40,11 +65,7 @@ async function teamHasStatisticStaticImage(teamId: number, highlight: string) {
   return !!teamImagesResult.rows.find((row) => row.image_url.includes(highlight))
 }
 
-export default async function TeamStatisticsStaticPage({
-  params
-}: {
-  params: { highlight: string; teamId: string }
-}) {
+export default async function TeamStatisticsStaticPage({ params }: Props) {
   const { highlight, teamId } = params
 
   if (!(highlight in PARAM_TO_HIGHLIGHT) && highlight !== 'estatisticas') {
@@ -56,35 +77,6 @@ export default async function TeamStatisticsStaticPage({
       return request(ENDPOINTS.TEAM_ROUND(teamId, round.toString()))
     })
   )
-
-  if (results[0].status === 'fulfilled') {
-    metadata.title = `EDC | ${results[0].value.time.nome}`
-    if (metadata.twitter) {
-      metadata.twitter.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
-      metadata.twitter.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
-
-      if (highlight in PARAM_TO_HIGHLIGHT) {
-        if (await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])) {
-          metadata.twitter.images = [
-            `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`
-          ]
-        }
-      }
-    }
-
-    if (metadata.openGraph) {
-      metadata.openGraph.title = `Estatísticas do Cartola | ${results[0].value.time.nome}`
-      metadata.openGraph.description = `Veja as estatísticas do time ${results[0].value.time.nome}`
-
-      if (highlight in PARAM_TO_HIGHLIGHT) {
-        if (await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])) {
-          metadata.openGraph.images = [
-            `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}`
-          ]
-        }
-      }
-    }
-  }
 
   const rounds = await getRoundsData(ROUNDS)
   const subs = await getSubsData(teamId.toString(), ROUNDS)
