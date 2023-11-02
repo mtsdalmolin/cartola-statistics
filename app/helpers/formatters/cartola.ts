@@ -397,20 +397,6 @@ export function formatCartolaApiData(
   results.forEach(async (result) => {
     if (result.status === 'rejected') return
 
-    teamInfo.badgePhotoUrl = result.value.time.url_escudo_png
-    teamInfo.name = result.value.time.nome
-    teamInfo.id = result.value.time.time_id
-
-    if (isValidRound(result.value)) {
-      if (FIRST_TURN_ROUNDS.includes(result.value.rodada_atual)) {
-        teamInfo.pointsPerTurn.first.validRounds++
-        teamInfo.pointsPerTurn.first.total += result.value.pontos
-      } else if (SECOND_TURN_ROUNDS.includes(result.value.rodada_atual)) {
-        teamInfo.pointsPerTurn.second.validRounds++
-        teamInfo.pointsPerTurn.second.total += result.value.pontos
-      }
-    }
-
     const athletesThatScoredInRound: Athlete[] = []
     const athletesThatMadeLessThanZeroPointsInRound: Athlete[] = []
     const athletesThatValuedInRound: Athlete[] = []
@@ -420,8 +406,24 @@ export function formatCartolaApiData(
       reservas: bench,
       capitao_id: captainId,
       patrimonio: wealth,
-      pontos: pointsInRound
+      pontos: pointsInRound,
+      rodada_atual: currentRound,
+      time: team
     } = result.value
+
+    teamInfo.badgePhotoUrl = team.url_escudo_png
+    teamInfo.name = team.nome
+    teamInfo.id = team.time_id
+
+    if (isValidRound(result.value)) {
+      if (FIRST_TURN_ROUNDS.includes(currentRound)) {
+        teamInfo.pointsPerTurn.first.validRounds++
+        teamInfo.pointsPerTurn.first.total += pointsInRound
+      } else if (SECOND_TURN_ROUNDS.includes(currentRound)) {
+        teamInfo.pointsPerTurn.second.validRounds++
+        teamInfo.pointsPerTurn.second.total += pointsInRound
+      }
+    }
 
     athletes.forEach(async (athlete) => {
       playersStatistics = playerStatisticsIncrementalFactory(playersStatistics, athlete, captainId)
