@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -9,6 +12,8 @@ import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
+
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['worst-goalkeeper']
 
 function renderGoalsConcededText(goalsConceded: number, isAbbreviated = true) {
   if (isAbbreviated) return `${goalsConceded} gol${goalsConceded > 1 ? 's' : ''}`
@@ -24,6 +29,8 @@ export function WorstGoalkeeper<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const orderedWorstGoalkeeperData = typedOrderBy(
     Object.values(crewData),
     'goalsConceded',
@@ -31,8 +38,9 @@ export function WorstGoalkeeper<TCrewData extends CrewStatistics>({
   ).filter((athlete) => athlete.goalsConceded)
   const first = orderedWorstGoalkeeperData[0]
   orderedWorstGoalkeeperData.shift()
+
   return (
-    <SummaryContainer title="Gols sofridos">
+    <SummaryContainer id={ELEMENT_ID} title="Gols sofridos" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`worst-goalkeeper_${first.apelido}`}
         name={first.apelido}

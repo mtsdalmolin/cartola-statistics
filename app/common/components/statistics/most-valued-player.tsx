@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
 import { take } from 'lodash'
@@ -10,11 +13,15 @@ import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 import { ValuationRoundsText } from './text/valuation-rounds'
 
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['most-valued-player']
+
 export function MostValuedPlayer<TCrewData extends CrewStatistics>({
   crewData
 }: {
   crewData: TCrewData
 }) {
+  const { highlight } = useParams()
+
   const orderedMostValuedPlayerData = typedOrderBy(
     Object.values(crewData),
     'valuation.rounds.sum' as any,
@@ -23,7 +30,7 @@ export function MostValuedPlayer<TCrewData extends CrewStatistics>({
   const first = orderedMostValuedPlayerData[0]
   orderedMostValuedPlayerData.shift()
   return (
-    <SummaryContainer title="Mais valorizados">
+    <SummaryContainer id={ELEMENT_ID} title="Mais valorizados" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`most-valued-player_${first.apelido}`}
         name={first.apelido}

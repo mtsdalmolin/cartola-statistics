@@ -68,13 +68,17 @@ export default function TeamStatisticsContent({
 }: {
   data: GetTeamsStatisticsActionState['data']
 }) {
+  const pathname = usePathname()
+
   return data ? (
     <ExtractImageContextProvider>
       <div className="py-4">
         <TeamProfile matchesData={data.rounds} teamInfo={data.teamInfo} trophies={data.trophies} />
-        <Flex className="w-full" justify="center">
-          <CopyStaticPageUrl />
-        </Flex>
+        {pathname === '/' ? (
+          <Flex className="w-full" justify="center">
+            <CopyStaticPageUrl />
+          </Flex>
+        ) : null}
         {!isEmpty(data.athleteStatistics) ? (
           <>
             <StatisticsSection title="os melhores">

@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { getAthleteFinishes } from '@/app/helpers/formatters/cartola'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
@@ -10,6 +13,8 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['highest-finisher']
+
 function renderNumberOfFinishesText(numberOfFinishes: number, isAbbreviated = true) {
   if (isAbbreviated) return `${numberOfFinishes} fin.`
   return `${numberOfFinishes} finalizaç${numberOfFinishes > 1 ? 'ões' : 'ão'}`
@@ -20,11 +25,14 @@ export function HighestFinisher<TCrewData extends CrewStatistics>({
 }: {
   crewData: TCrewData
 }) {
+  const { highlight } = useParams()
+
   const orderedHighestFinisherData = typedOrderBy(Object.values(crewData), 'finishes', 'desc')
   const first = orderedHighestFinisherData[0]
   orderedHighestFinisherData.shift()
+
   return (
-    <SummaryContainer title="Mais finalizações">
+    <SummaryContainer id={ELEMENT_ID} title="Mais finalizações" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`highest-finisher_${first.apelido}`}
         name={first.apelido}

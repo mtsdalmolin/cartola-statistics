@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -9,6 +12,8 @@ import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
+
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['more-offsided-player']
 
 function renderOffsidesText(numberOfCards: number, isAbbreviated = true) {
   if (isAbbreviated) return `${numberOfCards} imp.`
@@ -23,6 +28,8 @@ export function MostOffsidedPlayer<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const orderedMostOffsidedPlayerData = typedOrderBy(
     Object.values(crewData),
     'scout.I' as any,
@@ -33,8 +40,9 @@ export function MostOffsidedPlayer<TCrewData extends CrewStatistics>({
 
   const first = orderedMostOffsidedPlayerData[0]
   orderedMostOffsidedPlayerData.shift()
+
   return (
-    <SummaryContainer title="Mais impedido">
+    <SummaryContainer id={ELEMENT_ID} title="Mais impedido" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`most-offside-player_${first.apelido}`}
         name={first.apelido}

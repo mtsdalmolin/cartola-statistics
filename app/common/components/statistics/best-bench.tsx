@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -9,6 +12,8 @@ import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
+
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['best-bench']
 
 function renderPointsAverageText(homeAverage: number, isAbbreviated = true) {
   if (isAbbreviated) return `${homeAverage.toFixed(1)} pts.`
@@ -22,13 +27,16 @@ export function BestBench<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const orderedBestBenchData = typedOrderBy(Object.values(crewData), ['pointsAverage'], ['desc'])
   if (isEmpty(orderedBestBenchData)) return null
 
   const first = orderedBestBenchData[0]
   orderedBestBenchData.shift()
+
   return (
-    <SummaryContainer title="Melhor banco">
+    <SummaryContainer id={ELEMENT_ID} title="Melhor banco" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`best-bench_${first.apelido}`}
         name={first.apelido}

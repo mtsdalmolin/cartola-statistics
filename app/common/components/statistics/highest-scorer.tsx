@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -11,6 +14,8 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['highest-scorer']
+
 function renderHighestPointText(homeAverage: number, isAbbreviated = true) {
   if (isAbbreviated) return `${homeAverage.toFixed(1)} pts.`
   return `${homeAverage.toFixed(1)} ponto${homeAverage > 1 ? 's' : ''}`
@@ -23,11 +28,14 @@ export function HighestScorer<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const orderedHighestScorerData = typedOrderBy(Object.values(crewData), 'highestPoint', 'desc')
   const first = orderedHighestScorerData[0]
   orderedHighestScorerData.shift()
+
   return (
-    <SummaryContainer title="Maior pontuador">
+    <SummaryContainer id={ELEMENT_ID} title="Maior pontuador" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`highest-scorer_${first.apelido}`}
         name={first.apelido}

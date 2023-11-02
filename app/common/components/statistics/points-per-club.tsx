@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
@@ -8,16 +11,25 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['points-per-club']
+
 export function PointsPerClub<TClubsData extends ClubStatistics>({
   clubsData
 }: {
   clubsData: TClubsData
 }) {
+  const { highlight } = useParams()
+
   const orderedClubsData = typedOrderBy(Object.values(clubsData), 'points', 'desc')
   const first = orderedClubsData[0]
   orderedClubsData.shift()
+
   return (
-    <SummaryContainer title="Time que mais pontuou">
+    <SummaryContainer
+      id={ELEMENT_ID}
+      title="Time que mais pontuou"
+      focus={highlight === ELEMENT_ID}
+    >
       <ListHotspot
         imgName={`points-per-club_${getFootballTeamName(first.id)}`}
         name={getFootballTeamName(first.id)}

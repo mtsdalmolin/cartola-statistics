@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
 import { take } from 'lodash'
@@ -10,11 +13,15 @@ import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 import { ValuationRoundsText } from './text/valuation-rounds'
 
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['least-valued-player']
+
 export function LeastValuedPlayer<TCrewData extends CrewStatistics>({
   crewData
 }: {
   crewData: TCrewData
 }) {
+  const { highlight } = useParams()
+
   const orderedLeastValuedPlayerData = typedOrderBy(
     Object.values(crewData),
     'valuation.rounds.sum' as any,
@@ -22,8 +29,9 @@ export function LeastValuedPlayer<TCrewData extends CrewStatistics>({
   )
   const first = orderedLeastValuedPlayerData[0]
   orderedLeastValuedPlayerData.shift()
+
   return (
-    <SummaryContainer title="Mais desvalorizados">
+    <SummaryContainer id={ELEMENT_ID} title="Mais desvalorizados" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`least-valued-player_${first.apelido}`}
         name={first.apelido}

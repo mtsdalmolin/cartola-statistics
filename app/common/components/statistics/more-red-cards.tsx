@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -9,6 +12,8 @@ import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
+
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['more-red-cards']
 
 function renderCardsText(numberOfCards: number, isAbbreviated = true) {
   if (isAbbreviated) return `${numberOfCards} cart.`
@@ -23,6 +28,8 @@ export function MoreRedCards<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const orderedMoreRedCardsData = typedOrderBy(
     Object.values(crewData),
     'scout.CV' as any,
@@ -34,7 +41,7 @@ export function MoreRedCards<TCrewData extends CrewStatistics>({
   const first = orderedMoreRedCardsData[0]
   orderedMoreRedCardsData.shift()
   return (
-    <SummaryContainer title="Cartões vermelhos">
+    <SummaryContainer id={ELEMENT_ID} title="Cartões vermelhos" focus={highlight === ELEMENT_ID}>
       <>
         <ListHotspot
           imgName={`more-red-cards_${first.apelido}`}

@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
 import { take } from 'lodash'
@@ -7,6 +10,8 @@ import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
+
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['best-home-player']
 
 function renderHomeAverageText(homeAverage: number, isAbbreviated = true) {
   if (isAbbreviated) return `${homeAverage.toFixed(1)} pts.`
@@ -18,6 +23,8 @@ export function BestHomePlayer<TCrewData extends CrewStatistics>({
 }: {
   crewData: TCrewData
 }) {
+  const { highlight } = useParams()
+
   const orderedBestHomePlayerData = typedOrderBy(
     Object.values(crewData),
     'home.average' as any,
@@ -26,7 +33,11 @@ export function BestHomePlayer<TCrewData extends CrewStatistics>({
   const first = orderedBestHomePlayerData[0]
   orderedBestHomePlayerData.shift()
   return (
-    <SummaryContainer title="Média jogando em casa">
+    <SummaryContainer
+      id={ELEMENT_ID}
+      title="Média jogando em casa"
+      focus={highlight === ELEMENT_ID}
+    >
       <ListHotspot
         imgName={`best-home-player_${first.apelido}`}
         name={first.apelido}

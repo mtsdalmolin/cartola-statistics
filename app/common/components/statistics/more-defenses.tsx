@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -9,6 +12,8 @@ import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
+
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['more-defenses']
 
 function renderDefensesText(defenses: number, isAbbreviated = true) {
   if (isAbbreviated) return `${defenses} def.`
@@ -22,6 +27,8 @@ export function MoreDefenses<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const orderedDefenseEfficiencyData = typedOrderBy(
     Object.values(crewData),
     'defenses',
@@ -29,8 +36,9 @@ export function MoreDefenses<TCrewData extends CrewStatistics>({
   ).filter((athlete) => athlete.defenses)
   const first = orderedDefenseEfficiencyData[0]
   orderedDefenseEfficiencyData.shift()
+
   return (
-    <SummaryContainer title="Mais defesas">
+    <SummaryContainer id={ELEMENT_ID} title="Mais defesas" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`more-defenses_${first.apelido}`}
         name={first.apelido}

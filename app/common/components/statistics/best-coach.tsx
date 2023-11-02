@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { getRoundResults } from '@/app/helpers/formatters/cartola'
 import { isCoach } from '@/app/helpers/positions'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
@@ -12,6 +15,8 @@ import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
+
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['best-coach']
 
 function renderVictoriesAverageTooltipLabel(castTimes: number, results: number[]) {
   const categorizedResults = countBy(results, Math.floor)
@@ -46,6 +51,8 @@ export function BestCoach<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const orderedBestCoachData = typedOrderBy(
     Object.values(crewData).filter(
       (athlete) => isCoach(athlete.posicao_id) && athlete.victoriesAverage
@@ -55,8 +62,9 @@ export function BestCoach<TCrewData extends CrewStatistics>({
   )
   const first = orderedBestCoachData[0]
   orderedBestCoachData.shift()
+
   return (
-    <SummaryContainer title="Melhor técnico">
+    <SummaryContainer id={ELEMENT_ID} title="Melhor técnico" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`best-coach_${first.apelido}`}
         name={first.apelido}

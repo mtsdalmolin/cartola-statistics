@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -9,6 +12,8 @@ import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
+
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['more-tackles']
 
 function renderTacklesText(numberOfCards: number, isAbbreviated = true) {
   if (isAbbreviated) return `${numberOfCards} des.`
@@ -23,6 +28,8 @@ export function MoreTackles<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const orderedMoreTacklesData = typedOrderBy(
     Object.values(crewData),
     'scout.DS' as any,
@@ -33,8 +40,9 @@ export function MoreTackles<TCrewData extends CrewStatistics>({
 
   const first = orderedMoreTacklesData[0]
   orderedMoreTacklesData.shift()
+
   return (
-    <SummaryContainer title="Mais desarmes">
+    <SummaryContainer id={ELEMENT_ID} title="Mais desarmes" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`more-tackles_${first.apelido}`}
         name={first.apelido}

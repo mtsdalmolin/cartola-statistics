@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { Progress } from '@mantine/core'
 
@@ -8,6 +11,8 @@ import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
+
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['most-rounds-as-captain']
 
 function renderCaptainTimesText(captainTimes: number) {
   return `${captainTimes} vez${captainTimes > 1 ? 'es' : ''}`
@@ -65,6 +70,8 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
 }: {
   crewData: TCrewData
 }) {
+  const { highlight } = useParams()
+
   const mostRoundsAsCaptainData = typedOrderBy(
     Object.values(crewData).filter((athlete) => athlete.captainTimes > 0),
     'captainTimes',
@@ -72,8 +79,13 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
   )
   const first = mostRoundsAsCaptainData[0]
   mostRoundsAsCaptainData.shift()
+
   return (
-    <SummaryContainer title="Mais escalado como capitão">
+    <SummaryContainer
+      id={ELEMENT_ID}
+      title="Mais escalado como capitão"
+      focus={highlight === ELEMENT_ID}
+    >
       <ListHotspot
         imgName={`most-rounds-as-captain_${first.apelido}`}
         name={first.apelido}

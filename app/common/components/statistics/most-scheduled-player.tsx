@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -10,6 +13,8 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['most-scheduled-player']
+
 function renderCastTimesText(castTimes: number) {
   return `${castTimes} vez${castTimes > 1 ? 'es' : ''}`
 }
@@ -21,11 +26,18 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const mostScheduledPlayerData = typedOrderBy(Object.values(crewData), 'castTimes', 'desc')
   const first = mostScheduledPlayerData[0]
   mostScheduledPlayerData.shift()
+
   return (
-    <SummaryContainer title="Jogador mais escalado">
+    <SummaryContainer
+      id={ELEMENT_ID}
+      title="Jogador mais escalado"
+      focus={highlight === ELEMENT_ID}
+    >
       <ListHotspot
         imgName={`most-scheduled-player_${first.apelido}`}
         name={first.apelido}

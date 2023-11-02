@@ -1,3 +1,6 @@
+import { useParams } from 'next/navigation'
+
+import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -10,6 +13,8 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['artillery']
+
 function renderGoalsText(numberOfGoals: number) {
   return `${numberOfGoals} gol${numberOfGoals > 1 ? 's' : ''}`
 }
@@ -21,13 +26,16 @@ export function Artillery<TCrewData extends CrewStatistics>({
   crewData: TCrewData
   matchesData: RoundMatchesData
 }) {
+  const { highlight } = useParams()
+
   const orderedArtilleryData = typedOrderBy(Object.values(crewData), 'goals', 'desc').filter(
     (athlete) => athlete.goals > 0
   )
   const first = orderedArtilleryData[0]
   orderedArtilleryData.shift()
+
   return (
-    <SummaryContainer title="Artilharia">
+    <SummaryContainer id={ELEMENT_ID} title="Artilharia" focus={highlight === ELEMENT_ID}>
       <ListHotspot
         imgName={`artillery_${first.apelido}`}
         name={first.apelido}
