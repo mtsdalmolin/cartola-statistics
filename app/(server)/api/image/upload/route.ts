@@ -38,7 +38,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const teamId = searchParams.get('teamId')
   const roundId = searchParams.get('roundId')
 
-  if (!(filename && teamId && !!roundId))
+  if (!(filename && teamId && roundId) || isNaN(+roundId))
     return NextResponse.json({ message: 'Couldnt process request' }, { status: 422 })
 
   try {
