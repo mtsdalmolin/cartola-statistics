@@ -24,6 +24,7 @@ export interface GetTeamsStatisticsActionState {
     athleteStatistics: NthChild<FormatCartolaApiDataType, 0>
     benchStatistics: NthChild<FormatCartolaApiDataType, 1>
     clubStatistics: NthChild<FormatCartolaApiDataType, 2>
+    lineups: NthChild<FormatCartolaApiDataType, 6>
     positionsStatistics: NthChild<FormatCartolaApiDataType, 3>
     rounds: Awaited<ReturnType<typeof getRoundsData>>
     trophies: TrophiesReturnType
@@ -58,7 +59,8 @@ export async function getTeamStatistics(
       clubStatistics,
       positionsStatistics,
       trophies,
-      teamInfo
+      teamInfo,
+      lineups
     ] = formatCartolaApiData(results, rounds, subs)
 
     if (find(TEAMS, { id: Number(teamId) })) trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
@@ -77,7 +79,8 @@ export async function getTeamStatistics(
         teamInfo: {
           ...teamInfo,
           id: +teamId
-        }
+        },
+        lineups
       }
     }
   } catch (e) {

@@ -8,7 +8,9 @@ const config: Config = {
   ],
   theme: {
     screens: {
-      mobile: { max: '480px' }
+      mobile: { max: '480px' },
+      tablet: { max: '768px' },
+      desktop: { max: '1200px' }
     },
     extend: {
       backgroundImage: {

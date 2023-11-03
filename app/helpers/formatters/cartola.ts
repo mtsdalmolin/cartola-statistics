@@ -21,11 +21,12 @@ import {
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { RoundData, RoundMatchesData, SubsData } from '@/app/services/types'
 
-import { isEmpty, max, some } from 'lodash'
+import { isEmpty, max, some, uniqBy } from 'lodash'
 
 import { registerTrophyEvent } from '../analytics'
 import { isCoach } from '../positions'
 import { isValidRound } from '../rounds'
+import { typedOrderBy } from '../typed-lodash'
 
 const PHOTO_SIZE_FORMAT = '220x220'
 
@@ -33,7 +34,7 @@ function isCaptain(athleteId: number, captainId: number) {
   return athleteId === captainId
 }
 
-function calculatePoints(athlete: Athlete, captainId: number) {
+export function calculatePoints(athlete: Athlete, captainId: number) {
   return isCaptain(athlete.atleta_id, captainId) ? athlete.pontos_num * 1.5 : athlete.pontos_num
 }
 
@@ -134,6 +135,14 @@ function getFinishesNumbers(athlete: Athlete) {
     getAthleteFinishes(athlete)
 
   return (blockedFinishes ?? 0) + (outOfTargetFinishes ?? 0) + (finishesOnPost ?? 0) + (goals ?? 0)
+}
+
+function getBestInPosition(athletes: Athlete[], amount: number) {
+  return uniqBy(typedOrderBy(athletes, 'pontos_num', 'desc'), 'atleta_id').splice(0, amount)
+}
+
+function getWorstInPosition(athletes: Athlete[], amount: number) {
+  return uniqBy(typedOrderBy(athletes, 'pontos_num'), 'atleta_id').splice(0, amount)
 }
 
 function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAthlete {
@@ -368,7 +377,15 @@ export function formatCartolaApiData(
   results: PromiseSettledResult<RoundData>[],
   rounds: RoundMatchesData,
   subs: Record<string, SubsData[]>
-): [CrewStatistics, CrewStatistics, ClubStatistics, PositionsStatistics, TrophiesData, TeamInfo] {
+): [
+  CrewStatistics,
+  CrewStatistics,
+  ClubStatistics,
+  PositionsStatistics,
+  TrophiesData,
+  TeamInfo,
+  Record<'bestTeam' | 'worstTeam', Athlete[]>
+] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
@@ -393,6 +410,14 @@ export function formatCartolaApiData(
   const teamsTrophies: TrophiesData = {}
   const redCardedAthletes: Athlete[] = []
   const athletesThatMissedPenalty: Athlete[] = []
+  const everyAthlete: Record<PositionsIds, Athlete[]> = {
+    [ATACANTE]: [],
+    [MEIA]: [],
+    [LATERAL]: [],
+    [ZAGUEIRO]: [],
+    [GOLEIRO]: [],
+    [TECNICO]: []
+  }
 
   results.forEach(async (result) => {
     if (result.status === 'rejected') return
@@ -426,6 +451,8 @@ export function formatCartolaApiData(
     }
 
     athletes.forEach(async (athlete) => {
+      everyAthlete[athlete.posicao_id].push(athlete)
+
       playersStatistics = playerStatisticsIncrementalFactory(playersStatistics, athlete, captainId)
       const athletePoints = calculatePoints(athlete, captainId)
 
@@ -652,12 +679,34 @@ export function formatCartolaApiData(
   teamInfo.pointsPerTurn.second.average =
     teamInfo.pointsPerTurn.second.total / teamInfo.pointsPerTurn.second.validRounds
 
+  const bestTeam = [
+    ...getBestInPosition(everyAthlete[ATACANTE], 3),
+    ...getBestInPosition(everyAthlete[MEIA], 3),
+    ...getBestInPosition(everyAthlete[LATERAL], 2),
+    ...getBestInPosition(everyAthlete[ZAGUEIRO], 2),
+    ...getBestInPosition(everyAthlete[GOLEIRO], 1),
+    ...getBestInPosition(everyAthlete[TECNICO], 1)
+  ]
+
+  const worstTeam = [
+    ...getWorstInPosition(everyAthlete[ATACANTE], 3),
+    ...getWorstInPosition(everyAthlete[MEIA], 3),
+    ...getWorstInPosition(everyAthlete[LATERAL], 2),
+    ...getWorstInPosition(everyAthlete[ZAGUEIRO], 2),
+    ...getWorstInPosition(everyAthlete[GOLEIRO], 1),
+    ...getWorstInPosition(everyAthlete[TECNICO], 1)
+  ]
+
   return [
     playersStatistics,
     benchStatistics,
     clubsStatistics,
     positionsStatistics,
     teamsTrophies,
-    teamInfo
+    teamInfo,
+    {
+      bestTeam,
+      worstTeam
+    }
   ]
 }
