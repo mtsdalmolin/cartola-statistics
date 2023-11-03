@@ -1,18 +1,16 @@
 import { useEffect, useRef } from 'react'
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 
-import { Bebas_Neue } from 'next/font/google'
 import Image from 'next/image'
 
 import { RoundMatchesData } from '@/app/services/types'
 import { Text } from '@mantine/core'
 
+import { bebasNeue } from '../../fonts/bebasNeue'
 import { TeamInfo } from '../../types/team'
 import { TrophiesData } from '../../types/trophies'
 import { Flex } from '../flex'
 import { Trophies } from './trophies'
-
-const bebasNeue = Bebas_Neue({ weight: '400', subsets: ['latin'] })
 
 function TeamTurnData({
   average,

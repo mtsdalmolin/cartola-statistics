@@ -1,9 +1,7 @@
 import { ReactNode } from 'react'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
-import { Bebas_Neue } from 'next/font/google'
-
-const bebasNeue = Bebas_Neue({ weight: '400', subsets: ['latin'] })
+import { bebasNeue } from '@/app/common/fonts/bebasNeue'
 
 export function StatisticsSection({ children, title }: { children: ReactNode; title: string }) {
   return (

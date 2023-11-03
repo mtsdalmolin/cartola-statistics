@@ -1,13 +1,12 @@
 'use client'
 
-import { Bebas_Neue } from 'next/font/google'
 import Link from 'next/link'
 
 import { Text } from '@mantine/core'
 
+import { bebasNeue } from '../fonts/bebasNeue'
 import { Flex } from './flex'
 import { GithubButton } from './github-button.client'
-const bebasNeue = Bebas_Neue({ weight: '400', subsets: ['latin'] })
 
 export function Signature({ absolute = false }: { absolute?: boolean }) {
   return (
