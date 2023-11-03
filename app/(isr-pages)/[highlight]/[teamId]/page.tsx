@@ -90,7 +90,8 @@ export default async function TeamStatisticsStaticPage({ params }: Props) {
     clubStatistics,
     positionsStatistics,
     trophies,
-    teamInfo
+    teamInfo,
+    lineups
   ] = formatCartolaApiData(results, rounds, subs)
 
   if (find(TEAMS, { id: Number(teamId) })) trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
@@ -102,6 +103,7 @@ export default async function TeamStatisticsStaticPage({ params }: Props) {
           athleteStatistics,
           benchStatistics,
           clubStatistics,
+          lineups,
           positionsStatistics,
           trophies,
           teamInfo,
