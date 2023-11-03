@@ -39,29 +39,25 @@ export function LineupListItem({
           width={20}
           height={20}
         />
+        {isCaptain ? (
+          <Tooltip label="Capitão">
+            <IconCircleLetterC className="absolute top-[-12px] left-0 text-amber-400" stroke={2} />
+          </Tooltip>
+        ) : null}
       </Flex>
-      <Flex direction="column" gap="none">
+      <Flex className="mobile:hidden" direction="column" gap="none">
         <Tooltip label={athlete.apelido}>
           <Text className="mobile:w-fit w-28 text-left text-xl truncate">{athlete.apelido}</Text>
         </Tooltip>
         <Flex>
-          <Text>{getPositionName(athlete.posicao_id)} </Text>
-          {isCaptain ? (
-            <Tooltip label="Capitão">
-              <IconCircleLetterC className="text-amber-400" stroke={2} />
-            </Tooltip>
-          ) : (
-            ''
-          )}
+          <Text className="mobile:hidden">{getPositionName(athlete.posicao_id)} </Text>
         </Flex>
       </Flex>
-      <div className="mobile:hidden">
-        <RoundMatchesResult
-          clubId={athlete.clube_id}
-          matchesData={matchesData}
-          roundIds={[athlete.rodada_id]}
-        />
-      </div>
+      <RoundMatchesResult
+        clubId={athlete.clube_id}
+        matchesData={matchesData}
+        roundIds={[athlete.rodada_id]}
+      />
       <Flex justify="end" align="end" direction="column" gap="none">
         <Text
           className={`${bebasNeue.className} mobile:text-5xl text-3xl ${
