@@ -29,7 +29,6 @@ import { IconCheck, IconCopy } from '@tabler/icons-react'
 import { isEmpty } from 'lodash'
 
 import { Flex } from '../components/flex'
-import { Lineup } from '../components/lineup'
 import { ExtractImageContextProvider } from '../contexts/extract-image-context.client'
 import { useShareStatisticsLinkContext } from '../contexts/share-statistics-link-context.client'
 
@@ -82,8 +81,8 @@ export default function TeamStatisticsContent({
         ) : null}
         {!isEmpty(data.athleteStatistics) ? (
           <>
-            <Lineup lineup={data.lineups.bestTeam} matchesData={data.rounds} />
-            <Lineup lineup={data.lineups.worstTeam} matchesData={data.rounds} worstCaptain />
+            {/* <Lineup lineup={data.lineups.bestTeam} matchesData={data.rounds} />
+            <Lineup lineup={data.lineups.worstTeam} matchesData={data.rounds} worstCaptain /> */}
             <StatisticsSection title="os melhores">
               <MostValuedPlayer crewData={data.athleteStatistics} />
               <BestCoach crewData={data.athleteStatistics} matchesData={data.rounds} />
