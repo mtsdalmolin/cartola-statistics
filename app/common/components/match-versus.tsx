@@ -10,10 +10,11 @@ export function MatchVersus({
   badgeSize = 30,
   fontSize = 'md'
 }: {
-  match: Match
+  match?: Match
   badgeSize?: number
   fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }) {
+  if (!match) return 'Sem partida'
   return (
     <Flex align="center">
       <Tooltip label={match.home.name}>
