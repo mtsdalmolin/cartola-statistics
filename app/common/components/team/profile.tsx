@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 
 import Image from 'next/image'
-import { useParams, useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import { RoundMatchesData } from '@/app/services/types'
 import { Text } from '@mantine/core'
@@ -54,19 +54,19 @@ export function TeamProfile({
 }) {
   const sectionRef = useRef<HTMLElement>(null)
   const { pending } = useFormStatus()
-  const { highlight } = useParams()
+  const pathname = usePathname()
   const searchParams = useSearchParams()
 
   useEffect(() => {
     const url = new URLSearchParams(searchParams)
-    if (!(url.get('link') === 'share') && highlight !== 'estatisticas') return
+    if (pathname !== '/' && url.get('link') === 'share' && pathname.includes('estatisticas')) return
 
-    if (!pending && !(url.get('link') === 'share')) {
+    if (!pending) {
       sectionRef.current?.scrollIntoView({
         behavior: 'smooth'
       })
     }
-  }, [pending, searchParams, highlight])
+  }, [pending, searchParams, pathname])
 
   return (
     <section className="pt-8" ref={sectionRef}>
