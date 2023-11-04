@@ -9,9 +9,7 @@ export function StatisticsSection({ children, title }: { children: ReactNode; ti
       <h2 className={`${bebasNeue.className} py-2 text-7xl text-palette-primary-500`}>{title}</h2>
       <article>
         <ResponsiveMasonry columnsCountBreakPoints={{ 375: 1, 575: 2, 920: 3 }}>
-          <Masonry gutter="1rem" columnsCount={3}>
-            {children}
-          </Masonry>
+          <Masonry gutter="1rem">{children}</Masonry>
         </ResponsiveMasonry>
       </article>
     </section>
