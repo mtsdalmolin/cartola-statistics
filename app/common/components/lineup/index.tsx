@@ -110,7 +110,7 @@ export function Lineup({
       <Text className={`${bebasNeue.className} text-6xl text-palette-primary-500`}>
         {worstCaptain ? 'Time de Bagres' : 'Hall da Fama'}
       </Text>
-      <Text className="w-2/3 mobile:w-full border-t-2 border-palette-primary-700">
+      <Text className="w-2/3 tablet:w-full border-t-2 border-palette-primary-700">
         {renderDescriptionText(worstCaptain)}
       </Text>
       <Flex className={`w-full ${invertSummary ? 'mobile:flex-col-reverse' : ''}`} gap="lg">
