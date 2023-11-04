@@ -23,7 +23,9 @@ export function ShareStatisticsLinkContextProvider({ children }: { children: Rea
   const getShareLinkWithHighlight = (highlight: string, withRoundIdQueryParam = false) => {
     const baseUrl = `${URLS.cartolaStatisticsPage}/${highlight}/${teamId ?? ''}`
 
-    return withRoundIdQueryParam ? `${baseUrl}?roundId=${roundId ?? ''}` : baseUrl
+    return withRoundIdQueryParam
+      ? `${baseUrl}?roundId=${roundId ?? ''}&link=share`
+      : `${baseUrl}?link=share`
   }
 
   return (
