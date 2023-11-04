@@ -4,7 +4,7 @@ import { Flex } from '../../flex'
 
 export function StatisticsList({ children }: { children: ReactNode }) {
   return (
-    <Flex className="divide-y divide-gray-500" direction="column">
+    <Flex className="w-full divide-y divide-gray-500" direction="column">
       {children}
     </Flex>
   )

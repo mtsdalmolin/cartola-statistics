@@ -31,7 +31,7 @@ export function ListHotspot({
   const renderedHtml = (
     <Flex
       ref={hotspotRef}
-      className="bg-palette-neutral-900 pb-4"
+      className="w-full bg-palette-neutral-900 pb-4"
       align="center"
       justify="between"
       gap="sm"

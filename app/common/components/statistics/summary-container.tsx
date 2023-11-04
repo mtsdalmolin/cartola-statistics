@@ -32,7 +32,9 @@ export function SummaryContainer({
       }`}
     >
       <div className="mt-[-0.175rem] mb-4">{title}</div>
-      <Flex gap="sm">{children}</Flex>
+      <Flex direction="column" gap="sm">
+        {children}
+      </Flex>
     </div>
   )
 }
