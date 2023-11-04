@@ -24,7 +24,7 @@ export function LineupListItem({
 }) {
   const isCaptain = athlete.atleta_id === captainId
   return (
-    <Flex className="tablet:w-full w-3/5 pt-2" justify="between" align="center" gap="sm">
+    <Flex className="w-full pt-2" justify="between" align="center" gap="sm">
       <Flex className="relative w-fit grow-0">
         <Image
           alt={athlete.apelido}
@@ -47,10 +47,10 @@ export function LineupListItem({
       </Flex>
       <Flex className="mobile:hidden" direction="column" gap="none">
         <Tooltip label={athlete.apelido}>
-          <Text className="mobile:w-fit w-28 text-left text-xl truncate">{athlete.apelido}</Text>
+          <Text className="w-28 text-left text-xl truncate">{athlete.apelido}</Text>
         </Tooltip>
         <Flex>
-          <Text className="mobile:hidden">{getPositionName(athlete.posicao_id)} </Text>
+          <Text>{getPositionName(athlete.posicao_id)} </Text>
         </Flex>
       </Flex>
       <RoundMatchesResult

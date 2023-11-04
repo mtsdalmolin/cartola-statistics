@@ -97,7 +97,7 @@ function calculateResultEfficiency(athlete: RenderedAthlete, rounds: RoundMatche
   return results.reduce((acc, points) => acc + points, 0) / (athlete.castTimes * 3)
 }
 
-function handleGameActions(athlete: Athlete, cachedStats: typeof athlete.scout = {}) {
+export function handleGameActions(athlete: Athlete, cachedStats: typeof athlete.scout = {}) {
   const actions: Record<string, number> = {
     ...cachedStats
   }
