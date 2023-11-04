@@ -38,6 +38,12 @@ function getScoutName(scoutName: string) {
   return SCOUT_NAMES[scoutName]
 }
 
+function renderDescriptionText(worstCaptain: boolean) {
+  if (worstCaptain)
+    return 'Time de Bagres é composto pelos piores escalados em todas as rodadas do cartola. O critério para capitão é jogador com a menor pontuação dentre eles.'
+  return 'Hall da Fama é composto pelos melhores escalados em todas as rodadas do cartola. O critério para capitão é o jogador com a maior pontuação dentre eles.'
+}
+
 export function Lineup({
   lineup,
   matchesData,
@@ -103,6 +109,9 @@ export function Lineup({
     <>
       <Text className={`${bebasNeue.className} text-6xl text-palette-primary-500`}>
         {worstCaptain ? 'Time de Bagres' : 'Hall da Fama'}
+      </Text>
+      <Text className="w-2/3 mobile:w-full border-t-2 border-palette-primary-700">
+        {renderDescriptionText(worstCaptain)}
       </Text>
       <Flex className={`w-full ${invertSummary ? 'mobile:flex-col-reverse' : ''}`} gap="lg">
         {invertSummary ? teamSummary : null}
