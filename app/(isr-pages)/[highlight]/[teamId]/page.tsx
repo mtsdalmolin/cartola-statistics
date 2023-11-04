@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
+import { RedirectHomePageAlert } from '@/app/common/components/alert/redirect-home-page.client'
 import { Signature } from '@/app/common/components/signature'
 import TeamStatisticsContent from '@/app/common/content/team-statistics'
 import { Trophies } from '@/app/common/types/trophies'
@@ -19,6 +20,7 @@ export const revalidate = 0
 
 type Props = {
   params: { highlight: string; teamId: string }
+  searchParams: { link?: string }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -69,8 +71,9 @@ async function teamHasStatisticStaticImage(teamId: number, highlight: string) {
   return !!teamImagesResult.rows.find((row) => row.image_url.includes(highlight))
 }
 
-export default async function TeamStatisticsStaticPage({ params }: Props) {
+export default async function TeamStatisticsStaticPage({ params, searchParams }: Props) {
   const { highlight, teamId } = params
+  const { link } = searchParams
 
   if (!(highlight in PARAM_TO_HIGHLIGHT) && highlight !== 'estatisticas') {
     redirect('/')
@@ -98,6 +101,7 @@ export default async function TeamStatisticsStaticPage({ params }: Props) {
 
   return (
     <div className="w-full pb-4">
+      {link === 'share' ? <RedirectHomePageAlert /> : null}
       <TeamStatisticsContent
         data={{
           athleteStatistics,
