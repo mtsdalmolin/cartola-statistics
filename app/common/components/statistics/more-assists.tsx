@@ -15,9 +15,9 @@ import { SummaryContainer } from './summary-container'
 
 const ELEMENT_ID = HIGHLIGHT_TO_PARAM['more-assists']
 
-function renderAssistsText(defenses: number, isAbbreviated = true) {
-  if (isAbbreviated) return `${defenses} assist.`
-  return `${defenses} assistência${defenses > 1 ? 's' : ''}`
+function renderAssistsText(assists: number, isAbbreviated = true) {
+  if (isAbbreviated) return `${assists} assist.`
+  return `${assists} assistência${assists > 1 ? 's' : ''}`
 }
 
 export function MoreAssists<TCrewData extends CrewStatistics>({
@@ -29,13 +29,11 @@ export function MoreAssists<TCrewData extends CrewStatistics>({
 }) {
   const { highlight } = useParams()
 
-  const orderedDefenseEfficiencyData = typedOrderBy(
-    Object.values(crewData),
-    'assists',
-    'desc'
-  ).filter((athlete) => athlete.assists)
-  const first = orderedDefenseEfficiencyData[0]
-  orderedDefenseEfficiencyData.shift()
+  const orderedMoreAssistsData = typedOrderBy(Object.values(crewData), 'assists', 'desc').filter(
+    (athlete) => athlete.assists
+  )
+  const first = orderedMoreAssistsData[0]
+  orderedMoreAssistsData.shift()
 
   return (
     <SummaryContainer id={ELEMENT_ID} title="Mais assistências" focus={highlight === ELEMENT_ID}>
@@ -56,7 +54,7 @@ export function MoreAssists<TCrewData extends CrewStatistics>({
       />
 
       <StatisticsList>
-        {take(orderedDefenseEfficiencyData, 9).map((athlete, idx) => (
+        {take(orderedMoreAssistsData, 9).map((athlete, idx) => (
           <ListItem
             key={athlete.atleta_id}
             name={athlete.apelido}
