@@ -30,6 +30,7 @@ import { isEmpty } from 'lodash'
 
 import { Flex } from '../components/flex'
 import { Lineup } from '../components/lineup'
+import { FinishesOnPost } from '../components/statistics/finishes-on-post'
 import { MoreFouls } from '../components/statistics/more-fouls'
 import { ParticipationInGoals } from '../components/statistics/participation-in-goals'
 import { ExtractImageContextProvider } from '../contexts/extract-image-context.client'
@@ -117,6 +118,7 @@ export default function TeamStatisticsContent({
               <LineupsPerClub clubsData={data.clubStatistics} />
               <PointsPerClub clubsData={data.clubStatistics} />
               <MostScheduledPlayer crewData={data.athleteStatistics} matchesData={data.rounds} />
+              <FinishesOnPost crewData={data.athleteStatistics} matchesData={data.rounds} />
             </StatisticsSection>
           </>
         ) : (

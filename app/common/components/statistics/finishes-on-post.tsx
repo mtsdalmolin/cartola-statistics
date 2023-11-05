@@ -3,6 +3,7 @@ import { useParams } from 'next/navigation'
 import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
+import { Tooltip } from '@mantine/core'
 
 import { take } from 'lodash'
 
@@ -13,15 +14,19 @@ import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
 
-const ELEMENT_ID = HIGHLIGHT_TO_PARAM['most-offsided-player']
+const ELEMENT_ID = HIGHLIGHT_TO_PARAM['finishes-on-post']
 
-function renderOffsidesText(numberOfCards: number, isAbbreviated = true) {
-  if (isAbbreviated) return `${numberOfCards} imp.`
-
-  return `${numberOfCards} impedimento${numberOfCards > 1 ? 's' : ''}`
+function renderFinishesOnPost(assists: number, isAbbreviated = true) {
+  if (isAbbreviated)
+    return (
+      <Tooltip label="Bolas na trave">
+        <div>{assists} BT</div>
+      </Tooltip>
+    )
+  return `${assists} bola${assists > 1 ? 's' : ''} na trave`
 }
 
-export function MostOffsidedPlayer<TCrewData extends CrewStatistics>({
+export function FinishesOnPost<TCrewData extends CrewStatistics>({
   crewData,
   matchesData
 }: {
@@ -30,43 +35,40 @@ export function MostOffsidedPlayer<TCrewData extends CrewStatistics>({
 }) {
   const { highlight } = useParams()
 
-  const orderedMostOffsidedPlayerData = typedOrderBy(
+  const orderedFinishesOnPostData = typedOrderBy(
     Object.values(crewData),
-    'scout.I' as any,
+    'finishesOnPost',
     'desc'
-  ).filter((athlete) => athlete.scout?.I ?? 0 > 0)
-
-  if (orderedMostOffsidedPlayerData.length === 0) return null
-
-  const first = orderedMostOffsidedPlayerData[0]
-  orderedMostOffsidedPlayerData.shift()
+  ).filter((athlete) => athlete.finishesOnPost)
+  const first = orderedFinishesOnPostData[0]
+  orderedFinishesOnPostData.shift()
 
   return (
-    <SummaryContainer id={ELEMENT_ID} title="Mais impedido" focus={highlight === ELEMENT_ID}>
+    <SummaryContainer id={ELEMENT_ID} title="Bolas na trave" focus={highlight === ELEMENT_ID}>
       <ListHotspot
-        imgName={`most-offsided-player_${first.apelido}`}
+        imgName={`finishes-on-post_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={renderOffsidesText(first.scout?.I ?? 0, false)}
+        data={renderFinishesOnPost(first.assists, false)}
         details={
           <AnimatedStatsRoundMatchesResult
             clubId={first.clube_id}
             matchesData={matchesData}
-            statRounds={first.offsideRounds}
-            statText="imp."
-            isAnimated={Object.keys(first.offsideRounds).length > 5}
+            statRounds={first.finishesOnPostRounds}
+            statText="BT"
+            isAnimated={Object.keys(first.finishesOnPostRounds).length > 5}
           />
         }
       />
 
       <StatisticsList>
-        {take(orderedMostOffsidedPlayerData, 9).map((athlete, idx) => (
+        {take(orderedFinishesOnPostData, 9).map((athlete, idx) => (
           <ListItem
             key={athlete.atleta_id}
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}
-            data={renderOffsidesText(athlete.scout?.I ?? 0)}
+            data={renderFinishesOnPost(athlete.finishesOnPost)}
             position={idx + 2}
           />
         ))}

@@ -13,12 +13,15 @@ const STATISTICS_MESSAGES: Record<string, string> = {
   'best-home-player': 'O melhor jogador atuando em casa foi o %athlete%. 🏡',
   'defense-efficiency': 'O melhor em eficiência defensiva foi o %athlete%. 🥅',
   'finish-efficiency': 'O %athlete% foi o mais eficiente em finalizações. 🎯',
+  'finishes-on-post': 'O %athlete% teve mais bolas na trave quando escalei no cartola. 🥅',
   'highest-average': 'Quem teve a maior média nas minhas escalações foi o %athlete%. 📈',
+  'highest-finisher': '%athlete% foi quem mais finalizou nas minhas escalações. 👟',
   'highest-scorer': '%athlete% foi quem mais pontuou nas minhas escalações. 💯',
   'least-valued-player': 'Quem mais me deu prejuízo foi o %athlete%. 📉',
   'lineups-per-club': 'O time que eu mais escalei jogadores foi o %club%.',
   'more-assists': 'O garçom do meu cartola foi o %athlete%. 🤵',
   'more-defenses': 'Quem agregou mais defesas foi o %athlete%. 🧤',
+  'more-fouls': 'O pé de foice das minhas escalações foi o %athlete%. 🔪',
   'more-red-cards': '%athlete% foi expulso e me tirou 3 pontos, no mínimo. 🟥',
   'more-tackles': 'O líder de desarmes do meu cartola foi o %athlete%. 👮',
   'more-yellow-cards': 'Quem liderou em amarelos foi o %athlete%. 🟨',
@@ -26,6 +29,8 @@ const STATISTICS_MESSAGES: Record<string, string> = {
   'most-rounds-as-captain': 'Quem mais escalei como capitão foi o %athlete%. 🤴',
   'most-scheduled-player': 'O %athlete% foi o mais escalado no meu cartola. 🥇',
   'most-valued-player': 'Quem mais me rendeu cartoletas foi o %athlete%. 🤑',
+  'participation-in-goals':
+    'O %athlete% teve mais participações em gols nas minhas escalações do cartola. 🍻',
   'points-per-club': 'O %club% foi o time que mais pontuei. 📈',
   'worst-goalkeeper': 'O mão de alface no meu cartola foi o %athlete%. 🥬'
 }

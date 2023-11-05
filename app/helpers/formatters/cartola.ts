@@ -194,6 +194,9 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     assists: athlete.scout?.A ?? 0,
     assistsRounds: athlete.scout?.A ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.A ?? 0 } : {},
     finishes: getFinishesNumbers(athlete),
+    finishesOnPost: athlete.scout?.FT ?? 0,
+    finishesOnPostRounds:
+      athlete.scout?.FT ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout.FT ?? 0 } : {},
     finishesToScore: 0,
     goals: athlete.scout?.G ?? 0,
     scoredGoalsRounds:
@@ -294,6 +297,7 @@ function playerStatisticsIncrementalFactory(
     statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
     statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
     statistics[athlete.atleta_id].fouls += handleGameActions(athlete)?.FC ?? 0
+    statistics[athlete.atleta_id].finishesOnPost += handleGameActions(athlete)?.FT ?? 0
 
     const oldHighestPoints = statistics[athlete.atleta_id].highestPoint
     statistics[athlete.atleta_id].highestPoint =
@@ -356,6 +360,10 @@ function playerStatisticsIncrementalFactory(
 
     if (athlete.scout?.FC) {
       statistics[athlete.atleta_id].foulsRounds[athlete.rodada_id] = athlete.scout.FC
+    }
+
+    if (athlete.scout?.FT) {
+      statistics[athlete.atleta_id].finishesOnPostRounds[athlete.rodada_id] = athlete.scout.FT
     }
   } else {
     statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
