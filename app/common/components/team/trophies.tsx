@@ -1,17 +1,21 @@
 import Image from 'next/image'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 import { type TrophiesReturnType } from '@/app/actions'
 import { Flex } from '@/app/common/components/flex'
 import { TrophiesData, Trophies as TrophiesEnum } from '@/app/common/types/trophies'
 import { PHOTO_SIZE_FORMAT } from '@/app/constants/format'
 import { UNEMPLOYED } from '@/app/constants/teams'
-import { TROPHIES_IMAGE } from '@/app/constants/trophies'
+import { PARAM_TO_TROPHY, TROPHIES_IMAGE, TROPHY_TO_PARAM } from '@/app/constants/trophies'
+import { createTrophyTwitterShareLink } from '@/app/helpers/trophies'
 import { RoundData, RoundMatchesData } from '@/app/services/types'
 import { Avatar, HoverCard, Stack, Text } from '@mantine/core'
-import { IconArrowBigDownFilled, IconArrowBigUpFilled } from '@tabler/icons-react'
+import { IconArrowBigDownFilled, IconArrowBigUpFilled, IconExternalLink } from '@tabler/icons-react'
 
 import { isArray, isEmpty, isNil, maxBy, minBy } from 'lodash'
 
+import { useTeamInfoContext } from '../../contexts/team-info-context.client'
 import { Athlete } from '../../types/athlete'
 import { MatchVersus } from '../match-versus'
 
@@ -100,6 +104,30 @@ function AthleteDetail({
   )
 }
 
+function ShareOnTwitterButtonLink({
+  teamId,
+  trophyParamName
+}: {
+  teamId: string
+  trophyParamName: keyof typeof PARAM_TO_TROPHY
+}) {
+  return (
+    <Link
+      className="bg-palette-neutral-800 hover:bg-palette-neutral-700 rounded-md px-4 py-1"
+      href={createTrophyTwitterShareLink({
+        teamId,
+        trophyParamName
+      })}
+      target="_blank"
+    >
+      <Flex align="center">
+        <Text>Compartilhe no Twitter/X</Text>
+        <IconExternalLink size={18} />
+      </Flex>
+    </Link>
+  )
+}
+
 function TrophyDescription({
   data,
   description,
@@ -111,6 +139,11 @@ function TrophyDescription({
   matchesData: RoundMatchesData
   name: keyof typeof TROPHIES_IMAGE
 }) {
+  const { teamId: teamIdParam } = useParams()
+  const { teamInfo } = useTeamInfoContext()
+
+  const teamId = teamIdParam ?? teamInfo?.id
+
   if (isNil(data)) return null
 
   return (
@@ -199,6 +232,11 @@ function TrophyDescription({
           <AthleteDetail athlete={getLowestScorer(data)!} title="Menor pontuador" />
         </Flex>
       )}
+      {!isArray(teamId) ? (
+        <Flex className="w-full" justify="center" align="center">
+          <ShareOnTwitterButtonLink teamId={teamId} trophyParamName={TROPHY_TO_PARAM[name]} />
+        </Flex>
+      ) : null}
     </Flex>
   )
 }
