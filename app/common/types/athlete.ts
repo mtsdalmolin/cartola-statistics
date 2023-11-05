@@ -83,6 +83,8 @@ export interface RenderedAthlete extends Omit<Athlete, 'pontos_num'> {
   scoredGoalsRounds: { [key: string]: number }
   defenses: number
   defensesRounds: { [key: string]: number }
+  fouls: number
+  foulsRounds: { [key: string]: number }
   goalsConceded: number
   goalsConcededRoundIds: number[]
   defensesToSufferGoal: number

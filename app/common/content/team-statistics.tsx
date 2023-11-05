@@ -30,6 +30,7 @@ import { isEmpty } from 'lodash'
 
 import { Flex } from '../components/flex'
 import { Lineup } from '../components/lineup'
+import { MoreFouls } from '../components/statistics/more-fouls'
 import { ParticipationInGoals } from '../components/statistics/participation-in-goals'
 import { ExtractImageContextProvider } from '../contexts/extract-image-context.client'
 import { useShareStatisticsLinkContext } from '../contexts/share-statistics-link-context.client'
@@ -98,11 +99,12 @@ export default function TeamStatisticsContent({
             </StatisticsSection>
             <Lineup lineup={data.lineups.bestTeam} matchesData={data.rounds} />
             <StatisticsSection title="os piores">
+              <LeastValuedPlayer crewData={data.athleteStatistics} />
               <MoreYellowCards crewData={data.athleteStatistics} matchesData={data.rounds} />
               <MoreRedCards crewData={data.athleteStatistics} matchesData={data.rounds} />
               <WorstGoalkeeper crewData={data.athleteStatistics} matchesData={data.rounds} />
               <MostOffsidedPlayer crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <LeastValuedPlayer crewData={data.athleteStatistics} />
+              <MoreFouls crewData={data.athleteStatistics} matchesData={data.rounds} />
             </StatisticsSection>
             <Lineup
               lineup={data.lineups.worstTeam}
