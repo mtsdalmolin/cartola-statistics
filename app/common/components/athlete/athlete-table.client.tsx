@@ -95,7 +95,7 @@ function ToolbarPositionFilter({ tableObject }: { tableObject: MRT_TableInstance
   }
 
   return (
-    <Menu shadow="md" width={175}>
+    <Menu shadow="md" width={175} closeOnItemClick={false}>
       <Menu.Target>
         <Tooltip label="Filtrar por posição">
           <ActionIcon>
@@ -153,7 +153,7 @@ function ToolbarClubFilter({ tableObject }: { tableObject: MRT_TableInstance<Tab
   }
 
   return (
-    <Menu shadow="md" width={250}>
+    <Menu shadow="md" width={250} closeOnItemClick={false}>
       <Menu.Target>
         <Tooltip label="Filtrar por clube">
           <ActionIcon>
