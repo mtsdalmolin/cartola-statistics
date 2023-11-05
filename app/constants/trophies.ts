@@ -8,6 +8,23 @@ import fourPlayersMadeLessThanZeroPointsBadge from '@/public/badges/four-players
 import futebolaoLeaguePlayerBadge from '@/public/badges/futebolao-league-badge.svg'
 import goalsInThreeSectionsBadge from '@/public/badges/goals-in-three-sections-badge.svg'
 import hattrickBadge from '@/public/badges/hat-trick-badge.svg'
+import bagreJpgBadge from '@/public/badges/jpg/bagre-badge.jpg'
+import cameFromBenchAndMadeTwelvePointsJpgBadge from '@/public/badges/jpg/came-from-bench-and-made-twelve-points-badge.jpg'
+import defenseDidntSufferGoalsJpgBadge from '@/public/badges/jpg/defense-didnt-suffer-goals-badge.jpg'
+import everyAthleteValuedJpgBadge from '@/public/badges/jpg/every-athlete-valued-badge.jpg'
+import everyMidfielderHaveAssistsJpgBadge from '@/public/badges/jpg/every-midfielder-have-assists-badge.jpg'
+import everyStrikerScoredJpgBadge from '@/public/badges/jpg/every-striker-scored-badge.jpg'
+import fourPlayersMadeLessThanZeroPointsJpgBadge from '@/public/badges/jpg/four-players-made-less-than-zero-points-badge.jpg'
+import futebolaoLeaguePlayerJpgBadge from '@/public/badges/jpg/futebolao-league-badge.jpg'
+import goalsInThreeSectionsJpgBadge from '@/public/badges/jpg/goals-in-three-sections-badge.jpg'
+import hattrickJpgBadge from '@/public/badges/jpg/hat-trick-badge.jpg'
+import moreThanHundredFiftyPointsInRoundJpgBadge from '@/public/badges/jpg/more-than-hundred-fifty-points-in-round-badge.jpg'
+import moreThanHundredPointsInRoundJpgBadge from '@/public/badges/jpg/more-than-hundred-points-in-round-badge.jpg'
+import moreThanThirtyPointsWithOnePlayerJpgBadge from '@/public/badges/jpg/more-than-thirty-points-with-one-player-badge.jpg'
+import reached200CartoletasJpgBadge from '@/public/badges/jpg/reached-200-cartoletas-badge.jpg'
+import sevenPlayersScoredInRoundJpgBadge from '@/public/badges/jpg/seven-players-scored-in-round-badge.jpg'
+import threePlayersMissedPenaltyJpgBadge from '@/public/badges/jpg/three-players-missed-penalty-badge.jpg'
+import threePlayersRedCardedJpgBadge from '@/public/badges/jpg/three-players-red-carded-badge.jpg'
 import moreThanHundredFiftyPointsInRoundBadge from '@/public/badges/more-than-hundred-fifty-points-in-round-badge.svg'
 import moreThanHundredPointsInRoundBadge from '@/public/badges/more-than-hundred-points-in-round-badge.svg'
 import moreThanThirtyPointsWithOnePlayerBadge from '@/public/badges/more-than-thirty-points-with-one-player-badge.svg'
@@ -36,6 +53,27 @@ export const TROPHIES_IMAGE = {
   [Trophies.REACHED_200_CARTOLETAS]: reached200CartoletasBadge,
   [Trophies.SEVEN_PLAYERS_SCORED]: sevenPlayersScoredInRoundBadge,
   [Trophies.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyBadge
+}
+
+export const TROPHIES_JPG_IMAGE = {
+  [Trophies.CAME_FROM_BENCH_AND_MADE_12_POINTS]: cameFromBenchAndMadeTwelvePointsJpgBadge,
+  [Trophies.DEFENSE_DIDNT_SUFFER_GOALS]: defenseDidntSufferGoalsJpgBadge,
+  [Trophies.EVERY_ATHLETE_VALUED]: everyAthleteValuedJpgBadge,
+  [Trophies.EVERY_MIDFIELDER_HAVE_ASSISTS]: everyMidfielderHaveAssistsJpgBadge,
+  [Trophies.EVERY_STRIKER_SCORED]: everyStrikerScoredJpgBadge,
+  [Trophies.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS]:
+    fourPlayersMadeLessThanZeroPointsJpgBadge,
+  [Trophies.FUTEBOLAO_LEAGUE_PLAYER]: futebolaoLeaguePlayerJpgBadge,
+  [Trophies.GOALS_IN_THREE_SECTIONS]: goalsInThreeSectionsJpgBadge,
+  [Trophies.LESS_THAN_30_POINTS_IN_ROUND]: bagreJpgBadge,
+  [Trophies.MORE_THAN_100_POINTS_IN_ROUND]: moreThanHundredPointsInRoundJpgBadge,
+  [Trophies.MORE_THAN_150_POINTS_IN_ROUND]: moreThanHundredFiftyPointsInRoundJpgBadge,
+  [Trophies.MORE_THAN_30_POINTS_WITH_PLAYER_IN_ROUND]: moreThanThirtyPointsWithOnePlayerJpgBadge,
+  [Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS]: threePlayersRedCardedJpgBadge,
+  [Trophies.PLAYER_SCORED_HATTRICK]: hattrickJpgBadge,
+  [Trophies.REACHED_200_CARTOLETAS]: reached200CartoletasJpgBadge,
+  [Trophies.SEVEN_PLAYERS_SCORED]: sevenPlayersScoredInRoundJpgBadge,
+  [Trophies.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyJpgBadge
 }
 
 export const TROPHY_TO_PARAM: Record<Trophies, keyof typeof PARAM_TO_TROPHY> = {

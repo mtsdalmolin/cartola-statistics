@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
-import { PARAM_TO_TROPHY, TROPHIES_IMAGE } from '@/app/constants/trophies'
+import { PARAM_TO_TROPHY, TROPHIES_JPG_IMAGE } from '@/app/constants/trophies'
 import { ENDPOINTS, request } from '@/app/services/cartola-api'
 import { RoundData } from '@/app/services/types'
 import edcBrand from '@/public/logo/twitter-card.png'
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   let images = []
 
-  if (badge in PARAM_TO_TROPHY) images = [TROPHIES_IMAGE[PARAM_TO_TROPHY[badge]].src]
+  if (badge in PARAM_TO_TROPHY) images = [TROPHIES_JPG_IMAGE[PARAM_TO_TROPHY[badge]].src]
   else images.push(edcBrand.src)
 
   const result = await request<RoundData>(ENDPOINTS.TEAM_ROUND(teamId, '1'))
