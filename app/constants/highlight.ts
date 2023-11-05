@@ -20,6 +20,7 @@ export const PARAM_TO_HIGHLIGHT: Record<string, string> = {
   'mais-rodadas-como-capitao': 'most-rounds-as-captain',
   'mais-escalado': 'most-scheduled-player',
   'mais-valorizado': 'most-valued-player',
+  'participacoes-em-gols': 'participation-in-goals',
   'pontos-por-clube': 'points-per-club',
   'pior-goleiro': 'worst-goalkeeper'
 }
@@ -46,6 +47,7 @@ export const HIGHLIGHT_TO_PARAM: Record<string, string> = {
   'most-rounds-as-captain': 'mais-rodadas-como-capitao',
   'most-scheduled-player': 'mais-escalado',
   'most-valued-player': 'mais-valorizado',
+  'participation-in-goals': 'participacoes-em-gols',
   'points-per-club': 'pontos-por-clube',
   'worst-goalkeeper': 'pior-goleiro'
 }

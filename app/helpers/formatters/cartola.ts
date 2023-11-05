@@ -205,6 +205,13 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     goalsConcededRoundIds: athlete.scout?.GS ?? 0 > 0 ? [athlete.rodada_id] : [],
     defensesToSufferGoal: 0,
     minutesToScore: 0,
+    participationInGoals: 0,
+    participationInGoalsRounds:
+      (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0) > 0
+        ? {
+            [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
+          }
+        : {},
     offsideRounds: athlete.scout?.I ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.I ?? 0 } : {},
     pointsPerRound: { [athlete.rodada_id]: Number(pointsInRound.toFixed(1)) },
     tacklesRounds:
@@ -248,6 +255,7 @@ function handlePlayersDerivedStatistics(athlete: RenderedAthlete, rounds: RoundM
     },
     finishesToScore: athlete.finishes / athlete.goals,
     minutesToScore: athlete.sumOfPlayedMinutes / athlete.goals,
+    participationInGoals: athlete.goals + athlete.assists,
     defensesToSufferGoal: isFinite(defensesToSufferGoal) ? defensesToSufferGoal : athlete.defenses,
     victoriesAverage: calculateResultEfficiency(athlete, rounds)
   }
@@ -309,10 +317,18 @@ function playerStatisticsIncrementalFactory(
 
     if (athlete.scout?.G) {
       statistics[athlete.atleta_id].scoredGoalsRounds[athlete.rodada_id] = athlete.scout.G
+      statistics[athlete.atleta_id].participationInGoalsRounds[athlete.rodada_id] = athlete.scout.G
     }
 
     if (athlete.scout?.A) {
       statistics[athlete.atleta_id].assistsRounds[athlete.rodada_id] = athlete.scout.A
+      if (statistics[athlete.atleta_id].participationInGoalsRounds[athlete.rodada_id]) {
+        statistics[athlete.atleta_id].participationInGoalsRounds[athlete.rodada_id] +=
+          athlete.scout.A
+      } else {
+        statistics[athlete.atleta_id].participationInGoalsRounds[athlete.rodada_id] =
+          athlete.scout.A
+      }
     }
 
     if (athlete.scout?.DE) {

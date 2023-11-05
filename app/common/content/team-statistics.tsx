@@ -30,6 +30,7 @@ import { isEmpty } from 'lodash'
 
 import { Flex } from '../components/flex'
 import { Lineup } from '../components/lineup'
+import { ParticipationInGoals } from '../components/statistics/participation-in-goals'
 import { ExtractImageContextProvider } from '../contexts/extract-image-context.client'
 import { useShareStatisticsLinkContext } from '../contexts/share-statistics-link-context.client'
 
@@ -89,6 +90,7 @@ export default function TeamStatisticsContent({
               <Artillery crewData={data.athleteStatistics} matchesData={data.rounds} />
               <HighestFinisher crewData={data.athleteStatistics} />
               <MoreAssists crewData={data.athleteStatistics} matchesData={data.rounds} />
+              <ParticipationInGoals crewData={data.athleteStatistics} matchesData={data.rounds} />
               <MoreTackles crewData={data.athleteStatistics} matchesData={data.rounds} />
               <MoreDefenses crewData={data.athleteStatistics} matchesData={data.rounds} />
               <BestCoach crewData={data.athleteStatistics} matchesData={data.rounds} />
