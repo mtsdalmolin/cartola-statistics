@@ -1,5 +1,8 @@
 import { ImageResponse, NextResponse } from 'next/server'
 
+import { URLS } from '@/app/constants/url'
+import edcBrand from '@/public/logo/brand.svg'
+import edcLogo from '@/public/logo/edc-logo.svg'
 import { sql } from '@vercel/postgres'
 
 import { isNil } from 'lodash'
@@ -39,8 +42,9 @@ export async function GET(request: Request) {
       (
         <div
           style={{
+            position: 'relative',
             display: 'flex',
-            background: '#f6f6f6',
+            background: '#202833',
             width: '100%',
             height: '100%',
             flexDirection: 'column',
@@ -49,12 +53,36 @@ export async function GET(request: Request) {
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element*/}
-          <img width="350" height="225" src={image as unknown as string} alt={highlight} />
+          <img
+            src={image as unknown as string}
+            alt={highlight}
+            style={{ paddingTop: 40, paddingRight: 55, paddingBottom: 40, paddingLeft: 55 }}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element*/}
+          <img
+            width="50"
+            height="50"
+            src={`${URLS.cartolaStatisticsPage}${edcLogo.src}`}
+            alt="Logo do Estatísticas do Cartola"
+            style={{ position: 'absolute', top: 20, left: 20 }}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element*/}
+          <img
+            width="600"
+            height="386"
+            src={`${URLS.cartolaStatisticsPage}${edcBrand.src}`}
+            alt="Logo do Estatísticas do Cartola"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              opacity: 0.05
+            }}
+          />
         </div>
       ),
       {
-        width: 350,
-        height: 225
+        width: 700,
+        height: 450
       }
     )
   } catch (err: any) {
