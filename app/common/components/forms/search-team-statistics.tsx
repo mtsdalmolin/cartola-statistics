@@ -131,7 +131,7 @@ export function SearchTeamStatisticsForm({ action }: { action: (payload: FormDat
         description={isLoading ? <>Buscando times...</> : <>Digite o nome do time no cartola</>}
         data={
           !isEmpty(memoizedSearchedTeams)
-            ? [...listOfTeamsInSearch, ...memoizedSearchedTeams]
+            ? uniqBy([...listOfTeamsInSearch, ...memoizedSearchedTeams], 'id')
             : listOfTeamsInSearch
         }
         onKeyUp={debounce(async (event) => {
