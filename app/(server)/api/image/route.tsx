@@ -56,7 +56,7 @@ export async function GET(request: Request) {
           <img
             src={image as unknown as string}
             alt={highlight}
-            style={{ paddingTop: 40, paddingRight: 55, paddingBottom: 40, paddingLeft: 55 }}
+            style={{ paddingTop: 40, paddingRight: 50, paddingBottom: 40, paddingLeft: 55 }}
           />
           {/* eslint-disable-next-line @next/next/no-img-element*/}
           <img
