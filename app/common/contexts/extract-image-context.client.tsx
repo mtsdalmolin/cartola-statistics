@@ -94,7 +94,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
       ) : null}
       {showTweetReady && uploadReturnMessage ? (
         <Link
-          href={`http://twitter.com/share?text=${uploadReturnMessage}&url=${getShareLinkWithHighlight(
+          href={`http://twitter.com/share?text=${uploadReturnMessage}%0A%0A&url=${getShareLinkWithHighlight(
             HIGHLIGHT_TO_PARAM[highlight!],
             true
           )}&hashtags=estatisticasdocartola`}

@@ -8,8 +8,9 @@ export const runtime = 'edge'
 const STATISTICS_MESSAGES: Record<string, string> = {
   'artillery': '%athlete% foi o artilheiro do meu cartola. ⚽',
   'best-away-player': 'O melhor jogador atuando fora de casa foi o %athlete%. 🏃‍♂️',
-  'best-bench': 'O %athlete% foi o que mais pontuou e ficou no banco. 🥲',
-  'best-coach': '%athlete% foi o melhor técnico no cartola. 👨‍💼',
+  'best-bench':
+    'O %athlete% foi o que mais pontuou e ficou no banco nas minhas escalações do cartola. 🥲',
+  'best-coach': '%athlete% foi o melhor técnico no meu cartola. 👨‍💼',
   'best-home-player': 'O melhor jogador atuando em casa foi o %athlete%. 🏡',
   'defense-efficiency': 'O melhor em eficiência defensiva foi o %athlete%. 🥅',
   'finish-efficiency': 'O %athlete% foi o mais eficiente em finalizações. 🎯',

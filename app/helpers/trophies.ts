@@ -10,7 +10,7 @@ export function createTrophyTwitterShareLink({
 }) {
   const trophyEdcUrl = `${URLS.cartolaStatisticsPage}/conquistas/${teamId}/${trophyParamName}`
 
-  const twitterDescriptionMessage = `Consegui a medalha ${TROPHY_NAME[trophyParamName]} porque ${TWITTER_TROPHY_MESSAGE[trophyParamName]}`
+  const twitterDescriptionMessage = `Consegui a medalha ${TROPHY_NAME[trophyParamName]} porque ${TWITTER_TROPHY_MESSAGE[trophyParamName]}%0A%0A`
 
   return `http://twitter.com/share?text=${twitterDescriptionMessage}&url=${trophyEdcUrl}&hashtags=estatisticasdocartola`
 }
