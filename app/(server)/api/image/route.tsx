@@ -64,7 +64,7 @@ export async function GET(request: Request) {
             height="50"
             src={`${URLS.cartolaStatisticsPage}${edcLogo.src}`}
             alt="Logo do Estatísticas do Cartola"
-            style={{ position: 'absolute', top: 20, left: 20 }}
+            style={{ position: 'absolute', top: 50, left: 50 }}
           />
           {/* eslint-disable-next-line @next/next/no-img-element*/}
           <img
