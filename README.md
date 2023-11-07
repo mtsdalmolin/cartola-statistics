@@ -30,6 +30,26 @@ O compartilhamento das estatísticas no Twitter/X gera imagens personalizadas de
 Abra uma [Issue](https://github.com/mtsdalmolin/cartola-statistics/issues/new) ou faça um [Fork](https://github.com/mtsdalmolin/cartola-statistics/fork) do projeto e submeta um PR com as alterações para eu avaliar.
 
 ## Como rodar o projeto
+Para rodar o projeto, é necessário copiar o `.env.example`:
+```bash
+cp .env.example .env.local
+```
+
+E substituir as variáveis para um banco de sua preferência:
+```
+NEXT_API_BASE_URL=http://localhost:3000
+POSTGRES_URL=<POSTGRES_URL>
+POSTGRES_PRISMA_URL=<POSTGRES_PRISMA_URL>
+POSTGRES_URL_NON_POOLING=<POSTGRES_URL_NON_POOLING>
+POSTGRES_USER=<POSTGRES_USER>
+POSTGRES_HOST=<POSTGRES_HOST>
+POSTGRES_PASSWORD=<POSTGRES_PASSWORD>
+POSTGRES_DATABASE=<POSTGRES_DATABASE>
+BLOB_READ_WRITE_TOKEN=<BLOB_READ_WRITE_TOKEN>
+```
+
+Obs.: Só é necessário atualizar as variáveis do `postgres` se for mexer na geração das imagens para os tweets ou qualquer interação com o banco de dados nos endpoints da pasta [`(server)`](https://github.com/mtsdalmolin/cartola-statistics/tree/main/app/(server)).
+
 Para levantar o ambiente de desenvolvimento:
 
 ```bash
