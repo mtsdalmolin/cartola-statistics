@@ -2,8 +2,8 @@
   <img src="./.github/images/edc-brand.png" alt="Estatísticas do Cartola" />
 </p>
 
-O intuito do projeto é utilizar os dados disponíveis nas APIs abertas do cartola e fazer análises em cima das escalações na temporada.
-Foi implementado um sistema de conquistas em cima das pontuações das rodadas e acontecimentos na temporada, como, por exemplo, 3 jogadores expulsos na temporada:
+O intuito do projeto é utilizar os dados disponíveis nas APIs abertas do cartola e fazer análises em cima das escalações na temporada. O projeto também pode ser utilizado pra fazer uma espécie de retrospectiva da temporada, ver quais foram as melhores escalações, os jogadores que mais desvalorizaram, os clubes que mais pontuaram nas escalações da temporada.
+Além de estatísticas e retrospectiva da temporada, foi implementado um sistema de conquistas em cima das pontuações das rodadas e acontecimentos na temporada, como, por exemplo, 3 jogadores expulsos na temporada:
 
 <p align="center">
   <img src="./.github/images/3-red-carded-players.png" alt="3 jogadores expulsos" />
