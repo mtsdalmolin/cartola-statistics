@@ -1,8 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Estatísticas do Cartola](./.github/images/edc-brand.png)
+O intuito do projeto é utilizar os dados disponíveis nas APIs abertas do cartola e fazer análises em cima das escalações na temporada.
+Foi implementado um sistema de conquistas em cima das pontuações das rodadas e acontecimentos na temporada, como, por exemplo, 3 jogadores expulsos na temporada:
+![3 jogadores expulsos](./.github/images/3-red-carded-players.png)
 
-## Getting Started
+O site tá hospedado no domínio [estatisticasdocartola.com](https://estatisticadocartola.com)
 
-First, run the development server:
+### Compartilhe no Twitter/X
+O compartilhamento das estatísticas no Twitter/X gera imagens personalizadas de acordo com a estatística/medalha específica que você queira compartilhar. Para cada caso, é gerada uma imagem e um link específico para que o tweet fique com essa disposição:
+![Pior goleiro no Twitter/X](./.github/images/worst-gk-twitter-stat.png)
+
+### Tecnologias utilizadas
+- Typescript
+- Next.js 13
+- Vercel
+- TailwindCSS
+- Mantine Design System
+- html2canvas
+
+## Quer contribuir no projeto?
+Abra uma [Issue](https://github.com/mtsdalmolin/cartola-statistics/issues/new) ou faça um [Fork](https://github.com/mtsdalmolin/cartola-statistics) do projeto e submeta um PR com as alterações para eu avaliar.
+
+## Como rodar o projeto
+Para levantar o ambiente de desenvolvimento:
 
 ```bash
 npm run dev
@@ -12,23 +31,4 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+O ambiente vai estar disponível em [http://localhost:3000](http://localhost:3000).
