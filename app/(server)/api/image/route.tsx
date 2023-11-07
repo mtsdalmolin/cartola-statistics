@@ -54,6 +54,12 @@ export async function GET(request: Request) {
         >
           {/* eslint-disable-next-line @next/next/no-img-element*/}
           <img
+            src={image as unknown as string}
+            alt={highlight}
+            style={{ paddingTop: 40, paddingRight: 50, paddingBottom: 40, paddingLeft: 55 }}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element*/}
+          <img
             width="600"
             height="386"
             src={`${URLS.cartolaStatisticsPage}${edcBrand.src}`}
@@ -63,12 +69,6 @@ export async function GET(request: Request) {
               inset: 0,
               opacity: 0.05
             }}
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element*/}
-          <img
-            src={image as unknown as string}
-            alt={highlight}
-            style={{ paddingTop: 40, paddingRight: 50, paddingBottom: 40, paddingLeft: 55 }}
           />
           {/* eslint-disable-next-line @next/next/no-img-element*/}
           <img
