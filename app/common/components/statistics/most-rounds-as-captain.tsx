@@ -36,11 +36,12 @@ function CaptainStatistics<TRounds extends any[]>({
 
         return (
           <div key={`${roundData.round}-${roundData.points}`}>
-            <div className="flex justify-between w-full text-xs text-left">
+            <div className="progress-label flex justify-between w-full text-xs text-left">
               <span>Rodada {roundData.round}</span>
               <span>{roundData.points.toFixed(1)} pts</span>
             </div>
             <Progress
+              className="progress-data"
               radius="xs"
               size="xl"
               sections={[

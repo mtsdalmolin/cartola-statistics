@@ -15,11 +15,12 @@ export function PositionsPoints({
     <div className="grow-[3] w-fit">
       {Object.entries(positions).map(([positionId, positionPoints]) => (
         <div key={positionId}>
-          <div className="flex justify-between w-full text-xs text-left">
+          <div className="progress-label flex justify-between w-full text-xs text-left">
             <span>{getPositionName(+positionId)}</span>
             <span>{((positionPoints * 100) / totalPoints).toFixed(1)}%</span>
           </div>
           <Progress
+            className="progress-data"
             radius="xs"
             size="xl"
             sections={[

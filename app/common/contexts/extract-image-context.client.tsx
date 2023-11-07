@@ -5,6 +5,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import Link from 'next/link'
 
 import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
+import { enhanceImageStylePropsToGenerateStaticImage } from '@/app/helpers/image'
 import { Notification } from '@mantine/core'
 import { IconBrandX, IconX } from '@tabler/icons-react'
 
@@ -42,7 +43,9 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
     setHighlight(imgName.split('_')[0])
 
     const mime = 'image/jpg'
-    html2canvas(element)
+    html2canvas(element, {
+      onclone: enhanceImageStylePropsToGenerateStaticImage
+    })
       .then((canvas) => {
         canvas.toBlob(
           async (blob) => {

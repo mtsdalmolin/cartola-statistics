@@ -24,11 +24,12 @@ export function FinishStats({
     <div className="grow-[3] w-fit">
       {Object.entries(finishes).map(([finishType, finishes]) => (
         <div key={finishType}>
-          <div className="flex justify-between w-full text-xs text-left">
+          <div className="progress-label flex justify-between w-full text-xs text-left">
             <span>{FINISH_TYPE_TITLE[finishType as keyof typeof FINISH_TYPE_TITLE]}</span>
             <span>{((finishes * 100) / totalFinishes).toFixed(1)}%</span>
           </div>
           <Progress
+            className="progress-data"
             radius="xs"
             size="xl"
             sections={[

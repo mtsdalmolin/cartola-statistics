@@ -38,6 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className={inter.className}>
+        <div id="image-output" />
         <Main className="flex flex-col justify-center items-center px-4 m-auto max-w-[1200px]">
           <TeamInfoContextProvider>{children}</TeamInfoContextProvider>
         </Main>
