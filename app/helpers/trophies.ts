@@ -12,5 +12,5 @@ export function createTrophyTwitterShareLink({
 
   const twitterDescriptionMessage = `Consegui a medalha ${TROPHY_NAME[trophyParamName]} porque ${TWITTER_TROPHY_MESSAGE[trophyParamName]}%0A%0A`
 
-  return `http://twitter.com/share?text=${twitterDescriptionMessage}&url=${trophyEdcUrl}&hashtags=estatisticasdocartola`
+  return `http://twitter.com/intent/tweet?text=${twitterDescriptionMessage}&url=${trophyEdcUrl}&hashtags=estatisticasdocartola`
 }

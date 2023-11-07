@@ -6,11 +6,12 @@ import Link from 'next/link'
 
 import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { enhanceImageStylePropsToGenerateStaticImage } from '@/app/helpers/image'
-import { Notification } from '@mantine/core'
-import { IconBrandX, IconX } from '@tabler/icons-react'
+import { Notification, Text } from '@mantine/core'
+import { IconBrandX, IconExternalLink, IconX } from '@tabler/icons-react'
 
 import html2canvas from 'html2canvas'
 
+import { Flex } from '../components/flex'
 import { useShareStatisticsLinkContext } from './share-statistics-link-context.client'
 
 interface BlobParamsToSave {
@@ -97,7 +98,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
       ) : null}
       {showTweetReady && uploadReturnMessage ? (
         <Link
-          href={`http://twitter.com/share?text=${uploadReturnMessage}%0A%0A&url=${getShareLinkWithHighlight(
+          href={`http://twitter.com/intent/tweet?text=${uploadReturnMessage}%0A%0A&url=${getShareLinkWithHighlight(
             HIGHLIGHT_TO_PARAM[highlight!],
             true
           )}&hashtags=estatisticasdocartola`}
@@ -106,7 +107,12 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
         >
           <Notification
             className="fixed bottom-2 right-2 max-w-xs"
-            title="O seu tweet está pronto!"
+            title={
+              <Flex justify="between" align="center">
+                <Text>O seu tweet está pronto!</Text>
+                <IconExternalLink size={15} />
+              </Flex>
+            }
             icon={<IconBrandX size="1.1rem" />}
             color="dark"
             withCloseButton={false}

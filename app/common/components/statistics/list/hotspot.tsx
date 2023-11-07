@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { useExtractImageContext } from '@/app/common/contexts/extract-image-context.client'
 import { useTeamInfoContext } from '@/app/common/contexts/team-info-context.client'
 import { ActionIcon, Text, Tooltip } from '@mantine/core'
-import { IconShare } from '@tabler/icons-react'
+import { IconBrandX } from '@tabler/icons-react'
 
 import { Flex } from '../../flex'
 
@@ -37,7 +37,7 @@ export function ListHotspot({
       gap="sm"
     >
       <Flex align="center" gap="sm" direction="column">
-        <Tooltip className="absolute right-3 top-2" label="Compartilhar estatística no twitter">
+        <Tooltip className="absolute right-3 top-2" label="Compartilhar estatística no Twitter/X">
           <ActionIcon
             onClick={() =>
               createImageAndSaveInBlobStore({
@@ -48,7 +48,7 @@ export function ListHotspot({
               })
             }
           >
-            <IconShare />
+            <IconBrandX />
           </ActionIcon>
         </Tooltip>
         <Text>{name}</Text>
