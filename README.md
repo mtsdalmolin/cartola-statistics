@@ -1,6 +1,6 @@
-[<p align="center">
+<p align="center">
   <img src="./.github/images/edc-brand.png" alt="Estatísticas do Cartola" />
-</p>](https://estatisticasdocartola.com)
+</p>
 
 O intuito do projeto é utilizar os dados disponíveis nas APIs abertas do cartola e fazer análises em cima das escalações na temporada.
 Foi implementado um sistema de conquistas em cima das pontuações das rodadas e acontecimentos na temporada, como, por exemplo, 3 jogadores expulsos na temporada:
@@ -17,7 +17,6 @@ O compartilhamento das estatísticas no Twitter/X gera imagens personalizadas de
 <p align="center">
   <img src="./.github/images/worst-gk-twitter-stat.png" alt="Pior goleiro no Twitter/X" />
 </p>
-
 
 ### Tecnologias utilizadas
 - Typescript
