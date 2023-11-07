@@ -54,6 +54,18 @@ export async function GET(request: Request) {
         >
           {/* eslint-disable-next-line @next/next/no-img-element*/}
           <img
+            width="600"
+            height="386"
+            src={`${URLS.cartolaStatisticsPage}${edcBrand.src}`}
+            alt="Logo do Estatísticas do Cartola"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              opacity: 0.05
+            }}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element*/}
+          <img
             src={image as unknown as string}
             alt={highlight}
             style={{ paddingTop: 40, paddingRight: 50, paddingBottom: 40, paddingLeft: 55 }}
@@ -65,18 +77,6 @@ export async function GET(request: Request) {
             src={`${URLS.cartolaStatisticsPage}${edcLogo.src}`}
             alt="Logo do Estatísticas do Cartola"
             style={{ position: 'absolute', top: 50, left: 50 }}
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element*/}
-          <img
-            width="600"
-            height="386"
-            src={`${URLS.cartolaStatisticsPage}${edcBrand.src}`}
-            alt="Logo do Estatísticas do Cartola"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              opacity: 0.05
-            }}
           />
         </div>
       ),
