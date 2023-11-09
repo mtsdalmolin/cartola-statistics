@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { experimental_useFormState as useFormState } from 'react-dom'
 
 import Image from 'next/image'
@@ -22,15 +23,17 @@ export default function Home() {
   })
   const { setCurrentRound, setTeamInfo } = useTeamInfoContext()
 
-  if (!isEmpty(state.data)) {
-    if (!isNil(setTeamInfo)) {
-      setTeamInfo(state.data.teamInfo)
-    }
+  useEffect(() => {
+    if (!isEmpty(state.data)) {
+      if (!isNil(setTeamInfo)) {
+        setTeamInfo(state.data.teamInfo)
+      }
 
-    if (!isNil(setCurrentRound)) {
-      setCurrentRound(Object.keys(state.data.rounds).length)
+      if (!isNil(setCurrentRound)) {
+        setCurrentRound(Object.keys(state.data.rounds).length)
+      }
     }
-  }
+  }, [state.data, setCurrentRound, setTeamInfo])
 
   return (
     <div className="w-full">
