@@ -20,6 +20,8 @@ import { Athlete } from '../../types/athlete'
 import { MatchVersus } from '../match-versus'
 
 const TROPHY_DESCRIPTION = {
+  [TrophiesEnum.ASSIST_WITH_GOALKEEPER]:
+    'Medalha de conquista por ter escalado um goleiro que deu assistência.',
   [TrophiesEnum.CAME_FROM_BENCH_AND_MADE_12_POINTS]:
     'Medalha de conquista por ter um jogador substituído por alguém do banco que fez mais de 12 pontos.',
   [TrophiesEnum.DEFENSE_DIDNT_SUFFER_GOALS]:
@@ -28,6 +30,8 @@ const TROPHY_DESCRIPTION = {
     'Medalha de conquista quando em uma escalação, todos os jogadores valorizaram.',
   [TrophiesEnum.EVERY_MIDFIELDER_HAVE_ASSISTS]:
     'Medalha de conquista quando em uma escalação, todos os meias deram assistências.',
+  [TrophiesEnum.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB]:
+    'Medalha de conquista por ter escalado todos os jogadores de um mesmo time.',
   [TrophiesEnum.EVERY_STRIKER_SCORED]:
     'Medalha de conquista quando em uma escalação, todos os atacantes marcaram.',
   [TrophiesEnum.FOUR_OR_MORE_PLAYERS_MADE_LESS_THAN_0_POINTS]:
@@ -46,6 +50,8 @@ const TROPHY_DESCRIPTION = {
     'Medalha de conquista quando pontuou mais de 30 com apenas um jogador.',
   [TrophiesEnum.MORE_THAN_THREE_RED_CARDED_PLAYERS]:
     'Medalha de conquista por ter escalado 3 ou mais jogadores que foram expulsos.',
+  [TrophiesEnum.ONE_PLAYER_OF_EACH_CLUB]:
+    'Medalha de conquista por ter escalado um jogador de cada time.',
   [TrophiesEnum.PLAYER_SCORED_HATTRICK]:
     'Medalha de conquista quando um jogador escalado fez 3 gols na partida.',
   [TrophiesEnum.REACHED_200_CARTOLETAS]: 'Medalha de conquista por ter atingido 200 cartoletas.',

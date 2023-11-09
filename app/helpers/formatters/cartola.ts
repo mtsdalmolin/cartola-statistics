@@ -24,7 +24,7 @@ import { RoundData, RoundMatchesData, SubsData } from '@/app/services/types'
 import { isEmpty, max, some, uniqBy } from 'lodash'
 
 import { registerTrophyEvent } from '../analytics'
-import { isCoach } from '../positions'
+import { isCoach, isGoalkeeper } from '../positions'
 import { isValidRound } from '../rounds'
 import { typedOrderBy } from '../typed-lodash'
 
@@ -613,7 +613,34 @@ export function formatCartolaApiData(
         registerTrophyEvent(Trophies.MORE_THAN_150_POINTS_IN_ROUND, { team: teamInfo.name })
         teamsTrophies[Trophies.MORE_THAN_150_POINTS_IN_ROUND] = result.value
       }
+
+      if (isGoalkeeper(athlete.posicao_id)) {
+        if (athlete.scout?.A && !(Trophies.ASSIST_WITH_GOALKEEPER in teamsTrophies)) {
+          registerTrophyEvent(Trophies.ASSIST_WITH_GOALKEEPER, { team: teamInfo.name })
+          teamsTrophies[Trophies.ASSIST_WITH_GOALKEEPER] = [athlete]
+        }
+      }
     })
+
+    if (
+      !(Trophies.ONE_PLAYER_OF_EACH_CLUB in teamsTrophies) &&
+      uniqBy(athletes, 'clube_id').length === 12
+    ) {
+      registerTrophyEvent(Trophies.ONE_PLAYER_OF_EACH_CLUB, {
+        team: teamInfo.name
+      })
+      teamsTrophies[Trophies.ONE_PLAYER_OF_EACH_CLUB] = athletes
+    }
+
+    if (
+      !(Trophies.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB in teamsTrophies) &&
+      uniqBy(athletes, 'clube_id').length === 1
+    ) {
+      registerTrophyEvent(Trophies.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB, {
+        team: teamInfo.name
+      })
+      teamsTrophies[Trophies.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB] = athletes
+    }
 
     Object.entries(subs).forEach(([_, sub]) => {
       sub.forEach(async (change) => {
