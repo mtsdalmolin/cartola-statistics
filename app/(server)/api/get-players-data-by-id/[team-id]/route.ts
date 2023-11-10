@@ -19,6 +19,8 @@ type GetContext = {
   }
 }
 
+export const runtime = 'edge'
+
 export async function GET(request: Request, context: GetContext) {
   const teamId = context.params['team-id']
   const { searchParams } = new URL(request.url)

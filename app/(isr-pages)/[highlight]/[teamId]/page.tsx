@@ -23,6 +23,8 @@ type Props = {
   searchParams: { link?: string }
 }
 
+export const runtime = 'edge'
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { highlight, teamId } = params
 
