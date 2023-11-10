@@ -28,6 +28,9 @@ export function HighestFinisher<TCrewData extends CrewStatistics>({
   const { highlight } = useParams()
 
   const orderedHighestFinisherData = typedOrderBy(Object.values(crewData), 'finishes', 'desc')
+
+  if (orderedHighestFinisherData.length === 0) return null
+
   const first = orderedHighestFinisherData[0]
   orderedHighestFinisherData.shift()
 

@@ -30,6 +30,9 @@ export function HighestAverage<TCrewData extends CrewStatistics>({
   const { highlight } = useParams()
 
   const orderedHighestAverageData = typedOrderBy(Object.values(crewData), 'pointsAverage', 'desc')
+
+  if (orderedHighestAverageData.length === 0) return null
+
   const first = orderedHighestAverageData[0]
   orderedHighestAverageData.shift()
 

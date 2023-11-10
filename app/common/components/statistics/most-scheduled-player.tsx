@@ -29,6 +29,9 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
   const { highlight } = useParams()
 
   const mostScheduledPlayerData = typedOrderBy(Object.values(crewData), 'castTimes', 'desc')
+
+  if (mostScheduledPlayerData.length === 0) return null
+
   const first = mostScheduledPlayerData[0]
   mostScheduledPlayerData.shift()
 

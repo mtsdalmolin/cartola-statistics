@@ -21,6 +21,9 @@ export function LineupsPerClub<TClubsData extends ClubStatistics>({
   const { highlight } = useParams()
 
   const orderedClubsData = typedOrderBy(Object.values(clubsData), 'lineupNumbers', 'desc')
+
+  if (orderedClubsData.length === 0) return null
+
   const first = orderedClubsData[0]
   orderedClubsData.shift()
 

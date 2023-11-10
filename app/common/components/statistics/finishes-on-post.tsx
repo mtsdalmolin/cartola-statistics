@@ -40,6 +40,9 @@ export function FinishesOnPost<TCrewData extends CrewStatistics>({
     'finishesOnPost',
     'desc'
   ).filter((athlete) => athlete.finishesOnPost)
+
+  if (orderedFinishesOnPostData.length === 0) return null
+
   const first = orderedFinishesOnPostData[0]
   orderedFinishesOnPostData.shift()
 

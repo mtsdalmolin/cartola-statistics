@@ -34,6 +34,9 @@ export function ParticipationInGoals<TCrewData extends CrewStatistics>({
     'participationInGoals',
     'desc'
   ).filter((athlete) => athlete.participationInGoals)
+
+  if (orderedParticipationInGoalsData.length === 0) return null
+
   const first = orderedParticipationInGoalsData[0]
   orderedParticipationInGoalsData.shift()
 

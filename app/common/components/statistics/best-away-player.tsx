@@ -30,6 +30,9 @@ export function BestAwayPlayer<TCrewData extends CrewStatistics>({
     'away.average' as any,
     'desc'
   )
+
+  if (orderedBestAwayPlayerData.length === 0) return null
+
   const first = orderedBestAwayPlayerData[0]
   orderedBestAwayPlayerData.shift()
 

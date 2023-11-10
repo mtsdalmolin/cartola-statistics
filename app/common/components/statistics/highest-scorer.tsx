@@ -31,8 +31,13 @@ export function HighestScorer<TCrewData extends CrewStatistics>({
   const { highlight } = useParams()
 
   const orderedHighestScorerData = typedOrderBy(Object.values(crewData), 'highestPoint', 'desc')
+
+  if (orderedHighestScorerData.length === 0) return null
+
   const first = orderedHighestScorerData[0]
   orderedHighestScorerData.shift()
+
+  if (!first) return null
 
   return (
     <SummaryContainer id={ELEMENT_ID} title="Maior pontuador" focus={highlight === ELEMENT_ID}>

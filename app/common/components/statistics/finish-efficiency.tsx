@@ -22,8 +22,12 @@ export function FinishEfficiency<TCrewData extends CrewStatistics>({
     Object.values(crewData).filter((athlete) => isFinite(athlete.finishesToScore)),
     'finishesToScore'
   )
+
+  if (orderedFinishEfficiencyData.length === 0) return null
+
   const first = orderedFinishEfficiencyData[0]
   orderedFinishEfficiencyData.shift()
+
   return (
     <SummaryContainer title="Eficiência de conversão">
       <ListHotspot

@@ -78,6 +78,9 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
     'captainTimes',
     'desc'
   )
+
+  if (mostRoundsAsCaptainData.length === 0) return null
+
   const first = mostRoundsAsCaptainData[0]
   mostRoundsAsCaptainData.shift()
 

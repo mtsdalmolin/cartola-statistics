@@ -34,6 +34,9 @@ export function MoreDefenses<TCrewData extends CrewStatistics>({
     'defenses',
     'desc'
   ).filter((athlete) => athlete.defenses)
+
+  if (orderedDefenseEfficiencyData.length === 0) return null
+
   const first = orderedDefenseEfficiencyData[0]
   orderedDefenseEfficiencyData.shift()
 

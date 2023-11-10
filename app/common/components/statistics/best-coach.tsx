@@ -60,6 +60,9 @@ export function BestCoach<TCrewData extends CrewStatistics>({
     ['pointsAverage'],
     ['desc']
   )
+
+  if (orderedBestCoachData.length === 0) return null
+
   const first = orderedBestCoachData[0]
   orderedBestCoachData.shift()
 

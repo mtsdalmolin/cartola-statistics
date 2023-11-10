@@ -31,6 +31,9 @@ export function Artillery<TCrewData extends CrewStatistics>({
   const orderedArtilleryData = typedOrderBy(Object.values(crewData), 'goals', 'desc').filter(
     (athlete) => athlete.goals > 0
   )
+
+  if (orderedArtilleryData.length === 0) return null
+
   const first = orderedArtilleryData[0]
   orderedArtilleryData.shift()
 

@@ -23,8 +23,12 @@ export function DefenseEfficiency<TCrewData extends CrewStatistics>({
     'defensesToSufferGoal',
     'desc'
   ).filter((athlete) => athlete.defensesToSufferGoal)
+
+  if (orderedDefenseEfficiencyData.length === 0) return null
+
   const first = orderedDefenseEfficiencyData[0]
   orderedDefenseEfficiencyData.shift()
+
   return (
     <SummaryContainer title="Eficiência defensiva">
       <ListHotspot

@@ -35,6 +35,9 @@ export function MoreYellowCards<TCrewData extends CrewStatistics>({
     'scout.CA' as any,
     'desc'
   ).filter((athlete) => athlete.scout?.CA ?? 0 > 0)
+
+  if (orderedMoreYellowCardsData.length === 0) return null
+
   const first = orderedMoreYellowCardsData[0]
   orderedMoreYellowCardsData.shift()
 

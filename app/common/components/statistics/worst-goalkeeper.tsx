@@ -36,6 +36,9 @@ export function WorstGoalkeeper<TCrewData extends CrewStatistics>({
     'goalsConceded',
     'desc'
   ).filter((athlete) => athlete.goalsConceded)
+
+  if (orderedWorstGoalkeeperData.length === 0) return null
+
   const first = orderedWorstGoalkeeperData[0]
   orderedWorstGoalkeeperData.shift()
 

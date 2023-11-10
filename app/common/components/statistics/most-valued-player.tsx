@@ -27,6 +27,9 @@ export function MostValuedPlayer<TCrewData extends CrewStatistics>({
     'valuation.rounds.sum' as any,
     'desc'
   )
+
+  if (orderedMostValuedPlayerData.length === 0) return null
+
   const first = orderedMostValuedPlayerData[0]
   orderedMostValuedPlayerData.shift()
   return (

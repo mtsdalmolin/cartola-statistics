@@ -30,8 +30,12 @@ export function BestHomePlayer<TCrewData extends CrewStatistics>({
     'home.average' as any,
     'desc'
   )
+
+  if (orderedBestHomePlayerData.length === 0) return null
+
   const first = orderedBestHomePlayerData[0]
   orderedBestHomePlayerData.shift()
+
   return (
     <SummaryContainer
       id={ELEMENT_ID}

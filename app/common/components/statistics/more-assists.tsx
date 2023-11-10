@@ -32,6 +32,9 @@ export function MoreAssists<TCrewData extends CrewStatistics>({
   const orderedMoreAssistsData = typedOrderBy(Object.values(crewData), 'assists', 'desc').filter(
     (athlete) => athlete.assists
   )
+
+  if (orderedMoreAssistsData.length === 0) return null
+
   const first = orderedMoreAssistsData[0]
   orderedMoreAssistsData.shift()
 
