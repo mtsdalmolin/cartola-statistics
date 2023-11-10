@@ -9,7 +9,7 @@ import { find } from 'lodash'
 import { Trophies } from './common/types/trophies'
 import { ROUNDS, TEAMS } from './constants/data'
 import { formatCartolaApiData } from './helpers/formatters/cartola'
-import { ENDPOINTS, getRoundsData, getSubsData, request } from './services/cartola-api'
+import { getRoundsData, getSubsData } from './services/cartola-api'
 import { RoundData } from './services/types'
 
 type FormatCartolaApiDataType = ReturnType<typeof formatCartolaApiData>
@@ -45,9 +45,15 @@ export async function getTeamStatistics(
       teamName: teamName as unknown as string
     })
 
+    const today = new Date()
+
     const results = await Promise.allSettled<RoundData>(
       ROUNDS.map((round) => {
-        return request(ENDPOINTS.TEAM_ROUND(teamId.toString(), round.toString()))
+        return fetch(
+          `${
+            process.env.NEXT_API_BASE_URL
+          }/api/get-players-data-by-id/${teamId}?round=${round}&year=${today.getFullYear()}`
+        ).then((res) => res.json())
       })
     )
 
