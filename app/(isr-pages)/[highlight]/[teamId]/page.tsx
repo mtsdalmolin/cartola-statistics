@@ -17,13 +17,12 @@ import { find, last } from 'lodash'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+export const runtime = 'edge'
 
 type Props = {
   params: { highlight: string; teamId: string }
   searchParams: { link?: string }
 }
-
-export const runtime = 'edge'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { highlight, teamId } = params
