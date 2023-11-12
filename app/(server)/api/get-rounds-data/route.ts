@@ -45,7 +45,7 @@ export async function GET(request: Request) {
     if (result.status === 'fulfilled' && !isEmpty(result.value.rows)) {
       const roundId = +last<string>(result.value.rows[0].endpoint.split('/'))!
       roundsCached.push(roundId)
-      roundMatches[roundId] = result.value.rows[0].payload
+      roundMatches[roundId] = formatMatchData(result.value.rows[0].payload.partidas)
       return result.value.rows[0]
     }
     return null
@@ -68,10 +68,10 @@ export async function GET(request: Request) {
     })
   )
 
-  results.forEach((result, idx) => {
+  results.forEach((result) => {
     if (result.status === 'fulfilled') {
-      roundMatches[roundIds[idx]] = formatMatchData(result.value.partidas)
       const roundId = result.value.rodada
+      roundMatches[roundId] = formatMatchData(result.value.partidas)
 
       if (!roundsCached.includes(roundId)) {
         sql`
