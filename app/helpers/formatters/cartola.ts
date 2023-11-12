@@ -642,7 +642,7 @@ export function formatCartolaApiData(
       teamsTrophies[Trophies.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB] = athletes
     }
 
-    Object.entries(subs).forEach(([_, sub]) => {
+    Object.values(subs).forEach((sub) => {
       sub.forEach(async (change) => {
         if (
           !(Trophies.CAME_FROM_BENCH_AND_MADE_12_POINTS in teamsTrophies) &&
