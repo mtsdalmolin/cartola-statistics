@@ -56,9 +56,9 @@ export async function getTeamStatistics(
         ).then((res) => res.json())
       })
     )
-
-    const rounds = await getRoundsData(ROUNDS)
-    const subs = await getSubsData(teamId.toString(), ROUNDS, 2023)
+    const currentYear = 2023
+    const rounds = await getRoundsData(ROUNDS, currentYear)
+    const subs = await getSubsData(teamId.toString(), ROUNDS, currentYear)
     const [
       athleteStatistics,
       benchStatistics,

@@ -26,6 +26,7 @@ export interface MatchFromApi {
 
 export interface MatchesData {
   partidas: MatchFromApi[]
+  rodada: number
 }
 
 export interface RoundMatchesData {

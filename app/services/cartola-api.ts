@@ -41,8 +41,9 @@ export async function getPlayersTeamData(teamSlug: string, rounds: number[]) {
 
   const team = TEAMS.find((team) => team.slug === teamSlug)
 
-  const roundMatches = await getRoundsData(rounds)
-  const subs = await getSubsData(team!.id.toString(), rounds, 2023)
+  const currentYear = 2023
+  const roundMatches = await getRoundsData(rounds, currentYear)
+  const subs = await getSubsData(team!.id.toString(), rounds, currentYear)
 
   if (!team) throw new Error('Forbidden')
 
@@ -72,10 +73,11 @@ export async function searchTeamName(teamName: string): Promise<TeamsAutocomplet
   return roundMatches
 }
 
-export async function getRoundsData(roundIds: number[]): Promise<RoundMatchesData> {
+export async function getRoundsData(roundIds: number[], year: number): Promise<RoundMatchesData> {
   const roundMatches = await fetch(
     `${process.env.NEXT_API_BASE_URL}/api/get-rounds-data/${serializeQueryParams({
-      rounds: roundIds
+      rounds: roundIds,
+      year
     })}`
   ).then((res) => res.json())
 

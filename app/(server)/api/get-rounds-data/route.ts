@@ -4,11 +4,20 @@ import { Match } from '@/app/common/types/match'
 import { formatMatchData } from '@/app/helpers/formatters/match'
 import { ENDPOINTS, request as makeRequest } from '@/app/services/cartola-api'
 import { MatchesData } from '@/app/services/types'
+import { sql } from '@vercel/postgres'
+
+import { isEmpty, isNil, last, max } from 'lodash'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
+  const rounds = searchParams.get('rounds')
+  const year = searchParams.get('year')
 
-  if (searchParams.get('rounds') === undefined) {
+  if (isNil(year) || year === 'undefined') {
+    return NextResponse.json({ message: 'Bad format' }, { status: 422 })
+  }
+
+  if (isNil(rounds) || rounds === 'undefined') {
     return NextResponse.json({ message: 'Bad format' }, { status: 422 })
   }
 
@@ -17,17 +26,62 @@ export async function GET(request: Request) {
     if (key === 'rounds') roundIds.push(+value)
   }
 
-  const results = await Promise.allSettled<MatchesData>(
+  const cachedResults = await Promise.allSettled(
     roundIds.map((roundId) => {
-      return makeRequest(ENDPOINTS.MATCHES_BY_ID(roundId.toString()))
+      const endpoint = `${year}${ENDPOINTS.MATCHES_BY_ID(roundId.toString())}`
+      return sql`
+        SELECT payload, endpoint
+        FROM cartola_request_cache
+        WHERE endpoint = ${endpoint}
+        FETCH FIRST 1 ROWS ONLY;
+      `
     })
   )
 
+  const roundsCached: number[] = []
   const roundMatches: { [key: string]: { [key: string]: Match } } = {}
+
+  cachedResults.forEach((result) => {
+    if (result.status === 'fulfilled' && !isEmpty(result.value.rows)) {
+      const roundId = +last<string>(result.value.rows[0].endpoint.split('/'))!
+      roundsCached.push(roundId)
+      roundMatches[roundId] = result.value.rows[0].payload
+      return result.value.rows[0]
+    }
+    return null
+  })
+
+  const requestPromises: Record<string, Promise<MatchesData>> = {}
+  roundIds.forEach((roundId) => {
+    if (roundId < max(roundsCached)!) return
+
+    if (roundsCached.includes(roundId)) return
+
+    requestPromises[roundId.toString()] = makeRequest(ENDPOINTS.MATCHES_BY_ID(roundId.toString()))
+  })
+
+  const roundsToBeCached: number[] = []
+  const results = await Promise.allSettled<MatchesData>(
+    Object.entries(requestPromises).map(([roundId, promise]) => {
+      roundsToBeCached.push(+roundId)
+      return promise
+    })
+  )
 
   results.forEach((result, idx) => {
     if (result.status === 'fulfilled') {
       roundMatches[roundIds[idx]] = formatMatchData(result.value.partidas)
+      const roundId = result.value.rodada
+
+      if (!roundsCached.includes(roundId)) {
+        sql`
+          INSERT INTO cartola_request_cache (payload, endpoint)
+          VALUES (
+            ${JSON.stringify(result.value)},
+            ${year + ENDPOINTS.MATCHES_BY_ID(roundId.toString())}
+          )
+        `
+      }
     }
   })
 
