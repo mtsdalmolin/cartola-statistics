@@ -4,6 +4,7 @@ import NextImage from 'next/image'
 import { useParams } from 'next/navigation'
 
 import { useExtractImageContext } from '@/app/common/contexts/extract-image-context.client'
+import { useShareStatisticsLinkContext } from '@/app/common/contexts/share-statistics-link-context.client'
 import { useTeamInfoContext } from '@/app/common/contexts/team-info-context.client'
 import { ActionIcon, Text, Tooltip } from '@mantine/core'
 import { IconBrandX } from '@tabler/icons-react'
@@ -27,6 +28,7 @@ export function ListHotspot({
   const hotspotRef = useRef(null)
   const { createImageAndSaveInBlobStore } = useExtractImageContext()
   const { currentRound, teamInfo } = useTeamInfoContext()
+  const { shareLink } = useShareStatisticsLinkContext()
 
   const renderedHtml = (
     <Flex
@@ -37,20 +39,22 @@ export function ListHotspot({
       gap="sm"
     >
       <Flex align="center" gap="sm" direction="column">
-        <Tooltip className="absolute right-3 top-2" label="Compartilhar estatística no Twitter/X">
-          <ActionIcon
-            onClick={() =>
-              createImageAndSaveInBlobStore({
-                element: hotspotRef.current!,
-                imgName,
-                teamId: teamInfo?.id ?? +(params.teamId as string) ?? 0,
-                roundId: currentRound ?? 0
-              })
-            }
-          >
-            <IconBrandX />
-          </ActionIcon>
-        </Tooltip>
+        {shareLink ? (
+          <Tooltip className="absolute right-3 top-2" label="Compartilhar estatística no Twitter/X">
+            <ActionIcon
+              onClick={() =>
+                createImageAndSaveInBlobStore({
+                  element: hotspotRef.current!,
+                  imgName,
+                  teamId: teamInfo?.id ?? +(params.teamId as string) ?? 0,
+                  roundId: currentRound ?? 0
+                })
+              }
+            >
+              <IconBrandX />
+            </ActionIcon>
+          </Tooltip>
+        ) : null}
         <Text>{name}</Text>
         <NextImage className="rounded-b-full" alt={name} src={imgSrc} width={70} height={70} />
         {data}
