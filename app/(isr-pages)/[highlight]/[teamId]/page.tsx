@@ -87,7 +87,7 @@ export default async function TeamStatisticsStaticPage({ params, searchParams }:
   )
 
   const rounds = await getRoundsData(ROUNDS)
-  const subs = await getSubsData(teamId.toString(), ROUNDS)
+  const subs = await getSubsData(teamId.toString(), ROUNDS, 2023)
   const [
     athleteStatistics,
     benchStatistics,

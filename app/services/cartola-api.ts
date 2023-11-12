@@ -42,7 +42,7 @@ export async function getPlayersTeamData(teamSlug: string, rounds: number[]) {
   const team = TEAMS.find((team) => team.slug === teamSlug)
 
   const roundMatches = await getRoundsData(rounds)
-  const subs = await getSubsData(team!.id.toString(), rounds)
+  const subs = await getSubsData(team!.id.toString(), rounds, 2023)
 
   if (!team) throw new Error('Forbidden')
 
@@ -84,11 +84,13 @@ export async function getRoundsData(roundIds: number[]): Promise<RoundMatchesDat
 
 export async function getSubsData(
   teamId: string,
-  roundIds: number[]
+  roundIds: number[],
+  year: number
 ): Promise<Record<string, SubsData[]>> {
   const subs = await fetch(
     `${process.env.NEXT_API_BASE_URL}/api/get-subs-data/${teamId}${serializeQueryParams({
-      rounds: roundIds
+      rounds: roundIds,
+      year
     })}`
   ).then((res) => res.json())
 
