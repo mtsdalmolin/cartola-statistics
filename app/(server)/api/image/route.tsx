@@ -1,4 +1,5 @@
-import { ImageResponse, NextResponse } from 'next/server'
+import { ImageResponse } from 'next/og'
+import { NextResponse } from 'next/server'
 
 import { URLS } from '@/app/constants/url'
 import edcBrand from '@/public/logo/brand.svg'
