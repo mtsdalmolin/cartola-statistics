@@ -11,7 +11,7 @@ import { GithubButton } from './github-button.client'
 export function Signature({ absolute = false }: { absolute?: boolean }) {
   return (
     <Flex
-      className={` w-full text-center z-[-1] ${
+      className={` w-full text-center z-0 ${
         absolute ? 'absolute  bottom-[1rem] left-[50%] translate-x-[-50%]' : ''
       }`}
       justify="center"

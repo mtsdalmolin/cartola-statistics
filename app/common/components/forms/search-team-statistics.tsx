@@ -23,7 +23,7 @@ function SubmitButton({ disabled }: { disabled?: boolean }) {
 
   return (
     <Button
-      className="bg-palette-primary-500 hover:bg-palette-primary-700 text-palette-neutral-900"
+      className="bg-palette-primary-500 hover:bg-palette-primary-700 text-palette-neutral-900 z-[1]"
       type="submit"
       aria-disabled={disabled || pending}
       disabled={disabled || pending}
@@ -115,6 +115,7 @@ export function SearchTeamStatisticsForm({ action }: { action: (payload: FormDat
       <Autocomplete
         required
         ref={teamNameInput}
+        className="z-[1]"
         id="teamName"
         name="teamName"
         placeholder="Nome do time no cartola"
