@@ -115,7 +115,7 @@ export function SearchTeamStatisticsForm({ action }: { action: (payload: FormDat
       <Autocomplete
         required
         ref={teamNameInput}
-        className="z-[1]"
+        className="z-[2]"
         id="teamName"
         name="teamName"
         placeholder="Nome do time no cartola"
