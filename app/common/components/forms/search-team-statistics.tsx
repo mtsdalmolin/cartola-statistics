@@ -1,5 +1,7 @@
+'use client'
+
 import { forwardRef, useRef, useState } from 'react'
-import { experimental_useFormStatus as useFormStatus } from 'react-dom'
+import { useFormStatus } from 'react-dom'
 
 import { SECOND_TURN_ROUNDS } from '@/app/constants/data'
 import { searchTeamName } from '@/app/services/cartola-api'
@@ -15,7 +17,7 @@ const MEMOIZED_SEARCHED_TEAMS_KEY = '@cartola-statistics/memoized-searched-teams
 
 let initialMemoizedSearchedTeams: TeamsAutocompleteList[] = []
 
-if (localStorage && localStorage.getItem(MEMOIZED_SEARCHED_TEAMS_KEY))
+if (typeof localStorage !== 'undefined' && localStorage.getItem(MEMOIZED_SEARCHED_TEAMS_KEY))
   initialMemoizedSearchedTeams = JSON.parse(localStorage.getItem(MEMOIZED_SEARCHED_TEAMS_KEY)!)
 
 function SubmitButton({ disabled }: { disabled?: boolean }) {

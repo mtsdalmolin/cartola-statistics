@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { experimental_useFormState as useFormState } from 'react-dom'
+import { useFormState } from 'react-dom'
 
 import Image from 'next/image'
 

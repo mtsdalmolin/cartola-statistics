@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { experimental_useFormStatus as useFormStatus } from 'react-dom'
+import { useFormStatus } from 'react-dom'
 
 import Image from 'next/image'
 import { usePathname, useSearchParams } from 'next/navigation'

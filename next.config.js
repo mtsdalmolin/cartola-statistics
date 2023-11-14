@@ -1,10 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true
-  },
   images: {
-    domains: ['s.sde.globo.com', 's2-cartola.glbimg.com']
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 's.sde.globo.com',
+        pathname: '**'
+      },
+      {
+        protocol: 'https',
+        hostname: 's2-cartola.glbimg.com',
+        pathname: '**'
+      }
+    ]
   },
   swcMinify: false,
   modularizeImports: {
