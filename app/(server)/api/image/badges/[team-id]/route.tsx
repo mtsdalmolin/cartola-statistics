@@ -88,8 +88,8 @@ const badgesProps = {
     src: `${URLS.cartolaStatisticsPage}${futebolaoLeagueBadgePng.src}`
   },
   [Trophies.GOALS_IN_THREE_SECTIONS]: {
-    width: 160,
-    height: 160,
+    width: 130,
+    height: 130,
     src: `${URLS.cartolaStatisticsPage}${goalsInThreeSectionsBadgePng.src}`
   },
   [Trophies.LESS_THAN_30_POINTS_IN_ROUND]: {

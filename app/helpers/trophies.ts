@@ -14,3 +14,17 @@ export function createTrophyTwitterShareLink({
 
   return `http://twitter.com/intent/tweet?text=${twitterDescriptionMessage}&url=${trophyEdcUrl}&hashtags=estatisticasdocartola`
 }
+
+export function createTrophyBoardTwitterShareLink({
+  teamId,
+  roundId
+}: {
+  teamId: string
+  roundId: number
+}) {
+  const trophyEdcUrl = `${URLS.cartolaStatisticsPage}/medalhas/${teamId}?roundId=${roundId}`
+
+  const twitterDescriptionMessage = `Esse foi o meu quadro de medalhas do ano no EDC.%0A%0A`
+
+  return `http://twitter.com/intent/tweet?text=${twitterDescriptionMessage}&url=${trophyEdcUrl}&hashtags=estatisticasdocartola`
+}

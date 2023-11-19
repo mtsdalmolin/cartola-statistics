@@ -5,8 +5,10 @@ import Image from 'next/image'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 import { RoundMatchesData } from '@/app/services/types'
-import { Text } from '@mantine/core'
+import { Button, CopyButton, Text, Tooltip } from '@mantine/core'
+import { IconCheck, IconCopy } from '@tabler/icons-react'
 
+import { useShareStatisticsLinkContext } from '../../contexts/share-statistics-link-context.client'
 import { bebasNeue } from '../../fonts/bebasNeue'
 import { TeamInfo } from '../../types/team'
 import { TrophiesData } from '../../types/trophies'
@@ -40,6 +42,35 @@ function TeamTurnData({
         </Text>
       </Flex>
     </>
+  )
+}
+
+function CopyStaticPageUrl() {
+  const pathname = usePathname()
+  const { shareLink } = useShareStatisticsLinkContext()
+
+  if (pathname.startsWith('/estatisticas')) return null
+
+  return (
+    <CopyButton value={shareLink} timeout={2000}>
+      {({ copied, copy }) => (
+        <Tooltip label={copied ? 'Copiado' : 'Copiar'} withArrow>
+          <Button
+            className="bg-palette-neutral-800 hover:bg-palette-neutral-700 rounded-md"
+            onClick={copy}
+          >
+            <Flex align="center">
+              <Text>Link para compartilhar estatísticas</Text>
+              {copied ? (
+                <IconCheck className="text-palette-primary-500" size="1rem" />
+              ) : (
+                <IconCopy size="1rem" />
+              )}
+            </Flex>
+          </Button>
+        </Tooltip>
+      )}
+    </CopyButton>
   )
 }
 
@@ -88,6 +119,11 @@ export function TeamProfile({
             />
           </Flex>
         </Flex>
+        {pathname === '/' ? (
+          <Flex className="w-full py-4" justify="center">
+            <CopyStaticPageUrl />
+          </Flex>
+        ) : null}
         <Trophies matchesData={matchesData} trophies={trophies} />
       </Flex>
     </section>

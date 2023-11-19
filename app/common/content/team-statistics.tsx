@@ -23,8 +23,6 @@ import { PointsPerClub } from '@/app/common/components/statistics/points-per-clu
 import { StatisticsSection } from '@/app/common/components/statistics/section'
 import { WorstGoalkeeper } from '@/app/common/components/statistics/worst-goalkeeper'
 import { TeamProfile } from '@/app/common/components/team/profile'
-import { Button, CopyButton, Text, Tooltip } from '@mantine/core'
-import { IconCheck, IconCopy } from '@tabler/icons-react'
 
 import { isEmpty } from 'lodash'
 
@@ -33,39 +31,8 @@ import { Lineup } from '../components/lineup'
 import { FinishesOnPost } from '../components/statistics/finishes-on-post'
 import { MoreFouls } from '../components/statistics/more-fouls'
 import { ParticipationInGoals } from '../components/statistics/participation-in-goals'
+import { ShareOnTwitterButtonLink } from '../components/team/trophies'
 import { ExtractImageContextProvider } from '../contexts/extract-image-context.client'
-import { useShareStatisticsLinkContext } from '../contexts/share-statistics-link-context.client'
-
-function CopyStaticPageUrl() {
-  const pathname = usePathname()
-  const { shareLink } = useShareStatisticsLinkContext()
-
-  if (pathname.startsWith('/estatisticas')) return null
-
-  return (
-    <Flex className="w-fit px-4 py-2 " align="center" justify="center">
-      <CopyButton value={shareLink} timeout={2000}>
-        {({ copied, copy }) => (
-          <Tooltip label={copied ? 'Copiado' : 'Copiar'} withArrow position="right">
-            <Button
-              className="bg-palette-neutral-800 hover:bg-palette-neutral-700 rounded-md"
-              onClick={copy}
-            >
-              <Flex align="center">
-                <Text>Link para compartilhar</Text>
-                {copied ? (
-                  <IconCheck className="text-palette-primary-500" size="1rem" />
-                ) : (
-                  <IconCopy size="1rem" />
-                )}
-              </Flex>
-            </Button>
-          </Tooltip>
-        )}
-      </CopyButton>
-    </Flex>
-  )
-}
 
 export default function TeamStatisticsContent({
   data
@@ -78,11 +45,9 @@ export default function TeamStatisticsContent({
     <ExtractImageContextProvider>
       <div className="py-4">
         <TeamProfile matchesData={data.rounds} teamInfo={data.teamInfo} trophies={data.trophies} />
-        {pathname === '/' ? (
-          <Flex className="w-full" justify="center">
-            <CopyStaticPageUrl />
-          </Flex>
-        ) : null}
+        <Flex className="w-full py-4" justify="center">
+          <ShareOnTwitterButtonLink type="trophyBoard" teamId={data.teamInfo.id.toString()} />
+        </Flex>
         {!isEmpty(data.athleteStatistics) ? (
           <>
             <StatisticsSection title="os melhores">
