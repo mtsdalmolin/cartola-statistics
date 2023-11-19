@@ -210,7 +210,7 @@ export async function GET(request: Request, context: GetContext) {
             height="50"
             src={`${URLS.cartolaStatisticsPage}${edcLogo.src}`}
             alt="Logo do Estatísticas do Cartola"
-            style={{ position: 'absolute', top: 30, left: 35 }}
+            style={{ position: 'absolute', top: 50, left: 35 }}
           />
           <span
             style={{
