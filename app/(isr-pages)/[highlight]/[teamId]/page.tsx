@@ -30,7 +30,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const result = await request<RoundData>(ENDPOINTS.TEAM_ROUND(teamId, '1'))
 
-  const hasImage = await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])
+  const hasImage =
+    highlight !== 'medalhas' && highlight !== 'estatisticas'
+      ? await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])
+      : false
 
   const images = hasImage
     ? [
@@ -38,6 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           SECOND_TURN_ROUNDS
         )}`
       ]
+    : highlight === 'medalhas'
+    ? [`/api/image/badges/${teamId}?roundId=${last(SECOND_TURN_ROUNDS)}`]
     : [edcBrand.src]
 
   const pageTitle = result ? `EDC | ${result.time.nome}` : 'Estatísticas do Cartola'
@@ -77,7 +82,11 @@ export default async function TeamStatisticsStaticPage({ params, searchParams }:
   const { highlight, teamId } = params
   const { link } = searchParams
 
-  if (!(highlight in PARAM_TO_HIGHLIGHT) && highlight !== 'estatisticas') {
+  if (
+    !(highlight in PARAM_TO_HIGHLIGHT) &&
+    highlight !== 'estatisticas' &&
+    highlight !== 'medalhas'
+  ) {
     redirect('/')
   }
 
