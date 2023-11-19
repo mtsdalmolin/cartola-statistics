@@ -22,11 +22,12 @@ export const runtime = 'edge'
 
 type Props = {
   params: { highlight: string; teamId: string }
-  searchParams: { link?: string }
+  searchParams: { link?: string; roundId?: string }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { highlight, teamId } = params
+  const { roundId: roundIdFromSearchParams } = searchParams
 
   const result = await request<RoundData>(ENDPOINTS.TEAM_ROUND(teamId, '1'))
 
@@ -35,14 +36,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? await teamHasStatisticStaticImage(+teamId, PARAM_TO_HIGHLIGHT[highlight])
       : false
 
+  const roundId = roundIdFromSearchParams ?? last(SECOND_TURN_ROUNDS)
+
   const images = hasImage
-    ? [
-        `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}&roundId=${last(
-          SECOND_TURN_ROUNDS
-        )}`
-      ]
+    ? [`/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}&roundId=${roundId}`]
     : highlight === 'medalhas'
-    ? [`/api/image/badges/${teamId}?roundId=${last(SECOND_TURN_ROUNDS)}`]
+    ? [`/api/image/badges/${teamId}?roundId=${roundId}`]
     : [edcBrand.src]
 
   const pageTitle = result ? `EDC | ${result.time.nome}` : 'Estatísticas do Cartola'
