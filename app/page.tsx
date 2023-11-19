@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <div className="w-full">
       <ShareStatisticsLinkContextProvider>
-        <div className="relative flex h-[100vh]">
+        <div className="relative flex h-[100svh]">
           <div className="m-auto w-fit">
             <Image src={brand} width={500} height={500} alt="brand" />
             <SearchTeamStatisticsForm action={formAction} />

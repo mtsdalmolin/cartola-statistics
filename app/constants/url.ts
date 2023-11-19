@@ -1,3 +1,3 @@
 export const URLS = {
-  cartolaStatisticsPage: 'https://estatisticasdocartola.com'
+  cartolaStatisticsPage: process.env.NEXT_API_BASE_URL
 }

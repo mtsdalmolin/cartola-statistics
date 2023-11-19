@@ -7,6 +7,7 @@ import TeamStatisticsContent from '@/app/common/content/team-statistics'
 import { Trophies } from '@/app/common/types/trophies'
 import { ROUNDS, SECOND_TURN_ROUNDS, TEAMS } from '@/app/constants/data'
 import { PARAM_TO_HIGHLIGHT } from '@/app/constants/highlight'
+import { registerTrophyEvent } from '@/app/helpers/analytics'
 import { formatCartolaApiData } from '@/app/helpers/formatters/cartola'
 import { ENDPOINTS, getRoundsData, getSubsData, request } from '@/app/services/cartola-api'
 import { RoundData } from '@/app/services/types'
@@ -99,7 +100,12 @@ export default async function TeamStatisticsStaticPage({ params, searchParams }:
     lineups
   ] = formatCartolaApiData(results, rounds, subs)
 
-  if (find(TEAMS, { id: Number(teamId) })) trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
+  if (find(TEAMS, { id: Number(teamId) })) {
+    registerTrophyEvent(Trophies.FUTEBOLAO_LEAGUE_PLAYER, {
+      team: teamInfo
+    })
+    trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
+  }
 
   return (
     <div className="w-full pb-4">

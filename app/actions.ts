@@ -8,6 +8,7 @@ import { find } from 'lodash'
 
 import { Trophies } from './common/types/trophies'
 import { ROUNDS, TEAMS } from './constants/data'
+import { registerTrophyEvent } from './helpers/analytics'
 import { formatCartolaApiData } from './helpers/formatters/cartola'
 import { getRoundsData, getSubsData } from './services/cartola-api'
 import { RoundData } from './services/types'
@@ -69,7 +70,12 @@ export async function getTeamStatistics(
       lineups
     ] = formatCartolaApiData(results, rounds, subs)
 
-    if (find(TEAMS, { id: Number(teamId) })) trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
+    if (find(TEAMS, { id: Number(teamId) })) {
+      registerTrophyEvent(Trophies.FUTEBOLAO_LEAGUE_PLAYER, {
+        team: teamInfo
+      })
+      trophies[Trophies.FUTEBOLAO_LEAGUE_PLAYER] = []
+    }
 
     revalidatePath('/')
     revalidatePath(`/estatisticas/${teamId}`)
