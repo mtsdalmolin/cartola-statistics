@@ -20,7 +20,7 @@ O compartilhamento das estatísticas no Twitter/X gera imagens personalizadas de
 
 ### Tecnologias utilizadas
 - Typescript
-- Next.js 13
+- Next.js 14
 - Vercel
 - TailwindCSS
 - Mantine Design System
