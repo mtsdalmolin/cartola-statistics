@@ -144,7 +144,7 @@ export function SearchTeamStatisticsForm({ action }: { action: (payload: FormDat
           setIsLoading(false)
         }, HALF_SECOND_IN_MS)}
       />
-      <SubmitButton disabled={!teamIdInput.current?.value || isLoading} />
+      <SubmitButton disabled={!teamIdInput.current?.value || isLoading || selectedTeamId === 0} />
     </form>
   )
 }
