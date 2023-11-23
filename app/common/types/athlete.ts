@@ -30,6 +30,7 @@ export interface Athlete {
     G?: number // Gols
     GS?: number // Gols sofridos
     I?: number // Impedimentos
+    PC?: number // Pênalti cometido
     PP?: number // Pênalti perdido
     PS?: number // Pênalti sofrido
     SG?: number // Sem sofrer gols

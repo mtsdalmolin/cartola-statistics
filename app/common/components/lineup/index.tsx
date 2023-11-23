@@ -28,6 +28,7 @@ const SCOUT_NAMES: Record<string, string> = {
   G: 'Gols',
   GS: 'Gols sofridos',
   I: 'Impedimentos',
+  PC: 'Pênaltis cometidos',
   PP: 'Pênaltis perdidos',
   PS: 'Pênaltis sofridos',
   SG: 'Sem sofrer gols',
