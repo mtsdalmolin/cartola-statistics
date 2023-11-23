@@ -9,8 +9,8 @@ export function getScoutMultipliedValue(scoutValue: number, scoutKey: string) {
   return scoutValue * SCOUT_MULTIPLIERS[scoutKey as keyof Athlete['scout']]
 }
 
-export function getScoutColor(scoutKey: string) {
-  return SCOUT_COLORS[scoutKey as keyof Athlete['scout']]
+export function getScoutColor(scoutKey: keyof Athlete['scout']) {
+  return SCOUT_COLORS[scoutKey]
 }
 
 export function calculateScoutPoints(scout: Athlete['scout']) {

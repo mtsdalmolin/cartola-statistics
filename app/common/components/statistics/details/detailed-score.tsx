@@ -19,7 +19,7 @@ export function DetailedScore({
         size="xl"
         sections={Object.entries(scout).map(([scoutKey, scoutValue]) => ({
           value: (getScoutMultipliedValue(scoutValue, scoutKey) * 100) / highestPoints,
-          color: getScoutColor(scoutKey),
+          color: getScoutColor(scoutKey as keyof Athlete['scout']),
           label: getScoutMultipliedValue(scoutValue, scoutKey).toFixed(1),
           tooltip: `${getScoutName(
             scoutKey as keyof Athlete['scout']
