@@ -524,7 +524,7 @@ export function formatCartolaApiData(
         }
       }
 
-      if (athletePoints > athlete.minimo_para_valorizar) {
+      if (athlete.minimo_para_valorizar && athlete.pontos_num > athlete.minimo_para_valorizar) {
         athletesThatValuedInRound.push(athlete)
         if (
           !(Trophies.EVERY_ATHLETE_VALUED in teamsTrophies) &&
