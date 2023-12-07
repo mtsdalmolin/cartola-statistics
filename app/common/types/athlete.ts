@@ -21,6 +21,7 @@ export interface Athlete {
     CA?: number // Cartões amarelos
     CV?: number // Cartões vermelhos
     DE?: number // Defesas
+    DP?: number // Defesas de pênaltis
     DS?: number // Desarmes
     FC?: number // Faltas cometidas
     FD?: number // Finalizações defendidas
@@ -28,6 +29,7 @@ export interface Athlete {
     FS?: number // Faltas sofridas
     FT?: number // Finalizações na trave
     G?: number // Gols
+    GC?: number // Gols contra
     GS?: number // Gols sofridos
     I?: number // Impedimentos
     PC?: number // Pênalti cometido
