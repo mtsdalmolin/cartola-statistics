@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default async function StatisticsLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className={inter.className}>
         <main className="flex flex-col justify-center items-center px-4 m-auto max-w-[1200px]">
           <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
