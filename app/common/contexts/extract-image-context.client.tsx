@@ -113,7 +113,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
                 <IconExternalLink size={15} />
               </Flex>
             }
-            icon={<IconBrandX size="1.1rem" />}
+            icon={<IconBrandX size="1.1rem" aria-hidden />}
             color="dark"
             withCloseButton={false}
           >
@@ -125,7 +125,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
         <Notification
           className="fixed bottom-2 right-2 max-w-xs"
           title="Aconteceu um erro inesperado!"
-          icon={<IconX size="1.1rem" />}
+          icon={<IconX size="1.1rem" aria-hidden />}
           color="red"
           onClose={() => setApiReturnedError(false)}
         >

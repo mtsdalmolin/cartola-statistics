@@ -287,6 +287,7 @@ function Trophy({
           width={128}
           height={128}
           alt={TROPHY_DESCRIPTION[name]}
+          tabIndex={0}
         />
       </HoverCard.Target>
       <HoverCard.Dropdown>
@@ -319,6 +320,7 @@ export function Trophies({
           data={trophyData}
           matchesData={matchesData}
           name={trophyName as keyof typeof TROPHIES_IMAGE}
+          tabIndex={0}
         />
       ))}
     </Flex>

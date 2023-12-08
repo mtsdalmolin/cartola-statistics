@@ -36,7 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const dateStr = `${marketStatus.fechamento.mes}/${marketStatus.fechamento.dia}/${marketStatus.fechamento.ano} ${marketStatus.fechamento.hora}:${marketStatus.fechamento.minuto}:59`
 
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className={inter.className}>
         <header className="grid grid-cols-3 items-center p-4 border-b-[1px]">
           <Image src={logo} width={35} height={35} alt="Logo do estatísticas do cartola" />
