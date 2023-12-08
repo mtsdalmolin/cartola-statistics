@@ -50,6 +50,7 @@ export function ListHotspot({
                   roundId: currentRound ?? 0
                 })
               }
+              aria-label="Compartilhar estatística no Twitter/X"
             >
               <IconBrandX />
             </ActionIcon>
