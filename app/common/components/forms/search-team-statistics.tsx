@@ -30,16 +30,16 @@ function SubmitButton({ disabled }: { disabled?: boolean }) {
       aria-disabled={disabled || pending}
       disabled={disabled || pending}
     >
-      {pending ?
+      {pending ? (
         <Loader
           color="#7ae1bf"
           size={20}
           aria-live="assertive"
           aria-label="Buscando estatísticas da equipe"
         />
-        :
+      ) : (
         'Buscar estatísticas'
-      }
+      )}
     </Button>
   )
 }
