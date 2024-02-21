@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className={inter.className}>
         <Main className="flex flex-col justify-center items-center px-4 m-auto max-w-[1200px]">
           <TeamInfoContextProvider>{children}</TeamInfoContextProvider>
