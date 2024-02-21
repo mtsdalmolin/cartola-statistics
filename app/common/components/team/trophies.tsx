@@ -320,7 +320,6 @@ export function Trophies({
           data={trophyData}
           matchesData={matchesData}
           name={trophyName as keyof typeof TROPHIES_IMAGE}
-          tabIndex={0}
         />
       ))}
     </Flex>
