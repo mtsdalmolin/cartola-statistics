@@ -158,6 +158,48 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     slug: 'internacional',
     apelido: 'Colorado'
   },
+  '286': {
+    escudos: {
+      '60x60': 'https://s.sde.globo.com/media/organizations/2021/04/29/juventude65.png',
+      '45x45': 'https://s.sde.globo.com/media/organizations/2021/04/29/juventude45.png',
+      '30x30': 'https://s.sde.globo.com/media/organizations/2021/04/29/juventude30.png'
+    },
+    nome: 'Juventude',
+    abreviacao: 'JUV',
+    slug: 'juventude',
+    apelido: 'Papo',
+    nome_fantasia: 'Juventude',
+    id: 286,
+    url_editoria: 'https://ge.globo.com/rs/futebol/times/juventude/'
+  },
+  '287': {
+    escudos: {
+      '60x60': 'https://s.sde.globo.com/media/organizations/2014/04/14/vitoria_60x60.png',
+      '45x45': 'https://s.sde.globo.com/media/organizations/2014/04/14/vitoria_45x45.png',
+      '30x30': 'https://s.sde.globo.com/media/organizations/2014/04/14/vitoria_30x30.png'
+    },
+    nome: 'Vitória',
+    abreviacao: 'VIT',
+    slug: 'vitoria',
+    apelido: 'Vitória',
+    nome_fantasia: 'Vitória',
+    id: 287,
+    url_editoria: 'https://ge.globo.com/ba/futebol/times/vitoria/'
+  },
+  '288': {
+    escudos: {
+      '60x60': 'https://s.sde.globo.com/media/organizations/2014/04/14/criciuma_60x60.png',
+      '45x45': 'https://s.sde.globo.com/media/organizations/2014/04/14/criciuma_45x45.png',
+      '30x30': 'https://s.sde.globo.com/media/organizations/2014/04/14/criciuma_30x30.png'
+    },
+    nome: 'Criciúma',
+    abreviacao: 'CRI',
+    slug: 'criciuma',
+    apelido: 'Tigre',
+    nome_fantasia: 'Criciúma',
+    id: 288,
+    url_editoria: 'https://ge.globo.com/sc/futebol/times/criciuma/'
+  },
   290: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2021/03/01/goias-65.png',
@@ -201,6 +243,20 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     abreviacao: 'AME',
     slug: 'america-mg',
     apelido: 'Coelho'
+  },
+  '373': {
+    escudos: {
+      '60x60': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-65.png',
+      '45x45': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-45.png',
+      '30x30': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-30.png'
+    },
+    nome: 'Atlético-GO',
+    abreviacao: 'ACG',
+    slug: 'atletico-go',
+    apelido: 'Dragão',
+    nome_fantasia: 'Atlético-GO',
+    id: 373,
+    url_editoria: 'https://ge.globo.com/go/futebol/times/atletico-go/'
   },
   356: {
     escudos: {
