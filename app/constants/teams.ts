@@ -158,7 +158,7 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     slug: 'internacional',
     apelido: 'Colorado'
   },
-  '286': {
+  286: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2021/04/29/juventude65.png',
       '45x45': 'https://s.sde.globo.com/media/organizations/2021/04/29/juventude45.png',
@@ -167,12 +167,9 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     nome: 'Juventude',
     abreviacao: 'JUV',
     slug: 'juventude',
-    apelido: 'Papo',
-    nome_fantasia: 'Juventude',
-    id: 286,
-    url_editoria: 'https://ge.globo.com/rs/futebol/times/juventude/'
+    apelido: 'Papo'
   },
-  '287': {
+  287: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2014/04/14/vitoria_60x60.png',
       '45x45': 'https://s.sde.globo.com/media/organizations/2014/04/14/vitoria_45x45.png',
@@ -181,12 +178,9 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     nome: 'Vitória',
     abreviacao: 'VIT',
     slug: 'vitoria',
-    apelido: 'Vitória',
-    nome_fantasia: 'Vitória',
-    id: 287,
-    url_editoria: 'https://ge.globo.com/ba/futebol/times/vitoria/'
+    apelido: 'Vitória'
   },
-  '288': {
+  288: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2014/04/14/criciuma_60x60.png',
       '45x45': 'https://s.sde.globo.com/media/organizations/2014/04/14/criciuma_45x45.png',
@@ -195,10 +189,7 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     nome: 'Criciúma',
     abreviacao: 'CRI',
     slug: 'criciuma',
-    apelido: 'Tigre',
-    nome_fantasia: 'Criciúma',
-    id: 288,
-    url_editoria: 'https://ge.globo.com/sc/futebol/times/criciuma/'
+    apelido: 'Tigre'
   },
   290: {
     escudos: {
@@ -244,7 +235,7 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     slug: 'america-mg',
     apelido: 'Coelho'
   },
-  '373': {
+  373: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-65.png',
       '45x45': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-45.png',
@@ -253,10 +244,7 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     nome: 'Atlético-GO',
     abreviacao: 'ACG',
     slug: 'atletico-go',
-    apelido: 'Dragão',
-    nome_fantasia: 'Atlético-GO',
-    id: 373,
-    url_editoria: 'https://ge.globo.com/go/futebol/times/atletico-go/'
+    apelido: 'Dragão'
   },
   356: {
     escudos: {
