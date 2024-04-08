@@ -4,7 +4,7 @@ import { useMemo, useState, useSyncExternalStore } from 'react'
 
 import Image from 'next/image'
 
-import { MarketAthleteTableData } from '@/app/(user)/mercado/page'
+import { MarketAthleteTableData } from '@/app/(user)/in/mercado/page'
 import { POSITIONS } from '@/app/constants/positions'
 import { PROSPECTIVE, STATUS } from '@/app/constants/status'
 import { FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED } from '@/app/constants/teams'

@@ -1,6 +1,6 @@
 'use client'
 
-import { MarketStatistics } from '@/app/(user)/mercado/page'
+import { MarketStatistics } from '@/app/(user)/in/mercado/page'
 import { useClient } from '@/app/helpers/hooks/use-client'
 
 import { AthleteTable } from './athlete/athlete-table.client'

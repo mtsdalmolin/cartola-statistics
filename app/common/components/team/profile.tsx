@@ -37,8 +37,11 @@ function TeamTurnData({
           Total de <b className={`${bebasNeue.className} text-xl`}>{total.toFixed(1)}</b> pts.
         </Text>
         <Text>
-          Média de <b className={`${bebasNeue.className} text-xl`}>{average.toFixed(1)}</b> pts. por
-          rodada
+          Média de{' '}
+          <b className={`${bebasNeue.className} text-xl`}>
+            {isNaN(average) ? 0 : average.toFixed(1)}
+          </b>{' '}
+          pts. por rodada
         </Text>
       </Flex>
     </>
