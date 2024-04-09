@@ -23,10 +23,13 @@ const config: Config = {
       colors: {
         palette: {
           primary: {
-            100: '#cdf4e7',
+            100: '#eafbf5',
+            200: '#c3efe0',
             300: '#aaecd6',
+            400: '#68f3c5',
             500: '#7ae1bf',
-            700: '#2dc895',
+            600: '#67bfa0',
+            700: '#5aa68b',
             800: '#1c7a5b',
             900: '#104936'
           },
