@@ -474,7 +474,7 @@ export function formatCartolaApiData({
     } = result.value
 
     if (isNil(team)) {
-      throw new Error('team cannot be null')
+      return
     }
 
     teamInfo.badgePhotoUrl = team?.url_escudo_png ?? ''

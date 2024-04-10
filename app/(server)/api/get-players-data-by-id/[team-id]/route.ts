@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server'
 
-import { request as makeRequest } from '@/app/services/cartola-api'
+import { ENDPOINTS, request as makeRequest } from '@/app/services/cartola-api'
 import { RoundData } from '@/app/services/types'
 import { sql } from '@vercel/postgres'
+
+import { isAfter } from 'date-fns'
 
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 import isNil from 'lodash/isNil'
-
-const TEAM_ROUND_ENDPOINT = (teamId: string, round: string) => `/time/id/${teamId}/${round}`
 
 type GetContext = {
   params: {
@@ -39,8 +39,8 @@ export async function GET(request: Request, context: GetContext) {
     return NextResponse.json({ message: 'Couldnt process request' }, { status: 422 })
   }
 
-  const cartolaEndpoint = TEAM_ROUND_ENDPOINT(teamId, round)
-  const cartolaEndpointWithYearPrefix = `${year}${TEAM_ROUND_ENDPOINT(teamId, round)}`
+  const cartolaEndpoint = ENDPOINTS.TEAM_ROUND(teamId, round)
+  const cartolaEndpointWithYearPrefix = `${year}${ENDPOINTS.TEAM_ROUND(teamId.toString(), round)}`
 
   const cachedResponse = await sql`
     SELECT payload
@@ -49,7 +49,7 @@ export async function GET(request: Request, context: GetContext) {
     FETCH FIRST 1 ROWS ONLY;
   `
 
-  let result
+  let result = {}
   let needsToFetchFromCartola = true
 
   if (!isNil(cachedResponse.rows) && !isEmpty(cachedResponse.rows)) {
@@ -58,18 +58,20 @@ export async function GET(request: Request, context: GetContext) {
     console.log(`got data from neon cache for endpoint ${cartolaEndpointWithYearPrefix}`)
   }
 
-  if (needsToFetchFromCartola) {
+  const today = new Date()
+  if (year && +year === today.getFullYear() && needsToFetchFromCartola) {
     result = await makeRequest<RoundData>(cartolaEndpoint)
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 
-    const today = new Date()
     const endpoint = `${today.getFullYear()}${cartolaEndpoint}`
-
-    sql`
+    // save only after first cartola round
+    if (isAfter(new Date('2024-04-15'), today)) {
+      sql`
       INSERT INTO cartola_request_cache (payload, endpoint)
       VALUES (${JSON.stringify(result)}, ${endpoint})
     `
+    }
   }
 
   return NextResponse.json(result, { status: 200 })

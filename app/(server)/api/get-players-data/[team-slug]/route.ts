@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { TEAMS } from '@/app/constants/data'
-import { request as makeRequest } from '@/app/services/cartola-api'
+import { ENDPOINTS, request as makeRequest } from '@/app/services/cartola-api'
 import { sql } from '@vercel/postgres'
 
 import { isAfter } from 'date-fns'
@@ -9,8 +9,6 @@ import { isAfter } from 'date-fns'
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 import isNil from 'lodash/isNil'
-
-const TEAM_ROUND_ENDPOINT = (teamId: string, round: string) => `/time/id/${teamId}/${round}`
 
 type GetContext = {
   params: {
@@ -35,8 +33,7 @@ export async function GET(request: Request, context: GetContext) {
     return NextResponse.json({ message: 'Team not found' }, { status: 404 })
   }
 
-  const cartolaEndpoint = TEAM_ROUND_ENDPOINT(teamData.id.toString(), round)
-
+  const cartolaEndpoint = `${year}${ENDPOINTS.TEAM_ROUND(teamData.id.toString(), round)}`
   const likeCartolaEndpointStatement = `%${cartolaEndpoint}%`
 
   const cachedResponse = await sql`
@@ -52,16 +49,16 @@ export async function GET(request: Request, context: GetContext) {
   if (!isNil(cachedResponse.rows) && !isEmpty(cachedResponse.rows)) {
     result = cachedResponse.rows[0].payload
     needsToFetchFromCartola = false
-    console.log('got data from neon cache')
+    console.log(`got data from neon cache for endpoint ${cartolaEndpoint}`)
   }
 
-  if (needsToFetchFromCartola) {
+  const today = new Date()
+  if (year && +year === today.getFullYear() && needsToFetchFromCartola) {
     result = await makeRequest(cartolaEndpoint)
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 
     const endpoint = `${year}${cartolaEndpoint}`
-    const today = new Date()
 
     // save only after first cartola round
     if (isAfter(new Date('2024-04-15'), today)) {
