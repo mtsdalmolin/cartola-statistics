@@ -3,7 +3,7 @@ import { useParams } from 'next/navigation'
 import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
-import { take } from 'lodash'
+import { take, uniqueId } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { StatisticsList } from './list'
@@ -52,7 +52,7 @@ export function BestHomePlayer<TCrewData extends CrewStatistics>({
       <StatisticsList>
         {take(orderedBestHomePlayerData, 9).map((athlete, idx) => (
           <ListItem
-            key={athlete.atleta_id}
+            key={uniqueId(athlete.atleta_id.toString())}
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}

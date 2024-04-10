@@ -4,7 +4,7 @@ import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
-import { take } from 'lodash'
+import { take, uniqueId } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { DetailedScore } from './details/detailed-score'
@@ -60,7 +60,7 @@ export function HighestScorer<TCrewData extends CrewStatistics>({
       <StatisticsList>
         {take(orderedHighestScorerData, 9).map((athlete, idx) => (
           <ListItem
-            key={athlete.atleta_id}
+            key={uniqueId(athlete.atleta_id.toString())}
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}

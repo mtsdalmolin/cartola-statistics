@@ -5,7 +5,7 @@ import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 import { Tooltip } from '@mantine/core'
 
-import { take } from 'lodash'
+import { take, uniqueId } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { AnimatedStatsRoundMatchesResult } from './details/animated-stats-round-matches-result'
@@ -67,7 +67,7 @@ export function FinishesOnPost<TCrewData extends CrewStatistics>({
       <StatisticsList>
         {take(orderedFinishesOnPostData, 9).map((athlete, idx) => (
           <ListItem
-            key={athlete.atleta_id}
+            key={uniqueId(athlete.atleta_id.toString())}
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}

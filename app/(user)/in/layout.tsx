@@ -10,6 +10,8 @@ import { TEAMS } from '@/app/constants/data'
 import { ENDPOINTS, request } from '@/app/services/cartola-api'
 import logo from '@/public/logo/edc-logo.svg'
 
+import { uniqueId } from 'lodash'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const dynamic = 'force-dynamic'
@@ -51,7 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 </Link>
                 {TEAMS.map((team) => (
                   <Link
-                    key={team.id}
+                    key={uniqueId(team.id.toString())}
                     className="my-2 truncate hover:underline"
                     href={`/in/${team.slug}`}
                   >

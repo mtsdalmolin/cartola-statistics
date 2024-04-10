@@ -1,7 +1,7 @@
 import { getPositionName } from '@/app/helpers/positions'
 import { Progress } from '@mantine/core'
 
-import { max } from 'lodash'
+import { max, uniqueId } from 'lodash'
 
 export function PositionsPoints({
   positions,
@@ -14,7 +14,7 @@ export function PositionsPoints({
   return (
     <div className="grow-[3] w-fit">
       {Object.entries(positions).map(([positionId, positionPoints]) => (
-        <div key={positionId}>
+        <div key={uniqueId(positionId)}>
           <div className="progress-label flex justify-between w-full text-xs text-left">
             <span>{getPositionName(+positionId)}</span>
             <span>{((positionPoints * 100) / totalPoints).toFixed(1)}%</span>

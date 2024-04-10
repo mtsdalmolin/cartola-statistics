@@ -6,7 +6,7 @@ import { calculatePoints, handleGameActions } from '@/app/helpers/formatters/car
 import { RoundMatchesData } from '@/app/services/types'
 import { Text } from '@mantine/core'
 
-import { maxBy, minBy } from 'lodash'
+import { maxBy, minBy, uniqueId } from 'lodash'
 
 import { bebasNeue } from '../../fonts/bebasNeue'
 import { Flex } from '../flex'
@@ -130,7 +130,7 @@ export function Lineup({
           >
             {lineup.map((athlete) => (
               <LineupListItem
-                key={athlete.atleta_id}
+                key={uniqueId(athlete.atleta_id.toString())}
                 athlete={athlete}
                 captainId={captain!.atleta_id}
                 matchesData={matchesData}

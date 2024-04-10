@@ -1,6 +1,6 @@
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
-import { take } from 'lodash'
+import { take, uniqueId } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { StatisticsList } from './list'
@@ -40,7 +40,7 @@ export function FinishEfficiency<TCrewData extends CrewStatistics>({
       <StatisticsList>
         {take(orderedFinishEfficiencyData, 9).map((athlete, idx) => (
           <ListItem
-            key={athlete.atleta_id}
+            key={uniqueId(athlete.atleta_id.toString())}
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}

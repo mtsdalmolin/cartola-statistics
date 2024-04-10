@@ -31,6 +31,7 @@ import {
 import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
 import { Tooltip } from '@mantine/core'
 
+import { uniqueId } from 'lodash'
 import mapValues from 'lodash/mapValues'
 import orderBy from 'lodash/orderBy'
 
@@ -286,7 +287,7 @@ export default function AthleteList({
           orderFilters.map(() => 'desc')
         ).map((athlete) =>
           isPositionSelectedOrIsFilterEmpty(positionFilters, athlete.posicao_id.toString()) ? (
-            <div key={athlete.atleta_id}>
+            <div key={uniqueId(athlete.atleta_id.toString())}>
               <AthleteCard
                 athlete={athlete}
                 isBench={isBench}

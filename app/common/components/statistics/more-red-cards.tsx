@@ -4,7 +4,7 @@ import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
-import { isEmpty, take } from 'lodash'
+import { isEmpty, take, uniqueId } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { AnimatedStatsRoundMatchesResult } from './details/animated-stats-round-matches-result'
@@ -63,7 +63,7 @@ export function MoreRedCards<TCrewData extends CrewStatistics>({
           <StatisticsList>
             {take(orderedMoreRedCardsData, 9).map((athlete, idx) => (
               <ListItem
-                key={athlete.atleta_id}
+                key={uniqueId(athlete.atleta_id.toString())}
                 name={athlete.apelido}
                 imgSrc={athlete.foto ?? ''}
                 imgSize={45}

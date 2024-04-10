@@ -10,6 +10,7 @@ import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/tea
 import { Switch } from '@mantine/core'
 import { IconCards, IconTable } from '@tabler/icons-react'
 
+import { uniqueId } from 'lodash'
 import isNil from 'lodash/isNil'
 import orderBy from 'lodash/orderBy'
 
@@ -98,7 +99,7 @@ export function CrewContent({
         <StatisticsContainer title="Percentual de pontos por clubes">
           {orderBy(Object.values(clubs), 'pointsPercentage', 'desc').map(
             (club: ClubStatistics[0]) => (
-              <Flex key={club.id} align="center" gap="sm" direction="column">
+              <Flex key={uniqueId(club.id.toString())} align="center" gap="sm" direction="column">
                 <Image
                   alt={getFootballTeamName(club.id)}
                   src={getFootballTeamBadgeLink(club.id)}
@@ -113,7 +114,7 @@ export function CrewContent({
         <StatisticsContainer title="Percentual de pontos por posição">
           {orderBy(Object.values(positions), 'pointsPercentage', 'desc').map(
             (position: PositionsStatistics[0]) => (
-              <Flex key={position.id} gap="sm" align="center">
+              <Flex key={uniqueId(position.id.toString())} gap="sm" align="center">
                 {getPositionName(position.id)}: {position.pointsPercentage.toFixed(1)}%
               </Flex>
             )

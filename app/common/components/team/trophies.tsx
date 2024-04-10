@@ -17,7 +17,7 @@ import { RoundData, RoundMatchesData } from '@/app/services/types'
 import { Avatar, HoverCard, Stack, Text } from '@mantine/core'
 import { IconArrowBigDownFilled, IconArrowBigUpFilled, IconExternalLink } from '@tabler/icons-react'
 
-import { isArray, isEmpty, isNil, last, maxBy, minBy } from 'lodash'
+import { isArray, isEmpty, isNil, last, maxBy, minBy, uniqueId } from 'lodash'
 
 import { useSelectedYearContext } from '../../contexts/selected-year-context.client'
 import { useTeamInfoContext } from '../../contexts/team-info-context.client'
@@ -190,7 +190,7 @@ function TrophyDescription({
         !isEmpty(data) ? (
           <Stack className="px-4 py-2 w-full">
             {data.map((athlete) => (
-              <Flex key={athlete.atleta_id} align="center">
+              <Flex key={uniqueId(athlete.atleta_id.toString())} align="center">
                 <Flex direction="column">
                   <Text weight={600} size="xs">
                     Rodada {athlete.rodada_id}
@@ -223,7 +223,7 @@ function TrophyDescription({
             </Text>
           </Flex>
           {Object.entries(data).map(([action, athlete]) => (
-            <Flex key={athlete.atleta_id} align="center">
+            <Flex key={uniqueId(athlete.atleta_id)} align="center">
               <Flex align="center">
                 {action === 'in' ? (
                   <IconArrowBigUpFilled className="text-palette-primary-700" />

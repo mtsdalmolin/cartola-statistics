@@ -4,7 +4,7 @@ import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { Progress } from '@mantine/core'
 
-import { take } from 'lodash'
+import { take, uniqueId } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
 import { StatisticsList } from './list'
@@ -35,7 +35,7 @@ function CaptainStatistics<TRounds extends any[]>({
         let rawPointsPercentage = getPointsPercentage(roundData.rawPoints, roundData.points)
 
         return (
-          <div key={`${roundData.round}-${roundData.points}`}>
+          <div key={uniqueId(`${roundData.round}-${roundData.points}`)}>
             <div className="progress-label flex justify-between w-full text-xs text-left">
               <span>Rodada {roundData.round}</span>
               <span>{roundData.points.toFixed(1)} pts</span>
@@ -101,7 +101,7 @@ export function MostRoundsAsCaptain<TCrewData extends CrewStatistics>({
       <StatisticsList>
         {take(mostRoundsAsCaptainData, 9).map((athlete, idx) => (
           <ListItem
-            key={athlete.atleta_id}
+            key={uniqueId(athlete.atleta_id.toString())}
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}

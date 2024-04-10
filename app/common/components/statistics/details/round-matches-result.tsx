@@ -1,5 +1,7 @@
 import { RoundMatchesData } from '@/app/services/types'
 
+import { uniqueId } from 'lodash'
+
 import { Flex } from '../../flex'
 import { MatchVersus } from '../../match-versus'
 
@@ -21,14 +23,14 @@ export function RoundMatchesResult({
     >
       <div className={isAnimated ? 'h-max animate-scrollVertically hover:pause-animation' : ''}>
         {roundIds.map((roundId) => (
-          <Flex key={roundId} direction="column">
+          <Flex key={uniqueId(roundId.toString())} direction="column">
             <span className="text-xs">Rodada {roundId}</span>
             <MatchVersus match={matchesData[roundId][clubId]} badgeSize={25} />
           </Flex>
         ))}
         {isAnimated
           ? roundIds.map((roundId) => (
-              <Flex aria-hidden="true" key={roundId} direction="column">
+              <Flex aria-hidden="true" key={uniqueId(roundId.toString())} direction="column">
                 <span className="text-xs">Rodada {roundId}</span>
                 <MatchVersus match={matchesData[roundId][clubId]} badgeSize={25} />
               </Flex>

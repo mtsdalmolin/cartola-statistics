@@ -4,6 +4,8 @@ import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 
+import { uniqueId } from 'lodash'
+
 import { ClubStatistics } from '../../types/athlete'
 import { PositionsPercentage } from './details/positions-percentage'
 import { StatisticsList } from './list'
@@ -42,7 +44,7 @@ export function LineupsPerClub<TClubsData extends ClubStatistics>({
       <StatisticsList>
         {orderedClubsData.map((club, idx) => (
           <ListItem
-            key={club.id}
+            key={uniqueId(club.id.toString())}
             name={getFootballTeamName(club.id)}
             imgSrc={getFootballTeamBadgeLink(club.id, 'lg')}
             data={`${club.lineupNumbers} esc.`}

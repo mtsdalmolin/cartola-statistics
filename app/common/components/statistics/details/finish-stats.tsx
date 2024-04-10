@@ -1,5 +1,7 @@
 import { Progress } from '@mantine/core'
 
+import { uniqueId } from 'lodash'
+
 const FINISH_TYPE_TITLE = {
   blockedFinishes: 'Fin. defendidas',
   finishesOnPost: 'Fin. na trave',
@@ -23,7 +25,7 @@ export function FinishStats({
   return (
     <div className="grow-[3] w-fit">
       {Object.entries(finishes).map(([finishType, finishes]) => (
-        <div key={finishType}>
+        <div key={uniqueId(finishType)}>
           <div className="progress-label flex justify-between w-full text-xs text-left">
             <span>{FINISH_TYPE_TITLE[finishType as keyof typeof FINISH_TYPE_TITLE]}</span>
             <span>{((finishes * 100) / totalFinishes).toFixed(1)}%</span>

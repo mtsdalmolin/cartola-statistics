@@ -1,5 +1,7 @@
 import { RoundMatchesData } from '@/app/services/types'
 
+import { uniqueId } from 'lodash'
+
 import { Flex } from '../../flex'
 import { MatchVersus } from '../../match-versus'
 
@@ -23,7 +25,7 @@ export function AnimatedStatsRoundMatchesResult({
     >
       <div className={isAnimated ? 'h-max animate-scrollVertically hover:pause-animation' : ''}>
         {Object.entries(statRounds).map(([roundId, statValue]) => (
-          <Flex key={roundId} direction="column">
+          <Flex key={uniqueId(roundId)} direction="column">
             <Flex className="text-xs" justify="between">
               <span>Rodada {roundId}</span>
               <span>
@@ -37,7 +39,7 @@ export function AnimatedStatsRoundMatchesResult({
         ))}
         {isAnimated
           ? Object.entries(statRounds).map(([roundId, statValue]) => (
-              <Flex aria-hidden="true" key={roundId} direction="column">
+              <Flex aria-hidden="true" key={uniqueId(roundId)} direction="column">
                 <Flex className="text-xs" justify="between">
                   <span>Rodada {roundId}</span>
                   <span>
