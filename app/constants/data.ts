@@ -3,6 +3,22 @@ export const SECOND_TURN_ROUNDS = [
   20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38
 ]
 
+export type SeasonYears = 2023 | 2024
+
+export const SEASONS: Record<
+  SeasonYears,
+  { FIRST_TURN_ROUNDS: number[]; SECOND_TURN_ROUNDS: number[] }
+> = {
+  2023: {
+    FIRST_TURN_ROUNDS,
+    SECOND_TURN_ROUNDS
+  },
+  2024: {
+    FIRST_TURN_ROUNDS: [1],
+    SECOND_TURN_ROUNDS: []
+  }
+}
+
 const MIOLLO_AND_THOMAS_ROUNDS = [18, 19, ...SECOND_TURN_ROUNDS]
 export const ROUNDS = [
   1,

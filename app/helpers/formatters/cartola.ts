@@ -8,7 +8,7 @@ import { PositionsStatistics } from '@/app/common/types/position'
 import { TeamInfo } from '@/app/common/types/team'
 import { TrophiesData } from '@/app/common/types/trophies'
 import { Trophies } from '@/app/common/types/trophies'
-import { FIRST_TURN_ROUNDS, SECOND_TURN_ROUNDS } from '@/app/constants/data'
+import { SEASONS, SeasonYears } from '@/app/constants/data'
 import {
   ATACANTE,
   GOLEIRO,
@@ -21,7 +21,7 @@ import {
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { RoundData, RoundMatchesData, SubsData } from '@/app/services/types'
 
-import { isEmpty, max, some, uniqBy } from 'lodash'
+import { isEmpty, isNil, max, some, uniqBy } from 'lodash'
 
 import { registerTrophyEvent } from '../analytics'
 import { isCoach, isGoalkeeper } from '../positions'
@@ -85,7 +85,7 @@ export function getRoundResults(athlete: RenderedAthlete, rounds: RoundMatchesDa
   let results: number[] = []
 
   athlete.castRounds.forEach((roundId) => {
-    results.push(getRoundResultPoints(rounds[roundId], athlete.clube_id))
+    results.push(getRoundResultPoints(rounds[roundId], +athlete.clube_id))
   })
 
   return results
@@ -404,11 +404,17 @@ function clubPositionPointsFactory(athlete: Athlete, points: number) {
   return clubPositionPoints
 }
 
-export function formatCartolaApiData(
-  results: PromiseSettledResult<RoundData>[],
-  rounds: RoundMatchesData,
+export function formatCartolaApiData({
+  results,
+  rounds,
+  subs,
+  year
+}: {
+  results: PromiseSettledResult<RoundData>[]
+  rounds: RoundMatchesData
   subs: Record<string, SubsData[]>
-): [
+  year: SeasonYears
+}): [
   CrewStatistics,
   CrewStatistics,
   ClubStatistics,
@@ -467,15 +473,19 @@ export function formatCartolaApiData(
       time: team
     } = result.value
 
-    teamInfo.badgePhotoUrl = team.url_escudo_png
-    teamInfo.name = team.nome
-    teamInfo.id = team.time_id
+    if (isNil(team)) {
+      throw new Error('team cannot be null')
+    }
+
+    teamInfo.badgePhotoUrl = team?.url_escudo_png ?? ''
+    teamInfo.name = team?.nome ?? ''
+    teamInfo.id = team?.time_id ?? ''
 
     if (isValidRound(result.value)) {
-      if (FIRST_TURN_ROUNDS.includes(currentRound)) {
+      if (SEASONS[year].FIRST_TURN_ROUNDS.includes(currentRound)) {
         teamInfo.pointsPerTurn.first.validRounds++
         teamInfo.pointsPerTurn.first.total += pointsInRound
-      } else if (SECOND_TURN_ROUNDS.includes(currentRound)) {
+      } else if (SEASONS[year].SECOND_TURN_ROUNDS.includes(currentRound)) {
         teamInfo.pointsPerTurn.second.validRounds++
         teamInfo.pointsPerTurn.second.total += pointsInRound
       }

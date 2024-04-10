@@ -43,8 +43,9 @@ export async function POST(request: Request): Promise<NextResponse> {
   const filename = searchParams.get('filename')
   const teamId = searchParams.get('teamId')
   const roundId = searchParams.get('roundId')
+  const year = searchParams.get('year')
 
-  if (!(filename && teamId && roundId) || isNaN(+roundId))
+  if (!(filename && teamId && roundId && year) || isNaN(+roundId))
     return NextResponse.json({ message: 'Couldnt process request' }, { status: 422 })
 
   try {
@@ -55,7 +56,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       FROM share_static_images
       WHERE
         team_id = ${+teamId} AND
-        round_id = ${roundId}
+        round_id = ${roundId} AND
+        year = ${year}
       ORDER BY
         id DESC
       `
@@ -69,7 +71,10 @@ export async function POST(request: Request): Promise<NextResponse> {
         access: 'public'
       })
 
-      await sql`INSERT INTO share_static_images (team_id, image_url, round_id) VALUES (${teamId}, ${blob.url}, ${roundId})`
+      await sql`
+        INSERT INTO share_static_images (team_id, image_url, round_id, year)
+        VALUES (${teamId}, ${blob.url}, ${roundId}, ${year})
+      `
     }
 
     const message = CLUB_STATS.includes(highlight[0])

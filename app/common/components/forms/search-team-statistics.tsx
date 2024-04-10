@@ -1,6 +1,6 @@
 'use client'
 
-import { forwardRef, useRef, useState } from 'react'
+import { ForwardedRef, forwardRef, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
 import { SECOND_TURN_ROUNDS } from '@/app/constants/data'
@@ -107,7 +107,10 @@ export interface TeamsAutocompleteList {
   badgeUrl: string
 }
 
-export function SearchTeamStatisticsForm({ action }: { action: (payload: FormData) => void }) {
+function SearchTeamStatisticsFormComponent(
+  { action }: { action: (payload: FormData) => void },
+  formRef: ForwardedRef<HTMLFormElement>
+) {
   const [selectedTeamId, setSelectedTeamId] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [listOfTeamsInSearch, setListOfTeamsInSearch] = useState<TeamsAutocompleteList[] | []>([])
@@ -121,7 +124,7 @@ export function SearchTeamStatisticsForm({ action }: { action: (payload: FormDat
   const teamNameInput = useRef<HTMLInputElement>(null)
 
   return (
-    <form className="flex flex-col gap-4 w-full" action={action}>
+    <form ref={formRef} className="flex flex-col gap-4 w-full" action={action}>
       <input ref={teamIdInput} name="teamId" type="hidden" value={selectedTeamId} />
       <Autocomplete
         required
@@ -157,3 +160,5 @@ export function SearchTeamStatisticsForm({ action }: { action: (payload: FormDat
     </form>
   )
 }
+
+export const SearchTeamStatisticsForm = forwardRef(SearchTeamStatisticsFormComponent)

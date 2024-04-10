@@ -15,9 +15,10 @@ export async function GET(request: Request) {
   const teamId = searchParams.get('teamId')
   const highlight = searchParams.get('highlight')
   const roundId = searchParams.get('roundId')
+  const year = searchParams.get('year')
 
   try {
-    if (!(teamId && roundId && highlight))
+    if (!(teamId && roundId && highlight && year))
       return NextResponse.json({ message: 'Couldnt process request' }, { status: 422 })
 
     const teamImages = await sql`
@@ -25,7 +26,8 @@ export async function GET(request: Request) {
         FROM share_static_images
         WHERE
           team_id = ${+teamId} AND
-          round_id = ${+roundId}
+          round_id = ${+roundId} AND
+          year = ${+year}
         ORDER BY id DESC`
 
     if (!teamImages.rows)

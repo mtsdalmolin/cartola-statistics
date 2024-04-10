@@ -109,7 +109,7 @@ export function Lineup({
   }, [teamScout, invertSummary])
 
   return (
-    <>
+    <article className="text-left w-full">
       <Text className={`${bebasNeue.className} text-6xl text-palette-primary-500`}>
         {worstCaptain ? 'Time de Bagres' : 'Hall da Fama'}
       </Text>
@@ -140,6 +140,6 @@ export function Lineup({
         </Flex>
         {!invertSummary ? teamSummary : null}
       </Flex>
-    </>
+    </article>
   )
 }

@@ -12,6 +12,7 @@ import { IconBrandX, IconExternalLink, IconX } from '@tabler/icons-react'
 import html2canvas from 'html2canvas'
 
 import { Flex } from '../components/flex'
+import { useSelectedYearContext } from './selected-year-context.client'
 import { useShareStatisticsLinkContext } from './share-statistics-link-context.client'
 
 interface BlobParamsToSave {
@@ -19,6 +20,7 @@ interface BlobParamsToSave {
   imgName: string
   teamId: number
   roundId: number
+  year: number
 }
 
 const ExtractImageContext = createContext<{
@@ -32,12 +34,22 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
   const [showTweetReady, setShowTweetReady] = useState(false)
   const [highlight, setHighlight] = useState<string | null>(null)
   const { getShareLinkWithHighlight } = useShareStatisticsLinkContext()
+  const { selectedYear } = useSelectedYearContext()
+
+  const href = `http://twitter.com/intent/tweet?text=${uploadReturnMessage}%0A%0A&url=${getShareLinkWithHighlight(
+    {
+      highlight: HIGHLIGHT_TO_PARAM[highlight!],
+      withRoundIdQueryParam: true,
+      year: selectedYear.toString()
+    }
+  ).replace(/&/, '%26')}&hashtags=estatisticasdocartola`
 
   const createImageAndSaveInBlobStore = ({
     element,
     imgName,
     teamId,
-    roundId
+    roundId,
+    year
   }: BlobParamsToSave) => {
     setApiReturnedError(false)
     setLoadingUpload(true)
@@ -52,7 +64,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
           async (blob) => {
             const file = new File([blob] as BlobPart[], `${imgName}.jpg`)
             const uploadResponse = await fetch(
-              `/api/image/upload?filename=${imgName}&teamId=${teamId}&roundId=${roundId}`,
+              `/api/image/upload?filename=${imgName}&teamId=${teamId}&roundId=${roundId}&year=${year}`,
               {
                 method: 'POST',
                 body: file,
@@ -97,14 +109,7 @@ export function ExtractImageContextProvider({ children }: { children: ReactNode 
         </Notification>
       ) : null}
       {showTweetReady && uploadReturnMessage ? (
-        <Link
-          href={`http://twitter.com/intent/tweet?text=${uploadReturnMessage}%0A%0A&url=${getShareLinkWithHighlight(
-            HIGHLIGHT_TO_PARAM[highlight!],
-            true
-          )}&hashtags=estatisticasdocartola`}
-          target="_blank"
-          onClick={() => setShowTweetReady(false)}
-        >
+        <Link href={href} target="_blank" onClick={() => setShowTweetReady(false)}>
           <Notification
             className="fixed bottom-2 right-2 max-w-xs"
             title={

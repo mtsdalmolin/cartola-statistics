@@ -155,6 +155,7 @@ export async function GET(request: Request, context: GetContext) {
   const { searchParams } = new URL(request.url)
   const teamId = context.params['team-id']
   const roundId = searchParams.get('roundId')
+  const year = searchParams.get('year')
 
   try {
     if (!(teamId && roundId))
@@ -163,7 +164,8 @@ export async function GET(request: Request, context: GetContext) {
     const teamTrophiesResult = await sql`
       SELECT trophy_name
       FROM team_trophies
-      WHERE team_id = ${teamId};
+      WHERE team_id = ${teamId} AND
+        year = ${year};
     `
 
     if (teamTrophiesResult.rowCount === 0)

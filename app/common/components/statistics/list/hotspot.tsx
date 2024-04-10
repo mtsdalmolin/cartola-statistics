@@ -4,6 +4,7 @@ import NextImage from 'next/image'
 import { useParams } from 'next/navigation'
 
 import { useExtractImageContext } from '@/app/common/contexts/extract-image-context.client'
+import { useSelectedYearContext } from '@/app/common/contexts/selected-year-context.client'
 import { useShareStatisticsLinkContext } from '@/app/common/contexts/share-statistics-link-context.client'
 import { useTeamInfoContext } from '@/app/common/contexts/team-info-context.client'
 import { ActionIcon, Text, Tooltip } from '@mantine/core'
@@ -29,6 +30,7 @@ export function ListHotspot({
   const { createImageAndSaveInBlobStore } = useExtractImageContext()
   const { currentRound, teamInfo } = useTeamInfoContext()
   const { shareLink } = useShareStatisticsLinkContext()
+  const { selectedYear } = useSelectedYearContext()
 
   const renderedHtml = (
     <Flex
@@ -47,7 +49,8 @@ export function ListHotspot({
                   element: hotspotRef.current!,
                   imgName,
                   teamId: teamInfo?.id ?? +(params.teamId as string) ?? 0,
-                  roundId: currentRound ?? 0
+                  roundId: currentRound ?? 0,
+                  year: selectedYear
                 })
               }
               aria-label="Compartilhar estatística no Twitter/X"

@@ -4,6 +4,8 @@ import { TEAMS } from '@/app/constants/data'
 import { request as makeRequest } from '@/app/services/cartola-api'
 import { sql } from '@vercel/postgres'
 
+import { isAfter } from 'date-fns'
+
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 import isNil from 'lodash/isNil'
@@ -23,6 +25,7 @@ export async function GET(request: Request, context: GetContext) {
   const teamData = TEAMS.find((team) => team.slug === context.params['team-slug'])
   const { searchParams } = new URL(request.url)
   const round = searchParams.get('round')
+  const year = searchParams.get('year')
 
   if (isArray(round) || isNil(round)) {
     return NextResponse.json({ message: 'Bad format' }, { status: 422 })
@@ -57,13 +60,16 @@ export async function GET(request: Request, context: GetContext) {
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 
+    const endpoint = `${year}${cartolaEndpoint}`
     const today = new Date()
-    const endpoint = `${today.getFullYear()}${cartolaEndpoint}`
 
-    sql`
-      INSERT INTO cartola_request_cache (payload, endpoint)
-      VALUES (${JSON.stringify(result)}, ${endpoint})
-    `
+    // save only after first cartola round
+    if (isAfter(new Date('2024-04-15'), today)) {
+      sql`
+        INSERT INTO cartola_request_cache (payload, endpoint)
+        VALUES (${JSON.stringify(result)}, ${endpoint})
+      `
+    }
   }
 
   return NextResponse.json(result, { status: 200 })

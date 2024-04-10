@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFormState } from 'react-dom'
 
 import Image from 'next/image'
@@ -13,18 +13,34 @@ import { getTeamStatistics } from './actions'
 import { SearchTeamStatisticsForm } from './common/components/forms/search-team-statistics'
 import { Signature } from './common/components/signature'
 import TeamStatisticsContent from './common/content/team-statistics'
+import { useLineupsResultContext } from './common/contexts/lineups-result-context.client'
+import { useSelectedYearContext } from './common/contexts/selected-year-context.client'
 import { ShareStatisticsLinkContextProvider } from './common/contexts/share-statistics-link-context.client'
 import { useTeamInfoContext } from './common/contexts/team-info-context.client'
 
 export default function Home() {
-  const [state, formAction] = useFormState(getTeamStatistics, {
+  const { selectedYear } = useSelectedYearContext()
+  const { setLineupsResult } = useLineupsResultContext()
+  const { setCurrentRound, setTeamInfo } = useTeamInfoContext()
+
+  const updatedActionWithYear = useMemo(
+    () =>
+      getTeamStatistics.bind(null, {
+        year: selectedYear
+      }),
+    [selectedYear]
+  )
+
+  const [state, formAction] = useFormState(updatedActionWithYear, {
     message: null,
     data: null
   })
-  const { setCurrentRound, setTeamInfo } = useTeamInfoContext()
+
+  const formRef = useRef<HTMLFormElement>(null)
 
   useEffect(() => {
     if (!isEmpty(state.data)) {
+      setLineupsResult && setLineupsResult(state.data)
       if (!isNil(setTeamInfo)) {
         setTeamInfo(state.data.teamInfo)
       }
@@ -33,7 +49,11 @@ export default function Home() {
         setCurrentRound(Object.keys(state.data.rounds).length)
       }
     }
-  }, [state.data, setCurrentRound, setTeamInfo])
+  }, [state.data, setCurrentRound, setTeamInfo, setLineupsResult])
+
+  useEffect(() => {
+    formRef.current?.requestSubmit()
+  }, [updatedActionWithYear])
 
   return (
     <div className="w-full">
@@ -41,11 +61,11 @@ export default function Home() {
         <div className="relative flex h-[100svh]">
           <div className="m-auto w-fit">
             <Image src={brand} width={500} height={500} alt="brand" />
-            <SearchTeamStatisticsForm action={formAction} />
+            <SearchTeamStatisticsForm ref={formRef} action={formAction} />
             <Signature absolute />
           </div>
         </div>
-        <TeamStatisticsContent data={state.data} />
+        <TeamStatisticsContent />
       </ShareStatisticsLinkContextProvider>
     </div>
   )

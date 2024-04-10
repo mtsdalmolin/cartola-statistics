@@ -7,6 +7,8 @@ import edcBrand from '@/public/logo/twitter-card.png'
 import { Analytics } from '@vercel/analytics/react'
 
 import { Main } from './common/components/main/main.client'
+import { LineupsResultContextProvider } from './common/contexts/lineups-result-context.client'
+import { SelectedYearContextProvider } from './common/contexts/selected-year-context.client'
 import { TeamInfoContextProvider } from './common/contexts/team-info-context.client'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -39,7 +41,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="pt-BR">
       <body className={inter.className}>
         <Main className="flex flex-col justify-center items-center px-4 m-auto max-w-[1200px]">
-          <TeamInfoContextProvider>{children}</TeamInfoContextProvider>
+          <LineupsResultContextProvider>
+            <TeamInfoContextProvider>
+              <SelectedYearContextProvider>{children}</SelectedYearContextProvider>
+            </TeamInfoContextProvider>
+          </LineupsResultContextProvider>
         </Main>
         <Analytics />
       </body>

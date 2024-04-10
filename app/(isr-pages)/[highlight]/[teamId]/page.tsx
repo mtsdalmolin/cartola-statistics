@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
+import { getTeamRoundsData } from '@/app/(server)/api/repositories/team-rounds.database'
 import { RedirectHomePageAlert } from '@/app/common/components/alert/redirect-home-page.client'
 import { Signature } from '@/app/common/components/signature'
 import TeamStatisticsContent from '@/app/common/content/team-statistics'
 import { Trophies } from '@/app/common/types/trophies'
-import { ROUNDS, SECOND_TURN_ROUNDS, TEAMS } from '@/app/constants/data'
+import { SEASONS, SECOND_TURN_ROUNDS, SeasonYears, TEAMS } from '@/app/constants/data'
 import { PARAM_TO_HIGHLIGHT } from '@/app/constants/highlight'
 import { registerTrophyEvent } from '@/app/helpers/analytics'
 import { formatCartolaApiData } from '@/app/helpers/formatters/cartola'
@@ -20,12 +21,12 @@ export const runtime = 'edge'
 
 type Props = {
   params: { highlight: string; teamId: string }
-  searchParams: { link?: string; roundId?: string }
+  searchParams: { link?: string; roundId?: string; year?: string }
 }
 
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { highlight, teamId } = params
-  const { roundId: roundIdFromSearchParams } = searchParams
+  const { roundId: roundIdFromSearchParams, year: yearFromSearchParams } = searchParams
 
   const result = await request<RoundData>(ENDPOINTS.TEAM_ROUND(teamId, '1'))
 
@@ -35,11 +36,14 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       : false
 
   const roundId = roundIdFromSearchParams ?? last(SECOND_TURN_ROUNDS)
+  const year = yearFromSearchParams ?? '2023'
 
   const images = hasImage
-    ? [`/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}&roundId=${roundId}`]
+    ? [
+        `/api/image?teamId=${teamId}&highlight=${PARAM_TO_HIGHLIGHT[highlight]}&roundId=${roundId}&year=${year}`
+      ]
     : highlight === 'medalhas'
-    ? [`/api/image/badges/${teamId}?roundId=${roundId}`]
+    ? [`/api/image/badges/${teamId}?roundId=${roundId}&year=${year}`]
     : [edcBrand.src]
 
   const pageTitle = result ? `EDC | ${result.time.nome}` : 'Estatísticas do Cartola'
@@ -78,6 +82,7 @@ async function teamHasStatisticStaticImage(teamId: number, highlight: string) {
 export default async function TeamStatisticsStaticPage({ params, searchParams }: Props) {
   const { highlight, teamId } = params
   const { link } = searchParams
+  const year = (searchParams.year ?? new Date().getFullYear()) as SeasonYears
 
   if (
     !(highlight in PARAM_TO_HIGHLIGHT) &&
@@ -87,15 +92,16 @@ export default async function TeamStatisticsStaticPage({ params, searchParams }:
     redirect('/')
   }
 
+  const rounds = [...SEASONS[year].FIRST_TURN_ROUNDS, ...SEASONS[year].SECOND_TURN_ROUNDS]
+
   const results = await Promise.allSettled<RoundData>(
-    ROUNDS.map((round) => {
-      return request(ENDPOINTS.TEAM_ROUND(teamId, round.toString()))
+    rounds.map((round) => {
+      return getTeamRoundsData(teamId.toString(), round.toString(), year.toString())
     })
   )
 
-  const currentYear = 2023
-  const rounds = await getRoundsData(ROUNDS, currentYear)
-  const subs = await getSubsData(teamId.toString(), ROUNDS, currentYear)
+  const roundsData = await getRoundsData(rounds, year)
+  const subs = await getSubsData(teamId.toString(), rounds, year)
   const [
     athleteStatistics,
     benchStatistics,
@@ -104,7 +110,12 @@ export default async function TeamStatisticsStaticPage({ params, searchParams }:
     trophies,
     teamInfo,
     lineups
-  ] = formatCartolaApiData(results, rounds, subs)
+  ] = formatCartolaApiData({
+    results,
+    rounds: roundsData,
+    subs,
+    year: year
+  })
 
   if (find(TEAMS, { id: Number(teamId) })) {
     registerTrophyEvent(Trophies.FUTEBOLAO_LEAGUE_PLAYER, {
@@ -125,7 +136,8 @@ export default async function TeamStatisticsStaticPage({ params, searchParams }:
           positionsStatistics,
           trophies,
           teamInfo,
-          rounds
+          rounds: roundsData,
+          year
         }}
       />
       <Signature />

@@ -7,7 +7,7 @@ import { track } from '@vercel/analytics/server'
 import { find } from 'lodash'
 
 import { Trophies } from './common/types/trophies'
-import { ROUNDS, TEAMS } from './constants/data'
+import { ROUNDS, SEASONS, SeasonYears, TEAMS } from './constants/data'
 import { registerTrophyEvent } from './helpers/analytics'
 import { formatCartolaApiData } from './helpers/formatters/cartola'
 import { getRoundsData, getSubsData } from './services/cartola-api'
@@ -30,36 +30,41 @@ export interface GetTeamsStatisticsActionState {
     rounds: Awaited<ReturnType<typeof getRoundsData>>
     trophies: TrophiesReturnType
     teamInfo: NthChild<FormatCartolaApiDataType, 5>
+    year?: SeasonYears
   } | null
 }
 
 export async function getTeamStatistics(
+  context: { year: SeasonYears },
   _: GetTeamsStatisticsActionState,
   formData: FormData
 ): Promise<GetTeamsStatisticsActionState> {
   try {
+    if (!context.year) {
+      throw new Error('context.year is required to run this action')
+    }
+
+    const year = context.year
     const teamId = formData.get('teamId')!
     const teamName = formData.get('teamName')!
 
     await track('action:getTeamStatistics', {
       teamId: teamId as unknown as string,
-      teamName: teamName as unknown as string
+      teamName: teamName as unknown as string,
+      year
     })
 
-    const today = new Date()
+    const rounds = [...SEASONS[year].FIRST_TURN_ROUNDS, ...SEASONS[year].SECOND_TURN_ROUNDS]
 
     const results = await Promise.allSettled<RoundData>(
-      ROUNDS.map((round) => {
+      rounds.map((round) => {
         return fetch(
-          `${
-            process.env.NEXT_API_BASE_URL
-          }/api/get-players-data-by-id/${teamId}?round=${round}&year=${today.getFullYear()}`
+          `${process.env.NEXT_API_BASE_URL}/api/get-players-data-by-id/${teamId}?round=${round}&year=${year}`
         ).then((res) => res.json())
       })
     )
-    const currentYear = 2023
-    const rounds = await getRoundsData(ROUNDS, currentYear)
-    const subs = await getSubsData(teamId.toString(), ROUNDS, currentYear)
+    const roundsData = await getRoundsData(rounds, year)
+    const subs = await getSubsData(teamId.toString(), ROUNDS, year)
     const [
       athleteStatistics,
       benchStatistics,
@@ -68,7 +73,7 @@ export async function getTeamStatistics(
       trophies,
       teamInfo,
       lineups
-    ] = formatCartolaApiData(results, rounds, subs)
+    ] = formatCartolaApiData({ results, rounds: roundsData, subs, year })
 
     if (find(TEAMS, { id: Number(teamId) })) {
       registerTrophyEvent(Trophies.FUTEBOLAO_LEAGUE_PLAYER, {
@@ -86,13 +91,14 @@ export async function getTeamStatistics(
         benchStatistics,
         clubStatistics,
         positionsStatistics,
-        rounds,
+        rounds: roundsData,
         trophies,
         teamInfo: {
           ...teamInfo,
           id: +teamId
         },
-        lineups
+        lineups,
+        year
       }
     }
   } catch (e) {

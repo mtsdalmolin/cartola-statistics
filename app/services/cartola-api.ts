@@ -1,7 +1,7 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 
 import { TeamsAutocompleteList } from '../common/components/forms/search-team-statistics'
-import { TEAMS } from '../constants/data'
+import { type SeasonYears, TEAMS } from '../constants/data'
 import { formatCartolaApiData } from '../helpers/formatters/cartola'
 import { formatMatchData } from '../helpers/formatters/match'
 import { MatchesData, RoundData, RoundMatchesData, SubsData } from './types'
@@ -30,24 +30,31 @@ export function request<TData>(endpoint: string, options: RequestInit = {}): Pro
   return fetch(`${CARTOLA_API}${endpoint}`, requestOptions).then((res) => res.json())
 }
 
-export async function getPlayersTeamData(teamSlug: string, rounds: number[]) {
+export async function getPlayersTeamData({
+  teamSlug,
+  rounds,
+  year
+}: {
+  teamSlug: string
+  rounds: number[]
+  year: SeasonYears
+}) {
   const results = await Promise.allSettled<RoundData>(
     rounds.map((round) => {
       return fetch(
-        `${process.env.NEXT_API_BASE_URL}/api/get-players-data/${teamSlug}?round=${round}`
+        `${process.env.NEXT_API_BASE_URL}/api/get-players-data/${teamSlug}?round=${round}&year=${year}`
       ).then((res) => res.json())
     })
   )
 
   const team = TEAMS.find((team) => team.slug === teamSlug)
 
-  const currentYear = 2023
-  const roundMatches = await getRoundsData(rounds, currentYear)
-  const subs = await getSubsData(team!.id.toString(), rounds, currentYear)
+  const roundMatches = await getRoundsData(rounds, year)
+  const subs = await getSubsData(team!.id.toString(), rounds, year)
 
   if (!team) throw new Error('Forbidden')
 
-  return formatCartolaApiData(results, roundMatches, subs)
+  return formatCartolaApiData({ results, rounds: roundMatches, subs, year })
 }
 
 function serializeQueryParams(queryParams: {

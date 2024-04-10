@@ -1,5 +1,6 @@
 'use client'
-import { usePathname } from 'next/navigation'
+
+import { usePathname, useRouter } from 'next/navigation'
 
 import { GetTeamsStatisticsActionState } from '@/app/actions'
 import { Artillery } from '@/app/common/components/statistics/artillery'
@@ -23,8 +24,10 @@ import { PointsPerClub } from '@/app/common/components/statistics/points-per-clu
 import { StatisticsSection } from '@/app/common/components/statistics/section'
 import { WorstGoalkeeper } from '@/app/common/components/statistics/worst-goalkeeper'
 import { TeamProfile } from '@/app/common/components/team/profile'
+import { SeasonYears } from '@/app/constants/data'
+import { Select } from '@mantine/core'
 
-import { isEmpty } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
 
 import { Flex } from '../components/flex'
 import { Lineup } from '../components/lineup'
@@ -33,63 +36,136 @@ import { MoreFouls } from '../components/statistics/more-fouls'
 import { ParticipationInGoals } from '../components/statistics/participation-in-goals'
 import { ShareOnTwitterButtonLink } from '../components/team/trophies'
 import { ExtractImageContextProvider } from '../contexts/extract-image-context.client'
+import { useLineupsResultContext } from '../contexts/lineups-result-context.client'
+import { AVAILABLE_YEARS, useSelectedYearContext } from '../contexts/selected-year-context.client'
+import { useTeamInfoContext } from '../contexts/team-info-context.client'
 
 export default function TeamStatisticsContent({
   data
 }: {
-  data: GetTeamsStatisticsActionState['data']
+  data?: GetTeamsStatisticsActionState['data']
 }) {
+  const router = useRouter()
   const pathname = usePathname()
+  const { selectedYear, setSelectedYear } = useSelectedYearContext()
+  const { teamInfo } = useTeamInfoContext()
+  const { lineupsResult } = useLineupsResultContext()
 
-  return data ? (
+  const handleChange = (item: string) => {
+    setSelectedYear(+item as SeasonYears)
+  }
+
+  if (isNil(teamInfo) && isNil(data)) return null
+
+  if (isNil(data) && isNil(lineupsResult)) router.push('/')
+
+  if (isNil(lineupsResult)) return 'Sem dados para a temporada selecionada'
+
+  const teamData = data ?? lineupsResult
+
+  return (
     <ExtractImageContextProvider>
-      <div className="py-4">
-        <TeamProfile matchesData={data.rounds} teamInfo={data.teamInfo} trophies={data.trophies} />
-        <Flex className="w-full py-4" justify="center">
-          <ShareOnTwitterButtonLink type="trophyBoard" teamId={data.teamInfo.id.toString()} />
-        </Flex>
-        {!isEmpty(data.athleteStatistics) ? (
+      <Flex className="w-full py-4" justify="center" align="center" direction="column">
+        {teamData.teamInfo &&
+        teamData.teamInfo.name &&
+        !pathname.includes(teamData.teamInfo.id.toString()) ? (
+          <Select
+            className="max-w-[500px] self-end text-left mobile:self-center"
+            placeholder="Selecione a temporada"
+            label="Ano da temporada"
+            defaultValue={teamData.year?.toString() ?? selectedYear.toString()}
+            data={AVAILABLE_YEARS.map((n) => `${n}`)}
+            onChange={handleChange}
+          />
+        ) : null}
+        {!isNil(teamData.rounds) && !isNil(teamData.teamInfo) && !isNil(teamData.trophies) ? (
+          <TeamProfile
+            matchesData={teamData.rounds}
+            teamInfo={teamData.teamInfo}
+            trophies={teamData.trophies}
+          />
+        ) : null}
+        {!isNil(teamData.teamInfo) ? (
+          <Flex className="w-full py-4" justify="center">
+            <ShareOnTwitterButtonLink
+              type="trophyBoard"
+              teamId={teamData.teamInfo.id.toString()}
+              year={teamData.year ?? (new Date().getFullYear() as SeasonYears)}
+            />
+          </Flex>
+        ) : null}
+        {!isNil(lineupsResult) &&
+        !isNil(teamData.athleteStatistics) &&
+        !isEmpty(teamData.athleteStatistics) &&
+        !isNil(teamData.benchStatistics) &&
+        !isEmpty(teamData.benchStatistics) &&
+        !isNil(teamData.clubStatistics) &&
+        !isEmpty(teamData.clubStatistics) &&
+        !isNil(teamData.positionsStatistics) &&
+        !isEmpty(teamData.positionsStatistics) &&
+        !isNil(teamData.rounds) &&
+        !isEmpty(teamData.rounds) &&
+        !isNil(teamData.lineups) &&
+        !isEmpty(teamData.lineups) ? (
           <>
             <StatisticsSection title="os melhores">
-              <HighestScorer crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <HighestAverage crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <MostValuedPlayer crewData={data.athleteStatistics} />
-              <Artillery crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <HighestFinisher crewData={data.athleteStatistics} />
-              <MoreAssists crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <ParticipationInGoals crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <MoreTackles crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <MoreDefenses crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <BestCoach crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <BestBench crewData={data.benchStatistics} matchesData={data.rounds} />
+              <HighestScorer crewData={teamData.athleteStatistics} matchesData={teamData.rounds!} />
+              <HighestAverage
+                crewData={teamData.athleteStatistics}
+                matchesData={teamData.rounds!}
+              />
+              <MostValuedPlayer crewData={teamData.athleteStatistics} />
+              <Artillery crewData={teamData.athleteStatistics} matchesData={teamData.rounds} />
+              <HighestFinisher crewData={teamData.athleteStatistics} />
+              <MoreAssists crewData={teamData.athleteStatistics} matchesData={teamData.rounds!} />
+              <ParticipationInGoals
+                crewData={teamData.athleteStatistics}
+                matchesData={teamData.rounds!}
+              />
+              <MoreTackles crewData={teamData.athleteStatistics} matchesData={teamData.rounds} />
+              <MoreDefenses crewData={teamData.athleteStatistics} matchesData={teamData.rounds} />
+              <BestCoach crewData={teamData.athleteStatistics} matchesData={teamData.rounds} />
+              <BestBench crewData={teamData.benchStatistics} matchesData={teamData.rounds} />
             </StatisticsSection>
-            <Lineup lineup={data.lineups.bestTeam} matchesData={data.rounds} />
+            <Lineup lineup={teamData.lineups.bestTeam} matchesData={teamData.rounds} />
             <StatisticsSection title="os piores">
-              <LeastValuedPlayer crewData={data.athleteStatistics} />
-              <MoreYellowCards crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <MoreRedCards crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <WorstGoalkeeper crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <MostOffsidedPlayer crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <MoreFouls crewData={data.athleteStatistics} matchesData={data.rounds} />
+              <LeastValuedPlayer crewData={teamData.athleteStatistics} />
+              <MoreYellowCards
+                crewData={teamData.athleteStatistics}
+                matchesData={teamData.rounds}
+              />
+              <MoreRedCards crewData={teamData.athleteStatistics} matchesData={teamData.rounds!} />
+              <WorstGoalkeeper
+                crewData={teamData.athleteStatistics}
+                matchesData={teamData.rounds}
+              />
+              <MostOffsidedPlayer
+                crewData={teamData.athleteStatistics}
+                matchesData={teamData.rounds}
+              />
+              <MoreFouls crewData={teamData.athleteStatistics} matchesData={teamData.rounds!} />
             </StatisticsSection>
             <Lineup
-              lineup={data.lineups.worstTeam}
-              matchesData={data.rounds}
+              lineup={teamData.lineups.worstTeam}
+              matchesData={teamData.rounds}
               worstCaptain
               invertSummary
             />
             <StatisticsSection title="resto">
-              <MostRoundsAsCaptain crewData={data.athleteStatistics} />
-              <LineupsPerClub clubsData={data.clubStatistics} />
-              <PointsPerClub clubsData={data.clubStatistics} />
-              <MostScheduledPlayer crewData={data.athleteStatistics} matchesData={data.rounds} />
-              <FinishesOnPost crewData={data.athleteStatistics} matchesData={data.rounds} />
+              <MostRoundsAsCaptain crewData={teamData.athleteStatistics} />
+              <LineupsPerClub clubsData={teamData.clubStatistics} />
+              <PointsPerClub clubsData={teamData.clubStatistics} />
+              <MostScheduledPlayer
+                crewData={teamData.athleteStatistics}
+                matchesData={teamData.rounds}
+              />
+              <FinishesOnPost crewData={teamData.athleteStatistics} matchesData={teamData.rounds} />
             </StatisticsSection>
           </>
         ) : (
-          'Sem dados'
+          'Sem dados para a temporada selecionada'
         )}
-      </div>
+      </Flex>
     </ExtractImageContextProvider>
-  ) : null
+  )
 }

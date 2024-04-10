@@ -20,10 +20,11 @@ export default async function Team({ params }: { params: { teamSlug: string } })
 
   metadata.title = teamData.name
 
-  const [athletes, bench, clubs, positions] = await getPlayersTeamData(
-    teamData.slug,
-    teamData.rounds
-  )
+  const [athletes, bench, clubs, positions] = await getPlayersTeamData({
+    teamSlug: teamData.slug,
+    rounds: teamData.rounds,
+    year: 2024
+  })
 
   return (
     <>

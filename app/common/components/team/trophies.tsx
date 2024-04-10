@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { type TrophiesReturnType } from '@/app/actions'
 import { Flex } from '@/app/common/components/flex'
 import { TrophiesData, Trophies as TrophiesEnum } from '@/app/common/types/trophies'
-import { ROUNDS } from '@/app/constants/data'
+import { SEASONS, SeasonYears } from '@/app/constants/data'
 import { PHOTO_SIZE_FORMAT } from '@/app/constants/format'
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { PARAM_TO_TROPHY, TROPHIES_IMAGE, TROPHY_TO_PARAM } from '@/app/constants/trophies'
@@ -19,6 +19,7 @@ import { IconArrowBigDownFilled, IconArrowBigUpFilled, IconExternalLink } from '
 
 import { isArray, isEmpty, isNil, last, maxBy, minBy } from 'lodash'
 
+import { useSelectedYearContext } from '../../contexts/selected-year-context.client'
 import { useTeamInfoContext } from '../../contexts/team-info-context.client'
 import { Athlete } from '../../types/athlete'
 import { MatchVersus } from '../match-versus'
@@ -117,16 +118,19 @@ function AthleteDetail({
 export function ShareOnTwitterButtonLink({
   teamId,
   trophyParamName,
-  type
+  type,
+  year
 }:
   | {
       type: 'trophy'
       teamId: string
+      year: SeasonYears
       trophyParamName: keyof typeof PARAM_TO_TROPHY
     }
   | {
       type: 'trophyBoard'
       teamId: string
+      year: SeasonYears
       trophyParamName?: never
     }) {
   return (
@@ -136,9 +140,17 @@ export function ShareOnTwitterButtonLink({
         type === 'trophy'
           ? createTrophyTwitterShareLink({
               teamId,
-              trophyParamName
+              trophyParamName,
+              year
             })
-          : createTrophyBoardTwitterShareLink({ teamId, roundId: +last(ROUNDS)! })
+          : createTrophyBoardTwitterShareLink({
+              teamId,
+              roundId: +last([
+                ...SEASONS[year].FIRST_TURN_ROUNDS,
+                ...SEASONS[year].SECOND_TURN_ROUNDS
+              ])!,
+              year
+            })
       }
       target="_blank"
     >
@@ -165,6 +177,7 @@ function TrophyDescription({
 }) {
   const { teamId: teamIdParam } = useParams()
   const { teamInfo } = useTeamInfoContext()
+  const { selectedYear } = useSelectedYearContext()
 
   const teamId = teamIdParam ?? teamInfo?.id
 
@@ -262,6 +275,7 @@ function TrophyDescription({
             type="trophy"
             teamId={teamId}
             trophyParamName={TROPHY_TO_PARAM[name]}
+            year={selectedYear}
           />
         </Flex>
       ) : null}
