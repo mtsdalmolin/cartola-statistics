@@ -22,6 +22,7 @@ export default function Home() {
   const { selectedYear } = useSelectedYearContext()
   const { setLineupsResult } = useLineupsResultContext()
   const { setCurrentRound, setTeamInfo } = useTeamInfoContext()
+  const isFirstRenderRef = useRef(true)
 
   const updatedActionWithYear = useMemo(
     () =>
@@ -52,7 +53,11 @@ export default function Home() {
   }, [state.data, setCurrentRound, setTeamInfo, setLineupsResult])
 
   useEffect(() => {
-    formRef.current?.requestSubmit()
+    if (isFirstRenderRef.current) {
+      isFirstRenderRef.current = false
+    } else {
+      formRef.current?.requestSubmit()
+    }
   }, [updatedActionWithYear])
 
   return (
