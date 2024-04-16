@@ -1,6 +1,7 @@
 import { useParams } from 'next/navigation'
 
 import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
+import { TECNICO } from '@/app/constants/positions'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
 import { RoundMatchesData } from '@/app/services/types'
 
@@ -28,7 +29,9 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
 }) {
   const { highlight } = useParams()
 
-  const mostScheduledPlayerData = typedOrderBy(Object.values(crewData), 'castTimes', 'desc')
+  const mostScheduledPlayerData = typedOrderBy(Object.values(crewData), 'castTimes', 'desc').filter(
+    (athlete) => athlete.posicao_id !== TECNICO
+  )
 
   if (mostScheduledPlayerData.length === 0) return null
 
