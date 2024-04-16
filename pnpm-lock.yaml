@@ -9,13 +9,13 @@ dependencies:
     specifier: ^11.11.1
     version: 11.11.1(@types/react@18.2.37)(react@18.2.0)
   '@mantine/core':
-    specifier: ^6.0.19
+    specifier: ^6.0.21
     version: 6.0.21(@emotion/react@11.11.1)(@mantine/hooks@6.0.21)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/dates':
-    specifier: ^6.0.19
+    specifier: ^6.0.21
     version: 6.0.21(@mantine/core@6.0.21)(@mantine/hooks@6.0.21)(dayjs@1.11.9)(react@18.2.0)
   '@mantine/hooks':
-    specifier: ^6.0.19
+    specifier: ^6.0.21
     version: 6.0.21(react@18.2.0)
   '@tabler/icons-react':
     specifier: ^2.30.0
@@ -1310,7 +1310,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.10
-      caniuse-lite: 1.0.30001519
+      caniuse-lite: 1.0.30001610
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -1385,7 +1385,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001519
+      caniuse-lite: 1.0.30001610
       electron-to-chromium: 1.4.490
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.10)
@@ -1430,12 +1430,8 @@ packages:
     engines: {node: '>= 6'}
     dev: false
 
-  /caniuse-lite@1.0.30001519:
-    resolution: {integrity: sha512-0QHgqR+Jv4bxHMp8kZ1Kn8CH55OikjKJ6JmKkZYP1F3D7w+lnFXF70nG5eNfsZS89jadi5Ywy5UCSKLAglIRkg==}
-    dev: false
-
-  /caniuse-lite@1.0.30001608:
-    resolution: {integrity: sha512-cjUJTQkk9fQlJR2s4HMuPMvTiRggl0rAVMtthQuyOlDWuqHXqN8azLq+pi8B2TjwKJ32diHjUqRIKeFX4z1FoA==}
+  /caniuse-lite@1.0.30001610:
+    resolution: {integrity: sha512-QFutAY4NgaelojVMjY63o6XlZyORPaLfyMnsl3HgnWdJUcX6K0oaJymHjH8PT5Gk7sTm8rvC/c5COUQKXqmOMA==}
     dev: false
 
   /chalk@2.4.2:
@@ -3195,7 +3191,7 @@ packages:
       '@next/env': 14.1.4
       '@swc/helpers': 0.5.2
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001608
+      caniuse-lite: 1.0.30001610
       graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.2.0

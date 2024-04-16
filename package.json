@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
-    "@mantine/core": "^6.0.19",
-    "@mantine/dates": "^6.0.19",
-    "@mantine/hooks": "^6.0.19",
+    "@mantine/core": "^6.0.21",
+    "@mantine/dates": "^6.0.21",
+    "@mantine/hooks": "^6.0.21",
     "@tabler/icons-react": "^2.30.0",
     "@vercel/analytics": "^1.1.1",
     "@vercel/blob": "^0.14.1",
