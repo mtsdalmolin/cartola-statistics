@@ -1,5 +1,7 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 
+import { isEmpty } from 'lodash'
+
 import { TeamsAutocompleteList } from '../common/components/forms/search-team-statistics'
 import { type SeasonYears, TEAMS } from '../constants/data'
 import { formatCartolaApiData } from '../helpers/formatters/cartola'
@@ -15,17 +17,22 @@ export const ENDPOINTS = {
   MATCHES_BY_ID: (roundId: string) => `/partidas/${roundId}`,
   TEAM_ROUND: (teamId: string, round: string) => `/time/id/${teamId}/${round}`,
   SEARCH_TEAM_BY_NAME: (teamNameSearch: string) => `/busca?q=${teamNameSearch}`,
-  GET_TEAM_SUBS: (teamId: string, round: string) => `/time/substituicoes/${teamId}/${round}`
+  GET_TEAM_SUBS: (teamId: string, round: string) => `/time/substituicoes/${teamId}/${round}`,
+  AUTH: {
+    GET_ATHLETES_VALUATION: '/auth/gatomestre/atletas'
+  }
 }
 
 const REVALIDATION_TIME_IN_SECONDS = 5 * 60
 
 export function request<TData>(endpoint: string, options: RequestInit = {}): Promise<TData> {
-  const requestOptions = options ?? {
-    next: {
-      revalidate: REVALIDATION_TIME_IN_SECONDS
-    }
-  }
+  const requestOptions = isEmpty(options)
+    ? {
+        next: {
+          revalidate: REVALIDATION_TIME_IN_SECONDS
+        }
+      }
+    : options
 
   return fetch(`${CARTOLA_API}${endpoint}`, requestOptions).then((res) => res.json())
 }

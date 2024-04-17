@@ -10,15 +10,12 @@ import { FOOTBALL_TEAMS } from '../../../constants/teams'
 import { getPositionName } from '../../../helpers/positions'
 import { getStatusName } from '../../../helpers/status'
 import { getFootballTeamBadgeLink, getFootballTeamName } from '../../../helpers/teams'
-import { getMatchesData, request } from '../../../services/cartola-api'
+import { ENDPOINTS, getMatchesData, request } from '../../../services/cartola-api'
 
 export const metadata: Metadata = {
   title: 'Mercado',
   description: ''
 }
-
-// const ATHLETE_POINTS_ENDPOINT = (round: string) => `/atletas/pontuados/${round}`
-const MARKET_ENDPOINT = '/atletas/mercado'
 
 interface MarketData {
   atletas: Athlete[]
@@ -45,9 +42,22 @@ export interface MarketAthleteTableData {
   match: Match
 }
 
+export interface AthletesValuation {
+  media_pontos_mandante?: number
+  media_pontos_visitante?: number
+  media_minutos_jogados?: number
+  minutos_jogados?: number
+  minimo_para_valorizar?: number
+}
+
+export interface AthletesValuationResponseFromApi {
+  [key: string]: AthletesValuation
+}
+
 function marketAthleteTableDataFactory(
   athlete: Athlete,
-  roundMatches: { [key: string]: Match }
+  roundMatches: { [key: string]: Match },
+  athletesValuation: AthletesValuationResponseFromApi
 ): MarketAthleteTableData {
   return {
     id: athlete.atleta_id,
@@ -57,7 +67,8 @@ function marketAthleteTableDataFactory(
     clubBadgeUrl: getFootballTeamBadgeLink(athlete.clube_id),
     position: getPositionName(athlete.posicao_id),
     performance: athlete.variacao_num,
-    minToValuate: athlete.minimo_para_valorizar,
+    minToValuate:
+      athletesValuation[athlete.atleta_id]?.minimo_para_valorizar ?? athlete.minimo_para_valorizar,
     status: getStatusName(athlete?.status_id ?? NULL),
     points: athlete.pontos_num,
     pointsAverage: athlete.media_num,
@@ -72,13 +83,19 @@ function marketAthleteTableDataFactory(
 export type MarketStatistics = MarketAthleteTableData[]
 
 async function getMarketData() {
-  const { atletas: athletes }: MarketData = await request(MARKET_ENDPOINT)
+  const { atletas: athletes }: MarketData = await request(ENDPOINTS.MARKET)
+  const athletesValuation: AthletesValuationResponseFromApi = await request(
+    ENDPOINTS.AUTH.GET_ATHLETES_VALUATION,
+    {
+      headers: { Authorization: `Bearer ${process.env.NEXT_GLOBO_API_AUTH_TOKEN}` }
+    }
+  )
   const roundMatches = await getMatchesData()
 
   const marketStatistics: MarketStatistics = []
-  athletes.forEach((athlete) =>
-    marketStatistics.push(marketAthleteTableDataFactory(athlete, roundMatches))
-  )
+  athletes.forEach((athlete) => {
+    marketStatistics.push(marketAthleteTableDataFactory(athlete, roundMatches, athletesValuation))
+  })
 
   return { marketStatistics }
 }
