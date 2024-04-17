@@ -540,7 +540,7 @@ const marketColumns: AthleteTableColumn[] = [
     id: 'match',
     accessorKey: 'match',
     header: 'Confronto',
-    Cell: (cell) => <MatchVersus match={cell.row.original.match} />
+    Cell: (cell) => <MatchVersus match={cell.row.original.match} showResult={false} />
   }
 ]
 

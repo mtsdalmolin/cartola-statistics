@@ -8,8 +8,10 @@ import { Flex } from './flex'
 export function MatchVersus({
   match,
   badgeSize = 30,
-  fontSize = 'md'
+  fontSize = 'md',
+  showResult = true
 }: {
+  showResult?: boolean
   match?: Match
   badgeSize?: number
   fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -26,7 +28,7 @@ export function MatchVersus({
         />
       </Tooltip>
       <Text size={fontSize}>
-        {match.result.home ?? '0'} x {match.result.away ?? '0'}
+        {showResult ? match.result.home ?? '0' : ''} x {showResult ? match.result.away ?? '0' : ''}
       </Text>
       <Tooltip label={match.away.name}>
         <Image
