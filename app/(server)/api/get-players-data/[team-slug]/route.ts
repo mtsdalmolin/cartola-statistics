@@ -4,8 +4,6 @@ import { TEAMS } from '@/app/constants/data'
 import { ENDPOINTS, request as makeRequest } from '@/app/services/cartola-api'
 import { sql } from '@vercel/postgres'
 
-import { isAfter } from 'date-fns'
-
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 import isNil from 'lodash/isNil'
@@ -60,13 +58,10 @@ export async function GET(request: Request, context: GetContext) {
 
     const endpoint = `${year}${cartolaEndpoint}`
 
-    // save only after first cartola round
-    if (isAfter(new Date('2024-04-15'), today)) {
-      sql`
-        INSERT INTO cartola_request_cache (payload, endpoint)
-        VALUES (${JSON.stringify(result)}, ${endpoint})
-      `
-    }
+    sql`
+      INSERT INTO cartola_request_cache (payload, endpoint)
+      VALUES (${JSON.stringify(result)}, ${endpoint})
+    `
   }
 
   return NextResponse.json(result, { status: 200 })
