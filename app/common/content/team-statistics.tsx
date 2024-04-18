@@ -127,7 +127,11 @@ export default function TeamStatisticsContent({
               <BestCoach crewData={teamData.athleteStatistics} matchesData={teamData.rounds} />
               <BestBench crewData={teamData.benchStatistics} matchesData={teamData.rounds} />
             </StatisticsSection>
-            <Lineup lineup={teamData.lineups.bestTeam} matchesData={teamData.rounds} />
+            <Lineup
+              lineup={teamData.lineups.bestTeam}
+              matchesData={teamData.rounds}
+              hideNamesOnMobile
+            />
             <StatisticsSection title="os piores">
               <LeastValuedPlayer crewData={teamData.athleteStatistics} />
               <MoreYellowCards
@@ -148,6 +152,7 @@ export default function TeamStatisticsContent({
             <Lineup
               lineup={teamData.lineups.worstTeam}
               matchesData={teamData.rounds}
+              hideNamesOnMobile
               worstCaptain
               invertSummary
             />

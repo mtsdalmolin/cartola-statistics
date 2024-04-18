@@ -34,6 +34,6 @@ export function Main({ children, className }: { children: ReactNode; className?:
       <main className={className}>{children}</main>
     </MantineProvider>
   ) : (
-    <LoadingFallback message="Carregando..." />
+    <LoadingFallback message="Carregando..." fullScreen />
   )
 }

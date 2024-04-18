@@ -11,6 +11,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 's2-cartola.glbimg.com',
         pathname: '**'
+      },
+      {
+        protocol: 'https',
+        hostname: 's2.glbimg.com',
+        pathname: '**'
       }
     ]
   },

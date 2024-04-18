@@ -16,11 +16,13 @@ import { RoundMatchesResult } from '../statistics/details/round-matches-result'
 export function LineupListItem({
   athlete,
   captainId,
-  matchesData
+  matchesData,
+  hideNamesOnMobile
 }: {
   athlete: Athlete
   captainId: number
-  matchesData: RoundMatchesData
+  matchesData?: RoundMatchesData
+  hideNamesOnMobile?: boolean
 }) {
   const isCaptain = athlete.atleta_id === captainId
   return (
@@ -45,19 +47,21 @@ export function LineupListItem({
           </Tooltip>
         ) : null}
       </Flex>
-      <Flex className="mobile:hidden" direction="column" gap="none">
+      <Flex className={hideNamesOnMobile ? 'mobile:hidden' : ''} direction="column" gap="none">
         <Tooltip label={athlete.apelido}>
-          <Text className="w-28 text-left text-xl truncate">{athlete.apelido}</Text>
+          <Text className="mobile:w-24 text-left text-xl truncate">{athlete.apelido}</Text>
         </Tooltip>
         <Flex>
           <Text>{getPositionName(athlete.posicao_id)} </Text>
         </Flex>
       </Flex>
-      <RoundMatchesResult
-        clubId={athlete.clube_id}
-        matchesData={matchesData}
-        roundIds={[athlete.rodada_id]}
-      />
+      {matchesData && (
+        <RoundMatchesResult
+          clubId={athlete.clube_id}
+          matchesData={matchesData}
+          roundIds={[athlete.rodada_id]}
+        />
+      )}
       <Flex justify="end" align="end" direction="column" gap="none">
         <Text
           className={`${bebasNeue.className} mobile:text-5xl text-3xl ${

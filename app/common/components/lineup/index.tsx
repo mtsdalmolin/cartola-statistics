@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { Athlete } from '@/app/common/types/athlete'
-import { TECNICO } from '@/app/constants/positions'
+import { ATACANTE, GOLEIRO, LATERAL, MEIA, TECNICO, ZAGUEIRO } from '@/app/constants/positions'
 import { calculatePoints, handleGameActions } from '@/app/helpers/formatters/cartola'
 import { RoundMatchesData } from '@/app/services/types'
 import { Text } from '@mantine/core'
@@ -51,12 +51,20 @@ export function Lineup({
   lineup,
   matchesData,
   invertSummary = false,
-  worstCaptain = false
+  worstCaptain = false,
+  roundId,
+  captainId,
+  hideNamesOnMobile,
+  noText = false
 }: {
   lineup: Athlete[]
-  matchesData: RoundMatchesData
+  matchesData?: RoundMatchesData
   invertSummary?: boolean
   worstCaptain?: boolean
+  roundId?: number
+  captainId?: number
+  hideNamesOnMobile?: boolean
+  noText?: boolean
 }) {
   const lineupWithoutCoach = lineup.filter((athl) => athl.posicao_id !== TECNICO)
   const captain = worstCaptain
@@ -64,7 +72,7 @@ export function Lineup({
     : maxBy(lineupWithoutCoach, ATHLETE_POINTS_KEY)
 
   const lineupPoints = lineup.reduce(
-    (acc, athlete) => acc + calculatePoints(athlete, captain!.atleta_id),
+    (acc, athlete) => acc + calculatePoints(athlete, captainId ?? captain!.atleta_id),
     0
   )
 
@@ -110,16 +118,23 @@ export function Lineup({
 
   return (
     <article className="text-left w-full">
-      <Text className={`${bebasNeue.className} text-6xl text-palette-primary-500`}>
-        {worstCaptain ? 'Time de Bagres' : 'Hall da Fama'}
-      </Text>
-      <Text className="w-2/3 tablet:w-full border-t-2 border-palette-primary-700">
-        {renderDescriptionText(worstCaptain)}
-      </Text>
+      {noText ? null : (
+        <>
+          <Text className={`${bebasNeue.className} text-6xl text-palette-primary-500`}>
+            {worstCaptain ? 'Time de Bagres' : 'Hall da Fama'}
+          </Text>
+          <Text className="w-2/3 tablet:w-full border-t-2 border-palette-primary-700">
+            {renderDescriptionText(worstCaptain)}
+          </Text>
+        </>
+      )}
       <Flex className={`w-full ${invertSummary ? 'mobile:flex-col-reverse' : ''}`} gap="lg">
         {invertSummary ? teamSummary : null}
         <Flex className="mobile:w-full" align="center" direction="column">
           <Flex className="w-full grow-[3]" justify="end" align="baseline">
+            {roundId ? (
+              <Text className={`${bebasNeue.className} text-4xl mr-auto`}>Rodada {roundId}</Text>
+            ) : null}
             <Text className={`${bebasNeue.className} text-2xl`}>Total</Text>
             <Text className={`${bebasNeue.className} text-6xl`}>{lineupPoints.toFixed(1)}</Text>
           </Flex>
@@ -128,7 +143,14 @@ export function Lineup({
             align="center"
             direction="column"
           >
-            {lineup.map((athlete) => (
+            {[
+              ...lineup.filter((a) => a.posicao_id === ATACANTE),
+              ...lineup.filter((a) => a.posicao_id === MEIA),
+              ...lineup.filter((a) => a.posicao_id === LATERAL),
+              ...lineup.filter((a) => a.posicao_id === ZAGUEIRO),
+              ...lineup.filter((a) => a.posicao_id === GOLEIRO),
+              ...lineup.filter((a) => a.posicao_id === TECNICO)
+            ].map((athlete) => (
               <LineupListItem
                 key={uniqueId(athlete.atleta_id.toString())}
                 athlete={athlete}

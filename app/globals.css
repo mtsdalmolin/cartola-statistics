@@ -80,3 +80,7 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+.screen-height-considering-tabs {
+  height: calc(100svh - 2.4rem);
+}

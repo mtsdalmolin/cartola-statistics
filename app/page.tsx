@@ -56,14 +56,15 @@ export default function Home() {
     if (isFirstRenderRef.current) {
       isFirstRenderRef.current = false
     } else {
-      formRef.current?.requestSubmit()
+      if (formRef.current && !isEmpty(formRef.current.teamName.value))
+        formRef.current.requestSubmit()
     }
   }, [updatedActionWithYear])
 
   return (
     <div className="w-full">
       <ShareStatisticsLinkContextProvider>
-        <div className="relative flex h-[100svh]">
+        <div className="relative flex screen-height-considering-tabs">
           <div className="m-auto w-fit">
             <Image src={brand} width={500} height={500} alt="brand" />
             <SearchTeamStatisticsForm ref={formRef} action={formAction} />

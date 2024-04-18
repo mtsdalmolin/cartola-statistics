@@ -31,7 +31,7 @@ const flexContainer = tv({
       md: 'gap-6',
       lg: 'gap-8',
       xl: 'gap-16',
-      none: ''
+      none: 'gap-0'
     }
   },
   defaultVariants: {
