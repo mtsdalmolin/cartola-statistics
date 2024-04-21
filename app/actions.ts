@@ -7,7 +7,7 @@ import { track } from '@vercel/analytics/server'
 import { find } from 'lodash'
 
 import { Trophies } from './common/types/trophies'
-import { ROUNDS, SEASONS, SeasonYears, TEAMS } from './constants/data'
+import { SEASONS, SeasonYears, TEAMS } from './constants/data'
 import { registerTrophyEvent } from './helpers/analytics'
 import { formatCartolaApiData } from './helpers/formatters/cartola'
 import { getRoundsData, getSubsData } from './services/cartola-api'
@@ -64,7 +64,8 @@ export async function getTeamStatistics(
       })
     )
     const roundsData = await getRoundsData(rounds, year)
-    const subs = await getSubsData(teamId.toString(), ROUNDS, year)
+    const subs = await getSubsData(teamId.toString(), rounds, year)
+
     const [
       athleteStatistics,
       benchStatistics,

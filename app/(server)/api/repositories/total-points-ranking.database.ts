@@ -24,7 +24,7 @@ export async function insertTeamRankingData(teamRoundPayload: RoundData, year: s
     `
 
     return inserted
-  } else if (rankingAlreadyInDb.rows[0].pontos_campeonato < teamRoundPayload.pontos_campeonato) {
+  } else if (rankingAlreadyInDb.rows[0].points < teamRoundPayload.pontos_campeonato) {
     const updated = await sql`
       UPDATE ranking_total_points
       SET

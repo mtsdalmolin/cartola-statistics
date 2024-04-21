@@ -153,8 +153,6 @@ export default function Ranking() {
             <Accordion className="w-full">
               {isLoading ? (
                 <LoadingFallback message="Buscando dados do ranking..." />
-              ) : isEmpty(bestLineupsRankingData) ? (
-                'Sem dados'
               ) : (
                 bestLineupsRankingData?.map((bestLineupsData, idx) => (
                   <Accordion.Item
