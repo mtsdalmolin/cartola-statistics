@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash'
 
 import { PositionOption } from '../common/types/position'
-import { POSITIONS, PositionsIds } from '../constants/positions'
+import { POSITIONS, PositionsIds, TECNICO } from '../constants/positions'
 
 export function isGoalkeeper(positionId: number) {
   const gkPositionId = Object.keys(POSITIONS).find(
@@ -12,11 +12,7 @@ export function isGoalkeeper(positionId: number) {
 }
 
 export function isCoach(positionId: number) {
-  const coachPositionId = Object.keys(POSITIONS).find(
-    (positionId: string) => POSITIONS[Number(positionId)].abreviacao.toLowerCase() === 'tec'
-  )
-
-  return Number(coachPositionId) === positionId
+  return TECNICO === positionId
 }
 
 export function getPositionAbbreviation(positionId: PositionsIds) {
