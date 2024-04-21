@@ -42,7 +42,7 @@ export async function insertTeamWealthRankingData(teamRoundPayload: RoundData, y
   return null
 }
 
-export async function getTeamsWealthRankingData(year: number) {
+export async function getTeamsWealthRankingData(year: string) {
   const rankingDataResult = await sql`
     SELECT *
     FROM ranking_wealth
