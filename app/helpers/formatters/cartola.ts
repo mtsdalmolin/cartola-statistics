@@ -318,7 +318,7 @@ function playerStatisticsIncrementalFactory(
       statistics[athlete.atleta_id].goalsConcededRoundIds.push(athlete.rodada_id)
     }
 
-    if (isCoach(athlete.posicao_id)) {
+    if (isCoach(athlete.posicao_id) && athlete.scout?.V) {
       statistics[athlete.atleta_id].victoriesRoundIds.push(athlete.rodada_id)
     }
 
