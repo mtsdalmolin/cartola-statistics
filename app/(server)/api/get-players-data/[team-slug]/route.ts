@@ -50,8 +50,7 @@ export async function GET(request: Request, context: GetContext) {
     console.log(`got data from neon cache for endpoint ${cartolaEndpoint}`)
   }
 
-  const today = new Date()
-  if (year && +year === today.getFullYear() && needsToFetchFromCartola) {
+  if (needsToFetchFromCartola) {
     result = await makeRequest(cartolaEndpoint)
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)

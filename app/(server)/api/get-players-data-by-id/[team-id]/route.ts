@@ -56,13 +56,12 @@ export async function GET(request: Request, context: GetContext) {
     console.log(`got data from neon cache for endpoint ${cartolaEndpointWithYearPrefix}`)
   }
 
-  const today = new Date()
-  if (year && +year === today.getFullYear() && needsToFetchFromCartola) {
+  if (needsToFetchFromCartola) {
     result = await makeRequest<RoundData>(cartolaEndpoint)
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 
-    const endpoint = `${today.getFullYear()}${cartolaEndpoint}`
+    const endpoint = `${year}${cartolaEndpoint}`
     // save only after first cartola round
     sql`
       INSERT INTO cartola_request_cache (payload, endpoint)
