@@ -12,8 +12,16 @@ import { Signature } from '@/app/common/components/signature'
 import { AVAILABLE_YEARS } from '@/app/common/contexts/selected-year-context.client'
 import { bebasNeue } from '@/app/common/fonts/bebasNeue'
 import { SeasonYears } from '@/app/constants/data'
-import { getBestLineupsRankingData, getTotalPointsRankingData } from '@/app/services/ranking/api'
-import { BestLineupsRankingData, TotalPointsRankingData } from '@/app/services/ranking/types'
+import {
+  getBestLineupsRankingData,
+  getTotalPointsRankingData,
+  getWealthRankingData
+} from '@/app/services/ranking/api'
+import {
+  BestLineupsRankingData,
+  TotalPointsRankingData,
+  WealthRankingData
+} from '@/app/services/ranking/types'
 import { Accordion, Select, Tabs, Text, type TabProps } from '@mantine/core'
 
 import { isEmpty, isNil } from 'lodash'
@@ -52,6 +60,7 @@ export default function Ranking() {
   const [bestLineupsRankingData, setBestLineupsRankingData] = useState<
     BestLineupsRankingData[] | null
   >(null)
+  const [wealthRankingData, setWealthRankingData] = useState<WealthRankingData[] | null>(null)
 
   const q = searchParams.get('q')
 
@@ -77,6 +86,18 @@ export default function Ranking() {
       if (showLoadingState) setIsLoading(true)
       getBestLineupsRankingData(year).then((data: BestLineupsRankingData[]) => {
         setBestLineupsRankingData(data)
+        if (showLoadingState) setIsLoading(false)
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [year, q])
+
+  useEffect(() => {
+    if (q === RANKING_OPTIONS.WEALTH) {
+      const showLoadingState = isNil(wealthRankingData) || isEmpty(wealthRankingData)
+      if (showLoadingState) setIsLoading(true)
+      getWealthRankingData(year).then((data: WealthRankingData[]) => {
+        setWealthRankingData(data)
         if (showLoadingState) setIsLoading(false)
       })
     }
@@ -205,7 +226,41 @@ export default function Ranking() {
           </Flex>
         </Tabs.Panel>
 
-        <Tabs.Panel value={RANKING_OPTIONS.WEALTH}>Em breve</Tabs.Panel>
+        <Tabs.Panel value={RANKING_OPTIONS.WEALTH}>
+          <Flex className="w-full py-6" direction="column" gap="none">
+            {isLoading ? (
+              <LoadingFallback message="Buscando dados do ranking..." />
+            ) : (
+              wealthRankingData?.map((totalPointsData, idx) => (
+                <Flex
+                  key={totalPointsData.team_id}
+                  className="w-full border-b-[0.0625rem] border-[#373A40] px-5 py-4"
+                  align="center"
+                  justify="between"
+                >
+                  <Text className={`${bebasNeue.className} text-palette-primary-500 text-6xl`}>
+                    {idx + 1}
+                  </Text>
+                  <Flex align="center" justify="center" gap="md">
+                    <Image
+                      className="mobile:hidden"
+                      src={totalPointsData.team_badge}
+                      alt={totalPointsData.team_name}
+                      width={50}
+                      height={50}
+                    />
+                    <Text className="truncate mobile:max-w-[85px]">
+                      {totalPointsData.team_name}
+                    </Text>
+                  </Flex>
+                  <Text className={`${bebasNeue.className} text-palette-primary-500 text-3xl`}>
+                    {totalPointsData.wealth.toFixed(2)}
+                  </Text>
+                </Flex>
+              ))
+            )}
+          </Flex>
+        </Tabs.Panel>
       </Tabs>
       <Signature />
     </Flex>

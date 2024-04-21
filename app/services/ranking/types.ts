@@ -15,3 +15,11 @@ export interface BestLineupsRankingData {
   payload: RoundData
   points: number
 }
+
+export interface WealthRankingData {
+  team_id: number
+  team_name: string
+  team_badge: string
+  payload: RoundData
+  wealth: number
+}
