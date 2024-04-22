@@ -57,8 +57,7 @@ export async function GET(request: Request, context: GetContext) {
   }
 
   if (needsToFetchFromCartola) {
-    result = await makeRequest<RoundData>(cartolaEndpoint)
-
+    result = await makeRequest<RoundData>(cartolaEndpoint, { cache: 'no-store' })
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 
     const endpoint = `${year}${cartolaEndpoint}`
