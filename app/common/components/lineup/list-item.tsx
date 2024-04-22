@@ -16,13 +16,11 @@ import { RoundMatchesResult } from '../statistics/details/round-matches-result'
 export function LineupListItem({
   athlete,
   captainId,
-  matchesData,
-  hideNamesOnMobile
+  matchesData
 }: {
   athlete: Athlete
   captainId: number
   matchesData?: RoundMatchesData
-  hideNamesOnMobile?: boolean
 }) {
   const isCaptain = athlete.atleta_id === captainId
   return (
@@ -47,7 +45,7 @@ export function LineupListItem({
           </Tooltip>
         ) : null}
       </Flex>
-      <Flex className={hideNamesOnMobile ? 'mobile:hidden' : ''} direction="column" gap="none">
+      <Flex className="mobile:hidden max-w-xs" direction="column" gap="none">
         <Tooltip label={athlete.apelido}>
           <Text className="mobile:w-24 text-left text-xl truncate">{athlete.apelido}</Text>
         </Tooltip>
@@ -62,7 +60,7 @@ export function LineupListItem({
           roundIds={[athlete.rodada_id]}
         />
       )}
-      <Flex justify="end" align="end" direction="column" gap="none">
+      <Flex className="grow-0" justify="end" align="end" direction="column" gap="none">
         <Text
           className={`${bebasNeue.className} mobile:text-5xl text-3xl ${
             athlete.pontos_num > 0 ? 'text-palette-primary-500' : ''
