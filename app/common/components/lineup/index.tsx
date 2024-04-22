@@ -156,6 +156,7 @@ export function Lineup({
                 athlete={athlete}
                 captainId={captain!.atleta_id}
                 matchesData={matchesData}
+                hideNamesOnMobile={hideNamesOnMobile}
               />
             ))}
           </Flex>

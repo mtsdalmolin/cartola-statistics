@@ -216,6 +216,7 @@ export default function Ranking() {
                         lineup={bestLineupsData.payload.atletas}
                         captainId={bestLineupsData.payload.capitao_id}
                         roundId={bestLineupsData.payload.rodada_atual}
+                        hideNamesOnMobile={false}
                         noText
                       />
                     </Accordion.Panel>
