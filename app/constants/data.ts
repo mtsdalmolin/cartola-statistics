@@ -14,7 +14,7 @@ export const SEASONS: Record<
     SECOND_TURN_ROUNDS
   },
   2024: {
-    FIRST_TURN_ROUNDS: [1, 2, 3],
+    FIRST_TURN_ROUNDS: [1, 2, 3, 4],
     SECOND_TURN_ROUNDS: []
   }
 }
