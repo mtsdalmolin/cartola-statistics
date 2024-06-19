@@ -506,7 +506,7 @@ const marketColumns: AthleteTableColumn[] = [
     accessorKey: 'minToValuate',
     header: 'Min. Valorizar',
     filterVariant: 'range-slider',
-    Cell: ({ cell }) => cell.getValue<number | undefined>() ?? 'Indisponível'
+    Cell: ({ cell }) => cell.getValue<number | undefined>()?.toFixed(2) ?? 'Indisponível'
   },
   {
     id: 'status',
