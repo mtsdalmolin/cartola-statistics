@@ -38,12 +38,12 @@ export async function GET(request: Request, context: GetContext) {
   }
 
   const cartolaEndpoint = ENDPOINTS.TEAM_ROUND(teamId, round)
-  const cartolaEndpointWithYearPrefix = `${year}${ENDPOINTS.TEAM_ROUND(teamId.toString(), round)}`
+  const cartolaEndpointWithYearPreffix = `${year}${ENDPOINTS.TEAM_ROUND(teamId.toString(), round)}`
 
   const cachedResponse = await sql`
     SELECT payload
     FROM cartola_request_cache
-    WHERE endpoint = ${cartolaEndpointWithYearPrefix}
+    WHERE endpoint = ${cartolaEndpointWithYearPreffix}
     FETCH FIRST 1 ROWS ONLY;
   `
 
@@ -53,7 +53,7 @@ export async function GET(request: Request, context: GetContext) {
   if (!isNil(cachedResponse.rows) && !isEmpty(cachedResponse.rows)) {
     result = cachedResponse.rows[0].payload
     needsToFetchFromCartola = false
-    console.log(`got data from neon cache for endpoint ${cartolaEndpointWithYearPrefix}`)
+    console.log(`got data from neon cache for endpoint ${cartolaEndpointWithYearPreffix}`)
   }
 
   if (needsToFetchFromCartola) {

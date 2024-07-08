@@ -266,107 +266,105 @@ function handlePlayersDerivedStatistics(athlete: RenderedAthlete, rounds: RoundM
   }
 }
 
-function playerStatisticsIncrementalFactory(
-  statistics: CrewStatistics,
-  athlete: Athlete,
+function playerStatisticsIncrementalFactory({
+  statistics,
+  athlete,
+  captainId,
+  isBenchStatistics = false
+}: {
+  statistics: CrewStatistics
+  athlete: Athlete
   captainId: number
-) {
-  if (statistics[athlete.atleta_id]) {
+  isBenchStatistics?: boolean
+}) {
+  const athleteKey = isBenchStatistics
+    ? `${athlete.atleta_id}_${athlete.rodada_id}`
+    : athlete.atleta_id
+
+  if (statistics[athleteKey]) {
     const pointsInRound = calculatePoints(athlete, captainId)
 
-    statistics[athlete.atleta_id].castTimes++
-    statistics[athlete.atleta_id].castRounds.push(athlete.rodada_id)
-    statistics[athlete.atleta_id].sumOfPoints += pointsInRound
-    statistics[athlete.atleta_id].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
-    statistics[athlete.atleta_id].home.sumOfPoints +=
-      athlete.gato_mestre?.media_pontos_mandante ?? 0
-    statistics[athlete.atleta_id].away.sumOfPoints +=
-      athlete.gato_mestre?.media_pontos_visitante ?? 0
-    statistics[athlete.atleta_id].sumOfOverallAverage += athlete.media_num
-    statistics[athlete.atleta_id].jogos_num = athlete.jogos_num
-    statistics[athlete.atleta_id].valuation.rounds.values.push([
-      athlete.rodada_id,
-      athlete.variacao_num
-    ])
-    statistics[athlete.atleta_id].scout = handleGameActions(
-      athlete,
-      statistics[athlete.atleta_id].scout
-    )
-    statistics[athlete.atleta_id].assists += handleGameActions(athlete)?.A ?? 0
-    statistics[athlete.atleta_id].finishes += getFinishesNumbers(athlete)
-    statistics[athlete.atleta_id].goals += handleGameActions(athlete)?.G ?? 0
-    statistics[athlete.atleta_id].defenses += handleGameActions(athlete)?.DE ?? 0
-    statistics[athlete.atleta_id].fouls += handleGameActions(athlete)?.FC ?? 0
-    statistics[athlete.atleta_id].finishesOnPost += handleGameActions(athlete)?.FT ?? 0
+    statistics[athleteKey].castTimes++
+    statistics[athleteKey].castRounds.push(athlete.rodada_id)
+    statistics[athleteKey].sumOfPoints += pointsInRound
+    statistics[athleteKey].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
+    statistics[athleteKey].home.sumOfPoints += athlete.gato_mestre?.media_pontos_mandante ?? 0
+    statistics[athleteKey].away.sumOfPoints += athlete.gato_mestre?.media_pontos_visitante ?? 0
+    statistics[athleteKey].sumOfOverallAverage += athlete.media_num
+    statistics[athleteKey].jogos_num = athlete.jogos_num
+    statistics[athleteKey].valuation.rounds.values.push([athlete.rodada_id, athlete.variacao_num])
+    statistics[athleteKey].scout = handleGameActions(athlete, statistics[athleteKey].scout)
+    statistics[athleteKey].assists += handleGameActions(athlete)?.A ?? 0
+    statistics[athleteKey].finishes += getFinishesNumbers(athlete)
+    statistics[athleteKey].goals += handleGameActions(athlete)?.G ?? 0
+    statistics[athleteKey].defenses += handleGameActions(athlete)?.DE ?? 0
+    statistics[athleteKey].fouls += handleGameActions(athlete)?.FC ?? 0
+    statistics[athleteKey].finishesOnPost += handleGameActions(athlete)?.FT ?? 0
 
-    const oldHighestPoints = statistics[athlete.atleta_id].highestPoint
-    statistics[athlete.atleta_id].highestPoint =
-      max([athlete.pontos_num, statistics[athlete.atleta_id].highestPoint]) ?? 0
+    const oldHighestPoints = statistics[athleteKey].highestPoint
+    statistics[athleteKey].highestPoint =
+      max([athlete.pontos_num, statistics[athleteKey].highestPoint]) ?? 0
 
-    if (oldHighestPoints !== statistics[athlete.atleta_id].highestPoint) {
-      statistics[athlete.atleta_id].highestPointScout = athlete.scout
-      statistics[athlete.atleta_id].highestPointsRound = athlete.rodada_id
+    if (oldHighestPoints !== statistics[athleteKey].highestPoint) {
+      statistics[athleteKey].highestPointScout = athlete.scout
+      statistics[athleteKey].highestPointsRound = athlete.rodada_id
     }
 
-    statistics[athlete.atleta_id].pointsPerRound[athlete.rodada_id] = Number(
-      pointsInRound.toFixed(1)
-    )
+    statistics[athleteKey].pointsPerRound[athlete.rodada_id] = Number(pointsInRound.toFixed(1))
 
     const goalsConceded = handleGameActions(athlete)?.GS ?? 0
     if (goalsConceded) {
-      statistics[athlete.atleta_id].goalsConceded += handleGameActions(athlete)?.GS ?? 0
-      statistics[athlete.atleta_id].goalsConcededRoundIds.push(athlete.rodada_id)
+      statistics[athleteKey].goalsConceded += handleGameActions(athlete)?.GS ?? 0
+      statistics[athleteKey].goalsConcededRoundIds.push(athlete.rodada_id)
     }
 
     if (isCoach(athlete.posicao_id) && athlete.scout?.V) {
-      statistics[athlete.atleta_id].victoriesRoundIds.push(athlete.rodada_id)
+      statistics[athleteKey].victoriesRoundIds.push(athlete.rodada_id)
     }
 
     if (athlete.scout?.G) {
-      statistics[athlete.atleta_id].scoredGoalsRounds[athlete.rodada_id] = athlete.scout.G
-      statistics[athlete.atleta_id].participationInGoalsRounds[athlete.rodada_id] = athlete.scout.G
+      statistics[athleteKey].scoredGoalsRounds[athlete.rodada_id] = athlete.scout.G
+      statistics[athleteKey].participationInGoalsRounds[athlete.rodada_id] = athlete.scout.G
     }
 
     if (athlete.scout?.A) {
-      statistics[athlete.atleta_id].assistsRounds[athlete.rodada_id] = athlete.scout.A
-      if (statistics[athlete.atleta_id].participationInGoalsRounds[athlete.rodada_id]) {
-        statistics[athlete.atleta_id].participationInGoalsRounds[athlete.rodada_id] +=
-          athlete.scout.A
+      statistics[athleteKey].assistsRounds[athlete.rodada_id] = athlete.scout.A
+      if (statistics[athleteKey].participationInGoalsRounds[athlete.rodada_id]) {
+        statistics[athleteKey].participationInGoalsRounds[athlete.rodada_id] += athlete.scout.A
       } else {
-        statistics[athlete.atleta_id].participationInGoalsRounds[athlete.rodada_id] =
-          athlete.scout.A
+        statistics[athleteKey].participationInGoalsRounds[athlete.rodada_id] = athlete.scout.A
       }
     }
 
     if (athlete.scout?.DE) {
-      statistics[athlete.atleta_id].defensesRounds[athlete.rodada_id] = athlete.scout.DE
+      statistics[athleteKey].defensesRounds[athlete.rodada_id] = athlete.scout.DE
     }
 
     if (athlete.scout?.DS) {
-      statistics[athlete.atleta_id].tacklesRounds[athlete.rodada_id] = athlete.scout.DS
+      statistics[athleteKey].tacklesRounds[athlete.rodada_id] = athlete.scout.DS
     }
 
     if (athlete.scout?.I) {
-      statistics[athlete.atleta_id].offsideRounds[athlete.rodada_id] = athlete.scout.I
+      statistics[athleteKey].offsideRounds[athlete.rodada_id] = athlete.scout.I
     }
 
     if (athlete.scout?.CA) {
-      statistics[athlete.atleta_id].cardsRounds.yellow[athlete.rodada_id] = athlete.scout.CA
+      statistics[athleteKey].cardsRounds.yellow[athlete.rodada_id] = athlete.scout.CA
     }
 
     if (athlete.scout?.CV) {
-      statistics[athlete.atleta_id].cardsRounds.red[athlete.rodada_id] = athlete.scout.CV
+      statistics[athleteKey].cardsRounds.red[athlete.rodada_id] = athlete.scout.CV
     }
 
     if (athlete.scout?.FC) {
-      statistics[athlete.atleta_id].foulsRounds[athlete.rodada_id] = athlete.scout.FC
+      statistics[athleteKey].foulsRounds[athlete.rodada_id] = athlete.scout.FC
     }
 
     if (athlete.scout?.FT) {
-      statistics[athlete.atleta_id].finishesOnPostRounds[athlete.rodada_id] = athlete.scout.FT
+      statistics[athleteKey].finishesOnPostRounds[athlete.rodada_id] = athlete.scout.FT
     }
   } else {
-    statistics[athlete.atleta_id] = renderedAthleteFactory(athlete, captainId)
+    statistics[athleteKey] = renderedAthleteFactory(athlete, captainId)
   }
 
   return statistics
@@ -494,7 +492,11 @@ export function formatCartolaApiData({
     athletes.forEach(async (athlete) => {
       everyAthlete[athlete.posicao_id].push(athlete)
 
-      playersStatistics = playerStatisticsIncrementalFactory(playersStatistics, athlete, captainId)
+      playersStatistics = playerStatisticsIncrementalFactory({
+        statistics: playersStatistics,
+        athlete,
+        captainId
+      })
       const athletePoints = calculatePoints(athlete, captainId)
 
       if (isCaptain(playersStatistics[athlete.atleta_id].atleta_id, captainId)) {
@@ -720,7 +722,12 @@ export function formatCartolaApiData({
     }
 
     bench?.forEach((benchAthlete) => {
-      benchStatistics = playerStatisticsIncrementalFactory(benchStatistics, benchAthlete, captainId)
+      benchStatistics = playerStatisticsIncrementalFactory({
+        statistics: benchStatistics,
+        athlete: benchAthlete,
+        captainId,
+        isBenchStatistics: true
+      })
     })
   })
 
