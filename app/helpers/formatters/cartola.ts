@@ -21,7 +21,7 @@ import {
 import { UNEMPLOYED } from '@/app/constants/teams'
 import { RoundData, RoundMatchesData, SubsData } from '@/app/services/types'
 
-import { isEmpty, isNil, max, some, uniqBy } from 'lodash'
+import { isEmpty, isEqual, isNil, max, some, uniqBy, uniqWith } from 'lodash'
 
 import { registerTrophyEvent } from '../analytics'
 import { isCoach, isGoalkeeper } from '../positions'
@@ -65,7 +65,7 @@ function handleRoundValuation(roundsValuation: [number, number][]) {
   return {
     ...valuationRounds,
     sum,
-    values: roundsValuation
+    values: uniqWith(roundsValuation, isEqual)
   }
 }
 
