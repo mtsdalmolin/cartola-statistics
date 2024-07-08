@@ -284,22 +284,24 @@ function playerStatisticsIncrementalFactory({
   if (statistics[athleteKey]) {
     const pointsInRound = calculatePoints(athlete, captainId)
 
-    statistics[athleteKey].castTimes++
-    statistics[athleteKey].castRounds.push(athlete.rodada_id)
-    statistics[athleteKey].sumOfPoints += pointsInRound
-    statistics[athleteKey].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
-    statistics[athleteKey].home.sumOfPoints += athlete.gato_mestre?.media_pontos_mandante ?? 0
-    statistics[athleteKey].away.sumOfPoints += athlete.gato_mestre?.media_pontos_visitante ?? 0
-    statistics[athleteKey].sumOfOverallAverage += athlete.media_num
-    statistics[athleteKey].jogos_num = athlete.jogos_num
-    statistics[athleteKey].valuation.rounds.values.push([athlete.rodada_id, athlete.variacao_num])
-    statistics[athleteKey].scout = handleGameActions(athlete, statistics[athleteKey].scout)
-    statistics[athleteKey].assists += handleGameActions(athlete)?.A ?? 0
-    statistics[athleteKey].finishes += getFinishesNumbers(athlete)
-    statistics[athleteKey].goals += handleGameActions(athlete)?.G ?? 0
-    statistics[athleteKey].defenses += handleGameActions(athlete)?.DE ?? 0
-    statistics[athleteKey].fouls += handleGameActions(athlete)?.FC ?? 0
-    statistics[athleteKey].finishesOnPost += handleGameActions(athlete)?.FT ?? 0
+    if (!statistics[athleteKey].castRounds.includes(athlete.rodada_id)) {
+      statistics[athleteKey].castTimes++
+      statistics[athleteKey].castRounds.push(athlete.rodada_id)
+      statistics[athleteKey].sumOfPoints += pointsInRound
+      statistics[athleteKey].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
+      statistics[athleteKey].home.sumOfPoints += athlete.gato_mestre?.media_pontos_mandante ?? 0
+      statistics[athleteKey].away.sumOfPoints += athlete.gato_mestre?.media_pontos_visitante ?? 0
+      statistics[athleteKey].sumOfOverallAverage += athlete.media_num
+      statistics[athleteKey].jogos_num = athlete.jogos_num
+      statistics[athleteKey].valuation.rounds.values.push([athlete.rodada_id, athlete.variacao_num])
+      statistics[athleteKey].scout = handleGameActions(athlete, statistics[athleteKey].scout)
+      statistics[athleteKey].assists += handleGameActions(athlete)?.A ?? 0
+      statistics[athleteKey].finishes += getFinishesNumbers(athlete)
+      statistics[athleteKey].goals += handleGameActions(athlete)?.G ?? 0
+      statistics[athleteKey].defenses += handleGameActions(athlete)?.DE ?? 0
+      statistics[athleteKey].fouls += handleGameActions(athlete)?.FC ?? 0
+      statistics[athleteKey].finishesOnPost += handleGameActions(athlete)?.FT ?? 0
+    }
 
     const oldHighestPoints = statistics[athleteKey].highestPoint
     statistics[athleteKey].highestPoint =
