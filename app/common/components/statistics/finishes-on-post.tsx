@@ -16,14 +16,14 @@ import { SummaryContainer } from './summary-container'
 
 const ELEMENT_ID = HIGHLIGHT_TO_PARAM['finishes-on-post']
 
-function renderFinishesOnPost(assists: number, isAbbreviated = true) {
+function renderFinishesOnPost(finishesOnPost: number, isAbbreviated = true) {
   if (isAbbreviated)
     return (
       <Tooltip label="Bolas na trave">
-        <div>{assists} BT</div>
+        <div>{finishesOnPost} BT</div>
       </Tooltip>
     )
-  return `${assists} bola${assists > 1 ? 's' : ''} na trave`
+  return `${finishesOnPost} bola${finishesOnPost > 1 ? 's' : ''} na trave`
 }
 
 export function FinishesOnPost<TCrewData extends CrewStatistics>({
@@ -52,7 +52,7 @@ export function FinishesOnPost<TCrewData extends CrewStatistics>({
         imgName={`finishes-on-post_${first.apelido}`}
         name={first.apelido}
         imgSrc={first.foto ?? ''}
-        data={renderFinishesOnPost(first.assists, false)}
+        data={renderFinishesOnPost(first.finishesOnPost, false)}
         details={
           <AnimatedStatsRoundMatchesResult
             clubId={first.clube_id}
