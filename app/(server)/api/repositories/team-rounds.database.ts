@@ -37,7 +37,7 @@ export async function getTeamsLatestRoundByYear(year: string, round: string) {
     ORDER BY round DESC;
   `
 
-  if (isNil(response.rows[0].payload)) {
+  if (isNil(response.rows[0]?.payload)) {
     throw new Error('No data')
   }
 
