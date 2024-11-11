@@ -1,3 +1,3 @@
 export const URLS = {
-  cartolaStatisticsPage: 'https://www.estatisticasdocartola.com'
+  cartolaStatisticsPage: 'https://cartola-statistics.vercel.app'
 }

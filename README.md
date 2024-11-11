@@ -9,7 +9,7 @@ Além de estatísticas e retrospectiva da temporada, foi implementado um sistema
   <img src="./.github/images/3-red-carded-players.png" alt="3 jogadores expulsos" />
 </p>
 
-O site tá hospedado no domínio: [estatisticasdocartola.com](https://estatisticasdocartola.com)
+O site tá hospedado no domínio: [cartola-statistics.vercel.app](https://cartola-statistics.vercel.app)
 
 ### Compartilhe no Twitter/X
 O compartilhamento das estatísticas no Twitter/X gera imagens personalizadas de acordo com a estatística/medalha específica que você queira compartilhar. Para cada caso, é gerada uma imagem e um link específico para que o tweet fique com essa disposição:
