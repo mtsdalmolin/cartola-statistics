@@ -202,6 +202,17 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     slug: 'goias',
     apelido: 'Esmeraldino'
   },
+  292: {
+    escudos: {
+      '60x60': 'https://s.sde.globo.com/media/organizations/2018/03/11/sport.svg',
+      '45x45': 'https://s.sde.globo.com/media/organizations/2018/03/11/sport.svg',
+      '30x30': 'https://s.sde.globo.com/media/organizations/2018/03/11/sport.svg'
+    },
+    nome: 'Sport Club do Recife',
+    abreviacao: 'SPT',
+    slug: 'sport',
+    apelido: 'Leão do Norte'
+  },
   293: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2019/09/09/Athletico-PR-65x65.png',
@@ -235,16 +246,16 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     slug: 'america-mg',
     apelido: 'Coelho'
   },
-  373: {
+  354: {
     escudos: {
-      '60x60': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-65.png',
-      '45x45': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-45.png',
-      '30x30': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-30.png'
+      '60x60': 'https://s.sde.globo.com/media/organizations/2019/10/10/ceara.svg',
+      '45x45': 'https://s.sde.globo.com/media/organizations/2019/10/10/ceara.svg',
+      '30x30': 'https://s.sde.globo.com/media/organizations/2019/10/10/ceara.svg'
     },
-    nome: 'Atlético-GO',
-    abreviacao: 'ACG',
-    slug: 'atletico-go',
-    apelido: 'Dragão'
+    nome: 'Ceará',
+    abreviacao: 'CEA',
+    slug: 'ceara',
+    apelido: 'Ceará'
   },
   356: {
     escudos: {
@@ -257,6 +268,17 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     slug: 'fortaleza',
     apelido: 'Leão do Pici'
   },
+  373: {
+    escudos: {
+      '60x60': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-65.png',
+      '45x45': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-45.png',
+      '30x30': 'https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-30.png'
+    },
+    nome: 'Atlético-GO',
+    abreviacao: 'ACG',
+    slug: 'atletico-go',
+    apelido: 'Dragão'
+  },
   1371: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2014/04/16/cuiaba65.png',
@@ -267,6 +289,17 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     abreviacao: 'CUI',
     slug: 'cuiaba',
     apelido: 'Dourado'
+  },
+  2305: {
+    escudos: {
+      '60x60': 'https://s.sde.globo.com/media/organizations/2024/08/20/mirassol-novo-svg-71690.svg',
+      '45x45': 'https://s.sde.globo.com/media/organizations/2024/08/20/mirassol-novo-svg-71690.svg',
+      '30x30': 'https://s.sde.globo.com/media/organizations/2024/08/20/mirassol-novo-svg-71690.svg'
+    },
+    nome: 'Mirassol',
+    abreviacao: 'MIR',
+    slug: 'mirassol',
+    apelido: 'Mirassol'
   }
 }
 

@@ -16,6 +16,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 's2.glbimg.com',
         pathname: '**'
+      },
+      {
+        protocol: 'https',
+        hostname: 's3.glbimg.com',
+        pathname: '**'
       }
     ]
   },
