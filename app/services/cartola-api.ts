@@ -18,6 +18,7 @@ export const ENDPOINTS = {
   TEAM_ROUND: (teamId: string, round: string) => `/time/id/${teamId}/${round}`,
   SEARCH_TEAM_BY_NAME: (teamNameSearch: string) => `/busca?q=${teamNameSearch}`,
   GET_TEAM_SUBS: (teamId: string, round: string) => `/time/substituicoes/${teamId}/${round}`,
+  REFRESH_TOKEN: '/refresh',
   AUTH: {
     GET_ATHLETES_VALUATION: '/auth/gatomestre/atletas'
   }
@@ -25,13 +26,13 @@ export const ENDPOINTS = {
 
 const REVALIDATION_TIME_IN_SECONDS = 5 * 60
 
-export function request<TData>(endpoint: string, options: RequestInit = {}): Promise<TData> {
+export async function request<TData>(endpoint: string, options: RequestInit = {}): Promise<TData> {
   const requestOptions = isEmpty(options)
     ? {
-        next: {
-          revalidate: REVALIDATION_TIME_IN_SECONDS
-        }
+      next: {
+        revalidate: REVALIDATION_TIME_IN_SECONDS
       }
+    }
     : options
 
   return fetch(`${CARTOLA_API}${endpoint}`, requestOptions).then((res) => res.json())
@@ -62,6 +63,28 @@ export async function getPlayersTeamData({
   if (!team) throw new Error('Forbidden')
 
   return formatCartolaApiData({ results, rounds: roundMatches, subs, year })
+}
+
+export async function refreshToken(access_token: string) {
+  return fetch(`${CARTOLA_API}${ENDPOINTS.REFRESH_TOKEN}`, {
+    credentials: 'omit',
+    headers: {
+      'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:136.0) Gecko/20100101 Firefox/136.0',
+      'Accept': '*/*',
+      'Accept-Language': 'en-US,en;q=0.5',
+      'Content-Type': 'application/json',
+      'X-GLB-Auth': 'oidc',
+      'Sec-Fetch-Dest': 'empty',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Site': 'same-site',
+      'Priority': 'u=4'
+    },
+    referrer: CARTOLA_API,
+    body: JSON.stringify({ access_token }),
+    method: 'POST',
+    mode: 'cors'
+  }).then((r) => r.json())
 }
 
 function serializeQueryParams(queryParams: {
@@ -117,4 +140,10 @@ export async function getMatchesData() {
   const { partidas: matches }: MatchesData = await request(ENDPOINTS.MATCHES)
 
   return formatMatchData(matches)
+}
+
+export async function getAthletesValuation(jwt: string) {
+  return await request(ENDPOINTS.AUTH.GET_ATHLETES_VALUATION, {
+    headers: { Authorization: `Bearer ${jwt}` }
+  })
 }

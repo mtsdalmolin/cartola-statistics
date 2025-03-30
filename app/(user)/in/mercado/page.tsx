@@ -10,7 +10,13 @@ import { FOOTBALL_TEAMS } from '../../../constants/teams'
 import { getPositionName } from '../../../helpers/positions'
 import { getStatusName } from '../../../helpers/status'
 import { getFootballTeamBadgeLink, getFootballTeamName } from '../../../helpers/teams'
-import { ENDPOINTS, getMatchesData, request } from '../../../services/cartola-api'
+import {
+  ENDPOINTS,
+  getAthletesValuation,
+  getMatchesData,
+  request
+} from '../../../services/cartola-api'
+import { getJwtToken, getRefreshToken } from '@/app/services/auth/api'
 
 export const metadata: Metadata = {
   title: 'Mercado',
@@ -84,17 +90,31 @@ export type MarketStatistics = MarketAthleteTableData[]
 
 async function getMarketData() {
   const { atletas: athletes }: MarketData = await request(ENDPOINTS.MARKET)
-  const athletesValuation: AthletesValuationResponseFromApi = await request(
-    ENDPOINTS.AUTH.GET_ATHLETES_VALUATION,
-    {
-      headers: { Authorization: `Bearer ${process.env.NEXT_GLOBO_API_AUTH_TOKEN}` }
-    }
-  )
+
+  const jwtData = await getJwtToken()
+
+  let athletesValuation = await getAthletesValuation(jwtData.jwt)
+
+  if (
+    typeof athletesValuation === 'object' &&
+    athletesValuation &&
+    'mensagem' in athletesValuation &&
+    athletesValuation.mensagem === 'Expired'
+  ) {
+    athletesValuation = await getAthletesValuation(await getRefreshToken())
+  }
+
   const roundMatches = await getMatchesData()
 
   const marketStatistics: MarketStatistics = []
   athletes.forEach((athlete) => {
-    marketStatistics.push(marketAthleteTableDataFactory(athlete, roundMatches, athletesValuation))
+    marketStatistics.push(
+      marketAthleteTableDataFactory(
+        athlete,
+        roundMatches,
+        athletesValuation as AthletesValuationResponseFromApi
+      )
+    )
   })
 
   return { marketStatistics }
