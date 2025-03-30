@@ -6,11 +6,8 @@ import Link from 'next/link'
 
 import { Main } from '@/app/common/components/main/main.client'
 import { RoundStartInfo } from '@/app/common/components/round-start-info'
-import { TEAMS } from '@/app/constants/data'
 import { ENDPOINTS, request } from '@/app/services/cartola-api'
 import logo from '@/public/logo/edc-logo.svg'
-
-import { uniqueId } from 'lodash'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -45,24 +42,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <RoundStartInfo dateStr={dateStr} roundName={marketStatus.nome_rodada} />
         </header>
         <div className="flex min-h-screen">
-          <aside className="border-r-[1px] border-r-white p-4 max-w-[250px]">
-            <div className="sticky top-0 bottom-0 left-0">
-              <nav className="flex flex-col">
-                <Link className="my-2 hover:underline" href="/mercado">
-                  Mercado
-                </Link>
-                {TEAMS.map((team) => (
-                  <Link
-                    key={uniqueId(team.id.toString())}
-                    className="my-2 truncate hover:underline"
-                    href={`/in/${team.slug}`}
-                  >
-                    {team.name}
-                  </Link>
-                ))}
-              </nav>
-            </div>
-          </aside>
           <Main className="flex flex-col w-full py-8 px-12">{children}</Main>
         </div>
       </body>

@@ -687,11 +687,6 @@ export function AthleteTable<T>({
         <ToolbarClubFilter tableObject={table} />
       </Flex>
     ),
-    mantinePaperProps: {
-      style: {
-        width: 'calc(100vw - 346px)'
-      }
-    }
   })
 
   const initialTableState = useSyncExternalStore(
