@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server'
 
 import { sql } from '@vercel/postgres'
 
-export const metadata = {}
-
 export async function GET() {
   const result = await sql`
     SELECT jwt
