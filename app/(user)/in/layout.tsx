@@ -2,7 +2,6 @@ import '@/app/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import { Main } from '@/app/common/components/main/main.client'
 import { RoundStartInfo } from '@/app/common/components/round-start-info'

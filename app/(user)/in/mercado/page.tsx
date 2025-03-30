@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import type { Match } from '@/app/common/types/match'
+import { getJwtToken, getRefreshToken } from '@/app/services/auth/api'
 
 import { MarketContent } from '../../../common/components/market-content.client'
 import { Athlete } from '../../../common/types/athlete'
@@ -16,7 +17,6 @@ import {
   getMatchesData,
   request
 } from '../../../services/cartola-api'
-import { getJwtToken, getRefreshToken } from '@/app/services/auth/api'
 
 export const metadata: Metadata = {
   title: 'Mercado',

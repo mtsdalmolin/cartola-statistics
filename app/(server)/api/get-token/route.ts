@@ -10,8 +10,7 @@ export async function GET() {
     FETCH FIRST 1 ROWS ONLY
   `
 
-  if (!result.rows)
-    return NextResponse.json({ message: 'Failed to fetch token' }, { status: 400 })
+  if (!result.rows) return NextResponse.json({ message: 'Failed to fetch token' }, { status: 400 })
 
   return NextResponse.json({ jwt: result.rows[0].jwt }, { status: 200 })
 }

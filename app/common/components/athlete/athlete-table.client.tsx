@@ -686,7 +686,7 @@ export function AthleteTable<T>({
         <ToolbarPositionFilter tableObject={table} />
         <ToolbarClubFilter tableObject={table} />
       </Flex>
-    ),
+    )
   })
 
   const initialTableState = useSyncExternalStore(
