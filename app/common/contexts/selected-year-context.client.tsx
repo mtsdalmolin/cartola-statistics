@@ -4,7 +4,7 @@ import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useStat
 
 import { SeasonYears } from '@/app/constants/data'
 
-export const AVAILABLE_YEARS: SeasonYears[] = [2024, 2023]
+export const AVAILABLE_YEARS: SeasonYears[] = [2025, 2024, 2023]
 
 const SelectedYearContext = createContext<{
   selectedYear: SeasonYears
