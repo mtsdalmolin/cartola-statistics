@@ -62,7 +62,7 @@ export function MostPoints<TCrewData extends CrewStatistics>({
             name={athlete.apelido}
             imgSrc={athlete.foto ?? ''}
             imgSize={45}
-            data={renderMostPointsText(first.sumOfPoints, false)}
+            data={renderMostPointsText(athlete.sumOfPoints, false)}
             position={idx + 2}
           />
         ))}
