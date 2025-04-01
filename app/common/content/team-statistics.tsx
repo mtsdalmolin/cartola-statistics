@@ -39,6 +39,7 @@ import { ExtractImageContextProvider } from '../contexts/extract-image-context.c
 import { useLineupsResultContext } from '../contexts/lineups-result-context.client'
 import { AVAILABLE_YEARS, useSelectedYearContext } from '../contexts/selected-year-context.client'
 import { useTeamInfoContext } from '../contexts/team-info-context.client'
+import { MostPoints } from '../components/statistics/most-points'
 
 export default function TeamStatisticsContent({
   data
@@ -110,6 +111,7 @@ export default function TeamStatisticsContent({
           <>
             <StatisticsSection title="os melhores">
               <HighestScorer crewData={teamData.athleteStatistics} matchesData={teamData.rounds!} />
+              <MostPoints crewData={teamData.athleteStatistics} matchesData={teamData.rounds!} />
               <HighestAverage
                 crewData={teamData.athleteStatistics}
                 matchesData={teamData.rounds!}

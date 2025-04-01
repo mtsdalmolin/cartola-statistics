@@ -48,6 +48,7 @@ export const HIGHLIGHT_TO_PARAM: Record<string, string> = {
   'more-tackles': 'mais-desarmes',
   'more-yellow-cards': 'mais-cartoes-amarelos',
   'most-offsided-player': 'mais-impedido',
+  'most-points': 'mais-pontos',
   'most-rounds-as-captain': 'mais-rodadas-como-capitao',
   'most-scheduled-player': 'mais-escalado',
   'most-valued-player': 'mais-valorizado',
