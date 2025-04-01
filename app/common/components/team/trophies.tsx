@@ -245,7 +245,7 @@ function TrophyDescription({
                 Rodada {data.rodada_atual}
               </Text>
               <Text className="text-palette-primary-700" weight={600}>
-                {data.pontos.toFixed(1)}{' '}
+                {data.pontos?.toFixed(1)}{' '}
                 <Text className="text-palette-neutral-200 inline">pts.</Text>
               </Text>
             </Flex>
