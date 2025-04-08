@@ -2,16 +2,16 @@ import { useParams } from 'next/navigation'
 
 import { HIGHLIGHT_TO_PARAM } from '@/app/constants/highlight'
 import { typedOrderBy } from '@/app/helpers/typed-lodash'
+import { RoundMatchesData } from '@/app/services/types'
 
 import { take, uniqueId } from 'lodash'
 
 import { CrewStatistics } from '../../types/athlete'
+import { RoundMatchesResult } from './details/round-matches-result'
 import { StatisticsList } from './list'
 import { ListHotspot } from './list/hotspot'
 import { ListItem } from './list/item'
 import { SummaryContainer } from './summary-container'
-import { RoundMatchesData } from '@/app/services/types'
-import { RoundMatchesResult } from './details/round-matches-result'
 
 const ELEMENT_ID = HIGHLIGHT_TO_PARAM['most-points']
 

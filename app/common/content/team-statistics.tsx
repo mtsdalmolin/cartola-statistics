@@ -33,13 +33,13 @@ import { Flex } from '../components/flex'
 import { Lineup } from '../components/lineup'
 import { FinishesOnPost } from '../components/statistics/finishes-on-post'
 import { MoreFouls } from '../components/statistics/more-fouls'
+import { MostPoints } from '../components/statistics/most-points'
 import { ParticipationInGoals } from '../components/statistics/participation-in-goals'
 import { ShareOnTwitterButtonLink } from '../components/team/trophies'
 import { ExtractImageContextProvider } from '../contexts/extract-image-context.client'
 import { useLineupsResultContext } from '../contexts/lineups-result-context.client'
 import { AVAILABLE_YEARS, useSelectedYearContext } from '../contexts/selected-year-context.client'
 import { useTeamInfoContext } from '../contexts/team-info-context.client'
-import { MostPoints } from '../components/statistics/most-points'
 
 export default function TeamStatisticsContent({
   data
