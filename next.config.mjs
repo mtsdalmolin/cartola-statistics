@@ -1,5 +1,11 @@
+import ReactComponentName from 'react-scan/dist/react-component-name/webpack'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack: (config) => {
+    config.plugins.push(ReactComponentName.default({})); 
+    return config;
+  },
   images: {
     remotePatterns: [
       {
@@ -33,4 +39,4 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+export default nextConfig
