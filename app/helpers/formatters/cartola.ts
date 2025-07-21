@@ -70,12 +70,12 @@ function handleRoundValuation(roundsValuation: [number, number][]) {
 }
 
 function getRoundResultPoints(round: RoundMatchesData[0], clubId: number) {
-  if (clubId in round) {
+  if (round && clubId in round) {
     return round[clubId].result.winner === 'draw'
       ? 1
       : round[clubId].result.winner === clubId
-      ? 3
-      : 0
+        ? 3
+        : 0
   }
 
   return 0
@@ -168,13 +168,13 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     preco_num: athlete.preco_num,
     minimo_para_valorizar: athlete.minimo_para_valorizar,
     gato_mestre: {
-      minutos_jogados: athlete.gato_mestre.minutos_jogados,
+      minutos_jogados: athlete.gato_mestre?.minutos_jogados ?? 0,
       media_minutos_jogados: athlete.gato_mestre?.minutos_jogados ?? 0,
       media_pontos_mandante: athlete.gato_mestre?.media_pontos_mandante ?? 0,
       media_pontos_visitante: athlete.gato_mestre?.media_pontos_visitante ?? 0
     },
     scout: handleGameActions(athlete),
-    sumOfPlayedMinutes: athlete.gato_mestre.minutos_jogados,
+    sumOfPlayedMinutes: athlete.gato_mestre?.minutos_jogados ?? 0,
     averageMinutesPerRound: 0,
     home: {
       sumOfPoints: 0,
@@ -214,8 +214,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     participationInGoalsRounds:
       (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0) > 0
         ? {
-            [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
-          }
+          [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
+        }
         : {},
     offsideRounds: athlete.scout?.I ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.I ?? 0 } : {},
     pointsPerRound: { [athlete.rodada_id]: Number(pointsInRound.toFixed(1)) },
@@ -288,7 +288,7 @@ function playerStatisticsIncrementalFactory({
       statistics[athleteKey].castTimes++
       statistics[athleteKey].castRounds.push(athlete.rodada_id)
       statistics[athleteKey].sumOfPoints += pointsInRound
-      statistics[athleteKey].sumOfPlayedMinutes += athlete.gato_mestre.minutos_jogados
+      statistics[athleteKey].sumOfPlayedMinutes += athlete.gato_mestre?.minutos_jogados ?? 0
       statistics[athleteKey].home.sumOfPoints += athlete.gato_mestre?.media_pontos_mandante ?? 0
       statistics[athleteKey].away.sumOfPoints += athlete.gato_mestre?.media_pontos_visitante ?? 0
       statistics[athleteKey].sumOfOverallAverage += athlete.media_num
@@ -415,14 +415,14 @@ export function formatCartolaApiData({
   subs: Record<string, SubsData[]>
   year: SeasonYears
 }): [
-  CrewStatistics,
-  CrewStatistics,
-  ClubStatistics,
-  PositionsStatistics,
-  TrophiesData,
-  TeamInfo,
-  Record<'bestTeam' | 'worstTeam', Athlete[]>
-] {
+    CrewStatistics,
+    CrewStatistics,
+    ClubStatistics,
+    PositionsStatistics,
+    TrophiesData,
+    TeamInfo,
+    Record<'bestTeam' | 'worstTeam', Athlete[]>
+  ] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}

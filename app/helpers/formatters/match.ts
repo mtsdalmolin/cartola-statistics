@@ -24,8 +24,8 @@ export function formatMatchData(matches: MatchFromApi[]) {
           match.placar_oficial_mandante === match.placar_oficial_visitante
             ? 'draw'
             : match.placar_oficial_mandante > match.placar_oficial_visitante
-            ? match.clube_casa_id
-            : match.clube_visitante_id
+              ? match.clube_casa_id
+              : match.clube_visitante_id
       }
     }
 

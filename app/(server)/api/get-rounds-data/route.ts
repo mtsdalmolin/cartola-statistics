@@ -6,7 +6,7 @@ import { ENDPOINTS, request as makeRequest } from '@/app/services/cartola-api'
 import { MatchesData } from '@/app/services/types'
 import { sql } from '@vercel/postgres'
 
-import { isEmpty, isNil, last, max } from 'lodash'
+import { isEmpty, isNil, last } from 'lodash'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -53,8 +53,6 @@ export async function GET(request: Request) {
 
   const requestPromises: Record<string, Promise<MatchesData>> = {}
   roundIds.forEach((roundId) => {
-    if (roundId < max(roundsCached)!) return
-
     if (roundsCached.includes(roundId)) return
 
     requestPromises[roundId.toString()] = makeRequest(ENDPOINTS.MATCHES_BY_ID(roundId.toString()))
