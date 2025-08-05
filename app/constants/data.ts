@@ -18,7 +18,7 @@ export const SEASONS: Record<
     SECOND_TURN_ROUNDS
   },
   2025: {
-    FIRST_TURN_ROUNDS: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+    FIRST_TURN_ROUNDS: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
     SECOND_TURN_ROUNDS: []
   }
 }
