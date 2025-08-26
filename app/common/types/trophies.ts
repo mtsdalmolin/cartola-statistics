@@ -24,8 +24,6 @@ export enum Trophies {
   REACHED_200_CARTOLETAS = 'reached-200-cartoletas',
   SEVEN_PLAYERS_SCORED = 'seven-players-scored',
   THREE_PLAYERS_MISSED_PENALTY = 'three-players-missed-penalty'
-  // jogador que mais pontuou na rodada
-  // entrou do banco e fez mais que 10 pontos
 }
 
 export type TrophiesData = { [key in Trophies]?: Athlete[] | RoundData | Subs }

@@ -23,6 +23,7 @@ import { useSelectedYearContext } from '../../contexts/selected-year-context.cli
 import { useTeamInfoContext } from '../../contexts/team-info-context.client'
 import { Athlete } from '../../types/athlete'
 import { MatchVersus } from '../match-versus'
+import { CSSProperties } from 'react'
 
 const TROPHY_DESCRIPTION = {
   [TrophiesEnum.ASSIST_WITH_GOALKEEPER]:
@@ -64,6 +65,31 @@ const TROPHY_DESCRIPTION = {
     'Medalha de conquista quando em uma escalação, 7 jogadores marcaram gols.',
   [TrophiesEnum.THREE_PLAYERS_MISSED_PENALTY]:
     'Medalha de conquista por ter escalado 3 ou mais jogadores que erraram pênaltis.'
+}
+
+type TrophiesWithYear =
+  | TrophiesEnum.ASSIST_WITH_GOALKEEPER
+  | TrophiesEnum.CAME_FROM_BENCH_AND_MADE_12_POINTS
+  | TrophiesEnum.DEFENSE_DIDNT_SUFFER_GOALS
+  | TrophiesEnum.EVERY_MIDFIELDER_HAVE_ASSISTS
+  | TrophiesEnum.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB
+  | TrophiesEnum.FUTEBOLAO_LEAGUE_PLAYER
+  | TrophiesEnum.MORE_THAN_100_POINTS_IN_ROUND
+  | TrophiesEnum.MORE_THAN_150_POINTS_IN_ROUND
+  | TrophiesEnum.ONE_PLAYER_OF_EACH_CLUB
+  | TrophiesEnum.REACHED_200_CARTOLETAS
+
+const TROPHY_YEAR_STYLES: Record<TrophiesWithYear, CSSProperties> = {
+  [TrophiesEnum.ASSIST_WITH_GOALKEEPER]: { bottom: 20, color: 'rgb(35, 54, 58)' },
+  [TrophiesEnum.CAME_FROM_BENCH_AND_MADE_12_POINTS]: { bottom: 24, color: 'rgb(11, 55, 114)' },
+  [TrophiesEnum.DEFENSE_DIDNT_SUFFER_GOALS]: { bottom: 24, color: 'rgb(241, 228, 189)' },
+  [TrophiesEnum.EVERY_MIDFIELDER_HAVE_ASSISTS]: { bottom: 19, fontSize: 8, color: 'rgb(255, 248, 218)' },
+  [TrophiesEnum.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB]: { bottom: 26, color: 'rgb(255, 248, 218)' },
+  [TrophiesEnum.FUTEBOLAO_LEAGUE_PLAYER]: { bottom: 32 },
+  [TrophiesEnum.MORE_THAN_100_POINTS_IN_ROUND]: { bottom: 28 },
+  [TrophiesEnum.MORE_THAN_150_POINTS_IN_ROUND]: { bottom: 28 },
+  [TrophiesEnum.ONE_PLAYER_OF_EACH_CLUB]: { bottom: 26, color: '#efefef' },
+  [TrophiesEnum.REACHED_200_CARTOLETAS]: { bottom: 20, color: '#000', fontSize: 8 },
 }
 
 function getCaptainFromRound(round: RoundData) {
@@ -122,35 +148,35 @@ export function ShareOnTwitterButtonLink({
   year
 }:
   | {
-      type: 'trophy'
-      teamId: string
-      year: SeasonYears
-      trophyParamName: keyof typeof PARAM_TO_TROPHY
-    }
+    type: 'trophy'
+    teamId: string
+    year: SeasonYears
+    trophyParamName: keyof typeof PARAM_TO_TROPHY
+  }
   | {
-      type: 'trophyBoard'
-      teamId: string
-      year: SeasonYears
-      trophyParamName?: never
-    }) {
+    type: 'trophyBoard'
+    teamId: string
+    year: SeasonYears
+    trophyParamName?: never
+  }) {
   return (
     <Link
       className="bg-palette-neutral-800 hover:bg-palette-neutral-700 rounded-md px-4"
       href={
         type === 'trophy'
           ? createTrophyTwitterShareLink({
-              teamId,
-              trophyParamName,
-              year
-            })
+            teamId,
+            trophyParamName,
+            year
+          })
           : createTrophyBoardTwitterShareLink({
-              teamId,
-              roundId: +last([
-                ...SEASONS[year].FIRST_TURN_ROUNDS,
-                ...SEASONS[year].SECOND_TURN_ROUNDS
-              ])!,
-              year
-            })
+            teamId,
+            roundId: +last([
+              ...SEASONS[year].FIRST_TURN_ROUNDS,
+              ...SEASONS[year].SECOND_TURN_ROUNDS
+            ])!,
+            year
+          })
       }
       target="_blank"
     >
@@ -292,17 +318,25 @@ function Trophy({
   matchesData: RoundMatchesData
   name: keyof typeof TROPHIES_IMAGE
 }) {
+  const { selectedYear } = useSelectedYearContext()
   return (
     <HoverCard width={280} shadow="md">
       <HoverCard.Target>
-        <Image
-          className="hover:scale-150"
-          src={TROPHIES_IMAGE[name]}
-          width={128}
-          height={128}
-          alt={TROPHY_DESCRIPTION[name]}
-          tabIndex={0}
-        />
+        <div className="relative hover:scale-150">
+          <Image
+            src={TROPHIES_IMAGE[name]}
+            width={128}
+            height={128}
+            alt={TROPHY_DESCRIPTION[name]}
+            tabIndex={0}
+          />
+          {name in TROPHY_YEAR_STYLES ? (
+            <span
+              className="absolute left-[50%] -translate-x-[50%] text-xs"
+              style={TROPHY_YEAR_STYLES[name as TrophiesWithYear]}
+            >{selectedYear}</span>
+          ) : null}
+        </div>
       </HoverCard.Target>
       <HoverCard.Dropdown>
         <TrophyDescription
