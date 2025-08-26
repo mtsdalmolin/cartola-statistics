@@ -74,8 +74,8 @@ function getRoundResultPoints(round: RoundMatchesData[0], clubId: number) {
     return round[clubId].result.winner === 'draw'
       ? 1
       : round[clubId].result.winner === clubId
-        ? 3
-        : 0
+      ? 3
+      : 0
   }
 
   return 0
@@ -214,8 +214,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     participationInGoalsRounds:
       (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0) > 0
         ? {
-          [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
-        }
+            [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
+          }
         : {},
     offsideRounds: athlete.scout?.I ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.I ?? 0 } : {},
     pointsPerRound: { [athlete.rodada_id]: Number(pointsInRound.toFixed(1)) },
@@ -415,14 +415,14 @@ export function formatCartolaApiData({
   subs: Record<string, SubsData[]>
   year: SeasonYears
 }): [
-    CrewStatistics,
-    CrewStatistics,
-    ClubStatistics,
-    PositionsStatistics,
-    TrophiesData,
-    TeamInfo,
-    Record<'bestTeam' | 'worstTeam', Athlete[]>
-  ] {
+  CrewStatistics,
+  CrewStatistics,
+  ClubStatistics,
+  PositionsStatistics,
+  TrophiesData,
+  TeamInfo,
+  Record<'bestTeam' | 'worstTeam', Athlete[]>
+] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
