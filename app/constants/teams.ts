@@ -235,6 +235,23 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     slug: 'coritiba',
     apelido: 'Coxa'
   },
+  315: {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/CHA/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/CHA/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/CHA/30x30.png'
+    },
+    nome: 'CHA',
+    abreviacao: 'CHA',
+    slug: 'chapecoense',
+    apelido: 'Verdão do Oeste',
+    nome_fantasia: 'Chapecoense',
+    id: 315,
+    url_editoria: 'https://ge.globo.com/sc/futebol/times/chapecoense/'
+  },
   327: {
     escudos: {
       '60x60': 'https://s.sde.globo.com/media/organizations/2019/02/28/escudo65_1.png',
@@ -267,6 +284,23 @@ export const FOOTBALL_TEAMS_WITHOUT_UNEMPLOYED = {
     abreviacao: 'FOR',
     slug: 'fortaleza',
     apelido: 'Leão do Pici'
+  },
+  364: {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/REM/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/REM/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/REM/30x30.png'
+    },
+    nome: 'REM',
+    abreviacao: 'REM',
+    slug: 'remo',
+    apelido: 'Remo',
+    nome_fantasia: 'Remo',
+    id: 364,
+    url_editoria: 'https://ge.globo.com/pa/futebol/times/remo/'
   },
   373: {
     escudos: {
