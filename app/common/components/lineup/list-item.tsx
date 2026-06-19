@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 import { PHOTO_SIZE_FORMAT } from '@/app/constants/format'
 import { calculatePoints } from '@/app/helpers/formatters/cartola'
@@ -24,7 +25,11 @@ export function LineupListItem({
   matchesData?: RoundMatchesData
   hideNamesOnMobile?: boolean
 }) {
+  const pathname = usePathname()
   const isCaptain = athlete.atleta_id === captainId
+
+  const isWorldCup = pathname.includes('copa')
+
   return (
     <Flex className="w-full pt-2" justify="between" align="center" gap="sm">
       <Flex className="max-w-sm" align="center">

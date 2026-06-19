@@ -6,10 +6,12 @@ import { Flex } from './flex'
 
 export function LoadingFallback({
   message,
-  fullScreen = false
+  fullScreen = false,
+  isWorldCup
 }: {
   message?: string
   fullScreen?: boolean
+  isWorldCup?: boolean
 }) {
   return (
     <Flex
@@ -20,7 +22,7 @@ export function LoadingFallback({
       gap="lg"
     >
       <Image
-        className="motion-safe:animate-bounce"
+        className={`motion-safe:animate-bounce ${isWorldCup ? '[filter:hue-rotate(50deg)]' : ''}`}
         src={edcLogo}
         width={150}
         height={150}

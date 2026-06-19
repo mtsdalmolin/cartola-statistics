@@ -6,7 +6,7 @@ export const SECOND_TURN_ROUNDS = [
 export type SeasonYears = 2023 | 2024 | 2025 | 2026
 
 export const SEASONS: Record<
-  SeasonYears,
+  SeasonYears | 'CUP_2026',
   { FIRST_TURN_ROUNDS: number[]; SECOND_TURN_ROUNDS: number[] }
 > = {
   2023: {
@@ -23,6 +23,10 @@ export const SEASONS: Record<
   },
   2026: {
     FIRST_TURN_ROUNDS: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    SECOND_TURN_ROUNDS: []
+  },
+  CUP_2026: {
+    FIRST_TURN_ROUNDS: [1],
     SECOND_TURN_ROUNDS: []
   }
 }

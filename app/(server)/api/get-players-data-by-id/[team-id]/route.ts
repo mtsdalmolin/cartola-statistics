@@ -24,6 +24,7 @@ export async function GET(request: Request, context: GetContext) {
   const { searchParams } = new URL(request.url)
   const round = searchParams.get('round')
   const year = searchParams.get('year')
+  const isWorldCup = year?.includes('-world-cup')
 
   if (isArray(year) || isNil(year)) {
     return NextResponse.json({ message: 'couldnt process request' }, { status: 422 })
@@ -57,7 +58,7 @@ export async function GET(request: Request, context: GetContext) {
   }
 
   if (needsToFetchFromCartola) {
-    result = await makeRequest<RoundData>(cartolaEndpoint, { cache: 'no-store' })
+    result = await makeRequest<RoundData>(cartolaEndpoint, { isWorldCup, cache: 'no-store' })
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 
     const endpoint = `${year}${cartolaEndpoint}`

@@ -10,12 +10,12 @@ import Script from 'next/script'
 import edcBrand from '@/public/logo/twitter-card.png'
 import { Analytics } from '@vercel/analytics/react'
 
-import { LoadingFallback } from './common/components/loading-fallback'
-import { Main } from './common/components/main/main.client'
-import { PageClientTabs } from './common/components/tabs/page-tabs.client'
-import { LineupsResultContextProvider } from './common/contexts/lineups-result-context.client'
-import { SelectedYearContextProvider } from './common/contexts/selected-year-context.client'
-import { TeamInfoContextProvider } from './common/contexts/team-info-context.client'
+import { LoadingFallback } from '../common/components/loading-fallback'
+import { Main } from '../common/components/main/main.client'
+import { PageClientTabs } from '../common/components/tabs/page-tabs.client'
+import { LineupsResultContextProvider } from '../common/contexts/lineups-result-context.client'
+import { SelectedYearContextProvider } from '../common/contexts/selected-year-context.client'
+import { TeamInfoContextProvider } from '../common/contexts/team-info-context.client'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -43,6 +43,7 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  console.log('rendering root layout')
   return (
     <html lang="pt-BR">
       <head>

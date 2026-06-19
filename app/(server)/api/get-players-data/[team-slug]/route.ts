@@ -20,8 +20,9 @@ type GetContext = {
 export async function GET(request: Request, context: GetContext) {
   const teamData = TEAMS.find((team) => team.slug === context.params['team-slug'])
   const { searchParams } = new URL(request.url)
-  const round = searchParams.get('round')
+  const round = searchParams.get('roundj')
   const year = searchParams.get('year')
+  const isWorldCup = year?.includes('-world-cup')
 
   if (isArray(round) || isNil(round)) {
     return NextResponse.json({ message: 'Bad format' }, { status: 422 })
@@ -51,7 +52,8 @@ export async function GET(request: Request, context: GetContext) {
   }
 
   if (needsToFetchFromCartola) {
-    result = await makeRequest(cartolaEndpoint)
+    console.log({ isWorldCup })
+    result = await makeRequest(cartolaEndpoint, { isWorldCup })
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)
 

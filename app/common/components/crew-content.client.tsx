@@ -3,6 +3,7 @@
 import { useState, ReactElement } from 'react'
 
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 import { CAST_TIMES_OPTION, POINTS_AVERAGE_OPTION } from '@/app/constants/statistics'
 import { getPositionName } from '@/app/helpers/positions'
@@ -30,7 +31,10 @@ function handleTableNumberValues(numberValue: number) {
   return 0
 }
 
-function athleteTableDataFactory(athlete: RenderedAthlete): AthleteTableDataWithoutMatchKey {
+function athleteTableDataFactory(
+  athlete: RenderedAthlete,
+  isWorldCup?: boolean
+): AthleteTableDataWithoutMatchKey {
   return {
     id: athlete.atleta_id,
     photoUrl: athlete?.foto ?? '',
@@ -57,10 +61,12 @@ function athleteTableDataFactory(athlete: RenderedAthlete): AthleteTableDataWith
   }
 }
 
-export function makeAthleteData(crew: CrewStatistics) {
+export function makeAthleteData(crew: CrewStatistics, isWorldCup?: boolean) {
   const athleteData: AthleteTableDataWithoutMatchKey[] = []
 
-  Object.values(crew).forEach((athlete) => athleteData.push(athleteTableDataFactory(athlete)))
+  Object.values(crew).forEach((athlete) =>
+    athleteData.push(athleteTableDataFactory(athlete, isWorldCup))
+  )
 
   return athleteData as AthleteTableData[]
 }
@@ -91,7 +97,10 @@ export function CrewContent({
   clubs: ClubStatistics
   positions: PositionsStatistics
 }) {
+  const pathname = usePathname()
   const [showTable, setShowTable] = useState(false)
+
+  const isWorldCup = pathname.includes('copa')
 
   return (
     <>
@@ -129,8 +138,8 @@ export function CrewContent({
       />
       {showTable ? (
         <AthleteTable
-          athletes={makeAthleteData(athletes)}
-          benchAthletes={makeAthleteData(bench)}
+          athletes={makeAthleteData(athletes, isWorldCup)}
+          benchAthletes={makeAthleteData(bench, isWorldCup)}
           type="athlete"
         />
       ) : (

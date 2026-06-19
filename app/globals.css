@@ -13,11 +13,40 @@
 :root {
   --foreground-rgb: 255, 255, 255;
   --background-rgb: 0, 0, 0;
+  --brand-100: #eafbf5;
+  --brand-200: #c3efe0;
+  --brand-300: #aaecd6;
+  --brand-400: #68f3c5;
+  --brand-500: #7ae1bf;
+  --brand-600: #67bfa0;
+  --brand-700: #5aa68b;
+  --brand-800: #1c7a5b;
+  --brand-900: #104936;
+}
+
+html.theme-world-cup {
+  --brand-100: #edf9ff;
+  --brand-200: #f7f6ff;
+  --brand-300: #aaecd6;
+  --brand-400: #fdf4fc;
+  --brand-500: #8fd6ff;
+  --brand-600: #76b8cc;
+  --brand-700: #67a0b1;
+  --brand-800: #2d7583;
+  --brand-900: #1a464f;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
+}
+
+body.world-cup {
+  background: url('/images/world-cup-2026-bg.jpeg');
+  backdrop-filter: grayscale(35%) blur(8px);
+  background-position: top center;
+  background-color: rgba(127, 127, 127, 0.2);
+  background-blend-mode: darken;
 }
 
 .card {

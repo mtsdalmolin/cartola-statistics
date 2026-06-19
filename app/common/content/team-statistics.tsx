@@ -64,12 +64,20 @@ export default function TeamStatisticsContent({
 
   const teamData = data ?? lineupsResult
 
+  const isWorldCup = pathname.includes('copa')
+
+  const shouldRenderYearSelect =
+    !isWorldCup &&
+    !(
+      teamData.teamInfo &&
+      teamData.teamInfo.name &&
+      pathname.includes(teamData.teamInfo.id.toString())
+    )
+
   return (
     <ExtractImageContextProvider>
       <Flex className="w-full py-4" justify="center" align="center" direction="column">
-        {teamData.teamInfo &&
-        teamData.teamInfo.name &&
-        !pathname.includes(teamData.teamInfo.id.toString()) ? (
+        {shouldRenderYearSelect ? (
           <Select
             className="max-w-[500px] self-end text-left mobile:self-center"
             placeholder="Selecione a temporada"
@@ -155,8 +163,8 @@ export default function TeamStatisticsContent({
             />
             <StatisticsSection title="resto">
               <MostRoundsAsCaptain crewData={teamData.athleteStatistics} />
-              <LineupsPerClub clubsData={teamData.clubStatistics} />
-              <PointsPerClub clubsData={teamData.clubStatistics} />
+              <LineupsPerClub clubsData={teamData.clubStatistics} isWorldCup={isWorldCup} />
+              <PointsPerClub clubsData={teamData.clubStatistics} isWorldCup={isWorldCup} />
               <MostScheduledPlayer
                 crewData={teamData.athleteStatistics}
                 matchesData={teamData.rounds}

@@ -23,15 +23,15 @@ const config: Config = {
       colors: {
         palette: {
           primary: {
-            100: '#eafbf5',
-            200: '#c3efe0',
-            300: '#aaecd6',
-            400: '#68f3c5',
-            500: '#7ae1bf',
-            600: '#67bfa0',
-            700: '#5aa68b',
-            800: '#1c7a5b',
-            900: '#104936'
+            100: 'var(--brand-100)',
+            200: 'var(--brand-200)',
+            300: 'var(--brand-300)',
+            400: 'var(--brand-400)',
+            500: 'var(--brand-500)',
+            600: 'var(--brand-600)',
+            700: 'var(--brand-700)',
+            800: 'var(--brand-800)',
+            900: 'var(--brand-900)'
           },
           neutral: {
             100: '#f8f9fa',
@@ -44,7 +44,7 @@ const config: Config = {
             800: '#404b5a',
             900: '#202833'
           }
-        }
+        },
       },
       keyframes: {
         scrollVertically: {
