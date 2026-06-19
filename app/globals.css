@@ -43,10 +43,9 @@ body {
 
 body.world-cup {
   background: url('/images/world-cup-2026-bg.jpeg');
-  backdrop-filter: grayscale(35%) blur(8px);
   background-position: top center;
-  background-color: rgba(127, 127, 127, 0.2);
-  background-blend-mode: darken;
+  background-color: rgba(50, 50, 50, 0.8);
+  background-blend-mode: multiply;
 }
 
 .card {
