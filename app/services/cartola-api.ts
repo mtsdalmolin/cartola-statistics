@@ -9,6 +9,7 @@ import { formatMatchData } from '../helpers/formatters/match'
 import { MatchesData, RoundData, RoundMatchesData, SubsData } from './types'
 
 export const CARTOLA_API = 'https://api.cartola.globo.com'
+export const COPA_API = 'https://api.copa.cartola.globo.com'
 
 export const ENDPOINTS = {
   MARKET: '/atletas/mercado',
@@ -26,16 +27,22 @@ export const ENDPOINTS = {
 
 const REVALIDATION_TIME_IN_SECONDS = 5 * 60
 
-export async function request<TData>(endpoint: string, options: RequestInit = {}): Promise<TData> {
-  const requestOptions = isEmpty(options)
+export async function request<TData>(
+  endpoint: string,
+  options: RequestInit & { isWorldCup?: boolean } = {}
+): Promise<TData> {
+  const { isWorldCup, ...optionsRest } = options
+  const requestOptions = isEmpty(optionsRest)
     ? {
         next: {
           revalidate: REVALIDATION_TIME_IN_SECONDS
         }
       }
-    : options
+    : optionsRest
 
-  return fetch(`${CARTOLA_API}${endpoint}`, requestOptions).then((res) => res.json())
+  const domain = isWorldCup ? COPA_API : CARTOLA_API
+
+  return fetch(`${domain}${endpoint}`, requestOptions).then((res) => res.json())
 }
 
 export async function getPlayersTeamData({
@@ -110,7 +117,10 @@ export async function searchTeamName(teamName: string): Promise<TeamsAutocomplet
   return roundMatches
 }
 
-export async function getRoundsData(roundIds: number[], year: number): Promise<RoundMatchesData> {
+export async function getRoundsData(
+  roundIds: number[],
+  year: number | `${number}-world-cup`
+): Promise<RoundMatchesData> {
   const roundMatches = await fetch(
     `${process.env.NEXT_API_BASE_URL}/api/get-rounds-data/${serializeQueryParams({
       rounds: roundIds,
@@ -124,7 +134,7 @@ export async function getRoundsData(roundIds: number[], year: number): Promise<R
 export async function getSubsData(
   teamId: string,
   roundIds: number[],
-  year: number
+  year: number | `${number}-world-cup`
 ): Promise<Record<string, SubsData[]>> {
   const subs = await fetch(
     `${process.env.NEXT_API_BASE_URL}/api/get-subs-data/${teamId}${serializeQueryParams({

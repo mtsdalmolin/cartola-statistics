@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { CrewContent } from '@/app/common/components/crew-content.client'
-import { TEAMS } from '@/app/constants/data'
+import { SeasonYears, TEAMS } from '@/app/constants/data'
 import { getPlayersTeamData } from '@/app/services/cartola-api'
 
 import isNil from 'lodash/isNil'
@@ -11,7 +11,11 @@ export const metadata: Metadata = {
   description: 'Site para analisar estatísticas que o cartola não utiliza.'
 }
 
-export default async function Team({ params }: { params: { teamSlug: string } }) {
+export default async function Team({
+  params
+}: {
+  params: { year: SeasonYears; teamSlug: string }
+}) {
   const teamData = TEAMS.find((team) => team.slug === params.teamSlug)
 
   if (isNil(teamData)) {
@@ -23,7 +27,7 @@ export default async function Team({ params }: { params: { teamSlug: string } })
   const [athletes, bench, clubs, positions] = await getPlayersTeamData({
     teamSlug: teamData.slug,
     rounds: teamData.rounds,
-    year: 2024
+    year: params.year
   })
 
   return (

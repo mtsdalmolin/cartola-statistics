@@ -35,7 +35,7 @@ export interface GetTeamsStatisticsActionState {
 }
 
 export async function getTeamStatistics(
-  context: { year: SeasonYears },
+  context: { year: SeasonYears; isWorldCup: boolean },
   _: GetTeamsStatisticsActionState,
   formData: FormData
 ): Promise<GetTeamsStatisticsActionState> {
@@ -44,27 +44,35 @@ export async function getTeamStatistics(
       throw new Error('context.year is required to run this action')
     }
 
+    const isWorldCup = context.isWorldCup ?? false
     const year = context.year
     const teamId = formData.get('teamId')!
     const teamName = formData.get('teamName')!
 
-    await track('action:getTeamStatistics', {
+    await track(`action:getTeamStatistics:${isWorldCup ? 'world-cup' : ''}`, {
       teamId: teamId as unknown as string,
       teamName: teamName as unknown as string,
       year
     })
 
-    const rounds = [...SEASONS[year].FIRST_TURN_ROUNDS, ...SEASONS[year].SECOND_TURN_ROUNDS]
+    let rounds = []
+    if (isWorldCup) {
+      rounds = [...SEASONS.CUP_2026.FIRST_TURN_ROUNDS, ...SEASONS.CUP_2026.SECOND_TURN_ROUNDS]
+    } else {
+      rounds = [...SEASONS[year].FIRST_TURN_ROUNDS, ...SEASONS[year].SECOND_TURN_ROUNDS]
+    }
+
+    const yearParam = isWorldCup ? (`${year}-world-cup` as const) : year
 
     const results = await Promise.allSettled<RoundData>(
       rounds.map((round) => {
         return fetch(
-          `${process.env.NEXT_API_BASE_URL}/api/get-players-data-by-id/${teamId}?round=${round}&year=${year}`
+          `${process.env.NEXT_API_BASE_URL}/api/get-players-data-by-id/${teamId}?round=${round}&year=${yearParam}`
         ).then((res) => res.json())
       })
     )
-    const roundsData = await getRoundsData(rounds, year)
-    const subs = await getSubsData(teamId.toString(), rounds, year)
+    const roundsData = await getRoundsData(rounds, yearParam)
+    const subs = await getSubsData(teamId.toString(), rounds, yearParam)
 
     const [
       athleteStatistics,
@@ -74,7 +82,13 @@ export async function getTeamStatistics(
       trophies,
       teamInfo,
       lineups
-    ] = formatCartolaApiData({ results, rounds: roundsData, subs, year })
+    ] = formatCartolaApiData({
+      results,
+      rounds: roundsData,
+      subs,
+      year,
+      isWorldCup
+    })
 
     if (find(TEAMS, { id: Number(teamId) })) {
       registerTrophyEvent(Trophies.FUTEBOLAO_LEAGUE_PLAYER, {

@@ -9,14 +9,14 @@ import brand from '@/public/logo/brand.svg'
 
 import { isEmpty, isNil } from 'lodash'
 
-import { getTeamStatistics } from './actions'
-import { SearchTeamStatisticsForm } from './common/components/forms/search-team-statistics'
-import { Signature } from './common/components/signature'
-import TeamStatisticsContent from './common/content/team-statistics'
-import { useLineupsResultContext } from './common/contexts/lineups-result-context.client'
-import { useSelectedYearContext } from './common/contexts/selected-year-context.client'
-import { ShareStatisticsLinkContextProvider } from './common/contexts/share-statistics-link-context.client'
-import { useTeamInfoContext } from './common/contexts/team-info-context.client'
+import { getTeamStatistics } from '../actions'
+import { SearchTeamStatisticsForm } from '../common/components/forms/search-team-statistics'
+import { Signature } from '../common/components/signature'
+import TeamStatisticsContent from '../common/content/team-statistics'
+import { useLineupsResultContext } from '../common/contexts/lineups-result-context.client'
+import { useSelectedYearContext } from '../common/contexts/selected-year-context.client'
+import { ShareStatisticsLinkContextProvider } from '../common/contexts/share-statistics-link-context.client'
+import { useTeamInfoContext } from '../common/contexts/team-info-context.client'
 
 export default function Home() {
   const { selectedYear } = useSelectedYearContext()
@@ -27,6 +27,7 @@ export default function Home() {
   const updatedActionWithYear = useMemo(
     () =>
       getTeamStatistics.bind(null, {
+        isWorldCup: false,
         year: selectedYear
       }),
     [selectedYear]

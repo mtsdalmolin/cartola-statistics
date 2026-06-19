@@ -16,9 +16,11 @@ import { SummaryContainer } from './summary-container'
 const ELEMENT_ID = HIGHLIGHT_TO_PARAM['points-per-club']
 
 export function PointsPerClub<TClubsData extends ClubStatistics>({
-  clubsData
+  clubsData,
+  isWorldCup
 }: {
   clubsData: TClubsData
+  isWorldCup?: boolean
 }) {
   const { highlight } = useParams()
 

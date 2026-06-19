@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 import { Text } from '@mantine/core'
 
@@ -9,6 +10,7 @@ import { Flex } from './flex'
 import { GithubButton } from './github-button.client'
 
 export function Signature({ absolute = false }: { absolute?: boolean }) {
+  const pathname = usePathname()
   return (
     <Flex
       className={` w-full text-center z-0 ${
@@ -19,7 +21,7 @@ export function Signature({ absolute = false }: { absolute?: boolean }) {
     >
       <GithubButton />
       <Text className={bebasNeue.className} size="md">
-        feito com ⚽ por{' '}
+        feito com {pathname.includes('copa') ? '🏆' : '⚽'} por{' '}
         <Link href="https://twitter.com/mtsdalmolin" target="_blank">
           @mtsdalmolin
         </Link>

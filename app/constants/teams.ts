@@ -357,3 +357,872 @@ export const FOOTBALL_TEAMS = merge(
 )
 
 export type FootballTeamsIds = keyof typeof FOOTBALL_TEAMS
+
+export const NATIONAL_TEAMS = {
+  '2318': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/BRA/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/BRA/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/BRA/30x30.png'
+    },
+    nome: 'Brasil',
+    abreviacao: 'BRA',
+    slug: 'brasil',
+    apelido: 'Brasil',
+    nome_fantasia: 'Brasil',
+    id: 2318,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2320': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SUI/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SUI/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SUI/30x30.png'
+    },
+    nome: 'Suíça',
+    abreviacao: 'SUI',
+    slug: 'suica',
+    apelido: 'Suíça',
+    nome_fantasia: 'Suíça',
+    id: 2320,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2323': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/NOR/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/NOR/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/NOR/30x30.png'
+    },
+    nome: 'Noruega',
+    abreviacao: 'NOR',
+    slug: 'noruega',
+    apelido: 'Noruega',
+    nome_fantasia: 'Noruega',
+    id: 2323,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2324': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/EGI/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/EGI/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/EGI/30x30.png'
+    },
+    nome: 'Egito',
+    abreviacao: 'EGI',
+    slug: 'egito',
+    apelido: 'Egito',
+    nome_fantasia: 'Egito',
+    id: 2324,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2326': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ESP/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ESP/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ESP/30x30.png'
+    },
+    nome: 'Espanha',
+    abreviacao: 'ESP',
+    slug: 'espanha',
+    apelido: 'Espanha',
+    nome_fantasia: 'Espanha',
+    id: 2326,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2327': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ESC/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ESC/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ESC/30x30.png'
+    },
+    nome: 'Escócia',
+    abreviacao: 'ESC',
+    slug: 'escocia',
+    apelido: 'Escócia',
+    nome_fantasia: 'Escócia',
+    id: 2327,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2328': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/TUR/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/TUR/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/TUR/30x30.png'
+    },
+    nome: 'Turquia',
+    abreviacao: 'TUR',
+    slug: 'turquia',
+    apelido: 'Turquia',
+    nome_fantasia: 'Turquia',
+    id: 2328,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2332': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/MAR/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/MAR/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/MAR/30x30.png'
+    },
+    nome: 'Marrocos',
+    abreviacao: 'MAR',
+    slug: 'marrocos',
+    apelido: 'Marrocos',
+    nome_fantasia: 'Marrocos',
+    id: 2332,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2333': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AUS/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AUS/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AUS/30x30.png'
+    },
+    nome: 'Austrália',
+    abreviacao: 'AUS',
+    slug: 'australia',
+    apelido: 'Austrália',
+    nome_fantasia: 'Austrália',
+    id: 2333,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2334': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/HAI/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/HAI/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/HAI/30x30.png'
+    },
+    nome: 'Haiti',
+    abreviacao: 'HAI',
+    slug: 'haiti',
+    apelido: 'Haiti',
+    nome_fantasia: 'Haiti',
+    id: 2334,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2336': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/IRA/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/IRA/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/IRA/30x30.png'
+    },
+    nome: 'Irã',
+    abreviacao: 'IRA',
+    slug: 'ira',
+    apelido: 'Irã',
+    nome_fantasia: 'Irã',
+    id: 2336,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2337': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/TUN/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/TUN/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/TUN/30x30.png'
+    },
+    nome: 'Tunísia',
+    abreviacao: 'TUN',
+    slug: 'tunisia',
+    apelido: 'Tunísia',
+    nome_fantasia: 'Tunísia',
+    id: 2337,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2338': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AGL/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AGL/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AGL/30x30.png'
+    },
+    nome: 'Argélia',
+    abreviacao: 'AGL',
+    slug: 'argelia',
+    apelido: 'Argélia',
+    nome_fantasia: 'Argélia',
+    id: 2338,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2340': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/NZE/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/NZE/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/NZE/30x30.png'
+    },
+    nome: 'Nova Zelândia',
+    abreviacao: 'NZE',
+    slug: 'nova-zelandia',
+    apelido: 'Nova Zelândia',
+    nome_fantasia: 'Nova Zelândia',
+    id: 2340,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2342': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/IRQ/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/IRQ/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/IRQ/30x30.png'
+    },
+    nome: 'Iraque',
+    abreviacao: 'IRQ',
+    slug: 'iraque',
+    apelido: 'Iraque',
+    nome_fantasia: 'Iraque',
+    id: 2342,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2344': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SAU/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SAU/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SAU/30x30.png'
+    },
+    nome: 'Arábia Saudita',
+    abreviacao: 'SAU',
+    slug: 'arabia-saudita',
+    apelido: 'Arábia Saudita',
+    nome_fantasia: 'Arábia Saudita',
+    id: 2344,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2347': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SEN/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SEN/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SEN/30x30.png'
+    },
+    nome: 'Senegal',
+    abreviacao: 'SEN',
+    slug: 'senegal',
+    apelido: 'Senegal',
+    nome_fantasia: 'Senegal',
+    id: 2347,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2350': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CDM/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CDM/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CDM/30x30.png'
+    },
+    nome: 'Costa do Marfim',
+    abreviacao: 'CDM',
+    slug: 'costa-do-marfim',
+    apelido: 'Costa do Marfim',
+    nome_fantasia: 'Costa do Marfim',
+    id: 2350,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2352': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/TCH/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/TCH/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/TCH/30x30.png'
+    },
+    nome: 'República Tcheca',
+    abreviacao: 'TCH',
+    slug: 'republica-tcheca',
+    apelido: 'República Tcheca',
+    nome_fantasia: 'República Tcheca',
+    id: 2352,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2354': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/PAR/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/PAR/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/PAR/30x30.png'
+    },
+    nome: 'Paraguai',
+    abreviacao: 'PAR',
+    slug: 'paraguai',
+    apelido: 'Paraguai',
+    nome_fantasia: 'Paraguai',
+    id: 2354,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2356': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/URU/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/URU/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/URU/30x30.png'
+    },
+    nome: 'Uruguai',
+    abreviacao: 'URU',
+    slug: 'uruguai',
+    apelido: 'Uruguai',
+    nome_fantasia: 'Uruguai',
+    id: 2356,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2357': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ARG/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ARG/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ARG/30x30.png'
+    },
+    nome: 'Argentina',
+    abreviacao: 'ARG',
+    slug: 'argentina',
+    apelido: 'Argentina',
+    nome_fantasia: 'Argentina',
+    id: 2357,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2358': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AFS/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AFS/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AFS/30x30.png'
+    },
+    nome: 'África do Sul',
+    abreviacao: 'AFS',
+    slug: 'africa-do-sul',
+    apelido: 'África do Sul',
+    nome_fantasia: 'África do Sul',
+    id: 2358,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2360': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/MEX/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/MEX/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/MEX/30x30.png'
+    },
+    nome: 'México',
+    abreviacao: 'MEX',
+    slug: 'mexico',
+    apelido: 'México',
+    nome_fantasia: 'México',
+    id: 2360,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2361': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CAN/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CAN/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CAN/30x30.png'
+    },
+    nome: 'Canadá',
+    abreviacao: 'CAN',
+    slug: 'canada',
+    apelido: 'Canadá',
+    nome_fantasia: 'Canadá',
+    id: 2361,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2365': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/EUA/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/EUA/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/EUA/30x30.png'
+    },
+    nome: 'Estados Unidos',
+    abreviacao: 'EUA',
+    slug: 'estados-unidos',
+    apelido: 'Estados Unidos',
+    nome_fantasia: 'Estados Unidos',
+    id: 2365,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2368': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SUE/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SUE/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/SUE/30x30.png'
+    },
+    nome: 'Suécia',
+    abreviacao: 'SUE',
+    slug: 'suecia',
+    apelido: 'Suécia',
+    nome_fantasia: 'Suécia',
+    id: 2368,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2369': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/JAP/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/JAP/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/JAP/30x30.png'
+    },
+    nome: 'Japão',
+    abreviacao: 'JAP',
+    slug: 'japao',
+    apelido: 'Japão',
+    nome_fantasia: 'Japão',
+    id: 2369,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2370': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ING/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ING/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ING/30x30.png'
+    },
+    nome: 'Inglaterra',
+    abreviacao: 'ING',
+    slug: 'inglaterra',
+    apelido: 'Inglaterra',
+    nome_fantasia: 'Inglaterra',
+    id: 2370,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2372': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/EQU/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/EQU/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/EQU/30x30.png'
+    },
+    nome: 'Equador',
+    abreviacao: 'EQU',
+    slug: 'equador',
+    apelido: 'Equador',
+    nome_fantasia: 'Equador',
+    id: 2372,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2373': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/COL/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/COL/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/COL/30x30.png'
+    },
+    nome: 'Colômbia',
+    abreviacao: 'COL',
+    slug: 'colombia',
+    apelido: 'Colômbia',
+    nome_fantasia: 'Colômbia',
+    id: 2373,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2374': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/COR/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/COR/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/COR/30x30.png'
+    },
+    nome: 'Coreia do Sul',
+    abreviacao: 'COR',
+    slug: 'coreia-do-sul',
+    apelido: 'Coreia do Sul',
+    nome_fantasia: 'Coreia do Sul',
+    id: 2374,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2375': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/GAN/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/GAN/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/GAN/30x30.png'
+    },
+    nome: 'Gana',
+    abreviacao: 'GAN',
+    slug: 'gana',
+    apelido: 'Gana',
+    nome_fantasia: 'Gana',
+    id: 2375,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2379': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CRO/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CRO/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CRO/30x30.png'
+    },
+    nome: 'Croácia',
+    abreviacao: 'CRO',
+    slug: 'croacia',
+    apelido: 'Croácia',
+    nome_fantasia: 'Croácia',
+    id: 2379,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2381': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/HOL/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/HOL/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/HOL/30x30.png'
+    },
+    nome: 'Holanda',
+    abreviacao: 'HOL',
+    slug: 'holanda',
+    apelido: 'Holanda',
+    nome_fantasia: 'Holanda',
+    id: 2381,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2384': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ALE/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ALE/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/ALE/30x30.png'
+    },
+    nome: 'Alemanha',
+    abreviacao: 'ALE',
+    slug: 'alemanha',
+    apelido: 'Alemanha',
+    nome_fantasia: 'Alemanha',
+    id: 2384,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2385': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/FRA/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/FRA/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/FRA/30x30.png'
+    },
+    nome: 'França',
+    abreviacao: 'FRA',
+    slug: 'franca',
+    apelido: 'França',
+    nome_fantasia: 'França',
+    id: 2385,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2390': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/POR/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/POR/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/POR/30x30.png'
+    },
+    nome: 'Portugal',
+    abreviacao: 'POR',
+    slug: 'portugal',
+    apelido: 'Portugal',
+    nome_fantasia: 'Portugal',
+    id: 2390,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2391': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AUT/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AUT/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/AUT/30x30.png'
+    },
+    nome: 'Áustria',
+    abreviacao: 'AUT',
+    slug: 'austria',
+    apelido: 'Áustria',
+    nome_fantasia: 'Áustria',
+    id: 2391,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2392': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/BEL/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/BEL/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/BEL/30x30.png'
+    },
+    nome: 'Bélgica',
+    abreviacao: 'BEL',
+    slug: 'belgica',
+    apelido: 'Bélgica',
+    nome_fantasia: 'Bélgica',
+    id: 2392,
+    url_editoria: null,
+    disponivel: true
+  },
+  '2865': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/BOS/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/BOS/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/BOS/30x30.png'
+    },
+    nome: 'Bósnia',
+    abreviacao: 'BOS',
+    slug: 'bosnia-herzegovina',
+    apelido: 'Bósnia',
+    nome_fantasia: 'Bósnia',
+    id: 2865,
+    url_editoria: null,
+    disponivel: true
+  },
+  '3061': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/UZB/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/UZB/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/UZB/30x30.png'
+    },
+    nome: 'Uzbequistão',
+    abreviacao: 'UZB',
+    slug: 'uzbequistao',
+    apelido: 'Uzbequistão',
+    nome_fantasia: 'Uzbequistão',
+    id: 3061,
+    url_editoria: null,
+    disponivel: true
+  },
+  '3062': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/PAN/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/PAN/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/PAN/30x30.png'
+    },
+    nome: 'Panamá',
+    abreviacao: 'PAN',
+    slug: 'panama',
+    apelido: 'Panamá',
+    nome_fantasia: 'Panamá',
+    id: 3062,
+    url_editoria: null,
+    disponivel: true
+  },
+  '3184': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/RDC/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/RDC/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/RDC/30x30.png'
+    },
+    nome: 'RD Congo',
+    abreviacao: 'RDC',
+    slug: 'rdcongo',
+    apelido: 'RD Congo',
+    nome_fantasia: 'RD Congo',
+    id: 3184,
+    url_editoria: null,
+    disponivel: true
+  },
+  '3201': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CAB/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CAB/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CAB/30x30.png'
+    },
+    nome: 'Cabo Verde',
+    abreviacao: 'CAB',
+    slug: 'caboverde',
+    apelido: 'Cabo Verde',
+    nome_fantasia: 'Cabo Verde',
+    id: 3201,
+    url_editoria: null,
+    disponivel: true
+  },
+  '3221': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CUR/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CUR/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CUR/30x30.png'
+    },
+    nome: 'Curaçao',
+    abreviacao: 'CUR',
+    slug: 'curacao',
+    apelido: 'Curaçao',
+    nome_fantasia: 'Curaçao',
+    id: 3221,
+    url_editoria: null,
+    disponivel: true
+  },
+  '3231': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/JOR/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/JOR/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/JOR/30x30.png'
+    },
+    nome: 'Jordânia',
+    abreviacao: 'JOR',
+    slug: 'jordania',
+    apelido: 'Jordânia',
+    nome_fantasia: 'Jordânia',
+    id: 3231,
+    url_editoria: null,
+    disponivel: true
+  },
+  '3238': {
+    escudos: {
+      '60x60':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CAT/60x60.png',
+      '45x45':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CAT/45x45.png',
+      '30x30':
+        'https://s3.glbimg.com/v1/AUTH_925c4b2308d342c6ba7864ea930fdada/clubes_2026/escudos/CAT/30x30.png'
+    },
+    nome: 'Catar',
+    abreviacao: 'CAT',
+    slug: 'qatar',
+    apelido: 'Catar',
+    nome_fantasia: 'Catar',
+    id: 3238,
+    url_editoria: null,
+    disponivel: true
+  }
+}
+
+export type FootballNationalTeamsIds = keyof typeof NATIONAL_TEAMS

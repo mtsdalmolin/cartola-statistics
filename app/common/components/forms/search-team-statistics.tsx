@@ -32,7 +32,7 @@ function SubmitButton({ disabled }: { disabled?: boolean }) {
     >
       {pending ? (
         <Loader
-          color="#7ae1bf"
+          className="stroke-palette-primary-500"
           size={20}
           aria-live="assertive"
           aria-label="Buscando estatísticas da equipe"
@@ -143,7 +143,11 @@ function SearchTeamStatisticsFormComponent(
             {...args}
           />
         ))}
-        description={isLoading ? <>Buscando times...</> : <>Digite o nome do time no cartola</>}
+        description={
+          <span className="text-palette-neutral-100">
+            {isLoading ? 'Buscando times...' : 'Digite o nome do time no cartola'}
+          </span>
+        }
         data={
           !isEmpty(memoizedSearchedTeams)
             ? uniqBy([...listOfTeamsInSearch, ...memoizedSearchedTeams], 'id')

@@ -19,6 +19,7 @@ export async function GET(request: Request, context: GetContext) {
   const teamId = context.params['team-id']
   const { searchParams } = new URL(request.url)
   const year = searchParams.get('year')
+  const isWorldCup = year?.includes('-world-cup')
 
   if (isNil(year) || year === 'undefined') {
     return NextResponse.json({ message: 'Bad format' }, { status: 422 })
@@ -65,7 +66,8 @@ export async function GET(request: Request, context: GetContext) {
     if (roundsCached.includes(roundId)) return
 
     requestPromises[roundId.toString()] = makeRequest(
-      ENDPOINTS.GET_TEAM_SUBS(teamId, roundId.toString())
+      ENDPOINTS.GET_TEAM_SUBS(teamId, roundId.toString()),
+      { isWorldCup }
     )
   })
 

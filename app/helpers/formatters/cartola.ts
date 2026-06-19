@@ -408,12 +408,14 @@ export function formatCartolaApiData({
   results,
   rounds,
   subs,
-  year
+  year,
+  isWorldCup
 }: {
   results: PromiseSettledResult<RoundData>[]
   rounds: RoundMatchesData
   subs: Record<string, SubsData[]>
-  year: SeasonYears
+  year: SeasonYears | 'CUP_2026'
+  isWorldCup?: boolean
 }): [
   CrewStatistics,
   CrewStatistics,
@@ -696,10 +698,12 @@ export function formatCartolaApiData({
       teamsTrophies[Trophies.DEFENSE_DIDNT_SUFFER_GOALS] = defenseAthletes
     }
 
-    if (!(Trophies.REACHED_200_CARTOLETAS in teamsTrophies) && wealth >= 200) {
+    console.log({ teamsTrophies, isWorldCup, year })
+    if (!isWorldCup && !(Trophies.REACHED_200_CARTOLETAS in teamsTrophies) && wealth >= 200) {
       registerTrophyEvent(Trophies.REACHED_200_CARTOLETAS, { team: teamInfo })
       teamsTrophies[Trophies.REACHED_200_CARTOLETAS] = result.value
     }
+    console.log({ teamsTrophies })
 
     const midfielders = athletes.filter((athlete) => MEIA === athlete.posicao_id)
 

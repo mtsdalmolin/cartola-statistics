@@ -12,6 +12,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const rounds = searchParams.get('rounds')
   const year = searchParams.get('year')
+  const isWorldCup = year?.includes('-world-cup')
 
   if (isNil(year) || year === 'undefined') {
     return NextResponse.json({ message: 'Bad format' }, { status: 422 })
@@ -55,7 +56,9 @@ export async function GET(request: Request) {
   roundIds.forEach((roundId) => {
     if (roundsCached.includes(roundId)) return
 
-    requestPromises[roundId.toString()] = makeRequest(ENDPOINTS.MATCHES_BY_ID(roundId.toString()))
+    requestPromises[roundId.toString()] = makeRequest(ENDPOINTS.MATCHES_BY_ID(roundId.toString()), {
+      isWorldCup
+    })
   })
 
   const roundsToBeCached: number[] = []
@@ -69,6 +72,7 @@ export async function GET(request: Request) {
   results.forEach((result) => {
     if (result.status === 'fulfilled') {
       const roundId = result.value.rodada
+      console.log(result.value)
       roundMatches[roundId] = formatMatchData(result.value.partidas)
 
       if (!roundsCached.includes(roundId)) {

@@ -1,22 +1,21 @@
 import type { Metadata } from 'next'
 
+import { MarketContent } from '@/app/common/components/market-content.client'
+import { Athlete } from '@/app/common/types/athlete'
 import type { Match } from '@/app/common/types/match'
+import { PHOTO_SIZE_FORMAT } from '@/app/constants/format'
+import { NULL } from '@/app/constants/status'
+import { FOOTBALL_TEAMS } from '@/app/constants/teams'
+import { getPositionName } from '@/app/helpers/positions'
+import { getStatusName } from '@/app/helpers/status'
+import { getFootballTeamBadgeLink, getFootballTeamName } from '@/app/helpers/teams'
 import { getJwtToken, getRefreshToken } from '@/app/services/auth/api'
-
-import { MarketContent } from '../../../common/components/market-content.client'
-import { Athlete } from '../../../common/types/athlete'
-import { PHOTO_SIZE_FORMAT } from '../../../constants/format'
-import { NULL } from '../../../constants/status'
-import { FOOTBALL_TEAMS } from '../../../constants/teams'
-import { getPositionName } from '../../../helpers/positions'
-import { getStatusName } from '../../../helpers/status'
-import { getFootballTeamBadgeLink, getFootballTeamName } from '../../../helpers/teams'
 import {
   ENDPOINTS,
   getAthletesValuation,
   getMatchesData,
   request
-} from '../../../services/cartola-api'
+} from '@/app/services/cartola-api'
 
 export const metadata: Metadata = {
   title: 'Mercado',
@@ -107,6 +106,7 @@ async function getMarketData() {
   const roundMatches = await getMatchesData()
 
   const marketStatistics: MarketStatistics = []
+
   athletes.forEach((athlete) => {
     marketStatistics.push(
       marketAthleteTableDataFactory(
