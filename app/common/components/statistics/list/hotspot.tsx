@@ -1,7 +1,7 @@
 import { ReactNode, useRef } from 'react'
 
 import NextImage from 'next/image'
-import { useParams } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 
 import { useExtractImageContext } from '@/app/common/contexts/extract-image-context.client'
 import { useSelectedYearContext } from '@/app/common/contexts/selected-year-context.client'
@@ -26,11 +26,14 @@ export function ListHotspot({
   details?: ReactNode
 }) {
   const params = useParams()
+  const pathname = usePathname()
   const hotspotRef = useRef(null)
   const { createImageAndSaveInBlobStore } = useExtractImageContext()
   const { currentRound, teamInfo } = useTeamInfoContext()
   const { shareLink } = useShareStatisticsLinkContext()
   const { selectedYear } = useSelectedYearContext()
+
+  const isWorldCup = pathname.includes('/copa')
 
   const renderedHtml = (
     <Flex
@@ -41,7 +44,7 @@ export function ListHotspot({
       gap="sm"
     >
       <Flex align="center" gap="sm" direction="column">
-        {shareLink ? (
+        {!isWorldCup && shareLink ? (
           <Tooltip className="absolute right-3 top-2" label="Compartilhar estatística no Twitter/X">
             <ActionIcon
               onClick={() =>
