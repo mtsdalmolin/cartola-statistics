@@ -26,4 +26,8 @@ export enum Trophies {
   THREE_PLAYERS_MISSED_PENALTY = 'three-players-missed-penalty'
 }
 
-export type TrophiesData = { [key in Trophies]?: Athlete[] | RoundData | Subs }
+export enum WorldCupTrophies {
+  VOZINHA_IN_ROSTER = 'vozinha-in-roster',
+}
+
+export type TrophiesData = { [key in Trophies | WorldCupTrophies]?: Athlete[] | RoundData | Subs }

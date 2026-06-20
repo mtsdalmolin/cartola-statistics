@@ -38,8 +38,10 @@ import reached200CartoletasBadge from '@/public/badges/reached-200-cartoletas-ba
 import sevenPlayersScoredInRoundBadge from '@/public/badges/seven-players-scored-in-round-badge.svg'
 import threePlayersMissedPenaltyBadge from '@/public/badges/three-players-missed-penalty-badge.svg'
 import threePlayersRedCardedBadge from '@/public/badges/three-players-red-carded-badge.svg'
+import vozinhaInRosterBadge from '@/public/badges/world-cup/vozinha-in-roster.svg'
+import vozinhaInRosterJpgBadge from '@/public/badges/world-cup/png/vozinha-in-roster.png'
 
-import { Trophies } from '../common/types/trophies'
+import { Trophies, WorldCupTrophies } from '../common/types/trophies'
 
 export const TROPHIES_IMAGE = {
   [Trophies.ASSIST_WITH_GOALKEEPER]: assistWithGoalkeeperBadge,
@@ -62,7 +64,8 @@ export const TROPHIES_IMAGE = {
   [Trophies.PLAYER_SCORED_HATTRICK]: hattrickBadge,
   [Trophies.REACHED_200_CARTOLETAS]: reached200CartoletasBadge,
   [Trophies.SEVEN_PLAYERS_SCORED]: sevenPlayersScoredInRoundBadge,
-  [Trophies.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyBadge
+  [Trophies.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyBadge,
+  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterBadge,
 }
 
 export const TROPHIES_JPG_IMAGE = {
@@ -87,10 +90,11 @@ export const TROPHIES_JPG_IMAGE = {
   [Trophies.PLAYER_SCORED_HATTRICK]: hattrickJpgBadge,
   [Trophies.REACHED_200_CARTOLETAS]: reached200CartoletasJpgBadge,
   [Trophies.SEVEN_PLAYERS_SCORED]: sevenPlayersScoredInRoundJpgBadge,
-  [Trophies.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyJpgBadge
+  [Trophies.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyJpgBadge,
+  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterJpgBadge,
 }
 
-export const TROPHY_TO_PARAM: Record<Trophies, keyof typeof PARAM_TO_TROPHY> = {
+export const TROPHY_TO_PARAM: Record<Trophies | WorldCupTrophies, keyof typeof PARAM_TO_TROPHY> = {
   [Trophies.ASSIST_WITH_GOALKEEPER]: 'goleiro-garcom',
   [Trophies.CAME_FROM_BENCH_AND_MADE_12_POINTS]: 'veio-do-banco-e-mitou',
   [Trophies.DEFENSE_DIDNT_SUFFER_GOALS]: 'muralha',
@@ -110,7 +114,8 @@ export const TROPHY_TO_PARAM: Record<Trophies, keyof typeof PARAM_TO_TROPHY> = {
   [Trophies.PLAYER_SCORED_HATTRICK]: 'hat-trick',
   [Trophies.REACHED_200_CARTOLETAS]: 'atingiu-200-cartoletas',
   [Trophies.SEVEN_PLAYERS_SCORED]: '7-jogadores-marcaram',
-  [Trophies.THREE_PLAYERS_MISSED_PENALTY]: '3-jogadores-erraram-penaltis'
+  [Trophies.THREE_PLAYERS_MISSED_PENALTY]: '3-jogadores-erraram-penaltis',
+  [WorldCupTrophies.VOZINHA_IN_ROSTER]: 'vozinha-escalado',
 }
 
 export const PARAM_TO_TROPHY = {
@@ -133,7 +138,8 @@ export const PARAM_TO_TROPHY = {
   '3-jogadores-expulsos': Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS,
   'lunatico': Trophies.ONE_PLAYER_OF_EACH_CLUB,
   'fanatico': Trophies.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB,
-  'goleiro-garcom': Trophies.ASSIST_WITH_GOALKEEPER
+  'goleiro-garcom': Trophies.ASSIST_WITH_GOALKEEPER,
+  'vozinha-escalado': [WorldCupTrophies.VOZINHA_IN_ROSTER],
 }
 
 export const TROPHY_NAME = {
@@ -156,7 +162,8 @@ export const TROPHY_NAME = {
   '3-jogadores-expulsos': 'Azarão',
   'lunatico': 'Lunático',
   'fanatico': 'Fanático',
-  'goleiro-garcom': 'Goleiro Garçom'
+  'goleiro-garcom': 'Goleiro Garçom',
+  'vozinha-escalado': 'Vozinha escalado',
 }
 
 export const TWITTER_TROPHY_MESSAGE = {
@@ -181,5 +188,6 @@ export const TWITTER_TROPHY_MESSAGE = {
   '3-jogadores-expulsos': 'tive 3 jogadores expulsos nas escalações do cartola.',
   'lunatico': 'todos os escalados são de clubes diferentes.',
   'fanatico': 'escalei todos do mesmo time.',
-  'goleiro-garcom': 'escalei um goleiro que deu assistência.'
+  'goleiro-garcom': 'escalei um goleiro que deu assistência.',
+  'vozinha-escalado': 'escalei o Vozinha na copa do mundo.',
 }

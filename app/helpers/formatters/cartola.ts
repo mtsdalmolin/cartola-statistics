@@ -6,7 +6,7 @@ import {
 } from '@/app/common/types/athlete'
 import { PositionsStatistics } from '@/app/common/types/position'
 import { TeamInfo } from '@/app/common/types/team'
-import { TrophiesData } from '@/app/common/types/trophies'
+import { TrophiesData, WorldCupTrophies } from '@/app/common/types/trophies'
 import { Trophies } from '@/app/common/types/trophies'
 import { SEASONS, SeasonYears } from '@/app/constants/data'
 import {
@@ -74,8 +74,8 @@ function getRoundResultPoints(round: RoundMatchesData[0], clubId: number) {
     return round[clubId].result.winner === 'draw'
       ? 1
       : round[clubId].result.winner === clubId
-      ? 3
-      : 0
+        ? 3
+        : 0
   }
 
   return 0
@@ -214,8 +214,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     participationInGoalsRounds:
       (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0) > 0
         ? {
-            [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
-          }
+          [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
+        }
         : {},
     offsideRounds: athlete.scout?.I ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.I ?? 0 } : {},
     pointsPerRound: { [athlete.rodada_id]: Number(pointsInRound.toFixed(1)) },
@@ -417,14 +417,14 @@ export function formatCartolaApiData({
   year: SeasonYears | 'CUP_2026'
   isWorldCup?: boolean
 }): [
-  CrewStatistics,
-  CrewStatistics,
-  ClubStatistics,
-  PositionsStatistics,
-  TrophiesData,
-  TeamInfo,
-  Record<'bestTeam' | 'worstTeam', Athlete[]>
-] {
+    CrewStatistics,
+    CrewStatistics,
+    ClubStatistics,
+    PositionsStatistics,
+    TrophiesData,
+    TeamInfo,
+    Record<'bestTeam' | 'worstTeam', Athlete[]>
+  ] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
@@ -446,7 +446,7 @@ export function formatCartolaApiData({
       }
     }
   }
-  const teamsTrophies: TrophiesData = {}
+  const teamsTrophies: TrophiesData | WorldCupTrophies = {}
   const redCardedAthletes: Athlete[] = []
   const athletesThatMissedPenalty: Athlete[] = []
   const everyAthlete: Record<PositionsIds, Athlete[]> = {
@@ -538,6 +538,11 @@ export function formatCartolaApiData({
           points: athletePoints,
           pointsPercentage: 0
         }
+      }
+
+      if (isWorldCup && athlete.atleta_id === 113497) {
+        registerTrophyEvent(WorldCupTrophies.VOZINHA_IN_ROSTER, { team: teamInfo })
+        teamsTrophies[WorldCupTrophies.VOZINHA_IN_ROSTER] = [athlete]
       }
 
       if (athlete.minimo_para_valorizar && athlete.pontos_num > athlete.minimo_para_valorizar) {

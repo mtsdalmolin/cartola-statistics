@@ -6,7 +6,7 @@ import { useParams, usePathname } from 'next/navigation'
 
 import { type TrophiesReturnType } from '@/app/actions'
 import { Flex } from '@/app/common/components/flex'
-import { TrophiesData, Trophies as TrophiesEnum } from '@/app/common/types/trophies'
+import { TrophiesData, Trophies as TrophiesEnum, WorldCupTrophies as WorldCupTrophisEnum } from '@/app/common/types/trophies'
 import { SEASONS, SeasonYears } from '@/app/constants/data'
 import { PHOTO_SIZE_FORMAT } from '@/app/constants/format'
 import { UNEMPLOYED } from '@/app/constants/teams'
@@ -65,7 +65,9 @@ const TROPHY_DESCRIPTION = {
   [TrophiesEnum.SEVEN_PLAYERS_SCORED]:
     'Medalha de conquista quando em uma escalação, 7 jogadores marcaram gols.',
   [TrophiesEnum.THREE_PLAYERS_MISSED_PENALTY]:
-    'Medalha de conquista por ter escalado 3 ou mais jogadores que erraram pênaltis.'
+    'Medalha de conquista por ter escalado 3 ou mais jogadores que erraram pênaltis.',
+  [WorldCupTrophisEnum.VOZINHA_IN_ROSTER]:
+    'Medalha de conquista por ter escalado o goleiro Vozinha na copa do mundo de 2026.'
 }
 
 type TrophiesWithYear =
@@ -156,35 +158,35 @@ export function ShareOnTwitterButtonLink({
   year
 }:
   | {
-      type: 'trophy'
-      teamId: string
-      year: SeasonYears
-      trophyParamName: keyof typeof PARAM_TO_TROPHY
-    }
+    type: 'trophy'
+    teamId: string
+    year: SeasonYears
+    trophyParamName: keyof typeof PARAM_TO_TROPHY
+  }
   | {
-      type: 'trophyBoard'
-      teamId: string
-      year: SeasonYears
-      trophyParamName?: never
-    }) {
+    type: 'trophyBoard'
+    teamId: string
+    year: SeasonYears
+    trophyParamName?: never
+  }) {
   return (
     <Link
       className="bg-palette-neutral-800 hover:bg-palette-neutral-700 rounded-md px-4"
       href={
         type === 'trophy'
           ? createTrophyTwitterShareLink({
-              teamId,
-              trophyParamName,
-              year
-            })
+            teamId,
+            trophyParamName,
+            year
+          })
           : createTrophyBoardTwitterShareLink({
-              teamId,
-              roundId: +last([
-                ...SEASONS[year].FIRST_TURN_ROUNDS,
-                ...SEASONS[year].SECOND_TURN_ROUNDS
-              ])!,
-              year
-            })
+            teamId,
+            roundId: +last([
+              ...SEASONS[year].FIRST_TURN_ROUNDS,
+              ...SEASONS[year].SECOND_TURN_ROUNDS
+            ])!,
+            year
+          })
       }
       target="_blank"
     >
