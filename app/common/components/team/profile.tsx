@@ -19,16 +19,20 @@ function TeamTurnData({
   average,
   total,
   validRounds,
+  title,
   isFirstTurn = false
 }: {
   average: number
   total: number
   validRounds: number
   isFirstTurn?: boolean
+  title?: string
 }) {
   return (
     <>
-      <Text className={`${bebasNeue.className} text-2xl`}>{isFirstTurn ? 'Turno' : 'Returno'}</Text>
+      <Text className={`${bebasNeue.className} text-2xl`}>
+        {title ? title : isFirstTurn ? 'Turno' : 'Returno'}
+      </Text>
       <Text>
         <b className={`${bebasNeue.className} text-xl`}>{validRounds}</b> rodadas válidas
       </Text>
@@ -91,6 +95,8 @@ export function TeamProfile({
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
+  const isWorldCup = pathname.includes('/copa')
+
   useEffect(() => {
     const url = new URLSearchParams(searchParams)
     if (pathname !== '/' && url.get('link') === 'share' && pathname.includes('estatisticas')) return
@@ -113,13 +119,16 @@ export function TeamProfile({
               average={teamInfo.pointsPerTurn.first.average}
               total={teamInfo.pointsPerTurn.first.total}
               validRounds={teamInfo.pointsPerTurn.first.validRounds}
+              title={isWorldCup ? 'Rodadas' : undefined}
               isFirstTurn
             />
-            <TeamTurnData
-              average={teamInfo.pointsPerTurn.second.average}
-              total={teamInfo.pointsPerTurn.second.total}
-              validRounds={teamInfo.pointsPerTurn.second.validRounds}
-            />
+            {!isWorldCup ? (
+              <TeamTurnData
+                average={teamInfo.pointsPerTurn.second.average}
+                total={teamInfo.pointsPerTurn.second.total}
+                validRounds={teamInfo.pointsPerTurn.second.validRounds}
+              />
+            ) : null}
           </Flex>
         </Flex>
         {pathname === '/' ? (
