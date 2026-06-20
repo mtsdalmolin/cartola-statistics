@@ -216,7 +216,7 @@ function TrophyDescription({
 
   const teamId = teamIdParam ?? teamInfo?.id
 
-  const isWorldCup = pathname.includes('/copa/')
+  const isWorldCup = pathname.includes('/copa')
 
   if (isNil(data)) return null
 
