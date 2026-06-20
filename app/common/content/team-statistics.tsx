@@ -94,7 +94,7 @@ export default function TeamStatisticsContent({
             trophies={teamData.trophies}
           />
         ) : null}
-        {!isNil(teamData.teamInfo) ? (
+        {!isWorldCup && !isNil(teamData.teamInfo) ? (
           <Flex className="w-full py-4" justify="center">
             <ShareOnTwitterButtonLink
               type="trophyBoard"

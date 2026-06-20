@@ -2,7 +2,7 @@ import { CSSProperties } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 
 import { type TrophiesReturnType } from '@/app/actions'
 import { Flex } from '@/app/common/components/flex'
@@ -209,11 +209,14 @@ function TrophyDescription({
   matchesData: RoundMatchesData
   name: keyof typeof TROPHIES_IMAGE
 }) {
+  const pathname = usePathname()
   const { teamId: teamIdParam } = useParams()
   const { teamInfo } = useTeamInfoContext()
   const { selectedYear } = useSelectedYearContext()
 
   const teamId = teamIdParam ?? teamInfo?.id
+
+  const isWorldCup = pathname.includes('/copa/')
 
   if (isNil(data)) return null
 
@@ -303,7 +306,7 @@ function TrophyDescription({
           <AthleteDetail athlete={getLowestScorer(data)!} title="Menor pontuador" />
         </Flex>
       )}
-      {!isArray(teamId) ? (
+      {!isWorldCup && !isArray(teamId) ? (
         <Flex className="w-full" justify="center" align="center">
           <ShareOnTwitterButtonLink
             type="trophy"
