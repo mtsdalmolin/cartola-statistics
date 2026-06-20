@@ -698,12 +698,10 @@ export function formatCartolaApiData({
       teamsTrophies[Trophies.DEFENSE_DIDNT_SUFFER_GOALS] = defenseAthletes
     }
 
-    console.log({ teamsTrophies, isWorldCup, year })
     if (!isWorldCup && !(Trophies.REACHED_200_CARTOLETAS in teamsTrophies) && wealth >= 200) {
       registerTrophyEvent(Trophies.REACHED_200_CARTOLETAS, { team: teamInfo })
       teamsTrophies[Trophies.REACHED_200_CARTOLETAS] = result.value
     }
-    console.log({ teamsTrophies })
 
     const midfielders = athletes.filter((athlete) => MEIA === athlete.posicao_id)
 

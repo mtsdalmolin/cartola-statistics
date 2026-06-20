@@ -42,7 +42,6 @@ export const metadata: Metadata = {
 }
 
 export default async function WorldCupLayout({ children }: { children: React.ReactNode }) {
-  console.log('rendering wc layout')
   return (
     <html lang="pt-BR" className="theme-world-cup">
       <head>

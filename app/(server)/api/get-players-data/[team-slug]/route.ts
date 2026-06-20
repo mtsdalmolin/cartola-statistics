@@ -52,7 +52,6 @@ export async function GET(request: Request, context: GetContext) {
   }
 
   if (needsToFetchFromCartola) {
-    console.log({ isWorldCup })
     result = await makeRequest(cartolaEndpoint, { isWorldCup })
 
     console.log('fetching data from cartola api: ', cartolaEndpoint)

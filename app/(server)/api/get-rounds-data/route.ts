@@ -72,7 +72,6 @@ export async function GET(request: Request) {
   results.forEach((result) => {
     if (result.status === 'fulfilled') {
       const roundId = result.value.rodada
-      console.log(result.value)
       roundMatches[roundId] = formatMatchData(result.value.partidas)
 
       if (!roundsCached.includes(roundId)) {

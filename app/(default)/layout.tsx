@@ -43,7 +43,6 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  console.log('rendering root layout')
   return (
     <html lang="pt-BR">
       <head>
