@@ -40,6 +40,8 @@ import threePlayersMissedPenaltyBadge from '@/public/badges/three-players-missed
 import threePlayersRedCardedBadge from '@/public/badges/three-players-red-carded-badge.svg'
 import vozinhaInRosterBadge from '@/public/badges/world-cup/vozinha-in-roster.svg'
 import vozinhaInRosterJpgBadge from '@/public/badges/world-cup/png/vozinha-in-roster.png'
+import messiCr7OchoaInRosterBadge from '@/public/badges/world-cup/messi-cr7-ochoa-in-roster.svg'
+import messiCr7OchoaInRosterJpgBadge from '@/public/badges/world-cup/jpg/messi-cr7-ochoa-in-roster.jpg'
 
 import { Trophies, WorldCupTrophies } from '../common/types/trophies'
 
@@ -66,6 +68,7 @@ export const TROPHIES_IMAGE = {
   [Trophies.SEVEN_PLAYERS_SCORED]: sevenPlayersScoredInRoundBadge,
   [Trophies.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyBadge,
   [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterBadge,
+  [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER]: messiCr7OchoaInRosterBadge,
 }
 
 export const TROPHIES_JPG_IMAGE = {
@@ -116,6 +119,7 @@ export const TROPHY_TO_PARAM: Record<Trophies | WorldCupTrophies, keyof typeof P
   [Trophies.SEVEN_PLAYERS_SCORED]: '7-jogadores-marcaram',
   [Trophies.THREE_PLAYERS_MISSED_PENALTY]: '3-jogadores-erraram-penaltis',
   [WorldCupTrophies.VOZINHA_IN_ROSTER]: 'vozinha-escalado',
+  [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER]: messiCr7OchoaInRosterJpgBadge,
 }
 
 export const PARAM_TO_TROPHY = {
@@ -140,6 +144,7 @@ export const PARAM_TO_TROPHY = {
   'fanatico': Trophies.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB,
   'goleiro-garcom': Trophies.ASSIST_WITH_GOALKEEPER,
   'vozinha-escalado': [WorldCupTrophies.VOZINHA_IN_ROSTER],
+  'messi-cr7-ochoa-escalados': [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER],
 }
 
 export const TROPHY_NAME = {
@@ -164,6 +169,7 @@ export const TROPHY_NAME = {
   'fanatico': 'Fanático',
   'goleiro-garcom': 'Goleiro Garçom',
   'vozinha-escalado': 'Vozinha escalado',
+  'messi-cr7-ochoa-escalados': 'Messi, Cristiano Ronaldo ou Ochoa escalados',
 }
 
 export const TWITTER_TROPHY_MESSAGE = {
@@ -190,4 +196,5 @@ export const TWITTER_TROPHY_MESSAGE = {
   'fanatico': 'escalei todos do mesmo time.',
   'goleiro-garcom': 'escalei um goleiro que deu assistência.',
   'vozinha-escalado': 'escalei o Vozinha na copa do mundo.',
+  'messi-cr7-ochoa-escalados': 'escalei Messi, Cristiano Ronaldo ou Ochoa na copa do mundo.',
 }

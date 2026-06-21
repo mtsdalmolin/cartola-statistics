@@ -540,9 +540,24 @@ export function formatCartolaApiData({
         }
       }
 
-      if (isWorldCup && athlete.atleta_id === 113497) {
-        registerTrophyEvent(WorldCupTrophies.VOZINHA_IN_ROSTER, { team: teamInfo })
-        teamsTrophies[WorldCupTrophies.VOZINHA_IN_ROSTER] = [athlete]
+      if (isWorldCup) {
+        // vozinha
+        if (athlete.atleta_id === 113497) {
+          registerTrophyEvent(WorldCupTrophies.VOZINHA_IN_ROSTER, { team: teamInfo })
+          teamsTrophies[WorldCupTrophies.VOZINHA_IN_ROSTER] = [athlete]
+        }
+
+        // messi, cr7 or ochoa
+        if ([67746, 67972, 69513].includes(athlete.atleta_id)) {
+          registerTrophyEvent(WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER, { team: teamInfo })
+          if (teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER])
+            teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER] = [
+              ...teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER] as Athlete[],
+              athlete
+            ]
+          else
+            teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER] = [athlete]
+        }
       }
 
       if (athlete.minimo_para_valorizar && athlete.pontos_num > athlete.minimo_para_valorizar) {

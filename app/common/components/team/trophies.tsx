@@ -67,7 +67,9 @@ const TROPHY_DESCRIPTION = {
   [TrophiesEnum.THREE_PLAYERS_MISSED_PENALTY]:
     'Medalha de conquista por ter escalado 3 ou mais jogadores que erraram pênaltis.',
   [WorldCupTrophisEnum.VOZINHA_IN_ROSTER]:
-    'Medalha de conquista por ter escalado o goleiro Vozinha na copa do mundo de 2026.'
+    'Medalha de conquista por ter escalado o goleiro Vozinha na copa do mundo de 2026.',
+  [WorldCupTrophisEnum.MESSI_CR7_OCHOA_IN_ROSTER]:
+    'Medalha de conquista por ter escalado Messi, Cristiano Ronaldo ou Ochoa na copa do mundo de 2026.'
 }
 
 type TrophiesWithYear =
@@ -335,7 +337,7 @@ function Trophy({
   return (
     <HoverCard width={280} shadow="md">
       <HoverCard.Target>
-        <div className="relative hover:scale-150">
+        <div className="flex relative aspect-square hover:scale-150">
           <Image
             src={TROPHIES_IMAGE[name]}
             width={128}

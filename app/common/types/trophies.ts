@@ -28,6 +28,7 @@ export enum Trophies {
 
 export enum WorldCupTrophies {
   VOZINHA_IN_ROSTER = 'vozinha-in-roster',
+  MESSI_CR7_OCHOA_IN_ROSTER = 'messi-cr7-ochoa-in-roster',
 }
 
 export type TrophiesData = { [key in Trophies | WorldCupTrophies]?: Athlete[] | RoundData | Subs }
