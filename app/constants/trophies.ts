@@ -38,10 +38,30 @@ import reached200CartoletasBadge from '@/public/badges/reached-200-cartoletas-ba
 import sevenPlayersScoredInRoundBadge from '@/public/badges/seven-players-scored-in-round-badge.svg'
 import threePlayersMissedPenaltyBadge from '@/public/badges/three-players-missed-penalty-badge.svg'
 import threePlayersRedCardedBadge from '@/public/badges/three-players-red-carded-badge.svg'
-import vozinhaInRosterBadge from '@/public/badges/world-cup/vozinha-in-roster.svg'
-import vozinhaInRosterJpgBadge from '@/public/badges/world-cup/png/vozinha-in-roster.png'
-import messiCr7OchoaInRosterBadge from '@/public/badges/world-cup/messi-cr7-ochoa-in-roster.svg'
+import afcLeagueTeamBadge from '@/public/badges/world-cup/afc-league.svg'
+import cafLeagueTeamBadge from '@/public/badges/world-cup/caf-league.svg'
+import championCoachBadge from '@/public/badges/world-cup/champion-coach.svg'
+import concacafLeagueTeamBadge from '@/public/badges/world-cup/concacaf-league.svg'
+import conmebolLeagueTeamBadge from '@/public/badges/world-cup/conmebol-league.svg'
+import goldenBallBadge from '@/public/badges/world-cup/golden-ball.svg'
+import goldenBootBadge from '@/public/badges/world-cup/golden-boot.svg'
+import goldenGloveBadge from '@/public/badges/world-cup/golden-glove.svg'
+import afcLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/afc-league.jpg'
+import cafLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/caf-league.jpg'
+import championCoachJpgBadge from '@/public/badges/world-cup/jpg/champion-coach.jpg'
+import concacafLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/concacaf-league.jpg'
+import conmebolLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/conmebol-league.jpg'
+import goldenBallJpgBadge from '@/public/badges/world-cup/jpg/golden-ball.jpg'
+import goldenBootJpgBadge from '@/public/badges/world-cup/jpg/golden-boot.jpg'
+import goldenGloveJpgBadge from '@/public/badges/world-cup/jpg/golden-glove.jpg'
 import messiCr7OchoaInRosterJpgBadge from '@/public/badges/world-cup/jpg/messi-cr7-ochoa-in-roster.jpg'
+import ofcLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/ofc-league.jpg'
+import uefaLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/uefa-league.jpg'
+import messiCr7OchoaInRosterBadge from '@/public/badges/world-cup/messi-cr7-ochoa-in-roster.svg'
+import ofcLeagueTeamBadge from '@/public/badges/world-cup/ofc-league.svg'
+import vozinhaInRosterJpgBadge from '@/public/badges/world-cup/png/vozinha-in-roster.png'
+import uefaLeagueTeamBadge from '@/public/badges/world-cup/uefa-league.svg'
+import vozinhaInRosterBadge from '@/public/badges/world-cup/vozinha-in-roster.svg'
 
 import { Trophies, WorldCupTrophies } from '../common/types/trophies'
 
@@ -67,8 +87,19 @@ export const TROPHIES_IMAGE = {
   [Trophies.REACHED_200_CARTOLETAS]: reached200CartoletasBadge,
   [Trophies.SEVEN_PLAYERS_SCORED]: sevenPlayersScoredInRoundBadge,
   [Trophies.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyBadge,
-  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterBadge,
+  // WORLD CUP
+  [WorldCupTrophies.AFC_LEAGUE_TEAM]: afcLeagueTeamBadge,
+  [WorldCupTrophies.CAF_LEAGUE_TEAM]: cafLeagueTeamBadge,
+  [WorldCupTrophies.CHAMPION_COACH]: championCoachBadge,
+  [WorldCupTrophies.CONCACAF_LEAGUE_TEAM]: concacafLeagueTeamBadge,
+  [WorldCupTrophies.CONMEBOL_LEAGUE_TEAM]: conmebolLeagueTeamBadge,
+  [WorldCupTrophies.GOLDEN_BALL]: goldenBallBadge,
+  [WorldCupTrophies.GOLDEN_BOOT]: goldenBootBadge,
+  [WorldCupTrophies.GOLDEN_GLOVE]: goldenGloveBadge,
   [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER]: messiCr7OchoaInRosterBadge,
+  [WorldCupTrophies.OFC_LEAGUE_TEAM]: ofcLeagueTeamBadge,
+  [WorldCupTrophies.UEFA_LEAGUE_TEAM]: uefaLeagueTeamBadge,
+  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterBadge
 }
 
 export const TROPHIES_JPG_IMAGE = {
@@ -94,7 +125,19 @@ export const TROPHIES_JPG_IMAGE = {
   [Trophies.REACHED_200_CARTOLETAS]: reached200CartoletasJpgBadge,
   [Trophies.SEVEN_PLAYERS_SCORED]: sevenPlayersScoredInRoundJpgBadge,
   [Trophies.THREE_PLAYERS_MISSED_PENALTY]: threePlayersMissedPenaltyJpgBadge,
-  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterJpgBadge,
+  // WORLD CUP
+  [WorldCupTrophies.AFC_LEAGUE_TEAM]: afcLeagueTeamJpgBadge,
+  [WorldCupTrophies.CAF_LEAGUE_TEAM]: cafLeagueTeamJpgBadge,
+  [WorldCupTrophies.CHAMPION_COACH]: championCoachJpgBadge,
+  [WorldCupTrophies.CONCACAF_LEAGUE_TEAM]: concacafLeagueTeamJpgBadge,
+  [WorldCupTrophies.CONMEBOL_LEAGUE_TEAM]: conmebolLeagueTeamJpgBadge,
+  [WorldCupTrophies.GOLDEN_BALL]: goldenBallJpgBadge,
+  [WorldCupTrophies.GOLDEN_BOOT]: goldenBootJpgBadge,
+  [WorldCupTrophies.GOLDEN_GLOVE]: goldenGloveJpgBadge,
+  [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER]: messiCr7OchoaInRosterJpgBadge,
+  [WorldCupTrophies.OFC_LEAGUE_TEAM]: ofcLeagueTeamJpgBadge,
+  [WorldCupTrophies.UEFA_LEAGUE_TEAM]: uefaLeagueTeamJpgBadge,
+  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterJpgBadge
 }
 
 export const TROPHY_TO_PARAM: Record<Trophies | WorldCupTrophies, keyof typeof PARAM_TO_TROPHY> = {
@@ -118,8 +161,19 @@ export const TROPHY_TO_PARAM: Record<Trophies | WorldCupTrophies, keyof typeof P
   [Trophies.REACHED_200_CARTOLETAS]: 'atingiu-200-cartoletas',
   [Trophies.SEVEN_PLAYERS_SCORED]: '7-jogadores-marcaram',
   [Trophies.THREE_PLAYERS_MISSED_PENALTY]: '3-jogadores-erraram-penaltis',
-  [WorldCupTrophies.VOZINHA_IN_ROSTER]: 'vozinha-escalado',
-  [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER]: messiCr7OchoaInRosterJpgBadge,
+  // WORLD CUP
+  [WorldCupTrophies.AFC_LEAGUE_TEAM]: 'time-com-jogadores-da-afc',
+  [WorldCupTrophies.CAF_LEAGUE_TEAM]: 'time-com-jogadores-da-caf',
+  [WorldCupTrophies.CHAMPION_COACH]: 'tecnico-campeao',
+  [WorldCupTrophies.CONCACAF_LEAGUE_TEAM]: 'time-com-jogadores-da-concacaf',
+  [WorldCupTrophies.CONMEBOL_LEAGUE_TEAM]: 'time-com-jogadores-da-conmebol',
+  [WorldCupTrophies.GOLDEN_BALL]: 'time-com-jogadores-da-conmebol',
+  [WorldCupTrophies.GOLDEN_BOOT]: 'time-com-jogadores-da-conmebol',
+  [WorldCupTrophies.GOLDEN_GLOVE]: 'time-com-jogadores-da-conmebol',
+  [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER]: 'messi-cr7-ochoa-escalados',
+  [WorldCupTrophies.OFC_LEAGUE_TEAM]: 'time-com-jogadores-da-ofc',
+  [WorldCupTrophies.UEFA_LEAGUE_TEAM]: 'time-com-jogadores-da-uefa',
+  [WorldCupTrophies.VOZINHA_IN_ROSTER]: 'vozinha-escalado'
 }
 
 export const PARAM_TO_TROPHY = {
@@ -142,9 +196,20 @@ export const PARAM_TO_TROPHY = {
   '3-jogadores-expulsos': Trophies.MORE_THAN_THREE_RED_CARDED_PLAYERS,
   'lunatico': Trophies.ONE_PLAYER_OF_EACH_CLUB,
   'fanatico': Trophies.EVERY_SCHEDULED_PLAYER_IS_FROM_THE_SAME_CLUB,
+  // WORLD CUP
+  'time-com-jogadores-da-afc': WorldCupTrophies.AFC_LEAGUE_TEAM,
+  'time-com-jogadores-da-caf': WorldCupTrophies.CAF_LEAGUE_TEAM,
+  'time-com-jogadores-da-concacaf': WorldCupTrophies.CONCACAF_LEAGUE_TEAM,
+  'time-com-jogadores-da-conmebol': WorldCupTrophies.CONMEBOL_LEAGUE_TEAM,
+  'time-com-jogadores-da-ofc': WorldCupTrophies.OFC_LEAGUE_TEAM,
+  'time-com-jogadores-da-uefa': WorldCupTrophies.UEFA_LEAGUE_TEAM,
   'goleiro-garcom': Trophies.ASSIST_WITH_GOALKEEPER,
-  'vozinha-escalado': [WorldCupTrophies.VOZINHA_IN_ROSTER],
-  'messi-cr7-ochoa-escalados': [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER],
+  'vozinha-escalado': WorldCupTrophies.VOZINHA_IN_ROSTER,
+  'messi-cr7-ochoa-escalados': WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER,
+  'bola-de-ouro': WorldCupTrophies.GOLDEN_BALL,
+  'chuteira-de-ouro': WorldCupTrophies.GOLDEN_BOOT,
+  'luva-de-ouro': WorldCupTrophies.GOLDEN_GLOVE,
+  'tecnico-campeao': WorldCupTrophies.CHAMPION_COACH
 }
 
 export const TROPHY_NAME = {
@@ -168,8 +233,19 @@ export const TROPHY_NAME = {
   'lunatico': 'Lunático',
   'fanatico': 'Fanático',
   'goleiro-garcom': 'Goleiro Garçom',
+  // WORLD CUP
   'vozinha-escalado': 'Vozinha escalado',
   'messi-cr7-ochoa-escalados': 'Messi, Cristiano Ronaldo ou Ochoa escalados',
+  'time-com-jogadores-da-afc': 'Time escalado apenas com jogadores de seleções da AFC',
+  'time-com-jogadores-da-caf': 'Time escalado apenas com jogadores de seleções da CAF',
+  'time-com-jogadores-da-concacaf': 'Time escalado apenas com jogadores de seleções da CONCACAF',
+  'time-com-jogadores-da-conmebol': 'Time escalado apenas com jogadores da seleções CONMEBOL',
+  'time-com-jogadores-da-ofc': 'Time escalado apenas com jogadores de seleções da CONCACAF',
+  'time-com-jogadores-da-uefa': 'Time escalado apenas com jogadores de seleções da UEFA',
+  'bola-de-ouro': 'Bola de Ouro',
+  'chuteira-de-ouro': 'Chuteira de Ouro',
+  'luva-de-ouro': 'Luva de Ouro',
+  'tecnico-campeao': 'Técnico que ganhou a copa do mundo de 2026'
 }
 
 export const TWITTER_TROPHY_MESSAGE = {
@@ -195,6 +271,18 @@ export const TWITTER_TROPHY_MESSAGE = {
   'lunatico': 'todos os escalados são de clubes diferentes.',
   'fanatico': 'escalei todos do mesmo time.',
   'goleiro-garcom': 'escalei um goleiro que deu assistência.',
+  // WORLD CUP
   'vozinha-escalado': 'escalei o Vozinha na copa do mundo.',
   'messi-cr7-ochoa-escalados': 'escalei Messi, Cristiano Ronaldo ou Ochoa na copa do mundo.',
+  'time-com-jogadores-da-afc': 'escalei o meu time apenas com jogadores de seleções da AFC.',
+  'time-com-jogadores-da-caf': 'escalei o meu time apenas com jogadores de seleções da CAF.',
+  'time-com-jogadores-da-concacaf':
+    'escalei o meu time apenas com jogadores de seleções da CONCACAF.',
+  'time-com-jogadores-da-conmebol': 'escalei o meu time apenas com jogadores da seleções CONMEBOL.',
+  'time-com-jogadores-da-ofc': 'escalei o meu time apenas com jogadores de seleções da CONCACAF.',
+  'time-com-jogadores-da-uefa': 'escalei o meu time apenas com jogadores de seleções da UEFA.',
+  'bola-de-ouro': 'escalei o jogador que ganhou a Bola de Ouro na copa do mundo de 2026.',
+  'chuteira-de-ouro': 'escalei o jogador que ganhou a Chuteira de Ouro na copa do mundo de 2026.',
+  'luva-de-ouro': 'escalei o jogador que ganhou a Luva de Ouro na copa do mundo de 2026.',
+  'tecnico-campeao': 'escalei o técnico que foi campeão da copa do mundo de 2026.'
 }

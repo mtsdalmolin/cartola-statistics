@@ -11,6 +11,20 @@ enum BADGE_SIZES {
   'lg' = '60x60'
 }
 
+export const AFC_TEAM_IDS = [2369, 2374, 2336, 2333, 2344, 3238, 3231, 3061, 2342]
+
+export const CAF_TEAM_IDS = [2332, 2347, 2324, 2350, 2338, 2358, 2337, 2375, 3201, 3184]
+
+export const CONCACAF_TEAM_IDS = [2365, 2360, 2361, 3062, 2334, 3221]
+
+export const CONMEBOL_TEAM_IDS = [2318, 2357, 2356, 2373, 2372, 2354]
+
+export const OFC_TEAM_IDS = [2340]
+
+export const UEFA_TEAM_IDS = [
+  2384, 2385, 2370, 2326, 2390, 2392, 2381, 2379, 2320, 2391, 2323, 2327, 2865, 2352, 2328, 2368
+]
+
 function isNationalTeamId(
   footballTeamId: FootballTeamsIds | FootballNationalTeamsIds
 ): footballTeamId is FootballNationalTeamsIds {

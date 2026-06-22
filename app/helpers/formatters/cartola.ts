@@ -26,6 +26,14 @@ import { isEmpty, isEqual, isNil, max, some, uniqBy, uniqWith } from 'lodash'
 import { registerTrophyEvent } from '../analytics'
 import { isCoach, isGoalkeeper } from '../positions'
 import { isValidRound } from '../rounds'
+import {
+  AFC_TEAM_IDS,
+  CAF_TEAM_IDS,
+  CONCACAF_TEAM_IDS,
+  CONMEBOL_TEAM_IDS,
+  OFC_TEAM_IDS,
+  UEFA_TEAM_IDS
+} from '../teams'
 import { typedOrderBy } from '../typed-lodash'
 
 const PHOTO_SIZE_FORMAT = '220x220'
@@ -74,8 +82,8 @@ function getRoundResultPoints(round: RoundMatchesData[0], clubId: number) {
     return round[clubId].result.winner === 'draw'
       ? 1
       : round[clubId].result.winner === clubId
-        ? 3
-        : 0
+      ? 3
+      : 0
   }
 
   return 0
@@ -214,8 +222,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     participationInGoalsRounds:
       (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0) > 0
         ? {
-          [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
-        }
+            [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
+          }
         : {},
     offsideRounds: athlete.scout?.I ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.I ?? 0 } : {},
     pointsPerRound: { [athlete.rodada_id]: Number(pointsInRound.toFixed(1)) },
@@ -417,14 +425,14 @@ export function formatCartolaApiData({
   year: SeasonYears | 'CUP_2026'
   isWorldCup?: boolean
 }): [
-    CrewStatistics,
-    CrewStatistics,
-    ClubStatistics,
-    PositionsStatistics,
-    TrophiesData,
-    TeamInfo,
-    Record<'bestTeam' | 'worstTeam', Athlete[]>
-  ] {
+  CrewStatistics,
+  CrewStatistics,
+  ClubStatistics,
+  PositionsStatistics,
+  TrophiesData,
+  TeamInfo,
+  Record<'bestTeam' | 'worstTeam', Athlete[]>
+] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
@@ -493,6 +501,15 @@ export function formatCartolaApiData({
       }
     }
 
+    const rosterPlayerNumberPerLeague = {
+      AFC: 0,
+      CAF: 0,
+      CONCACAF: 0,
+      CONMEBOL: 0,
+      OFC: 0,
+      UEFA: 0
+    }
+
     athletes.forEach(async (athlete) => {
       everyAthlete[athlete.posicao_id].push(athlete)
 
@@ -552,11 +569,24 @@ export function formatCartolaApiData({
           registerTrophyEvent(WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER, { team: teamInfo })
           if (teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER])
             teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER] = [
-              ...teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER] as Athlete[],
+              ...(teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER] as Athlete[]),
               athlete
             ]
-          else
-            teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER] = [athlete]
+          else teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER] = [athlete]
+        }
+
+        if (AFC_TEAM_IDS.includes(athlete.clube_id)) {
+          rosterPlayerNumberPerLeague.AFC += 1
+        } else if (CAF_TEAM_IDS.includes(athlete.clube_id)) {
+          rosterPlayerNumberPerLeague.CAF += 1
+        } else if (CONCACAF_TEAM_IDS.includes(athlete.clube_id)) {
+          rosterPlayerNumberPerLeague.CONCACAF += 1
+        } else if (CONMEBOL_TEAM_IDS.includes(athlete.clube_id)) {
+          rosterPlayerNumberPerLeague.CONMEBOL += 1
+        } else if (OFC_TEAM_IDS.includes(athlete.clube_id)) {
+          rosterPlayerNumberPerLeague.OFC += 1
+        } else if (UEFA_TEAM_IDS.includes(athlete.clube_id)) {
+          rosterPlayerNumberPerLeague.UEFA += 1
         }
       }
 
@@ -657,6 +687,26 @@ export function formatCartolaApiData({
         }
       }
     })
+
+    if (rosterPlayerNumberPerLeague.AFC === 12) {
+      registerTrophyEvent(WorldCupTrophies.AFC_LEAGUE_TEAM, { team: teamInfo })
+      teamsTrophies[WorldCupTrophies.AFC_LEAGUE_TEAM] = athletes
+    } else if (rosterPlayerNumberPerLeague.CAF === 12) {
+      registerTrophyEvent(WorldCupTrophies.CAF_LEAGUE_TEAM, { team: teamInfo })
+      teamsTrophies[WorldCupTrophies.CAF_LEAGUE_TEAM] = athletes
+    } else if (rosterPlayerNumberPerLeague.CONCACAF === 12) {
+      registerTrophyEvent(WorldCupTrophies.CONCACAF_LEAGUE_TEAM, { team: teamInfo })
+      teamsTrophies[WorldCupTrophies.CONCACAF_LEAGUE_TEAM] = athletes
+    } else if (rosterPlayerNumberPerLeague.CONMEBOL === 12) {
+      registerTrophyEvent(WorldCupTrophies.CONMEBOL_LEAGUE_TEAM, { team: teamInfo })
+      teamsTrophies[WorldCupTrophies.CONMEBOL_LEAGUE_TEAM] = athletes
+    } else if (rosterPlayerNumberPerLeague.OFC === 12) {
+      registerTrophyEvent(WorldCupTrophies.OFC_LEAGUE_TEAM, { team: teamInfo })
+      teamsTrophies[WorldCupTrophies.OFC_LEAGUE_TEAM] = athletes
+    } else if (rosterPlayerNumberPerLeague.UEFA === 12) {
+      registerTrophyEvent(WorldCupTrophies.UEFA_LEAGUE_TEAM, { team: teamInfo })
+      teamsTrophies[WorldCupTrophies.UEFA_LEAGUE_TEAM] = athletes
+    }
 
     if (
       !(Trophies.ONE_PLAYER_OF_EACH_CLUB in teamsTrophies) &&

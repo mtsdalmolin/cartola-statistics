@@ -27,8 +27,18 @@ export enum Trophies {
 }
 
 export enum WorldCupTrophies {
-  VOZINHA_IN_ROSTER = 'vozinha-in-roster',
+  AFC_LEAGUE_TEAM = 'afc-league-team',
+  CAF_LEAGUE_TEAM = 'caf-league-team',
+  CHAMPION_COACH = 'champion-coach',
+  CONCACAF_LEAGUE_TEAM = 'concacaf-league-team',
+  CONMEBOL_LEAGUE_TEAM = 'conmebol-league-team',
+  GOLDEN_BALL = 'golden-ball',
+  GOLDEN_BOOT = 'golden-boot',
+  GOLDEN_GLOVE = 'golden-glove',
   MESSI_CR7_OCHOA_IN_ROSTER = 'messi-cr7-ochoa-in-roster',
+  OFC_LEAGUE_TEAM = 'ofc-league-team',
+  UEFA_LEAGUE_TEAM = 'uefa-league-team',
+  VOZINHA_IN_ROSTER = 'vozinha-in-roster'
 }
 
 export type TrophiesData = { [key in Trophies | WorldCupTrophies]?: Athlete[] | RoundData | Subs }
