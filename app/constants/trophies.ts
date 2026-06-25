@@ -55,9 +55,11 @@ import goldenBallJpgBadge from '@/public/badges/world-cup/jpg/golden-ball.jpg'
 import goldenBootJpgBadge from '@/public/badges/world-cup/jpg/golden-boot.jpg'
 import goldenGloveJpgBadge from '@/public/badges/world-cup/jpg/golden-glove.jpg'
 import messiCr7OchoaInRosterJpgBadge from '@/public/badges/world-cup/jpg/messi-cr7-ochoa-in-roster.jpg'
+import missedPenaltyInWorldCupJpgBadge from '@/public/badges/world-cup/jpg/missed-penalty-kick.jpg'
 import ofcLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/ofc-league.jpg'
 import uefaLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/uefa-league.jpg'
 import messiCr7OchoaInRosterBadge from '@/public/badges/world-cup/messi-cr7-ochoa-in-roster.svg'
+import missedPenaltyInWorldCupBadge from '@/public/badges/world-cup/missed-penalty-kick.svg'
 import ofcLeagueTeamBadge from '@/public/badges/world-cup/ofc-league.svg'
 import vozinhaInRosterJpgBadge from '@/public/badges/world-cup/png/vozinha-in-roster.png'
 import uefaLeagueTeamBadge from '@/public/badges/world-cup/uefa-league.svg'
@@ -97,6 +99,7 @@ export const TROPHIES_IMAGE = {
   [WorldCupTrophies.GOLDEN_BOOT]: goldenBootBadge,
   [WorldCupTrophies.GOLDEN_GLOVE]: goldenGloveBadge,
   [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER]: messiCr7OchoaInRosterBadge,
+  [WorldCupTrophies.MISSED_PENALTY_KICK]: missedPenaltyInWorldCupBadge,
   [WorldCupTrophies.OFC_LEAGUE_TEAM]: ofcLeagueTeamBadge,
   [WorldCupTrophies.UEFA_LEAGUE_TEAM]: uefaLeagueTeamBadge,
   [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterBadge
@@ -135,6 +138,7 @@ export const TROPHIES_JPG_IMAGE = {
   [WorldCupTrophies.GOLDEN_BOOT]: goldenBootJpgBadge,
   [WorldCupTrophies.GOLDEN_GLOVE]: goldenGloveJpgBadge,
   [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER]: messiCr7OchoaInRosterJpgBadge,
+  [WorldCupTrophies.MISSED_PENALTY_KICK]: missedPenaltyInWorldCupJpgBadge,
   [WorldCupTrophies.OFC_LEAGUE_TEAM]: ofcLeagueTeamJpgBadge,
   [WorldCupTrophies.UEFA_LEAGUE_TEAM]: uefaLeagueTeamJpgBadge,
   [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterJpgBadge
@@ -171,6 +175,7 @@ export const TROPHY_TO_PARAM: Record<Trophies | WorldCupTrophies, keyof typeof P
   [WorldCupTrophies.GOLDEN_BOOT]: 'time-com-jogadores-da-conmebol',
   [WorldCupTrophies.GOLDEN_GLOVE]: 'time-com-jogadores-da-conmebol',
   [WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER]: 'messi-cr7-ochoa-escalados',
+  [WorldCupTrophies.MISSED_PENALTY_KICK]: 'errou-penalti-na-copa',
   [WorldCupTrophies.OFC_LEAGUE_TEAM]: 'time-com-jogadores-da-ofc',
   [WorldCupTrophies.UEFA_LEAGUE_TEAM]: 'time-com-jogadores-da-uefa',
   [WorldCupTrophies.VOZINHA_IN_ROSTER]: 'vozinha-escalado'
@@ -206,6 +211,7 @@ export const PARAM_TO_TROPHY = {
   'goleiro-garcom': Trophies.ASSIST_WITH_GOALKEEPER,
   'vozinha-escalado': WorldCupTrophies.VOZINHA_IN_ROSTER,
   'messi-cr7-ochoa-escalados': WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER,
+  'errou-penalti-na-copa': WorldCupTrophies.MISSED_PENALTY_KICK,
   'bola-de-ouro': WorldCupTrophies.GOLDEN_BALL,
   'chuteira-de-ouro': WorldCupTrophies.GOLDEN_BOOT,
   'luva-de-ouro': WorldCupTrophies.GOLDEN_GLOVE,
@@ -236,6 +242,7 @@ export const TROPHY_NAME = {
   // WORLD CUP
   'vozinha-escalado': 'Vozinha escalado',
   'messi-cr7-ochoa-escalados': 'Messi, Cristiano Ronaldo ou Ochoa escalados',
+  'errou-penalti-na-copa': 'Errou uma cobrança de pênalti na copa do mundo.',
   'time-com-jogadores-da-afc': 'Time escalado apenas com jogadores de seleções da AFC',
   'time-com-jogadores-da-caf': 'Time escalado apenas com jogadores de seleções da CAF',
   'time-com-jogadores-da-concacaf': 'Time escalado apenas com jogadores de seleções da CONCACAF',
@@ -251,7 +258,7 @@ export const TROPHY_NAME = {
 export const TWITTER_TROPHY_MESSAGE = {
   'cabeca-de-bagre': 'fiz menos de 30 pontos em uma rodada.',
   'veio-do-banco-e-mitou':
-    'um dos jogadores que estavam no banco do cartola entrou e fez mais de 12 anos.',
+    'um dos jogadores que estavam no banco do cartola entrou e fez mais de 12 pontos.',
   'muralha': 'a defesa escalada em uma das rodadas do cartola não sofreu gols.',
   'gols-nos-3-setores': 'tive gols nos 3 setores em uma rodada do cartola.',
   'todos-jogadores-valorizaram': 'todos os jogadores escalados no cartola valorizaram.',
@@ -274,6 +281,7 @@ export const TWITTER_TROPHY_MESSAGE = {
   // WORLD CUP
   'vozinha-escalado': 'escalei o Vozinha na copa do mundo.',
   'messi-cr7-ochoa-escalados': 'escalei Messi, Cristiano Ronaldo ou Ochoa na copa do mundo.',
+  'errou-penalti-na-copa': 'escalei um jogador que errou um pênalti na copa do mundo.',
   'time-com-jogadores-da-afc': 'escalei o meu time apenas com jogadores de seleções da AFC.',
   'time-com-jogadores-da-caf': 'escalei o meu time apenas com jogadores de seleções da CAF.',
   'time-com-jogadores-da-concacaf':

@@ -558,6 +558,11 @@ export function formatCartolaApiData({
       }
 
       if (isWorldCup) {
+        if (athlete.scout?.PP && athlete?.scout.PP > 0) {
+          registerTrophyEvent(WorldCupTrophies.MISSED_PENALTY_KICK, { team: teamInfo })
+          teamsTrophies[WorldCupTrophies.MISSED_PENALTY_KICK] = [athlete]
+        }
+
         // vozinha
         if (athlete.atleta_id === 113497) {
           registerTrophyEvent(WorldCupTrophies.VOZINHA_IN_ROSTER, { team: teamInfo })

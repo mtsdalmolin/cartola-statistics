@@ -36,6 +36,7 @@ export enum WorldCupTrophies {
   GOLDEN_BOOT = 'golden-boot',
   GOLDEN_GLOVE = 'golden-glove',
   MESSI_CR7_OCHOA_IN_ROSTER = 'messi-cr7-ochoa-in-roster',
+  MISSED_PENALTY_KICK = 'missed-penalty-kick',
   OFC_LEAGUE_TEAM = 'ofc-league-team',
   UEFA_LEAGUE_TEAM = 'uefa-league-team',
   VOZINHA_IN_ROSTER = 'vozinha-in-roster'

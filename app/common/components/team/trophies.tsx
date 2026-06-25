@@ -81,6 +81,8 @@ const TROPHY_DESCRIPTION = {
     'Medalha de conquista por ter escalado todos os jogadores de seleções da América do Sul na copa do mundo de 2026.',
   [WorldCupTrophiesEnum.MESSI_CR7_OCHOA_IN_ROSTER]:
     'Medalha de conquista por ter escalado Messi, Cristiano Ronaldo ou Ochoa na copa do mundo de 2026.',
+  [WorldCupTrophiesEnum.MISSED_PENALTY_KICK]:
+    'Medalha de conquista por ter escalado um jogador que perdeu um pênalti na copa do mundo de 2026.',
   [WorldCupTrophiesEnum.OFC_LEAGUE_TEAM]:
     'Medalha de conquista por ter escalado todos os jogadores de seleções da Oceania na copa do mundo de 2026.',
   [WorldCupTrophiesEnum.UEFA_LEAGUE_TEAM]:
