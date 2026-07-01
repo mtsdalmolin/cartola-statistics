@@ -29,6 +29,7 @@ import { isValidRound } from '../rounds'
 import {
   AFC_TEAM_IDS,
   CAF_TEAM_IDS,
+  CHAMPION_TEAM_IDS,
   CONCACAF_TEAM_IDS,
   CONMEBOL_TEAM_IDS,
   OFC_TEAM_IDS,
@@ -82,8 +83,8 @@ function getRoundResultPoints(round: RoundMatchesData[0], clubId: number) {
     return round[clubId].result.winner === 'draw'
       ? 1
       : round[clubId].result.winner === clubId
-      ? 3
-      : 0
+        ? 3
+        : 0
   }
 
   return 0
@@ -222,8 +223,8 @@ function renderedAthleteFactory(athlete: Athlete, captainId: number): RenderedAt
     participationInGoalsRounds:
       (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0) > 0
         ? {
-            [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
-          }
+          [athlete.rodada_id]: (athlete.scout?.A ?? 0) + (athlete.scout?.G ?? 0)
+        }
         : {},
     offsideRounds: athlete.scout?.I ?? 0 > 0 ? { [athlete.rodada_id]: athlete.scout?.I ?? 0 } : {},
     pointsPerRound: { [athlete.rodada_id]: Number(pointsInRound.toFixed(1)) },
@@ -425,14 +426,14 @@ export function formatCartolaApiData({
   year: SeasonYears | 'CUP_2026'
   isWorldCup?: boolean
 }): [
-  CrewStatistics,
-  CrewStatistics,
-  ClubStatistics,
-  PositionsStatistics,
-  TrophiesData,
-  TeamInfo,
-  Record<'bestTeam' | 'worstTeam', Athlete[]>
-] {
+    CrewStatistics,
+    CrewStatistics,
+    ClubStatistics,
+    PositionsStatistics,
+    TrophiesData,
+    TeamInfo,
+    Record<'bestTeam' | 'worstTeam', Athlete[]>
+  ] {
   let playersStatistics: CrewStatistics = {}
   let benchStatistics: CrewStatistics = {}
   let clubsStatistics: ClubStatistics = {}
@@ -510,6 +511,8 @@ export function formatCartolaApiData({
       UEFA: 0
     }
 
+    let athletesFromNonChampionTeam = 0
+
     athletes.forEach(async (athlete) => {
       everyAthlete[athlete.posicao_id].push(athlete)
 
@@ -578,6 +581,16 @@ export function formatCartolaApiData({
               athlete
             ]
           else teamsTrophies[WorldCupTrophies.MESSI_CR7_OCHOA_IN_ROSTER] = [athlete]
+        }
+
+        // cr7, ochoa, modric, vozinha, craig gordon, dzeko, muslera, neuer
+        if ([67972, 69513, 67812, 113497, 73392, 71184, 69241, 69293].includes(athlete.atleta_id)) {
+          registerTrophyEvent(WorldCupTrophies.VETERANS, { team: teamInfo })
+          teamsTrophies[WorldCupTrophies.VETERANS] = [athlete]
+        }
+
+        if (!CHAMPION_TEAM_IDS.includes(athlete.clube_id)) {
+          athletesFromNonChampionTeam += 1
         }
 
         if (AFC_TEAM_IDS.includes(athlete.clube_id)) {
@@ -692,6 +705,11 @@ export function formatCartolaApiData({
         }
       }
     })
+
+    if (athletesFromNonChampionTeam === 12) {
+      registerTrophyEvent(WorldCupTrophies.DARK_HORSE, { team: teamInfo })
+      teamsTrophies[WorldCupTrophies.DARK_HORSE] = athletes
+    }
 
     if (rosterPlayerNumberPerLeague.AFC === 12) {
       registerTrophyEvent(WorldCupTrophies.AFC_LEAGUE_TEAM, { team: teamInfo })

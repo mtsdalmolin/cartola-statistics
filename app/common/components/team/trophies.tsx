@@ -89,6 +89,10 @@ const TROPHY_DESCRIPTION = {
     'Medalha de conquista por ter escalado todos os jogadores de seleções da Europa na copa do mundo de 2026.',
   [WorldCupTrophiesEnum.VOZINHA_IN_ROSTER]:
     'Medalha de conquista por ter escalado o goleiro Vozinha na copa do mundo de 2026.',
+  [WorldCupTrophiesEnum.DARK_HORSE]:
+    'Medalha de conquista por ter escalado um time apenas com atletas de seleções que nunca ganharam uma copa do mundo.',
+  [WorldCupTrophiesEnum.VETERANS]:
+    'Medalha de conquista por ter escalado atletas com idade acima de 40 anos na copa do mundo de 2026.',
   [WorldCupTrophiesEnum.GOLDEN_BALL]:
     'Medalha de conquista por ter escalado o vencedor da Bola de Ouro na copa do mundo de 2026.',
   [WorldCupTrophiesEnum.GOLDEN_BOOT]:
@@ -187,35 +191,35 @@ export function ShareOnTwitterButtonLink({
   year
 }:
   | {
-      type: 'trophy'
-      teamId: string
-      year: SeasonYears
-      trophyParamName: keyof typeof PARAM_TO_TROPHY
-    }
+    type: 'trophy'
+    teamId: string
+    year: SeasonYears
+    trophyParamName: keyof typeof PARAM_TO_TROPHY
+  }
   | {
-      type: 'trophyBoard'
-      teamId: string
-      year: SeasonYears
-      trophyParamName?: never
-    }) {
+    type: 'trophyBoard'
+    teamId: string
+    year: SeasonYears
+    trophyParamName?: never
+  }) {
   return (
     <Link
       className="bg-palette-neutral-800 hover:bg-palette-neutral-700 rounded-md px-4"
       href={
         type === 'trophy'
           ? createTrophyTwitterShareLink({
-              teamId,
-              trophyParamName,
-              year
-            })
+            teamId,
+            trophyParamName,
+            year
+          })
           : createTrophyBoardTwitterShareLink({
-              teamId,
-              roundId: +last([
-                ...SEASONS[year].FIRST_TURN_ROUNDS,
-                ...SEASONS[year].SECOND_TURN_ROUNDS
-              ])!,
-              year
-            })
+            teamId,
+            roundId: +last([
+              ...SEASONS[year].FIRST_TURN_ROUNDS,
+              ...SEASONS[year].SECOND_TURN_ROUNDS
+            ])!,
+            year
+          })
       }
       target="_blank"
     >

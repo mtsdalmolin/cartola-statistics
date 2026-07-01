@@ -43,6 +43,8 @@ import cafLeagueTeamBadge from '@/public/badges/world-cup/caf-league.svg'
 import championCoachBadge from '@/public/badges/world-cup/champion-coach.svg'
 import concacafLeagueTeamBadge from '@/public/badges/world-cup/concacaf-league.svg'
 import conmebolLeagueTeamBadge from '@/public/badges/world-cup/conmebol-league.svg'
+import darkHorseBadge from '@/public/badges/world-cup/dark-horse.svg'
+import darkHorseJpgBadge from '@/public/badges/world-cup/jpg/dark-horse.jpg'
 import goldenBallBadge from '@/public/badges/world-cup/golden-ball.svg'
 import goldenBootBadge from '@/public/badges/world-cup/golden-boot.svg'
 import goldenGloveBadge from '@/public/badges/world-cup/golden-glove.svg'
@@ -61,6 +63,8 @@ import uefaLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/uefa-league.jp
 import messiCr7OchoaInRosterBadge from '@/public/badges/world-cup/messi-cr7-ochoa-in-roster.svg'
 import missedPenaltyInWorldCupBadge from '@/public/badges/world-cup/missed-penalty-kick.svg'
 import ofcLeagueTeamBadge from '@/public/badges/world-cup/ofc-league.svg'
+import veteransBadge from '@/public/badges/world-cup/veterans.svg'
+import veteransJpgBadge from '@/public/badges/world-cup/jpg/veterans.jpg'
 import vozinhaInRosterJpgBadge from '@/public/badges/world-cup/png/vozinha-in-roster.png'
 import uefaLeagueTeamBadge from '@/public/badges/world-cup/uefa-league.svg'
 import vozinhaInRosterBadge from '@/public/badges/world-cup/vozinha-in-roster.svg'
@@ -95,6 +99,7 @@ export const TROPHIES_IMAGE = {
   [WorldCupTrophies.CHAMPION_COACH]: championCoachBadge,
   [WorldCupTrophies.CONCACAF_LEAGUE_TEAM]: concacafLeagueTeamBadge,
   [WorldCupTrophies.CONMEBOL_LEAGUE_TEAM]: conmebolLeagueTeamBadge,
+  [WorldCupTrophies.DARK_HORSE]: darkHorseBadge,
   [WorldCupTrophies.GOLDEN_BALL]: goldenBallBadge,
   [WorldCupTrophies.GOLDEN_BOOT]: goldenBootBadge,
   [WorldCupTrophies.GOLDEN_GLOVE]: goldenGloveBadge,
@@ -102,6 +107,7 @@ export const TROPHIES_IMAGE = {
   [WorldCupTrophies.MISSED_PENALTY_KICK]: missedPenaltyInWorldCupBadge,
   [WorldCupTrophies.OFC_LEAGUE_TEAM]: ofcLeagueTeamBadge,
   [WorldCupTrophies.UEFA_LEAGUE_TEAM]: uefaLeagueTeamBadge,
+  [WorldCupTrophies.VETERANS]: veteransBadge,
   [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterBadge
 }
 
@@ -134,6 +140,7 @@ export const TROPHIES_JPG_IMAGE = {
   [WorldCupTrophies.CHAMPION_COACH]: championCoachJpgBadge,
   [WorldCupTrophies.CONCACAF_LEAGUE_TEAM]: concacafLeagueTeamJpgBadge,
   [WorldCupTrophies.CONMEBOL_LEAGUE_TEAM]: conmebolLeagueTeamJpgBadge,
+  [WorldCupTrophies.DARK_HORSE]: darkHorseJpgBadge,
   [WorldCupTrophies.GOLDEN_BALL]: goldenBallJpgBadge,
   [WorldCupTrophies.GOLDEN_BOOT]: goldenBootJpgBadge,
   [WorldCupTrophies.GOLDEN_GLOVE]: goldenGloveJpgBadge,
@@ -141,6 +148,7 @@ export const TROPHIES_JPG_IMAGE = {
   [WorldCupTrophies.MISSED_PENALTY_KICK]: missedPenaltyInWorldCupJpgBadge,
   [WorldCupTrophies.OFC_LEAGUE_TEAM]: ofcLeagueTeamJpgBadge,
   [WorldCupTrophies.UEFA_LEAGUE_TEAM]: uefaLeagueTeamJpgBadge,
+  [WorldCupTrophies.VETERANS]: veteransJpgBadge,
   [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterJpgBadge
 }
 
@@ -171,6 +179,7 @@ export const TROPHY_TO_PARAM: Record<Trophies | WorldCupTrophies, keyof typeof P
   [WorldCupTrophies.CHAMPION_COACH]: 'tecnico-campeao',
   [WorldCupTrophies.CONCACAF_LEAGUE_TEAM]: 'time-com-jogadores-da-concacaf',
   [WorldCupTrophies.CONMEBOL_LEAGUE_TEAM]: 'time-com-jogadores-da-conmebol',
+  [WorldCupTrophies.DARK_HORSE]: 'azarao',
   [WorldCupTrophies.GOLDEN_BALL]: 'time-com-jogadores-da-conmebol',
   [WorldCupTrophies.GOLDEN_BOOT]: 'time-com-jogadores-da-conmebol',
   [WorldCupTrophies.GOLDEN_GLOVE]: 'time-com-jogadores-da-conmebol',
@@ -178,6 +187,7 @@ export const TROPHY_TO_PARAM: Record<Trophies | WorldCupTrophies, keyof typeof P
   [WorldCupTrophies.MISSED_PENALTY_KICK]: 'errou-penalti-na-copa',
   [WorldCupTrophies.OFC_LEAGUE_TEAM]: 'time-com-jogadores-da-ofc',
   [WorldCupTrophies.UEFA_LEAGUE_TEAM]: 'time-com-jogadores-da-uefa',
+  [WorldCupTrophies.VETERANS]: 'quarentoes',
   [WorldCupTrophies.VOZINHA_IN_ROSTER]: 'vozinha-escalado'
 }
 
@@ -215,7 +225,9 @@ export const PARAM_TO_TROPHY = {
   'bola-de-ouro': WorldCupTrophies.GOLDEN_BALL,
   'chuteira-de-ouro': WorldCupTrophies.GOLDEN_BOOT,
   'luva-de-ouro': WorldCupTrophies.GOLDEN_GLOVE,
-  'tecnico-campeao': WorldCupTrophies.CHAMPION_COACH
+  'tecnico-campeao': WorldCupTrophies.CHAMPION_COACH,
+  'quarentoes': WorldCupTrophies.VETERANS,
+  'azarao': WorldCupTrophies.VETERANS
 }
 
 export const TROPHY_NAME = {
@@ -252,7 +264,9 @@ export const TROPHY_NAME = {
   'bola-de-ouro': 'Bola de Ouro',
   'chuteira-de-ouro': 'Chuteira de Ouro',
   'luva-de-ouro': 'Luva de Ouro',
-  'tecnico-campeao': 'Técnico que ganhou a copa do mundo de 2026'
+  'tecnico-campeao': 'Técnico que ganhou a copa do mundo de 2026',
+  'quarentoes': 'Quarentões',
+  'azarao': 'Azarão'
 }
 
 export const TWITTER_TROPHY_MESSAGE = {
@@ -292,5 +306,7 @@ export const TWITTER_TROPHY_MESSAGE = {
   'bola-de-ouro': 'escalei o jogador que ganhou a Bola de Ouro na copa do mundo de 2026.',
   'chuteira-de-ouro': 'escalei o jogador que ganhou a Chuteira de Ouro na copa do mundo de 2026.',
   'luva-de-ouro': 'escalei o jogador que ganhou a Luva de Ouro na copa do mundo de 2026.',
-  'tecnico-campeao': 'escalei o técnico que foi campeão da copa do mundo de 2026.'
+  'tecnico-campeao': 'escalei o técnico que foi campeão da copa do mundo de 2026.',
+  'quarentoes': 'escalei um dos quarentões da copa do mundo de 2026.',
+  'azarao': 'escalei um time inteiro com jogadores de seleções que nunca ganharam uma copa do mundo.'
 }

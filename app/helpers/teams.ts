@@ -11,6 +11,16 @@ enum BADGE_SIZES {
   'lg' = '60x60'
 }
 
+export const CHAMPION_TEAM_IDS = [
+  2318, // brasil
+  2326, // espanha
+  2356, // uruguai
+  2357, // argentina
+  2370, // inglaterra
+  2384, // alemanha
+  2385, // frança
+]
+
 export const AFC_TEAM_IDS = [2369, 2374, 2336, 2333, 2344, 3238, 3231, 3061, 2342]
 
 export const CAF_TEAM_IDS = [2332, 2347, 2324, 2350, 2338, 2358, 2337, 2375, 3201, 3184]
