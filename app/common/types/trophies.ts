@@ -33,6 +33,7 @@ export enum WorldCupTrophies {
   CONCACAF_LEAGUE_TEAM = 'concacaf-league-team',
   CONMEBOL_LEAGUE_TEAM = 'conmebol-league-team',
   DARK_HORSE = 'dark-horse',
+  FORTIES = 'forties',
   GOLDEN_BALL = 'golden-ball',
   GOLDEN_BOOT = 'golden-boot',
   GOLDEN_GLOVE = 'golden-glove',
@@ -40,7 +41,6 @@ export enum WorldCupTrophies {
   MISSED_PENALTY_KICK = 'missed-penalty-kick',
   OFC_LEAGUE_TEAM = 'ofc-league-team',
   UEFA_LEAGUE_TEAM = 'uefa-league-team',
-  VETERANS = 'veterans',
   VOZINHA_IN_ROSTER = 'vozinha-in-roster'
 }
 

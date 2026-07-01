@@ -585,8 +585,8 @@ export function formatCartolaApiData({
 
         // cr7, ochoa, modric, vozinha, craig gordon, dzeko, muslera, neuer
         if ([67972, 69513, 67812, 113497, 73392, 71184, 69241, 69293].includes(athlete.atleta_id)) {
-          registerTrophyEvent(WorldCupTrophies.VETERANS, { team: teamInfo })
-          teamsTrophies[WorldCupTrophies.VETERANS] = [athlete]
+          registerTrophyEvent(WorldCupTrophies.FORTIES, { team: teamInfo })
+          teamsTrophies[WorldCupTrophies.FORTIES] = [athlete]
         }
 
         if (!CHAMPION_TEAM_IDS.includes(athlete.clube_id)) {
