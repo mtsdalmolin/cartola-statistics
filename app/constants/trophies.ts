@@ -44,7 +44,7 @@ import championCoachBadge from '@/public/badges/world-cup/champion-coach.svg'
 import concacafLeagueTeamBadge from '@/public/badges/world-cup/concacaf-league.svg'
 import conmebolLeagueTeamBadge from '@/public/badges/world-cup/conmebol-league.svg'
 import darkHorseBadge from '@/public/badges/world-cup/dark-horse.svg'
-import darkHorseJpgBadge from '@/public/badges/world-cup/jpg/dark-horse.jpg'
+import fortiesBadge from '@/public/badges/world-cup/forties.svg'
 import goldenBallBadge from '@/public/badges/world-cup/golden-ball.svg'
 import goldenBootBadge from '@/public/badges/world-cup/golden-boot.svg'
 import goldenGloveBadge from '@/public/badges/world-cup/golden-glove.svg'
@@ -53,6 +53,8 @@ import cafLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/caf-league.jpg'
 import championCoachJpgBadge from '@/public/badges/world-cup/jpg/champion-coach.jpg'
 import concacafLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/concacaf-league.jpg'
 import conmebolLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/conmebol-league.jpg'
+import darkHorseJpgBadge from '@/public/badges/world-cup/jpg/dark-horse.jpg'
+import fortiesJpgBadge from '@/public/badges/world-cup/jpg/forties.jpg'
 import goldenBallJpgBadge from '@/public/badges/world-cup/jpg/golden-ball.jpg'
 import goldenBootJpgBadge from '@/public/badges/world-cup/jpg/golden-boot.jpg'
 import goldenGloveJpgBadge from '@/public/badges/world-cup/jpg/golden-glove.jpg'
@@ -63,8 +65,6 @@ import uefaLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/uefa-league.jp
 import messiCr7OchoaInRosterBadge from '@/public/badges/world-cup/messi-cr7-ochoa-in-roster.svg'
 import missedPenaltyInWorldCupBadge from '@/public/badges/world-cup/missed-penalty-kick.svg'
 import ofcLeagueTeamBadge from '@/public/badges/world-cup/ofc-league.svg'
-import fortiesBadge from '@/public/badges/world-cup/forties.svg'
-import fortiesJpgBadge from '@/public/badges/world-cup/jpg/forties.jpg'
 import vozinhaInRosterJpgBadge from '@/public/badges/world-cup/png/vozinha-in-roster.png'
 import uefaLeagueTeamBadge from '@/public/badges/world-cup/uefa-league.svg'
 import vozinhaInRosterBadge from '@/public/badges/world-cup/vozinha-in-roster.svg'
@@ -308,5 +308,6 @@ export const TWITTER_TROPHY_MESSAGE = {
   'luva-de-ouro': 'escalei o jogador que ganhou a Luva de Ouro na copa do mundo de 2026.',
   'tecnico-campeao': 'escalei o técnico que foi campeão da copa do mundo de 2026.',
   'quarentoes': 'escalei um dos quarentões da copa do mundo de 2026.',
-  'azarao': 'escalei um time inteiro com jogadores de seleções que nunca ganharam uma copa do mundo.'
+  'azarao':
+    'escalei um time inteiro com jogadores de seleções que nunca ganharam uma copa do mundo.'
 }

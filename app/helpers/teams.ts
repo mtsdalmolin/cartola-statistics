@@ -18,7 +18,7 @@ export const CHAMPION_TEAM_IDS = [
   2357, // argentina
   2370, // inglaterra
   2384, // alemanha
-  2385, // frança
+  2385 // frança
 ]
 
 export const AFC_TEAM_IDS = [2369, 2374, 2336, 2333, 2344, 3238, 3231, 3061, 2342]

@@ -191,35 +191,35 @@ export function ShareOnTwitterButtonLink({
   year
 }:
   | {
-    type: 'trophy'
-    teamId: string
-    year: SeasonYears
-    trophyParamName: keyof typeof PARAM_TO_TROPHY
-  }
+      type: 'trophy'
+      teamId: string
+      year: SeasonYears
+      trophyParamName: keyof typeof PARAM_TO_TROPHY
+    }
   | {
-    type: 'trophyBoard'
-    teamId: string
-    year: SeasonYears
-    trophyParamName?: never
-  }) {
+      type: 'trophyBoard'
+      teamId: string
+      year: SeasonYears
+      trophyParamName?: never
+    }) {
   return (
     <Link
       className="bg-palette-neutral-800 hover:bg-palette-neutral-700 rounded-md px-4"
       href={
         type === 'trophy'
           ? createTrophyTwitterShareLink({
-            teamId,
-            trophyParamName,
-            year
-          })
+              teamId,
+              trophyParamName,
+              year
+            })
           : createTrophyBoardTwitterShareLink({
-            teamId,
-            roundId: +last([
-              ...SEASONS[year].FIRST_TURN_ROUNDS,
-              ...SEASONS[year].SECOND_TURN_ROUNDS
-            ])!,
-            year
-          })
+              teamId,
+              roundId: +last([
+                ...SEASONS[year].FIRST_TURN_ROUNDS,
+                ...SEASONS[year].SECOND_TURN_ROUNDS
+              ])!,
+              year
+            })
       }
       target="_blank"
     >
