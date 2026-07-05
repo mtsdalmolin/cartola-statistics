@@ -50,7 +50,7 @@ export function MoreYellowCards<TCrewData extends CrewStatistics>({
         data={renderCardsText(first.scout?.CA ?? 0, false)}
         details={
           <AnimatedStatsRoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             statRounds={first.cardsRounds.yellow}
             statText="cart."

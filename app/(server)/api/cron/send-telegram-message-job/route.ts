@@ -118,7 +118,7 @@ async function saveError<T>(error: T) {
 function athleteMessageEntityFactory(athlete: Athlete, oldAthlete: Athlete): AthleteMessageEntity {
   return {
     athleteId: athlete.atleta_id,
-    clubId: athlete.clube_id,
+    clubId: Number(athlete.clube_id),
     positionId: athlete.posicao_id,
     oldStatusId: oldAthlete.status_id ?? NULL,
     newStatusId: athlete.status_id ?? NULL,

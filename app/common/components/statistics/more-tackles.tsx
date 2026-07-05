@@ -50,7 +50,7 @@ export function MoreTackles<TCrewData extends CrewStatistics>({
         data={renderTacklesText(first.scout?.DS ?? 0, false)}
         details={
           <AnimatedStatsRoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             statRounds={first.tacklesRounds}
             statText="des."

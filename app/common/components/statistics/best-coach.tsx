@@ -85,7 +85,7 @@ export function BestCoach<TCrewData extends CrewStatistics>({
         }
         details={
           <RoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             roundIds={
               first.victoriesRoundIds.length > 0 ? first.victoriesRoundIds : first.castRounds

@@ -51,7 +51,7 @@ export function MoreFouls<TCrewData extends CrewStatistics>({
         data={renderFoulsText(first.fouls, false)}
         details={
           <AnimatedStatsRoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             statRounds={first.foulsRounds}
             statText="faltas"

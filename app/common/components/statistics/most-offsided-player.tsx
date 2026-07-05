@@ -50,7 +50,7 @@ export function MostOffsidedPlayer<TCrewData extends CrewStatistics>({
         data={renderOffsidesText(first.scout?.I ?? 0, false)}
         details={
           <AnimatedStatsRoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             statRounds={first.offsideRounds}
             statText="imp."

@@ -46,7 +46,7 @@ export function Artillery<TCrewData extends CrewStatistics>({
         data={renderGoalsText(first.goals)}
         details={
           <AnimatedStatsRoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             statRounds={first.scoredGoalsRounds}
             statText={(scoredGoals) => `gol${scoredGoals > 1 ? 's' : ''}`}

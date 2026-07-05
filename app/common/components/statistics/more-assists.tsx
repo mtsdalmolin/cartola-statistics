@@ -47,7 +47,7 @@ export function MoreAssists<TCrewData extends CrewStatistics>({
         data={renderAssistsText(first.assists, false)}
         details={
           <AnimatedStatsRoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             statRounds={first.assistsRounds}
             statText="assist."

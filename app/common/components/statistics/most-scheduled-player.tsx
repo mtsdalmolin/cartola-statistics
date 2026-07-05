@@ -51,7 +51,7 @@ export function MostScheduledPlayer<TCrewData extends CrewStatistics>({
         data={renderCastTimesText(first.castTimes)}
         details={
           <RoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             roundIds={first.castRounds}
             matchesData={matchesData}
             isAnimated={first.castRounds.length > 5}

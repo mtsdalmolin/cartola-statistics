@@ -55,7 +55,7 @@ export function FinishesOnPost<TCrewData extends CrewStatistics>({
         data={renderFinishesOnPost(first.finishesOnPost, false)}
         details={
           <AnimatedStatsRoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             statRounds={first.finishesOnPostRounds}
             statText="BT"

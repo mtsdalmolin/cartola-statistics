@@ -1,6 +1,6 @@
 import { PositionsIds } from '@/app/constants/positions'
 import { StatusIds } from '@/app/constants/status'
-import { FootballTeamsIds } from '@/app/constants/teams'
+import { FootballNationalTeamsIds, FootballTeamsIds } from '@/app/constants/teams'
 
 export interface Athlete {
   atleta_id: number
@@ -10,7 +10,7 @@ export interface Athlete {
   pontos_num: number
   jogos_num: number
   rodada_id: number
-  clube_id: FootballTeamsIds
+  clube_id: FootballTeamsIds | FootballNationalTeamsIds
   posicao_id: PositionsIds
   variacao_num: number
   minimo_para_valorizar: number
@@ -110,7 +110,7 @@ export type CrewStatistics = Record<string, RenderedAthlete>
 export type ClubStatistics = Record<
   string,
   {
-    id: FootballTeamsIds
+    id: FootballTeamsIds | FootballNationalTeamsIds
     points: number
     pointsPercentage: number
     lineupNumbers: number

@@ -67,7 +67,7 @@ export function LineupListItem({
       </Flex>
       {matchesData && (
         <RoundMatchesResult
-          clubId={athlete.clube_id}
+          clubId={Number(athlete.clube_id)}
           matchesData={matchesData}
           roundIds={[athlete.rodada_id]}
         />

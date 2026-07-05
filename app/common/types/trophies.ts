@@ -41,7 +41,8 @@ export enum WorldCupTrophies {
   MISSED_PENALTY_KICK = 'missed-penalty-kick',
   OFC_LEAGUE_TEAM = 'ofc-league-team',
   UEFA_LEAGUE_TEAM = 'uefa-league-team',
-  VOZINHA_IN_ROSTER = 'vozinha-in-roster'
+  VOZINHA_IN_ROSTER = 'vozinha-in-roster',
+  ZEBRA = 'zebra'
 }
 
 export type TrophiesData = { [key in Trophies | WorldCupTrophies]?: Athlete[] | RoundData | Subs }

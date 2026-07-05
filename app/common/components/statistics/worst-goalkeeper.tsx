@@ -51,7 +51,7 @@ export function WorstGoalkeeper<TCrewData extends CrewStatistics>({
         data={renderGoalsConcededText(first.goalsConceded, false)}
         details={
           <RoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             roundIds={first.goalsConcededRoundIds}
             isAnimated={first.goalsConcededRoundIds.length > 5}

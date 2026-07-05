@@ -44,7 +44,7 @@ export function BestBench<TCrewData extends CrewStatistics>({
         data={renderPointsAverageText(first.pointsAverage, false)}
         details={
           <AnimatedStatsRoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             matchesData={matchesData}
             statRounds={first.pointsPerRound}
             statText="pts."

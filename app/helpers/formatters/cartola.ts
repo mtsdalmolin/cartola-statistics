@@ -24,6 +24,10 @@ import { RoundData, RoundMatchesData, SubsData } from '@/app/services/types'
 import { isEmpty, isEqual, isNil, max, some, uniqBy, uniqWith } from 'lodash'
 
 import { registerTrophyEvent } from '../analytics'
+import {
+  isAthleteFromCapeVerdeAndInTheLastGroupRound,
+  isAthleteFromParaguayVsGermanyGame
+} from '../athlete'
 import { isCoach, isGoalkeeper } from '../positions'
 import { isValidRound } from '../rounds'
 import {
@@ -561,6 +565,14 @@ export function formatCartolaApiData({
       }
 
       if (isWorldCup) {
+        if (
+          isAthleteFromCapeVerdeAndInTheLastGroupRound(athlete) ||
+          isAthleteFromParaguayVsGermanyGame(athlete)
+        ) {
+          registerTrophyEvent(WorldCupTrophies.ZEBRA, { team: teamInfo })
+          teamsTrophies[WorldCupTrophies.ZEBRA] = [athlete]
+        }
+
         if (athlete.scout?.PP && athlete?.scout.PP > 0) {
           registerTrophyEvent(WorldCupTrophies.MISSED_PENALTY_KICK, { team: teamInfo })
           teamsTrophies[WorldCupTrophies.MISSED_PENALTY_KICK] = [athlete]
@@ -589,21 +601,21 @@ export function formatCartolaApiData({
           teamsTrophies[WorldCupTrophies.FORTIES] = [athlete]
         }
 
-        if (!CHAMPION_TEAM_IDS.includes(athlete.clube_id)) {
+        if (!CHAMPION_TEAM_IDS.includes(athlete.clube_id as number)) {
           athletesFromNonChampionTeam += 1
         }
 
-        if (AFC_TEAM_IDS.includes(athlete.clube_id)) {
+        if (AFC_TEAM_IDS.includes(Number(athlete.clube_id))) {
           rosterPlayerNumberPerLeague.AFC += 1
-        } else if (CAF_TEAM_IDS.includes(athlete.clube_id)) {
+        } else if (CAF_TEAM_IDS.includes(Number(athlete.clube_id))) {
           rosterPlayerNumberPerLeague.CAF += 1
-        } else if (CONCACAF_TEAM_IDS.includes(athlete.clube_id)) {
+        } else if (CONCACAF_TEAM_IDS.includes(Number(athlete.clube_id))) {
           rosterPlayerNumberPerLeague.CONCACAF += 1
-        } else if (CONMEBOL_TEAM_IDS.includes(athlete.clube_id)) {
+        } else if (CONMEBOL_TEAM_IDS.includes(Number(athlete.clube_id))) {
           rosterPlayerNumberPerLeague.CONMEBOL += 1
-        } else if (OFC_TEAM_IDS.includes(athlete.clube_id)) {
+        } else if (OFC_TEAM_IDS.includes(Number(athlete.clube_id))) {
           rosterPlayerNumberPerLeague.OFC += 1
-        } else if (UEFA_TEAM_IDS.includes(athlete.clube_id)) {
+        } else if (UEFA_TEAM_IDS.includes(Number(athlete.clube_id))) {
           rosterPlayerNumberPerLeague.UEFA += 1
         }
       }

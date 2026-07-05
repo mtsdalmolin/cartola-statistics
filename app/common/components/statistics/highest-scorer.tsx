@@ -48,7 +48,7 @@ export function HighestScorer<TCrewData extends CrewStatistics>({
         data={renderHighestPointText(first.highestPoint, false)}
         details={
           <RoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             roundIds={[first.highestPointsRound]}
             matchesData={matchesData}
           />

@@ -62,12 +62,14 @@ import messiCr7OchoaInRosterJpgBadge from '@/public/badges/world-cup/jpg/messi-c
 import missedPenaltyInWorldCupJpgBadge from '@/public/badges/world-cup/jpg/missed-penalty-kick.jpg'
 import ofcLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/ofc-league.jpg'
 import uefaLeagueTeamJpgBadge from '@/public/badges/world-cup/jpg/uefa-league.jpg'
+import vozinhaInRosterJpgBadge from '@/public/badges/world-cup/jpg/vozinha-in-roster.jpg'
+import zebraJpgBadge from '@/public/badges/world-cup/jpg/zebra.jpg'
 import messiCr7OchoaInRosterBadge from '@/public/badges/world-cup/messi-cr7-ochoa-in-roster.svg'
 import missedPenaltyInWorldCupBadge from '@/public/badges/world-cup/missed-penalty-kick.svg'
 import ofcLeagueTeamBadge from '@/public/badges/world-cup/ofc-league.svg'
-import vozinhaInRosterJpgBadge from '@/public/badges/world-cup/png/vozinha-in-roster.png'
 import uefaLeagueTeamBadge from '@/public/badges/world-cup/uefa-league.svg'
 import vozinhaInRosterBadge from '@/public/badges/world-cup/vozinha-in-roster.svg'
+import zebraBadge from '@/public/badges/world-cup/zebra.svg'
 
 import { Trophies, WorldCupTrophies } from '../common/types/trophies'
 
@@ -108,7 +110,8 @@ export const TROPHIES_IMAGE = {
   [WorldCupTrophies.MISSED_PENALTY_KICK]: missedPenaltyInWorldCupBadge,
   [WorldCupTrophies.OFC_LEAGUE_TEAM]: ofcLeagueTeamBadge,
   [WorldCupTrophies.UEFA_LEAGUE_TEAM]: uefaLeagueTeamBadge,
-  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterBadge
+  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterBadge,
+  [WorldCupTrophies.ZEBRA]: zebraBadge
 }
 
 export const TROPHIES_JPG_IMAGE = {
@@ -149,7 +152,8 @@ export const TROPHIES_JPG_IMAGE = {
   [WorldCupTrophies.MISSED_PENALTY_KICK]: missedPenaltyInWorldCupJpgBadge,
   [WorldCupTrophies.OFC_LEAGUE_TEAM]: ofcLeagueTeamJpgBadge,
   [WorldCupTrophies.UEFA_LEAGUE_TEAM]: uefaLeagueTeamJpgBadge,
-  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterJpgBadge
+  [WorldCupTrophies.VOZINHA_IN_ROSTER]: vozinhaInRosterJpgBadge,
+  [WorldCupTrophies.ZEBRA]: zebraJpgBadge
 }
 
 export const TROPHY_TO_PARAM: Record<Trophies | WorldCupTrophies, keyof typeof PARAM_TO_TROPHY> = {
@@ -188,7 +192,8 @@ export const TROPHY_TO_PARAM: Record<Trophies | WorldCupTrophies, keyof typeof P
   [WorldCupTrophies.MISSED_PENALTY_KICK]: 'errou-penalti-na-copa',
   [WorldCupTrophies.OFC_LEAGUE_TEAM]: 'time-com-jogadores-da-ofc',
   [WorldCupTrophies.UEFA_LEAGUE_TEAM]: 'time-com-jogadores-da-uefa',
-  [WorldCupTrophies.VOZINHA_IN_ROSTER]: 'vozinha-escalado'
+  [WorldCupTrophies.VOZINHA_IN_ROSTER]: 'vozinha-escalado',
+  [WorldCupTrophies.ZEBRA]: 'zebra'
 }
 
 export const PARAM_TO_TROPHY = {
@@ -227,7 +232,8 @@ export const PARAM_TO_TROPHY = {
   'luva-de-ouro': WorldCupTrophies.GOLDEN_GLOVE,
   'tecnico-campeao': WorldCupTrophies.CHAMPION_COACH,
   'quarentoes': WorldCupTrophies.FORTIES,
-  'azarao': WorldCupTrophies.DARK_HORSE
+  'azarao': WorldCupTrophies.DARK_HORSE,
+  'zebra': WorldCupTrophies.ZEBRA
 }
 
 export const TROPHY_NAME = {
@@ -266,7 +272,8 @@ export const TROPHY_NAME = {
   'luva-de-ouro': 'Luva de Ouro',
   'tecnico-campeao': 'Técnico que ganhou a copa do mundo de 2026',
   'quarentoes': 'Quarentões',
-  'azarao': 'Azarão'
+  'azarao': 'Azarão',
+  'zebra': 'Zebra'
 }
 
 export const TWITTER_TROPHY_MESSAGE = {
@@ -309,5 +316,6 @@ export const TWITTER_TROPHY_MESSAGE = {
   'tecnico-campeao': 'escalei o técnico que foi campeão da copa do mundo de 2026.',
   'quarentoes': 'escalei um dos quarentões da copa do mundo de 2026.',
   'azarao':
-    'escalei um time inteiro com jogadores de seleções que nunca ganharam uma copa do mundo.'
+    'escalei um time inteiro com jogadores de seleções que nunca ganharam uma copa do mundo.',
+  'zebra': 'escalei jogadores das zebras na copa do mundo de 2026.'
 }

@@ -89,6 +89,8 @@ const TROPHY_DESCRIPTION = {
     'Medalha de conquista por ter escalado todos os jogadores de seleções da Europa na copa do mundo de 2026.',
   [WorldCupTrophiesEnum.VOZINHA_IN_ROSTER]:
     'Medalha de conquista por ter escalado o goleiro Vozinha na copa do mundo de 2026.',
+  [WorldCupTrophiesEnum.ZEBRA]:
+    'Medalha de conquista por ter escalado jogadores das zebras na copa do mundo de 2026.',
   [WorldCupTrophiesEnum.DARK_HORSE]:
     'Medalha de conquista por ter escalado um time apenas com atletas de seleções que nunca ganharam uma copa do mundo.',
   [WorldCupTrophiesEnum.FORTIES]:

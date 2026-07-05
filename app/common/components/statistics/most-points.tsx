@@ -48,7 +48,7 @@ export function MostPoints<TCrewData extends CrewStatistics>({
         data={renderMostPointsText(first.sumOfPoints, false)}
         details={
           <RoundMatchesResult
-            clubId={first.clube_id}
+            clubId={Number(first.clube_id)}
             roundIds={first.castRounds}
             matchesData={matchesData}
             isAnimated={Object.keys(first.pointsPerRound).length > 5}
