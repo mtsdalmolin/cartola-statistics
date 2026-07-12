@@ -26,6 +26,7 @@ import { isEmpty, isEqual, isNil, max, some, uniqBy, uniqWith } from 'lodash'
 import { registerTrophyEvent } from '../analytics'
 import {
   isAthleteFromCapeVerdeAndInTheLastGroupRound,
+  isAthleteFromNorwayVsBrazilGame,
   isAthleteFromParaguayVsGermanyGame
 } from '../athlete'
 import { isCoach, isGoalkeeper } from '../positions'
@@ -567,7 +568,8 @@ export function formatCartolaApiData({
       if (isWorldCup) {
         if (
           isAthleteFromCapeVerdeAndInTheLastGroupRound(athlete) ||
-          isAthleteFromParaguayVsGermanyGame(athlete)
+          isAthleteFromParaguayVsGermanyGame(athlete) ||
+          isAthleteFromNorwayVsBrazilGame(athlete)
         ) {
           registerTrophyEvent(WorldCupTrophies.ZEBRA, { team: teamInfo })
           teamsTrophies[WorldCupTrophies.ZEBRA] = [athlete]
