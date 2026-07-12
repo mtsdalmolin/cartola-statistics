@@ -575,7 +575,11 @@ export function formatCartolaApiData({
           teamsTrophies[WorldCupTrophies.ZEBRA] = [athlete]
         }
 
-        if (athlete.scout?.PP && athlete?.scout.PP > 0) {
+        if (
+          !teamsTrophies[WorldCupTrophies.MISSED_PENALTY_KICK] &&
+          athlete.scout?.PP &&
+          athlete?.scout.PP > 0
+        ) {
           registerTrophyEvent(WorldCupTrophies.MISSED_PENALTY_KICK, { team: teamInfo })
           teamsTrophies[WorldCupTrophies.MISSED_PENALTY_KICK] = [athlete]
         }
