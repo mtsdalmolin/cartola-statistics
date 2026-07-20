@@ -575,6 +575,28 @@ export function formatCartolaApiData({
           teamsTrophies[WorldCupTrophies.ZEBRA] = [athlete]
         }
 
+        if (athlete.rodada_id === 8) {
+          if (athlete.atleta_id === 97656 /* unai simon */) {
+            registerTrophyEvent(WorldCupTrophies.GOLDEN_GLOVE, { team: teamInfo })
+            teamsTrophies[WorldCupTrophies.GOLDEN_GLOVE] = [athlete]
+          }
+
+          if (athlete.atleta_id === 95456 /* rodri */) {
+            registerTrophyEvent(WorldCupTrophies.GOLDEN_BALL, { team: teamInfo })
+            teamsTrophies[WorldCupTrophies.GOLDEN_BALL] = [athlete]
+          }
+
+          if (athlete.atleta_id === 95063 /* mbappe */) {
+            registerTrophyEvent(WorldCupTrophies.GOLDEN_BOOT, { team: teamInfo })
+            teamsTrophies[WorldCupTrophies.GOLDEN_BOOT] = [athlete]
+          }
+
+          if (athlete.atleta_id === 113735 /* de lafuente */) {
+            registerTrophyEvent(WorldCupTrophies.CHAMPION_COACH, { team: teamInfo })
+            teamsTrophies[WorldCupTrophies.CHAMPION_COACH] = [athlete]
+          }
+        }
+
         if (
           !teamsTrophies[WorldCupTrophies.MISSED_PENALTY_KICK] &&
           athlete.scout?.PP &&
