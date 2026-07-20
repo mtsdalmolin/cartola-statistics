@@ -372,6 +372,7 @@ function Trophy({
       <HoverCard.Target>
         <div className="flex relative aspect-square hover:scale-150">
           <Image
+            className="min-w-[128px]"
             src={TROPHIES_IMAGE[name]}
             width={128}
             height={128}
@@ -409,7 +410,7 @@ export function Trophies({
 }) {
   return (
     <Flex
-      className="overflow-x-auto px-2 py-8 w-full mobile:justify-start mobile:flex-nowrap"
+      className="overflow-x-auto px-2 py-8 w-full mobile:w-[80vw] mobile:justify-start mobile:flex-nowrap"
       justify="center"
     >
       {Object.entries(trophies).map(([trophyName, trophyData]) => (
