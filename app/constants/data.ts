@@ -22,8 +22,8 @@ export const SEASONS: Record<
     SECOND_TURN_ROUNDS
   },
   2026: {
-    FIRST_TURN_ROUNDS: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
-    SECOND_TURN_ROUNDS: []
+    FIRST_TURN_ROUNDS,
+    SECOND_TURN_ROUNDS: [20, 21, 22, 23, 24, 25, 26, 27]
   },
   CUP_2026: {
     FIRST_TURN_ROUNDS: [1, 2, 3, 4, 5, 6, 7, 8],
